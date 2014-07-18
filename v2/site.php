@@ -1,7 +1,8 @@
 <?php
-require_once '/../../api/Settings.php';
-require_once '/../../api/Utils.php';
-require_once '/../../api/handlers/CrewPageHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Settings.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/CrewPageHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GroupHandler.php';
 	
 class Site {
 	// Variable definitions.
@@ -13,11 +14,7 @@ class Site {
 	}
 	
 	// Execute the site.
-	public function execute() {
-		if (Utils::isAuthenticated()) {
-			// Do checks for changed user level or states here.
-		}
-		
+	public function execute() {	
 		echo '<!DOCTYPE html>';
 		echo '<html>';
 			echo '<head>';
@@ -47,7 +44,7 @@ class Site {
 								}
 								
 								if ($this->pageName == 'crew') {
-									$groupList = $this->database->getGroups();
+									$groupList = GroupHandler::getGroups();
 									
 									foreach ($groupList as $value) {
 										echo '<li><a href="index.php?page=crew&id=' . $value->getId() . '">' . $value->getTitle() . '</a></li>';
@@ -248,7 +245,7 @@ class Site {
 					}
 					
 					if ($user->isGroupMember()) {
-						$groupPageList = CrewPageHandler::getCrewPagesForGroup($user->getGroup()->getId());
+						$groupPageList = CrewPageHandler::getPagesForGroup($user->getGroup()->getId());
 						$groupPageNameList = array();
 							
 						foreach ($groupPageList as $value) {

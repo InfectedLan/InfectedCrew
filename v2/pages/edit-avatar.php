@@ -1,10 +1,8 @@
 <?php
-require_once 'scripts/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
-$utils = new Utils();
-
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	$avatar = $user->getAvatar();
 	
 	// Sjekk om det er noen som har et uncropped bilde.

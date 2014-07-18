@@ -1,20 +1,17 @@
 <?php
-require_once 'scripts/siteDatabase.php';
-require_once 'scripts/utils.php';
-
-$siteDatabase = new SiteDatabase();
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/MainPageHandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->hasPermission('functions.site-list-pages') || 
 		$user->hasPermission('admin') || 
 		$user->hasPermission('site-admin')) {
-		$pageList = $siteDatabase->getPages();
+		$pageList = MainPageHandler::getPages();
 		
 		echo '<article class="contentBox">';
 			echo '<h3>Sider:</h3>';

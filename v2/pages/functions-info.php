@@ -1,15 +1,13 @@
 <?php
-require_once 'scripts/siteDatabase.php';
-require_once 'scripts/utils.php';
-
-$database = new SiteDatabase();
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/AgendaHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/SlideHandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
@@ -24,7 +22,7 @@ if ($utils->isAuthenticated()) {
 			
 			echo '<h3>Agenda</h3>';
 			
-			$agendaList = $database->getAgendas();
+			$agendaList = AgendaHandler::getAgendas();
 			
 			if (!empty($agendaList)) {
 				echo '<table>';
@@ -83,7 +81,7 @@ if ($utils->isAuthenticated()) {
 			
 			echo '<h3>Slides</h3>';
 			
-			$slideList = $database->getSlides();
+			$slideList = SlideHandler::getSlides();
 			
 			if (!empty($slideList)) {
 				echo '<table>';

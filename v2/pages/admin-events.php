@@ -1,12 +1,8 @@
 <?php
-require_once 'scripts/siteDatabase.php';
-require_once 'scripts/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
-$database = new SiteDatabase();
-$utils = new Utils();
-
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->hasPermission('admin.events') ||
 		$user->hasPermission('admin')) {
@@ -24,7 +20,7 @@ if ($utils->isAuthenticated()) {
 				echo '<th>Slutt:</th>';
 			echo '</tr>';
 			
-			$eventList = $database->getEvents();
+			$eventList = EventHandler::getEvents();
 			
 			foreach ($eventList as $value) {
 				echo '<tr>';

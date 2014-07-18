@@ -1,14 +1,12 @@
 <?php
-require_once 'scripts/database.php';
-require_once 'scripts/utils.php';
-
-$database = new Database();
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/UserHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GroupHandler.php';
 
 $returnPage = basename(__FILE__, '.php');
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->hasPermission('chief.group') ||
 		$user->isGroupMember() && $user->isGroupChief() ||
@@ -16,7 +14,7 @@ if ($utils->isAuthenticated()) {
 		$user->hasPermission('crew-admin')) {
 		echo '<h1>Grupper</h1>';
 		
-		$groupList = $database->getGroups();
+		$groupList = GroupHandler::getGroups();
 		
 		if (!empty($groupList)) {
 			echo '<table>';
@@ -27,7 +25,7 @@ if ($utils->isAuthenticated()) {
 					echo '<th>Chief</th>';
 				echo '</tr>';
 				
-				$userList = $database->getMemberUsers();
+				$userList = UserHandler::getMemberUsers();
 				
 				foreach ($groupList as $group) {
 					echo '<tr>';
@@ -97,7 +95,7 @@ if ($utils->isAuthenticated()) {
 			
 			echo '<h3>Medlemmer</h3>';
 			
-			$freeUserList = $database->getNonMemberUsers();
+			$freeUserList = UserHandler::getNonMemberUsers();
 			
 			foreach ($groupList as $group) {
 				$memberList = $group->getMembers();

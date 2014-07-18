@@ -1,15 +1,13 @@
 <?php
-require_once 'scripts/siteDatabase.php';
-require_once 'scripts/utils.php';
-
-$database = new SiteDatabase();
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GameHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GameApplicationHandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 
 	if ($user->hasPermission('functions.site-list-games') || 
 		$user->getGroup()->getId() == 26 ||
@@ -17,7 +15,7 @@ if ($utils->isAuthenticated()) {
 		$user->hasPermission('site-admin')) {
 		echo '<h3>Spill:</h3>';
 		
-		$gameList = $database->getGames();
+		$gameList = GameHandler::getGames();
 		
 		if (!empty($gameList)) {
 			echo '<table>';
@@ -102,7 +100,7 @@ if ($utils->isAuthenticated()) {
 		
 		if (!empty($gameList)) {
 			foreach ($gameList as $game) {
-				$gameApplicationList = $database->getGameApplications($game->getId());
+				$gameApplicationList = GameApplicationHandler::getGameApplications($game->getId());
 				
 				echo '<h3><a href="' . $site . 'index.php?viewPage=game&id=' . $game->getId() . '">' . $game->getTitle() . '</a></h3>';
 				echo '<table>';

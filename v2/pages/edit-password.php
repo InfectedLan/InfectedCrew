@@ -1,9 +1,7 @@
 <?php
-require_once 'scripts/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
-$utils = new Utils();
-
-if ($utils->isAuthenticated()) {
+if (Utils::isAuthenticated()) {
 	echo '<h3>Endre passord</h3>';
 	
 	echo '<form action="do/index.php?editpass=crew/v2/index.php" method="post">';

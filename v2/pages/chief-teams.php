@@ -1,14 +1,10 @@
 <?php
-require_once 'scripts/database.php';
-require_once 'scripts/utils.php';
-
-$database = new Database();
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
 $returnPage = basename(__FILE__, '.php');
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();

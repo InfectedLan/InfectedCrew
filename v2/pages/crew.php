@@ -1,6 +1,6 @@
 <?php
-require_once '/../../../api/handlers/GroupHandler.php';
-require_once '/../../../api/handlers/TeamHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GroupHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/TeamHandler.php';
 
 $groupId = isset($_GET['id']) ? $_GET['id'] : 0;
 $teamId = isset($_GET['teamId']) ? $_GET['teamId'] : 0;

@@ -1,12 +1,10 @@
 <?php
-require_once 'scripts/utils.php';
-
-$utils = new Utils();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
 $type = isset($_GET['type']) ? $_GET['type'] : 0;
 
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->isGroupMember() && $user->isGroupChief()) {
 		$group = $user->getGroup();

@@ -1,23 +1,12 @@
 <?php
-require_once 'scripts/siteDatabase.php';
-require_once 'scripts/database.php';
-require_once 'scripts/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
 
 $site = isset($_GET['site']) ? $_GET['site'] : 0;
-
-if ($site == 0) {
-	$database = new SiteDatabase();
-} else if ($site == 1) {
-	$database = new Database();
-}
-
-$utils = new Utils();
-
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 $returnPage = isset($_GET['returnPage']) ? $_GET['returnPage'] : '.';
 
-if (isset($_GET['returnPage']) && $utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (isset($_GET['returnPage']) && Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->hasPermission('functions.site-list-pages') || 
 		$user->hasPermission('functions.mycrew') || 
@@ -27,7 +16,13 @@ if (isset($_GET['returnPage']) && $utils->isAuthenticated()) {
 		$user->hasPermission('site-admin') || 
 		$user->hasPermission('crew-admin')) {
 		if (isset($_GET['site']) && isset($_GET['id'])) {
-			$page = $database->getPage($id);
+			$page = null;
+		
+			if ($site == 0) {
+				$page = MainPageHandler::getPage($id);
+			} else if ($site == 1) {
+				$page = CrewPageHandler::getPage($id);
+			}
 			
 			echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 			

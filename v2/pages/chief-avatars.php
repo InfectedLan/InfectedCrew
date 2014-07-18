@@ -1,18 +1,15 @@
 <?php
-require_once 'scripts/database.php';
-require_once 'scripts/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/AvatarHandler.php';
 
-$database = new Database();
-$utils = new Utils();
-
-if ($utils->isAuthenticated()) {
-	$user = $utils->getUser();
+if (Utils::isAuthenticated()) {
+	$user = Utils::getUser();
 	
 	if ($user->hasPermission('chief.avatars') ||
 		$user->hasPermission('admin')) {
 		echo '<h3>Godkjenn profilbilder</h3>';
 		
-		$pendingAvatarList = $database->getPendingAvatars();
+		$pendingAvatarList = AvatarHandler::getPendingAvatars();
 		
 		if (!empty($pendingAvatarList)) {
 			$index = 0;
