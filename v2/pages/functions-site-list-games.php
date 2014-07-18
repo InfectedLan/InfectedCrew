@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GameHandler.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GameApplicationHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/gamehandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/gameapplicationhandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');

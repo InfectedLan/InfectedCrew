@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
 
 if (Utils::isAuthenticated()) {
 	$user = Utils::getUser();

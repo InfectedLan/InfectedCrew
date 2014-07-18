@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Settings.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/CrewPageHandler.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GroupHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/settings.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/crewpagehandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/grouphandler.php';
 	
 class Site {
 	// Variable definitions.

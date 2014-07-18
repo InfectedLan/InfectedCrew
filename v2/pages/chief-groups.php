@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/UserHandler.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/GroupHandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/userhandler.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/grouphandler.php';
 
 $returnPage = basename(__FILE__, '.php');
 

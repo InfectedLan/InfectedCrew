@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/Utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
 
 $site = isset($_GET['site']) ? $_GET['site'] : 0;
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
