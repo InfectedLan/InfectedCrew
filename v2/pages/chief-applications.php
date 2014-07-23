@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
+require_once 'utils.php';
 
 $type = isset($_GET['type']) ? $_GET['type'] : 0;
 

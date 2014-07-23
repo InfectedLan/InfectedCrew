@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/utils.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/api/handlers/avatarhandler.php';
+require_once 'utils.php';
+require_once 'handlers/avatarhandler.php';
 
 if (Utils::isAuthenticated()) {
 	$user = Utils::getUser();
