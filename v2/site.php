@@ -114,6 +114,11 @@ class Site {
 										$user->hasPermission('admin')) {
 										echo '<li><a href="index.php?page=admin-changeuser">Logg inn som en annan</a></li>';
 									}
+
+									if ($user->hasPermission('admin.seatmap') ||
+										$user->hasPermission('admin')) {
+										echo '<li><a href="index.php?page=admin-seatmap">Edit seatmaps</a></li>';
+									}
 								} else if ($this->pageName == 'chief' || 
 									$this->pageName == 'edit-page' || 
 									$this->pageName == 'chief-groups' || 
