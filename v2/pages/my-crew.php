@@ -11,7 +11,7 @@ if (Utils::isAuthenticated()) {
 			$team = TeamHandler::getTeam($teamId);
 			
 			if ($team != null) {
-				$page = CrewPageHandler::getPageByName($team->getName());
+				$page = RestrictedPageHandler::getPageByName($team->getName());
 				
 				if ($page != null) {
 					$page->display();
@@ -25,7 +25,7 @@ if (Utils::isAuthenticated()) {
 			$group = $user->getGroup();
 			
 			if ($group != null) {
-				$page = CrewPageHandler::getPageByName($group->getName());
+				$page = RestrictedPageHandler::getPageByName($group->getName());
 				
 				if ($page != null) {
 					$page->display();

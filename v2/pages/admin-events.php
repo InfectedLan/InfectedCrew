@@ -4,8 +4,8 @@ require_once 'utils.php';
 if (Utils::isAuthenticated()) {
 	$user = Utils::getUser();
 	
-	if ($user->hasPermission('admin.events') ||
-		$user->hasPermission('admin')) {
+	if ($user->hasPermission('admin') ||
+		$user->hasPermission('admin.events')) {
 		
 		echo '<h3>Arrangementer:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';

@@ -4,10 +4,10 @@ require_once 'utils.php';
 if (Utils::isAuthenticated()) {
 	$user = Utils::getUser();
 	
-	if ($user->hasPermission('chief') ||
-		$user->isGroupChief() ||
-		$user->hasPermission('admin') ||
-		$user->hasPermission('crew-admin')) {
+	if ($user->hasPermission('admin') ||
+		$user->hasPermission('crew-admin') ||
+		$user->hasPermission('chief') ||
+		$user->isGroupChief()) {
 		echo '<h1>Chief</h1>';
 		
 		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
