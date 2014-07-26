@@ -1,7 +1,7 @@
 <?php
 require_once 'settings.php';
 require_once 'utils.php';
-require_once 'handlers/crewpagehandler.php';
+require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 	
 class Site {
@@ -37,7 +37,7 @@ class Site {
 							if ($user->isGroupMember() && isset($_GET['page'])) {
 								$group = $user->getGroup();
 								
-								$groupPageList = CrewPageHandler::getPagesForGroup($user->getGroup()->getId());
+								$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
 								$groupPageNameList = array();
 							
 								foreach ($groupPageList as $value) {
@@ -251,7 +251,7 @@ class Site {
 					}
 					
 					if ($user->isGroupMember()) {
-						$groupPageList = CrewPageHandler::getPagesForGroup($user->getGroup()->getId());
+						$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
 						$groupPageNameList = array();
 							
 						foreach ($groupPageList as $value) {
@@ -354,7 +354,7 @@ class Site {
 	
 	private function viewPage($pageName) {
 		// Fetch the page object from the database and display it.
-		$page = CrewPageHandler::getPageByName($pageName);
+		$page = RestrictedPageHandler::getPageByName($pageName);
 		
 		if ($page != null) {
 			$page->display();
