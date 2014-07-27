@@ -25,7 +25,7 @@ class Site {
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
 				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
-				echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>';
+				echo '<script src="scripts/jquery.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
