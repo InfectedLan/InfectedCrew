@@ -50,7 +50,7 @@ if (Session::isAuthenticated()) {
 					echo '</td>';
 				echo '</tr>';
 			
-				$applicationUser = $application->getCurrentUser();
+				$applicationUser = $application->getUser();
 			
 				echo '<tr>';
 					echo '<td>Gruppe:</td>';

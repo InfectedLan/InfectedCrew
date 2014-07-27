@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 	
-		if ($user->hasPermission('chief.group') ||
+		if ($user->hasPermission('leader.group') ||
 			$user->isGroupLeader() ||
 			$user->hasPermission('admin') ||
 			$user->hasPermission('crew-admin')) {
@@ -35,17 +35,17 @@ if (Session::isAuthenticated()) {
 								echo '<td>' . count($team->getMembers()) . '</td>';
 								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
 								echo '<td>';
-									echo '<select name="chief">';
-										if ($team->getChief() != null) {
+									echo '<select name="leader">';
+										if ($team->getleader() != null) {
 											echo '<option value="0">Ingen</option>';
 										} else {
 											echo '<option value="0" selected>Ingen</option>';
 										}
 										
 										foreach ($userList as $key => $user) {
-											$chief = $team->getChief();
+											$leader = $team->getLeader();
 											
-											if ($chief != null && $user->getId() == $chief->getId()) {
+											if ($leader != null && $user->getId() == $leader->getId()) {
 												echo '<option value="' . $user->getId() . '" selected>' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
 											} else {
 												echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
@@ -77,9 +77,9 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="description"></td>';
 						echo '</tr>';
 						echo '<tr>';
-							echo '<td>Chief:</td>';
+							echo '<td>leader:</td>';
 							echo '<td>';
-								echo '<select name="chief">';
+								echo '<select name="leader">';
 									echo '<option value="0" selected>Ingen</option>';
 									
 									foreach ($userList as $value) {
