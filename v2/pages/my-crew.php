@@ -1,12 +1,13 @@
 <?php
 require_once 'session.php';
+require_once 'handlers/restrictedpagehandler.php'; 
 
 $teamId = isset($_GET['teamId']) ? $_GET['teamId'] : 0;
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->getGroup()->getId() != 0) {
+	if ($user->isGroupMember()) {
 		if (isset($_GET['teamId'])) {
 			$team = TeamHandler::getTeam($teamId);
 			
