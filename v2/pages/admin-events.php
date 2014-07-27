@@ -1,8 +1,9 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
+require_once 'handlers/eventhandler.php';
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('admin') ||
 		$user->hasPermission('admin.events')) {

@@ -1,9 +1,9 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/avatarhandler.php';
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('chief.avatars') ||
 		$user->hasPermission('admin')) {
@@ -15,7 +15,7 @@ if (Utils::isAuthenticated()) {
 			$index = 0;
 		
 			foreach ($pendingAvatarList as $value) {
-				$avatarUser = $value->getUser();
+				$avatarUser = $value->getCurrentUser();
 			
 				echo '<div class="';
 					if ($index % 2 == 0) {

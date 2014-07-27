@@ -1,17 +1,19 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
+require_once 'handlers/pagehandler.php';
+require_once 'handlers/crewpagehandler.php';
 
 $site = isset($_GET['site']) ? $_GET['site'] : 0;
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 $returnPage = isset($_GET['returnPage']) ? $_GET['returnPage'] : '.';
 
-if (isset($_GET['returnPage']) && Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (isset($_GET['returnPage']) && Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('functions.site-list-pages') || 
 		$user->hasPermission('functions.mycrew') || 
 		$user->hasPermission('functions.edit-page') || 
-		$user->isGroupChief() || 
+		$user->isGroupLeader() || 
 		$user->hasPermission('admin') || 
 		$user->hasPermission('site-admin') || 
 		$user->hasPermission('crew-admin')) {
@@ -19,7 +21,7 @@ if (isset($_GET['returnPage']) && Utils::isAuthenticated()) {
 			$page = null;
 		
 			if ($site == 0) {
-				$page = MainPageHandler::getPage($id);
+				$page = PageHandler::getPage($id);
 			} else if ($site == 1) {
 				$page = CrewPageHandler::getPage($id);
 			}

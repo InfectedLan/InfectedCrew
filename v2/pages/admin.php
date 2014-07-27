@@ -1,8 +1,8 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('admin') ||
 		$user->hasPermission('site-admin') ||

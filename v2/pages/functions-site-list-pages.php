@@ -1,17 +1,17 @@
 <?php
-require_once 'utils.php';
-require_once 'handlers/mainpagehandler.php';
+require_once 'session.php';
+require_once 'handlers/pagehandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('functions.site-list-pages') || 
 		$user->hasPermission('admin') || 
 		$user->hasPermission('site-admin')) {
-		$pageList = MainPageHandler::getPages();
+		$pageList = PageHandler::getPages();
 		
 		echo '<article class="contentBox">';
 			echo '<h3>Sider:</h3>';

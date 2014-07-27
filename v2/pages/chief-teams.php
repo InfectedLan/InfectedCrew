@@ -1,16 +1,16 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 	
 		if ($user->hasPermission('chief.group') ||
-			$user->isGroupChief() ||
+			$user->isGroupLeader() ||
 			$user->hasPermission('admin') ||
 			$user->hasPermission('crew-admin')) {
 			echo '<h1>Lag</h1>';

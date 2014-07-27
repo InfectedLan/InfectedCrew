@@ -1,15 +1,15 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/grouphandler.php';
 
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('chief.group') ||
-		$user->isGroupMember() && $user->isGroupChief() ||
+		$user->isGroupMember() && $user->isGroupLeader() ||
 		$user->hasPermission('admin') ||
 		$user->hasPermission('crew-admin')) {
 		echo '<h1>Grupper</h1>';

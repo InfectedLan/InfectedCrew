@@ -1,10 +1,10 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
 $teamId = isset($_GET['teamId']) ? $_GET['teamId'] : 0;
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->getGroup()->getId() != 0) {
 		if (isset($_GET['teamId'])) {

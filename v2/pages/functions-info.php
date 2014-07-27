@@ -1,18 +1,18 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/agendahandler.php';
 require_once 'handlers/slidehandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 		
-		if ($user->isGroupChief() || 
+		if ($user->isGroupLeader() || 
 			$group->getId() == 15 || 
 			$group->getId() == 26 || 
 			$user->hasPermission('admin') || 

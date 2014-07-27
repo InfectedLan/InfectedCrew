@@ -1,11 +1,11 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/userhandler.php';
 
-$id = isset($_GET['id']) ? $_GET['id'] : Utils::getUser()->getId();
+$id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	$profile = UserHandler::getUser($id);
 	
 	if ($profile != null) {
@@ -15,7 +15,7 @@ if (Utils::isAuthenticated()) {
 			$user->getId() == $profile->getId()) {
 
 			echo '<h1>' . $profile->getFirstname() . ' "' . $profile->getNickname() . '" ' . $profile->getLastname() . '</h1>';
-			echo '<img src="' . $profile->getAvatar()->getRelativeUrl() . '" width="1" height="1" style="margin-left: 50%; position: relative; width: 400px; height: 300px;">';
+			echo '<img src="' . $profile->getAvatar()->getFile() . '" width="1" height="1" style="margin-left: 50%; position: relative; width: 400px; height: 300px;">';
 
 			echo '<table style="position: relative; width: 50%; top: -300px;">';
 				echo '<tr>';

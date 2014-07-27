@@ -1,6 +1,6 @@
 <?php
+require_once 'session.php';
 require_once 'settings.php';
-require_once 'utils.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 	
@@ -31,8 +31,8 @@ class Site {
 				echo '<header>';
 					echo '<img src="images/Infected_crew_logo.png">';
 					echo '<ul>';
-						if (Utils::isAuthenticated()) {
-							$user = Utils::getUser();
+						if (Session::isAuthenticated()) {
+							$user = Session::getCurrentUser();
 
 							if ($user->isGroupMember() && isset($_GET['page'])) {
 								$group = $user->getGroup();
@@ -84,7 +84,7 @@ class Site {
 									}
 									
 									if ($user->hasPermission('functions.mycrew') ||
-										$user->isGroupChief() || 
+										$user->isGroupLeader() || 
 										$user->hasPermission('admin') || 
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=functions-mycrew">My Crew</a></li>';
@@ -128,42 +128,42 @@ class Site {
 									$this->pageName == 'chief-avatars') {
 									
 									if ($user->hasPermission('chief.home') ||
-										$user->isGroupChief() ||
+										$user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=edit-page&site=1&id=1&returnPage=index.php?page=chief">Hjem</a></li>';
 									}
 									
 									if ($user->hasPermission('chief.groups') ||
-										$user->isGroupChief() ||
+										$user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-groups">Grupper</a></li>';
 									}
 									
 									if ($user->hasPermission('chief.teams') ||
-										$user->isGroupChief() ||
+										$user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-teams">Lag</a></li>';
 									}
 									
 									if ($user->hasPermission('chief.applications') ||
-										$user->isGroupChief() ||
+										$user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-applications">Søknader</a></li>';
 									}
 									
 									if ($user->hasPermission('chief.avatars') ||
-										$user->isGroupChief() ||
+										$user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-avatars">Profilbilder</a></li>';
 									}
 									
 									// TODO: Fix permissions for this.
-									if ($user->isGroupChief() ||
+									if ($user->isGroupLeader() ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="do/badges.php">PRINT BADGES</a></li>';
@@ -175,8 +175,8 @@ class Site {
 						}
 					echo '</ul>';
 					echo '<div class="loginthing">';
-						if (Utils::isAuthenticated()) {
-							$user = Utils::getUser();
+						if (Session::isAuthenticated()) {
+							$user = Session::getCurrentUser();
 							
 							echo 'Logget inn som ' . $user->getFullName() . '. <a href="../../api/process_user.php?action=2">Logg ut</a>';
 						}
@@ -193,8 +193,8 @@ class Site {
 							echo '<div class="information">' . XssBegone($_GET["info"]) . '</div>';
 						}
 						
-						if (Utils::isAuthenticated()) {
-							$user = Utils::getUser();
+						if (Session::isAuthenticated()) {
+							$user = Session::getCurrentUser();
 							
 							if ($user->isGroupMember()) {
 								if (isset($_GET['page'])) {
@@ -235,8 +235,8 @@ class Site {
 					echo '</div>';
 				echo '</div>';
 
-				if (Utils::isAuthenticated()) {
-					$user = Utils::getUser();
+				if (Session::isAuthenticated()) {
+					$user = Session::getCurrentUser();
 				
 					if ($this->pageName == 'index' || !isset($_GET['page'])) {
 						echo '<div class="homeicon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
@@ -278,7 +278,7 @@ class Site {
 					if ($user->isGroupMember()) {
 						if ($user->getGroup()->getId() == 15 || 
 							$user->getGroup()->getId() == 26 || 
-							$user->isGroupChief() || 
+							$user->isGroupLeader() || 
 							$user->hasPermission('admin') || 
 							$user->hasPermission('crew-admin')) {
 							if ($this->pageName == 'functions' || 
@@ -292,7 +292,7 @@ class Site {
 							}
 						}
 						
-						if ($user->isGroupChief() ||
+						if ($user->isGroupLeader() ||
 							$user->hasPermission('admin') || 
 							$user->hasPermission('crew-admin')) {
 							if ($this->pageName == 'edit-page' && $_GET['site'] == 1 && $_GET['id'] == 1 || 
@@ -333,10 +333,10 @@ class Site {
 	}
 
 	private function genNotifications() {
-		if (Utils::isAuthenticated()) {
-			$user = Utils::getUser();
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
 			
-			if ($user->isGroupMember() && $user->isGroupChief()) {
+			if ($user->isGroupMember() && $user->isGroupLeader()) {
 				$soknads = mysql_query("SELECT * FROM `soknader` WHERE `crew` = '" . $user->getGroup()->getName() . "' AND `status`='PROCESSING';"); // TODO: Update this.
 			
 				if ($soknads != FALSE && mysql_num_rows($soknads) > 0) {

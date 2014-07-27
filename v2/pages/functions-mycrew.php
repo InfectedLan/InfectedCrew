@@ -1,16 +1,17 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
+require_once 'handlers/crewpagehandler.php';
 
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 		
 		if ($user->hasPermission('functions.mycrew') || 
-			$user->isGroupChief() || 
+			$user->isGroupLeader() || 
 			$user->hasPermission('admin') || 
 			$user->hasPermission('crew-admin') || 
 			$user->hasPermission('function-mycrew')) {
@@ -61,7 +62,7 @@ if (Utils::isAuthenticated()) {
 			echo '<h3>Legg til ny side:</h3>';
 			echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 			
-			if ($user->isGroupChief() || 
+			if ($user->isGroupLeader() || 
 				$user->hasPermission('admin') || 
 				$user->hasPermission('crew-admin') ||
 				$user->hasPermission('function-mycrew')) {

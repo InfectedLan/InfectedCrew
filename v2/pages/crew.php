@@ -6,7 +6,7 @@ require_once 'handlers/teamhandler.php';
 $groupId = isset($_GET['id']) ? $_GET['id'] : 0;
 $teamId = isset($_GET['teamId']) ? $_GET['teamId'] : 0;
 
-if (Session::isAutenticated()) {
+if (Session::isAuthenticated()) {
 	if (isset($_GET['id'])) {
 		if (isset($_GET['teamId'])) {
 			$team = TeamHandler::getTeam($teamId);

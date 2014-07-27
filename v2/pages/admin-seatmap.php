@@ -1,5 +1,5 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/seatmaphandler.php';
 
 echo '<script src="scripts/seatmapEditor.js"></script>';

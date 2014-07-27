@@ -1,7 +1,7 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
-if (Utils::isAuthenticated()) {
+if (Session::isAuthenticated()) {
 	echo '<h3>Endre passord</h3>';
 	
 	echo '<form action="do/index.php?editpass=crew/v2/index.php" method="post">';

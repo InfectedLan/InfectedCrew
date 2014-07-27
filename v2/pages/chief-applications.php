@@ -1,12 +1,12 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
 $type = isset($_GET['type']) ? $_GET['type'] : 0;
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
-	if ($user->isGroupMember() && $user->isGroupChief()) {
+	if ($user->isGroupMember() && $user->isGroupLeader()) {
 		$group = $user->getGroup();
 		
 		echo '<h1>Søknader</h1>';
@@ -50,7 +50,7 @@ if (Utils::isAuthenticated()) {
 					echo '</td>';
 				echo '</tr>';
 			
-				$applicationUser = $application->getUser();
+				$applicationUser = $application->getCurrentUser();
 			
 				echo '<tr>';
 					echo '<td>Gruppe:</td>';

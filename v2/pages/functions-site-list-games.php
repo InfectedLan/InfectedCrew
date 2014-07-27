@@ -1,13 +1,13 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 require_once 'handlers/gamehandler.php';
 require_once 'handlers/gameapplicationhandler.php';
 
 $site = 'https://infected.no/v7/';
 $returnPage = basename(__FILE__, '.php');
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('functions.site-list-games') || 
 		$user->getGroup()->getId() == 26 ||
@@ -43,7 +43,7 @@ if (Utils::isAuthenticated()) {
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
 						
-						if ($user->isGroupChief() || 
+						if ($user->isGroupLeader() || 
 							$user->hasPermission('admin') || 
 							$user->hasPermission('site-admin')) {
 							echo '<form action="scripts/process_game.php?action=2&id=' . $game->getId() . '&returnPage=' . $returnPage . '" method="post">';
@@ -55,7 +55,7 @@ if (Utils::isAuthenticated()) {
 			echo '</table>';
 		}
 		
-		if ($user->isGroupChief() || 
+		if ($user->isGroupLeader() || 
 			$user->hasPermission('admin') || 
 			$user->hasPermission('site-admin')) {
 			echo '<form action="scripts/process_game.php?action=1&returnPage=' . $returnPage . '" method="post">';
@@ -124,7 +124,7 @@ if (Utils::isAuthenticated()) {
 							echo '<td>' . $value->getPhone() . '</td>';
 							echo '<td>' . $value->getEmail() . '</td>';
 							
-							if ($user->isGroupChief() || 
+							if ($user->isGroupLeader() || 
 								$user->hasPermission('admin') || 
 								$user->hasPermission('site-admin')) {
 								echo '<form name="input" action="scripts/process_gameApplication.php?action=2&id=' . $value->getId() . '&returnPage=' .  $returnPage . '" method="post">';

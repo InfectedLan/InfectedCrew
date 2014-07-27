@@ -1,10 +1,10 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
 $username = isset($_POST['username']) ? $_POST['username'] : 0;
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('admin')) {
 		echo '<h1>Bytt bruker</h1>';
@@ -24,7 +24,7 @@ if (Utils::isAuthenticated()) {
 		echo '</form>';
 	
 		if (isset($_POST['username'])) {
-			$changeUser = UserHandler::getUserByName($username);
+			$changeUser = UserHandler::getCurrentUserByName($username);
 			
 			if ($changeUser != null) {
 				$_SESSION['user'] = $changeUser;

@@ -1,13 +1,13 @@
 <?php
-require_once 'utils.php';
+require_once 'session.php';
 
-if (Utils::isAuthenticated()) {
-	$user = Utils::getUser();
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('admin') ||
 		$user->hasPermission('crew-admin') ||
 		$user->hasPermission('chief') ||
-		$user->isGroupChief()) {
+		$user->isGroupLeader()) {
 		echo '<h1>Chief</h1>';
 		
 		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
