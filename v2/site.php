@@ -26,6 +26,7 @@ class Site {
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
 				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/jquery.js"></script>';
+				echo '<script src="scripts/crew.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -375,7 +376,7 @@ class Site {
 	}
 	
 	private function viewLogin() {
-		echo '<form name="input" action="../../api/process_user.php?action=1&returnPage=home" method="post">';
+		echo '<form id="loginForm">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td><h2>Logg inn</h2></td>';
@@ -389,7 +390,7 @@ class Site {
 					echo '<td><input type="password" name="password"></td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td><input type="submit" value="Logg inn"><td>';
+					echo '<td><input type="submit" id="submit" value="Logg inn"><td>';
 				echo '</tr>';
 			echo '</table>';
 		echo '</form>';
