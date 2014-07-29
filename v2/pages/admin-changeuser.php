@@ -24,7 +24,7 @@ if (Session::isAuthenticated()) {
 		echo '</form>';
 	
 		if (isset($_POST['username'])) {
-			$changeUser = UserHandler::getCurrentUserByName($username);
+			$changeUser = UserHandler::getUserByName($username);
 			
 			if ($changeUser != null) {
 				$_SESSION['user'] = $changeUser;

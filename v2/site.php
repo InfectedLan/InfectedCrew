@@ -24,9 +24,9 @@ class Site {
 				echo '<meta name="author" content="' . implode(', ', Settings::$authors) . '">';
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
-				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/jquery.js"></script>';
-				echo '<script src="scripts/crew.js"></script>';
+				echo '<script src="scripts/session.js"></script>';
+				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -179,7 +179,7 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 							
-							echo 'Logget inn som ' . $user->getFullName() . '. <a href="../../api/process_user.php?action=2">Logg ut</a>';
+							echo 'Logget inn som ' . $user->getFullName() . '. <a class="logout" href=".">Logg ut</a>';
 						}
 					echo '</div>';
 				echo '</header>';
@@ -376,7 +376,7 @@ class Site {
 	}
 	
 	private function viewLogin() {
-		echo '<form id="loginForm">';
+		echo '<form class="login">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td><h2>Logg inn</h2></td>';
