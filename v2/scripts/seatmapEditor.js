@@ -8,7 +8,21 @@ function copySeatmap()
 	var seatmapId = $("#seatmapSelect").val();
 	alert("Copying seatmap " + seatmapId);
 }
+function newSeatmapName() 
+{
+	$("#seatmapIntro").fadeOut(200, function() {
+		$("#newSeatmapDiv").fadeIn(200);
+	});
+}
+function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah
+{
+	$("#newSeatmapDiv").fadeOut(200, function() {
+		$("#seatmapIntro").fadeIn(200);
+	});
+}
 function newSeatmap()
 {
-	alert("New seatmap");
+	$.getJSON('../json/newSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName")), function(data){
+		
+  	});
 }
