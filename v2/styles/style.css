@@ -1,12 +1,9 @@
-@charset "utf-8";
-
 body {
 	background-image:url('images/bg.jpg');
 	background-size: 100% auto;
 	background-repeat:no-repeat;
 	font-family:Arial;
-	font-family:"Arial";
-	background-color:#FFFFFF;
+	background-color:#ffffff;
 	width: 1050px;
 	margin-left: auto;
 	margin-right: auto;
@@ -65,6 +62,7 @@ header a {
 	border-radius:1px;
 	border-color:#999999;
 }
+
 .Content {
 	box-shadow: 0px 0px 0px 7px rgba(106,189,223,0.30);
 	outline-color: rgba(255,0,255,0.30);
@@ -84,22 +82,42 @@ header a {
 
 	-webkit-box-shadow: 0px 0px 0px 7px rgba(106,189,223,0.30);
 }
+
+.warning
+{
+	border:1px solid;
+	border-radius:2px;
+	background-color: #FF4D4D;
+	border-color: #B23636;
+	margin-top: 30px;
+	padding: 5px;
+}
+.information
+{
+	border:1px solid;
+	border-radius:2px;
+	background-color: #4bb7d9;
+	border-color: #3ba7b9;
+	margin-top: 30px;
+	padding: 5px;
+}
+
 .innercontent {
 	margin: 5px;
 }
-.loginthing {
+
+.user {
 	font-family:Arial;
-	font-family:"Arial";
 	font-size: 12px;
 	position: absolute;
 	text-align: right;
 	width: 940px;
 	height: 50px;
-	margin-left: 2px !important;
+	margin-left: 2px;
 	top: 30px;
 }
 
-.loginthing a {
+.user a {
 	font-family:Arial;
 	font-family:"Arial";
 	font-size: 12px;
@@ -190,19 +208,17 @@ header a {
 	border-bottom-left-radius: 7px;
 	border-top-left-radius: 7px;
 }
+
 .homeicon:active, .crewicon:active, .mycrewicon:active, .profileicon:active, .functionicon:active, .adminicon:active, .chieficon:active {
 	background-color:rgba(31,165,208,1);
 	border-bottom-left-radius: 7px;
 	border-top-left-radius: 7px;
 }
+
 #active {
 	background-color:rgba(31,165,208,1);
 	border-bottom-left-radius: 7px;
 	border-top-left-radius: 7px;
-}
-
-.crewParagraph {
-
 }
 
 .crewParagraph h3{
@@ -217,23 +233,7 @@ header a {
 	padding: 5px;
 	height: 110px;
 }
-.avatarLeft {
-	margin: left;
-	width: 48%;
-	border: 1px solid gray;
-	margin: 0 0 10px 2px;
-	padding: 5px;
-	height: 340px;
-}
-.avatarRight {
-	float: right;
-	width: 48%;
-	border:1px solid gray;
-	margin: 0 2px 10px 0;
-	padding: 5px;
-	height: 340px;
-	margin-top: -362px;
-}
+
 .crewEntryRight {
 	float: right;
 	width: 48%;
@@ -244,21 +244,21 @@ header a {
 	margin-top: -132px;
 }
 
-.warning
-{
-	border:1px solid;
-	border-radius:2px;
-	background-color: #FF4D4D;
-	border-color: #B23636;
-	margin-top: 30px;
+.avatarLeft {
+	margin: left;
+	width: 48%;
+	border: 1px solid gray;
+	margin: 0 0 10px 2px;
 	padding: 5px;
+	height: 340px;
 }
-.information
-{
-	border:1px solid;
-	border-radius:2px;
-	background-color: #4bb7d9;
-	border-color: #3ba7b9;
-	margin-top: 30px;
+
+.avatarRight {
+	float: right;
+	width: 48%;
+	border:1px solid gray;
+	margin: 0 2px 10px 0;
 	padding: 5px;
+	height: 340px;
+	margin-top: -362px;
 }

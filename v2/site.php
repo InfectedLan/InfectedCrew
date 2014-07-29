@@ -35,7 +35,8 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 
-							if ($user->isGroupMember() && isset($_GET['page'])) {
+							if (isset($_GET['page']) && 
+								$user->isGroupMember()) {
 								$group = $user->getGroup();
 								
 								$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
@@ -59,6 +60,8 @@ class Site {
 									foreach ($teamList as $team) {
 										array_push($teamNameList, strtolower($team->getName()));
 									}
+									
+									echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
 									
 									foreach ($teamList as $team) {
 										echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
@@ -175,7 +178,7 @@ class Site {
 							}
 						}
 					echo '</ul>';
-					echo '<div class="loginthing">';
+					echo '<div class="user">';
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 							
