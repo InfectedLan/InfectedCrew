@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 	
-		if ($user->hasPermission('leader.group') ||
+		if ($user->hasPermission('chief.group') ||
 			$user->isGroupLeader() ||
 			$user->hasPermission('admin') ||
 			$user->hasPermission('crew-admin')) {

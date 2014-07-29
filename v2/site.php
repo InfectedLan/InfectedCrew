@@ -3,6 +3,7 @@ require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/eventhandler.php';
 	
 class Site {
 	// Variable definitions.
@@ -165,15 +166,6 @@ class Site {
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-avatars">Profilbilder</a></li>';
 									}
-									
-									// TODO: Fix permissions for this.
-									if ($user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="do/badges.php">PRINT BADGES</a></li>';
-										echo '<li><a href="do/printExampleTicket.php">SE EKSEMPELBILETT</a></li>';
-										echo '<li><a href="do/printInvalidTicket.php">SE UGYLDIG BILETT</a></li>';
-									}
 								}
 							}
 						}
@@ -205,7 +197,7 @@ class Site {
 								$this->viewPage($this->pageName);
 							} else {
 								// View the page specified by "pageName" variable.
-								$this->genNotifications();
+								$this->viewNotifications();
 								$this->viewPage('home');
 							}
 						} else {
@@ -355,13 +347,40 @@ class Site {
 	
 	// Generates title based on current page / article.
 	private function getTitle() {
-		return Settings::name;
+		$event = EventHandler::getCurrentEvent();
+	
+		return Settings::name . $event->getTheme();
 	}
 
-	private function genNotifications() {
+	private function viewLogin() {
+		echo '<form class="login">';
+			echo '<table>';
+				echo '<tr>';
+					echo '<td><h2>Logg inn</h2></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Brukernavn:</td>';
+					echo '<td><input type="text" name="username"></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Passord:</td>';
+					echo '<td><input type="password" name="password"></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td><input type="submit" id="submit" value="Logg inn"><td>';
+				echo '</tr>';
+			echo '</table>';
+		echo '</form>';
+		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=forgotten">Reset passordet ditt!</a>';
+		echo '<br /><i>På grunn av endring i måten infected\'s nettside fungerer på innsiden, har vi måtte slette brukerne for å kunne gjøre noen oppgraderinger. Derfor er alle nødt til å registrere seg på nytt.</i><br />';
+		echo '<p>Du har samme bruker her som på <a href="https://tickets.infected.no/">tickets.infected.no</a></p>';
+	}
+	
+	private function viewNotifications() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
+			// TODO: Rewrite this.
 			if ($user->isGroupMember() && $user->isGroupLeader()) {
 				$soknads = mysql_query("SELECT * FROM `soknader` WHERE `crew` = '" . $user->getGroup()->getName() . "' AND `status`='PROCESSING';"); // TODO: Update this.
 			
@@ -394,34 +413,9 @@ class Site {
 			} else {
 				echo '<article>';
 					echo '<h1>Siden ble ikke funnet!</h1>';
-					echo 'Siden du ser etter finnes ikke.';
 				echo '</article>';
 			}
 		}
-	}
-	
-	private function viewLogin() {
-		echo '<form class="login">';
-			echo '<table>';
-				echo '<tr>';
-					echo '<td><h2>Logg inn</h2></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Brukernavn:</td>';
-					echo '<td><input type="text" name="username"></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Passord:</td>';
-					echo '<td><input type="password" name="password"></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td><input type="submit" id="submit" value="Logg inn"><td>';
-				echo '</tr>';
-			echo '</table>';
-		echo '</form>';
-		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=forgotten">Reset passordet ditt!</a>';
-		echo '<br /><i>På grunn av endring i måten infected\'s nettside fungerer på innsiden, har vi måtte slette brukerne for å kunne gjøre noen oppgraderinger. Derfor er alle nødt til å registrere seg på nytt.</i><br />';
-		echo '<p>Du har samme bruker her som på <a href="https://tickets.infected.no/">tickets.infected.no</a></p>';
 	}
 }
 ?>
