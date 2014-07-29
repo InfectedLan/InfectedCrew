@@ -3,7 +3,6 @@ require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
-require_once 'handlers/eventhandler.php';
 	
 class Site {
 	// Variable definitions.
@@ -347,9 +346,7 @@ class Site {
 	
 	// Generates title based on current page / article.
 	private function getTitle() {
-		$event = EventHandler::getCurrentEvent();
-	
-		return Settings::name . $event->getTheme();
+		return Settings::name . ' Crew';
 	}
 
 	private function viewLogin() {
