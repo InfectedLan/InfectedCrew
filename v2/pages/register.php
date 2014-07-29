@@ -1,71 +1,59 @@
-<form name="input" action="scripts/process_user.php?action=3" method="post">
-    <h2>Registrer</h2>
-	<table>
-		<tr>
-			<td>Fornavn:</td>
-			<td><input type="text" name="firstname"></td>
-		</tr>
-		<tr>
-			<td>Etternavn:</td>
-			<td><input type="text" name="lastname"></td>
-		</tr>
-		<tr>
-			<td>Brukernavn:</td>
-			<td><input type="text" name="username"></td>
-		</tr>
-		<tr>
-			<td>Passord:</td>
-			<td><input type="password" name="password"></td>
-		</tr>
-		<tr>
-			<td>Gjenta passord:</td>
-			<td><input type="password" name="password2"></td>
-		</tr>
-		<tr>
-			<td>E-post:</td>
-			<td><input type="email" name="email"></td>
-		</tr>
-		<tr>
-			<td>Kjønn</td>
-			<td>
-				<select name="gender">
-					<option value="0">Mann</option>
-					<option value="1">Kvinne</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Fødselsdato:</td>
-			<td>
-				<select name="birthday">
-					<?php
+<?php
+require_once 'session.php';
+require_once 'utils.php';
+
+echo '<script src="scripts/register.js"></script>';
+
+echo '<form class="register" name="input" method="post">';
+    echo '<h2>Registrer</h2>';
+	echo '<table>';
+		echo '<tr>';
+			echo '<td>Fornavn:</td>';
+			echo '<td><input type="text" name="firstname"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Etternavn:</td>';
+			echo '<td><input type="text" name="lastname"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Brukernavn:</td>';
+			echo '<td><input type="text" name="username"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Passord:</td>';
+			echo '<td><input type="password" name="password"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Gjenta passord:</td>';
+			echo '<td><input type="password" name="confirmpassword"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>E-post:</td>';
+			echo '<td><input type="email" name="email"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Kjønn:</td>';
+			echo '<td>';
+				echo '<select name="gender">';
+					echo '<option value="0">Mann</option>';
+					echo '<option value="1">Kvinne</option>';
+				echo '</select>';
+			echo '</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Fødselsdato:</td>';
+			echo '<td>';
+				echo '<select name="birthday">';
 					for ($day = 1; $day < 32; $day++) {
 						echo '<option value="' . $day . '">' . $day . '</option>';
 					}
-					?>
-				</select>
-				<select name="birthmonth">
-					<?php
-					$monthList = array('Januar',
-									'Februar',
-									'Mars',
-									'April',
-									'Mai',
-									'Juni',
-									'Juli',
-									'August',
-									'September', 
-									'Oktober',
-									'November',
-									'Desember');
-					
+				echo '</select>';
+				echo '<select name="birthmonth">';
 					for ($month = 1; $month < 13; $month++) {
-						echo '<option value="' . $month . '">' . $monthList[$month - 1] . '</option>';
+						echo '<option value="' . $month . '">' . Utils::getMonthFromInt($month) . '</option>';
 					}
-					?>
-				</select>
-				<select name="birthyear">
-					<?php
+				echo '</select>';
+				echo '<select name="birthyear">';
 					for ($year = date('Y') - 100; $year < date('Y'); $year++) {
 						if ($year == date('Y') - 18) {
 							echo '<option value="' . $year . '" selected>' . $year . '</option>';
@@ -73,33 +61,33 @@
 							echo '<option value="' . $year . '">' . $year . '</option>';
 						}
 					}
-					?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Telefon:</td>
-			<td><input type="tel" name="phone"></td>
-		</tr>
-		<tr>
-			<td>Gateadresse:</td>
-			<td><input type="text" name="address"></td>
-		</tr>
-		<tr>
-			<td>Postnummer:</td>
-			<td><input type="number" name="postalCode" min="1" max="10000"></td>
-		</tr>
-		<tr>
-			<td>Kallenavn:</td>
-			<td><input type="text" name="nickname"></td>
-		</tr>
-		<tr>
-			<td>Foresatte's telefon:</td>
-			<td><input type="text" name="parent"></td>
-			<td>(Påkrevd hvis du er under 18)</td>
-		</tr>
-		<tr>
-			<td><input type="submit" value="Registrer"></td>
-		</tr>
-	</table>
-</form>
+				echo '</select>';
+			echo '</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Telefon:</td>';
+			echo '<td><input type="tel" name="phone"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Gateadresse:</td>';
+			echo '<td><input type="text" name="address"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Postnummer:</td>';
+			echo '<td><input class="postalcode" type="number" name="postalcode" min="1" max="10000"></td>';
+			echo '<td><span class="city"></span></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Kallenavn:</td>';
+			echo '<td><input type="text" name="nickname"></td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td>Foresatte\'s telefon:</td>';
+			echo '<td><input type="text" name="parent"></td>';
+			echo '<td>(Påkrevd hvis du er under 18)</td>';
+		echo '</tr>';
+		echo '<tr>';
+			echo '<td><input type="submit" value="Registrer deg"></td>';
+		echo '</tr>';
+	echo '</table>';
+echo '</form>';

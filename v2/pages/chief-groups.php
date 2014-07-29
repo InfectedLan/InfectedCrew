@@ -76,7 +76,7 @@ if (Session::isAuthenticated()) {
 						echo '<td><input type="text" name="description"></td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>leader:</td>';
+						echo '<td>Chief:</td>';
 						echo '<td>';
 							echo '<select name="leader">';
 								echo '<option value="0">Ingen</option>';

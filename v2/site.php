@@ -186,57 +186,55 @@ class Site {
 						}
 					echo '</div>';
 				echo '</header>';
-				echo '<div class="Content">';
-					echo '<div class="innercontent">';
-						// TODO: Implement this in a better way.
-						if (isset($_GET["error"])) {
-							echo '<div class="warning">' . XssBegone($_GET["error"]) . '</div>';
-						}
+				echo '<div id="content">';
+					// TODO: Implement this in a better way.
+					if (isset($_GET["error"])) {
+						echo '<div class="warning">' . XssBegone($_GET["error"]) . '</div>';
+					}
+					
+					if (isset($_GET["info"])) {
+						echo '<div class="information">' . XssBegone($_GET["info"]) . '</div>';
+					}
+					
+					if (Session::isAuthenticated()) {
+						$user = Session::getCurrentUser();
 						
-						if (isset($_GET["info"])) {
-							echo '<div class="information">' . XssBegone($_GET["info"]) . '</div>';
-						}
-						
-						if (Session::isAuthenticated()) {
-							$user = Session::getCurrentUser();
-							
-							if ($user->isGroupMember()) {
-								if (isset($_GET['page'])) {
-									// View the page specified by "pageName" variable.
-									$this->viewPage($this->pageName);
-								} else {
-									// View the page specified by "pageName" variable.
-									$this->genNotifications();
-									$this->viewPage('home');
-								}
+						if ($user->isGroupMember()) {
+							if (isset($_GET['page'])) {
+								// View the page specified by "pageName" variable.
+								$this->viewPage($this->pageName);
 							} else {
-								$publicPages = array('apply', 
-													 'crew', 
-													 'profile', 
-													 'edit-profile', 
-													 'edit-password', 
-													 'edit-avatar');
-								
-								if (in_array($this->pageName, $publicPages)) {
-									// View the page specified by "pageName" variable.
-									$this->viewPage($this->pageName);
-								}
+								// View the page specified by "pageName" variable.
+								$this->genNotifications();
+								$this->viewPage('home');
 							}
 						} else {
-							if (isset($_GET['page'])) {
-								$publicPages = array('register',
-											'forgotten', 
-											'reset');
-								
-								if (in_array($this->pageName, $publicPages)) {
-									// View the page specified by "pageName" variable.
-									$this->viewPage($this->pageName);
-								}
-							} else {
-								$this->viewLogin();
+							$publicPages = array('apply', 
+												 'crew', 
+												 'profile', 
+												 'edit-profile', 
+												 'edit-password', 
+												 'edit-avatar');
+							
+							if (in_array($this->pageName, $publicPages)) {
+								// View the page specified by "pageName" variable.
+								$this->viewPage($this->pageName);
 							}
 						}
-					echo '</div>';
+					} else {
+						if (isset($_GET['page'])) {
+							$publicPages = array('register',
+										'forgotten', 
+										'reset');
+							
+							if (in_array($this->pageName, $publicPages)) {
+								// View the page specified by "pageName" variable.
+								$this->viewPage($this->pageName);
+							}
+						} else {
+							$this->viewLogin();
+						}
+					}
 				echo '</div>';
 
 				if (Session::isAuthenticated()) {
@@ -249,9 +247,9 @@ class Site {
 					}
 					
 					if ($this->pageName == 'crew') {
-						echo '<div class="crewicon" id="active"><a href="index.php?page=crew"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php?page=crew"><img src="images/crew.png"></a></div>';
 					} else {
-						echo '<div class="crewicon"><a href="index.php?page=crew"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=crew"><img src="images/crew.png"></a></div>';
 					}
 					
 					if ($user->isGroupMember()) {
@@ -264,15 +262,15 @@ class Site {
 						
 						if ($this->pageName == 'my-crew' ||
 							in_array(strtolower($this->pageName), $groupPageNameList)) {
-							echo '<div class="mycrewicon" id="active"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
+							echo '<div class="icon" id="active"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
 						} else {
-							echo '<div class="mycrewicon"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
+							echo '<div class="icon"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
 						}
 					} else {
 						if ($this->pageName == 'apply') {
-							echo '<div class="mycrewicon" id="active">';
+							echo '<div class="icon" id="active">';
 						} else {
-							echo '<div class="mycrewicon">';
+							echo '<div class="icon">';
 						}
 					
 							echo '<a href="index.php?page=apply"><img src="images/apply.png"></a>';
@@ -290,9 +288,9 @@ class Site {
 								$this->pageName == 'functions-site-list-pages' || 
 								$this->pageName == 'functions-site-list-games' || 
 								$this->pageName == 'functions-info') {
-								echo '<div class="functionicon" id="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></div>';
+								echo '<div class="icon" id="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></div>';
 							} else {
-								echo '<div class="functionicon"><a href="index.php?page=functions"><img src="images/functions.png"></a></div>';
+								echo '<div class="icon"><a href="index.php?page=functions"><img src="images/functions.png"></a></div>';
 							}
 						}
 						
@@ -304,9 +302,9 @@ class Site {
 								$this->pageName == 'chief-applications' || 
 								$this->pageName == 'chief-avatars' || 
 								$this->pageName == 'chief-teams') {
-								echo '<div class="chieficon" id="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></div>';
+								echo '<div class="icon" id="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></div>';
 							} else {
-								echo '<div class="chieficon"><a href="index.php?page=chief"><img src="images/chief.png"></a></div>';
+								echo '<div class="icon"><a href="index.php?page=chief"><img src="images/chief.png"></a></div>';
 							}
 						}
 					}
@@ -315,40 +313,40 @@ class Site {
 						$user->hasPermission('crew-admin')) {
 						if ($this->pageName == 'admin' || 
 							$this->pageName == 'admin-events') {
-							echo ' <div class="adminicon" id="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></div>';
+							echo ' <div class="icon" id="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></div>';
 						} else {
-							echo ' <div class="adminicon"><a href="index.php?page=admin"><img src="images/admin.png"></a></div>';
+							echo ' <div class="icon"><a href="index.php?page=admin"><img src="images/admin.png"></a></div>';
 						}
 					}
 
 					if ($this->pageName == 'profile') {
-						echo '<div class="profileicon" id="active"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
 					} else {
-						echo '<div class="profileicon"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
 					}
 				} else {				
 					if ($this->pageName == 'index' || !isset($_GET['page'])) {
-						echo '<div class="homeicon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
 					} else {
-						echo '<div class="homeicon"><a href="index.php"><img src="images/home.png"></a></div>';   
+						echo '<div class="icon"><a href="index.php"><img src="images/home.png"></a></div>';   
 					}
 					
 					if ($this->pageName == 'forgotten') {
-						echo '<div class="crewicon" id="active"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
 					} else {
-						echo '<div class="crewicon"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
 					}
 					
 					if ($this->pageName == 'reset') {
-						echo '<div class="crewicon" id="active"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
 					} else {
-						echo '<div class="crewicon"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
 					}
 					
 					if ($this->pageName == 'register') {
-						echo '<div class="crewicon" id="active"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon" id="active"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
 					} else {
-						echo '<div class="crewicon"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
 					}
 				}
 			echo '</body>';

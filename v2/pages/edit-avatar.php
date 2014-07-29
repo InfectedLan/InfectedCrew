@@ -10,10 +10,9 @@ if (Session::isAuthenticated()) {
 	
 	if (!$user->hasAvatar()) {
 		echo '<h1>Endre avatar</h1>';
-		
 		echo '<h3>Nåværende avatar:</h3>';
 		
-		echo '<img src="' . $avatar->getRelativeUrl() . '" width="50%" height="50%">';
+		echo '<img src="' . $avatar->getFile() . '" width="50%" height="50%">';
 		
 		/* if (User::getAvatar($_SESSION["username"]) == "default.png") {
 			echo '<i>Du er nødt til å laste opp en avatar for å søke!</i><br />';
@@ -50,7 +49,7 @@ if (Session::isAuthenticated()) {
 		echo '</script>';
 
 		echo '<h1>Beskjær bilde</h1>';
-		echo '<img width="800" src="' . $avatar->getRelativeUrl() . '" id="cropbox">';
+		echo '<img width="800" src="' . $avatar->getFile() . '" id="cropbox">';
 		echo '<form action="do/doAvatar.php" method="post" onsubmit="return checkCoords();">';
 			echo '<input type="hidden" id="x" name="x">';
 			echo '<input type="hidden" id="y" name="y">';
@@ -61,7 +60,7 @@ if (Session::isAuthenticated()) {
 		echo '<i>Er du ikke fornøyd? <a href="do/doAvatar.php?delete=' . $avatar->getId() . '">Slett bilde</i>';
 	} else if ($state == 1) {
 		echo '<h1>Ditt bilde venter på godkjenning</h1>';
-		echo '<img src="' . $avatar->getRelativeUrl() . '">';
+		echo '<img src="' . $avatar->getFile() . '">';
 		echo 'Ikke fornøyd? <a href="do/doAvatar.php?delete=' . $avatar->getId() . '" />Slett!</a>';
 	}
 } else {
