@@ -323,6 +323,30 @@ class Site {
 					} else {
 						echo '<div class="profileicon"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
 					}
+				} else {				
+					if ($this->pageName == 'index' || !isset($_GET['page'])) {
+						echo '<div class="homeicon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
+					} else {
+						echo '<div class="homeicon"><a href="index.php"><img src="images/home.png"></a></div>';   
+					}
+					
+					if ($this->pageName == 'forgotten') {
+						echo '<div class="crewicon" id="active"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
+					} else {
+						echo '<div class="crewicon"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
+					}
+					
+					if ($this->pageName == 'reset') {
+						echo '<div class="crewicon" id="active"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
+					} else {
+						echo '<div class="crewicon"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
+					}
+					
+					if ($this->pageName == 'register') {
+						echo '<div class="crewicon" id="active"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
+					} else {
+						echo '<div class="crewicon"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
+					}
 				}
 			echo '</body>';
 		echo '</html>';
