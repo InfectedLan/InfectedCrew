@@ -40,6 +40,25 @@ function showSplash() {
 }
 
 function showEditor() {
-	echo 'editor';
+	$seatmap = SeatmapHandler::getSeatmap($_GET["id"]);
+	if(!isset($seatmap))
+	{
+		echo '<h1>Seatmappet eksisterer ikke!</h1>';
+		echo '<input type="button" onclick="redirectToSplash()" value="Tilbake" />';
+	}
+	else
+	{
+		echo '<div id="seatmapEditorPanel">';
+			echo '<h1>Endrer på seatmappet "' . $seatmap->getHumanName() . '"</h1>';
+			//Buttons
+			echo '<input type="button" value="Legg til rad" onclick="addRow()" /> | ';
+			//Context sensitive buttons
+			echo '<span id="seatmapEditorContextButtons">';
+
+			echo '</span>';
+			//Navigation buttons
+			echo '<input type="button" value="Tilbake" onclick="redirectToSplash()" />';
+		echo '</div>';
+	}
 }
 ?>

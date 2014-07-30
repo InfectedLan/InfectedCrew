@@ -1,7 +1,7 @@
 function editSeatmap()
 {
 	var seatmapId = $("#seatmapSelect").val();
-	alert("Editing seatmap " + seatmapId);
+	window.location = "index.php?page=admin-seatmap&id=" + seatmapId;
 }
 function copySeatmap()
 {
@@ -22,7 +22,7 @@ function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah
 }
 function newSeatmap()
 {
-	$.getJSON('../json/newSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName")), function(data){
+	$.getJSON('../json/newSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
 		if(data.result)
 		{
 			window.location = "index.php?page=admin-seatmap&id=" + data.id;
@@ -32,4 +32,13 @@ function newSeatmap()
 			error(data.message);
 		}
   	});
+}
+function redirectToSplash()
+{
+	window.location = "index.php?page=admin-seatmap";
+}
+function addRow()
+{
+	//TODO
+	alert("todo");
 }
