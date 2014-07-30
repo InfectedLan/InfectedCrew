@@ -1,12 +1,14 @@
 <?php
 require_once 'session.php';
+require_once 'utils.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	echo '<h3>Endre bruker</h3>';
-	
-	echo '<form action="scripts/process_user.php?action=5&returnPage=profile" method="post">';
+	echo '<script src="scripts/edit-profile.js"></script>';
+	echo '<script src="scripts/lookupCity.js"></script>';
+	echo '<form class="edit-profile" method="post">';
 		echo '<table>';
 			echo '<tr>';
 				echo '<td>Fornavn:</td>';
@@ -17,7 +19,11 @@ if (Session::isAuthenticated()) {
 				echo '<td><input type="text" name="lastname" value="' . $user->getLastname() . '"></td>';
 			echo '</tr>';
 			echo '<tr>';
-				echo '<td>Kjønn</td>';
+				echo '<td>E-post:</td>';
+				echo '<td><input type="email" name="email" value="' . $user->getEmail() . '"></td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>Kjønn:</td>';
 				echo '<td>';
 					echo '<select name="gender">';
 						$gender = $user->getGender();
@@ -33,18 +39,6 @@ if (Session::isAuthenticated()) {
 				echo '</td>';
 			echo '</tr>';
 			echo '<tr>';
-				echo '<td>Nick:</td>';
-				echo '<td><input type="text" name="nickname" value="' . $user->getNickname() . '"></td>';
-			echo '</tr>';
-			echo '<tr>';
-				echo '<td>E-post:</td>';
-				echo '<td><input type="email" name="email" value="' . $user->getEmail() . '"></td>';
-			echo '</tr>';
-			echo '<tr>';
-				echo '<td>Telefon:</td>';
-				echo '<td><input type="tel" name="phone" value="' .  str_replace(' ', '', $user->getPhone()) . '"></td>';
-			echo '</tr>';
-			echo '<tr>';
 				echo '<td>Fødselsdato:</td>';
 				echo '<td>';
 					$birthdate = $user->getBirthdate();
@@ -58,25 +52,12 @@ if (Session::isAuthenticated()) {
 							}
 						}
 					echo '</select>';
-					echo '<select name="birthmonth">';
-						$monthList = array('Januar',
-										'Februar',
-										'Mars',
-										'April',
-										'Mai',
-										'Juni',
-										'Juli',
-										'August',
-										'September', 
-										'Oktober',
-										'November',
-										'Desember');
-					
+					echo '<select name="birthmonth">';					
 						for ($month = 1; $month < 13; $month++) {
 							if ($month == date('m', $birthdate)) {
-								echo '<option value="' . $month . '" selected>' . $monthList[$month - 1] . '</option>';
+								echo '<option value="' . $month . '" selected>' . Utils::getMonthFromInt($month) . '</option>';
 							} else {
-								echo '<option value="' . $month . '">' . $monthList[$month - 1] . '</option>';
+								echo '<option value="' . $month . '">' . Utils::getMonthFromInt($month) . '</option>';
 							}
 						}
 					echo '</select>';
@@ -92,12 +73,21 @@ if (Session::isAuthenticated()) {
 				echo '</td>';
 			echo '</tr>';
 			echo '<tr>';
-				echo '<td>Adresse:</td>';
+				echo '<td>Telefon:</td>';
+				echo '<td><input type="tel" name="phone" value="' .  str_replace(' ', '', $user->getPhone()) . '"></td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>Gateadresse:</td>';
 				echo '<td><input type="text" name="address" value="' . $user->getAddress() . '"></td>';
 			echo '</tr>';
 			echo '<tr>';
-				echo '<td></td>';
-				echo '<td><td><input type="number" name="postalCode" min="1" max="10000" value="' . $user->getPostalCode() . '"> ' . $user->getCity() . '</td>';
+				echo '<td>Postnummer:</td>';
+				echo '<td><input class="postalcode" type="number" name="postalcode" min="1" max="10000" value="' . $user->getPostalCode() . '"></td>';
+				echo '<td><span class="city">' . $user->getCity() . '</span></td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>Nickname:</td>';
+				echo '<td><input type="text" name="nickname" value="' . $user->getNickname() . '"></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td><input type="submit" value="Lagre"></td>';

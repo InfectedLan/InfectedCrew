@@ -2,10 +2,10 @@
 require_once 'session.php';
 
 if (Session::isAuthenticated()) {
-	echo '<script src="scripts/edit-password.js"></script>';
-	
 	echo '<h3>Endre passord</h3>';
-	echo '<form class="edit-password" action="" method="post">';
+	
+	echo '<script src="scripts/edit-password.js"></script>';
+	echo '<form class="edit-password" method="post">';
 		echo '<table>';
 			echo '<tr>';
 				echo '<td>Gammelt passord:</td>';

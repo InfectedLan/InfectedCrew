@@ -3,7 +3,7 @@ require_once 'session.php';
 require_once 'utils.php';
 
 echo '<script src="scripts/register.js"></script>';
-
+echo '<script src="scripts/lookupCity.js"></script>';
 echo '<form class="register" name="input" method="post">';
     echo '<h2>Registrer</h2>';
 	echo '<table>';
