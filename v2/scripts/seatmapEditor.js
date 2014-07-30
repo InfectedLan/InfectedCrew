@@ -23,6 +23,13 @@ function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah
 function newSeatmap()
 {
 	$.getJSON('../json/newSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName")), function(data){
-		
+		if(data.result)
+		{
+			window.location = "index.php?page=admin-seatmap&id=" + data.id;
+		}
+		else
+		{
+			error(data.message);
+		}
   	});
 }
