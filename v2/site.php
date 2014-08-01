@@ -35,8 +35,7 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 
-							if (isset($_GET['page']) && 
-								$user->isGroupMember()) {
+							if (isset($_GET['page'])) {
 								$group = $user->getGroup();
 								
 								$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
