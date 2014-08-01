@@ -35,121 +35,116 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 
-							if (isset($_GET['page']) && 
-								$user->isGroupMember()) {
-								$group = $user->getGroup();
+							if (isset($_GET['page'])) {
+								if ($user->hasPermission('admin') ||
+									$user->isGroupMember()) {
+									
+									$groupId = $user->isGroupMember() ? $user->getGroup()->getId() : 0;
+									$groupPageList = RestrictedPageHandler::getPagesForGroup($groupId);
+									$groupPageNameList = array();
 								
-								$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
-								$groupPageNameList = array();
-							
-								foreach ($groupPageList as $value) {
-									array_push($groupPageNameList, strtolower($value->getName()));
-								}
-								
-								if ($this->pageName == 'crew') {
-									$groupList = GroupHandler::getGroups();
-									
-									foreach ($groupList as $value) {
-										echo '<li><a href="index.php?page=crew&id=' . $value->getId() . '">' . $value->getTitle() . '</a></li>';
-									}
-								} else if ($this->pageName == 'my-crew' || 
-									in_array($this->pageName, $groupPageNameList)) {
-									$teamList = $group->getTeams();
-									$teamNameList = array();
-									
-									foreach ($teamList as $team) {
-										array_push($teamNameList, strtolower($team->getName()));
+									foreach ($groupPageList as $value) {
+										array_push($groupPageNameList, strtolower($value->getName()));
 									}
 									
-									echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
-									
-									foreach ($teamList as $team) {
-										echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
-									}
-									
-									foreach ($groupPageList as $page) {
-										if (strtolower($page->getName()) != strtolower($group->getName())) {
-											if (!in_array(strtolower($page->getName()), $teamNameList)) {
-											
-												echo '<li><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
+									if ($this->pageName == 'crew') {
+										$groupList = GroupHandler::getGroups();
+										
+										foreach ($groupList as $value) {
+											echo '<li><a href="index.php?page=crew&id=' . $value->getId() . '">' . $value->getTitle() . '</a></li>';
+										}
+									} else if ($this->pageName == 'my-crew' || 
+										in_array($this->pageName, $groupPageNameList)) {
+										$group = $user->getGroup();
+										$teamList = $group->getTeams();
+										$teamNameList = array();
+										
+										foreach ($teamList as $team) {
+											array_push($teamNameList, strtolower($team->getName()));
+										}
+										
+										echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
+										
+										foreach ($teamList as $team) {
+											echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
+										}
+										
+										foreach ($groupPageList as $page) {
+											if (strtolower($page->getName()) != strtolower($group->getName())) {
+												if (!in_array(strtolower($page->getName()), $teamNameList)) {
+												
+													echo '<li><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
+												}
 											}
 										}
-									}
-								} else if ($this->pageName == 'functions' || 
-									$this->pageName == 'functions-site-list-pages' || 
-									$this->pageName == 'functions-mycrew' || 
-									$this->pageName == 'functions-site-list-games' || 
-									$this->pageName == 'functions-info') {
-									
-									if ($user->hasPermission('functions.site-list-pages') ||
-										$user->hasPermission('admin') || 
-										$user->hasPermission('site-admin')) {
-										echo '<li><a href="index.php?page=functions-site-list-pages">Infected.no</a></li>';
-									}
-									
-									if ($user->hasPermission('functions.mycrew') ||
-										$user->isGroupLeader() || 
-										$user->hasPermission('admin') || 
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=functions-mycrew">My Crew</a></li>';
-									}
-									
-									if ($user->hasPermission('functions.site-list-games') ||
-										$user->getGroup()->getId() == 26 || 
-										$user->hasPermission('admin') || 
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=functions-site-list-games">Spill</a></li>';
-									}
-									
-									if ($user->hasPermission('functions.info') ||
-										$user->getGroup()->getId() == 15 || 
-										$user->hasPermission('admin') || 
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=functions-info">Infoskjerm</a></li>';
-									}
-								} else if ($this->pageName == 'chief' || 
-									$this->pageName == 'edit-page' || 
-									$this->pageName == 'chief-groups' || 
-									$this->pageName == 'chief-teams' || 
-									$this->pageName == 'chief-applications' || 
-									$this->pageName == 'chief-avatars') {
-									
-									if ($user->hasPermission('chief.home') ||
-										$user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=edit-page&site=1&id=1&returnPage=index.php?page=chief">Hjem</a></li>';
-									}
-									
-									if ($user->hasPermission('chief.groups') ||
-										$user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=chief-groups">Grupper</a></li>';
-									}
-									
-									if ($user->hasPermission('chief.teams') ||
-										$user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=chief-teams">Lag</a></li>';
-									}
-									
-									if ($user->hasPermission('chief.applications') ||
-										$user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=chief-applications">Søknader</a></li>';
-									}
-									
-									if ($user->hasPermission('chief.avatars') ||
-										$user->isGroupLeader() ||
-										$user->hasPermission('admin') ||
-										$user->hasPermission('crew-admin')) {
-										echo '<li><a href="index.php?page=chief-avatars">Profilbilder</a></li>';
+									} else if ($this->pageName == 'functions' || 
+										$this->pageName == 'functions-site-list-pages' || 
+										$this->pageName == 'functions-mycrew' || 
+										$this->pageName == 'functions-site-list-games' || 
+										$this->pageName == 'functions-info') {
+										
+										if ($user->hasPermission('functions.site-list-pages') ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=functions-site-list-pages">Infected.no</a></li>';
+										}
+										
+										if ($user->hasPermission('functions.mycrew') ||
+											$user->isGroupLeader() || 
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=functions-mycrew">My Crew</a></li>';
+										}
+										
+										if ($user->hasPermission('functions.site-list-games') ||
+											$user->getGroup()->getId() == 26 || 
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=functions-site-list-games">Spill</a></li>';
+										}
+										
+										if ($user->hasPermission('functions.info') ||
+											$user->getGroup()->getId() == 15 || 
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=functions-info">Infoskjerm</a></li>';
+										}
+									} else if ($this->pageName == 'chief' || 
+										$this->pageName == 'edit-page' || 
+										$this->pageName == 'chief-groups' || 
+										$this->pageName == 'chief-teams' || 
+										$this->pageName == 'chief-applications' || 
+										$this->pageName == 'chief-avatars') {
+										
+										if ($user->hasPermission('chief.home') ||
+											$user->isGroupLeader() ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=edit-page&site=1&id=1&returnPage=index.php?page=chief">Hjem</a></li>';
+										}
+										
+										if ($user->hasPermission('chief.groups') ||
+											$user->isGroupLeader() ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=chief-groups">Grupper</a></li>';
+										}
+										
+										if ($user->hasPermission('chief.teams') ||
+											$user->isGroupLeader() ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=chief-teams">Lag</a></li>';
+										}
+										
+										if ($user->hasPermission('chief.applications') ||
+											$user->isGroupLeader() ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=chief-applications">Søknader</a></li>';
+										}
+										
+										if ($user->hasPermission('chief.avatars') ||
+											$user->isGroupLeader() ||
+											$user->hasPermission('admin')) {
+											echo '<li><a href="index.php?page=chief-avatars">Profilbilder</a></li>';
+										}
 									}
 								}
 							}
+							
 							//Admin stuff
 							if ($this->pageName == 'admin' || 
 								$this->pageName == 'admin-events') {
@@ -270,12 +265,10 @@ class Site {
 						echo '</div>';
 					}
 					
-					if ($user->isGroupMember()) {
-						if ($user->getGroup()->getId() == 15 || 
-							$user->getGroup()->getId() == 26 || 
-							$user->isGroupLeader() || 
-							$user->hasPermission('admin') || 
-							$user->hasPermission('crew-admin')) {
+					if ($user->isGroupMember() ||
+						$user->hasPermission('admin')) {
+						if ($user->isGroupLeader() || 
+							$user->hasPermission('admin')) {
 							if ($this->pageName == 'functions' || 
 								$this->pageName == 'functions-mycrew' || 
 								$this->pageName == 'functions-site-list-pages' || 
@@ -288,8 +281,7 @@ class Site {
 						}
 						
 						if ($user->isGroupLeader() ||
-							$user->hasPermission('admin') || 
-							$user->hasPermission('crew-admin')) {
+							$user->hasPermission('admin')) {
 							if ($this->pageName == 'edit-page' && $_GET['site'] == 1 && $_GET['id'] == 1 || 
 								$this->pageName == 'chief' || 
 								$this->pageName == 'chief-applications' || 
