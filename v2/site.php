@@ -215,8 +215,7 @@ class Site {
 					} else {
 						if (isset($_GET['page'])) {
 							$publicPages = array('register',
-										'forgotten', 
-										'reset');
+												 'reset-password');
 							
 							if (in_array($this->pageName, $publicPages)) {
 								// View the page specified by "pageName" variable.
@@ -322,22 +321,16 @@ class Site {
 						echo '<div class="icon"><a href="index.php"><img src="images/home.png"></a></div>';   
 					}
 					
-					if ($this->pageName == 'forgotten') {
-						echo '<div class="icon" id="active"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
-					} else {
-						echo '<div class="icon"><a href="index.php?page=forgotten"><img src="images/crew.png"></a></div>';
-					}
-					
-					if ($this->pageName == 'reset') {
-						echo '<div class="icon" id="active"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
-					} else {
-						echo '<div class="icon"><a href="index.php?page=reset"><img src="images/crew.png"></a></div>';
-					}
-					
 					if ($this->pageName == 'register') {
 						echo '<div class="icon" id="active"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
 					} else {
 						echo '<div class="icon"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
+					}
+					
+					if ($this->pageName == 'reset-password') {
+						echo '<div class="icon" id="active"><a href="index.php?page=reset-password"><img src="images/crew.png"></a></div>';
+					} else {
+						echo '<div class="icon"><a href="index.php?page=reset-password"><img src="images/crew.png"></a></div>';
 					}
 				}
 			echo '</body>';
