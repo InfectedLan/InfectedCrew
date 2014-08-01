@@ -48,6 +48,14 @@ function showEditor() {
 	}
 	else
 	{
+		echo '<script>var seatmapId = ' . $seatmap->getId() . '; </script>';
+
+		echo '<script>';
+			echo '$(document).ready(function() {';
+				echo 'renderSeatmap();';
+			echo '});';
+		echo '</script>';
+
 		echo '<div id="seatmapEditorPanel">';
 			echo '<h1>Endrer på seatmappet "' . $seatmap->getHumanName() . '"</h1>';
 			//Buttons
@@ -58,6 +66,9 @@ function showEditor() {
 			echo '</span>';
 			//Navigation buttons
 			echo '<input type="button" value="Tilbake" onclick="redirectToSplash()" />';
+		echo '</div>';
+		echo '<div id="seatmapCanvas">';
+			echo '<i>Laster inn data...</i>';
 		echo '</div>';
 	}
 }

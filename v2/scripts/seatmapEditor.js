@@ -42,3 +42,16 @@ function addRow()
 	//TODO
 	alert("todo");
 }
+function renderSeatmap()
+{
+	$.getJSON('../json/seatmap.php?id=' + seatmapId, function(data){
+		if(data.result)
+		{
+			//Render seatmap
+		}
+		else
+		{
+			$("#seatmapCanvas").html('<i>En feil oppstod under håndteringen av seatmappet...</i>');
+		}
+  	});
+}
