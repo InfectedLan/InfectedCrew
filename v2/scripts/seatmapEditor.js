@@ -48,6 +48,20 @@ function renderSeatmap()
 		if(data.result)
 		{
 			//Render seatmap
+			$("#seatmapCanvas").html('');
+			for(var i = 0; i < data.rows.length; i++)
+			{
+				var returnData = [];
+				returnData.push('<div class="row" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
+				for(var s = 0; s < data.rows[i].seats.length; s++)
+				{
+					returnData.push('<div class="seat" id="seat' + data.rows[i].seats[s].id + '">');
+					returnData.push(data.rows[i].seats[s].humanName);
+					returnData.push('</div>');
+				}
+				returnData.push('</div>');
+				$("#seatmapCanvas").append(returnData.join(""));
+			}
 		}
 		else
 		{
