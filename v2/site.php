@@ -35,7 +35,8 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 
-							if (isset($_GET['page'])) {
+							if (isset($_GET['page']) && 
+								$user->isGroupMember()) {
 								$group = $user->getGroup();
 								
 								$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
@@ -106,23 +107,6 @@ class Site {
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=functions-info">Infoskjerm</a></li>';
 									}
-								} else if ($this->pageName == 'admin' || 
-									$this->pageName == 'admin-events') {
-									
-									if ($user->hasPermission('admin.events') ||
-										$user->hasPermission('admin')) {
-										echo '<li><a href="index.php?page=admin-events">Arrangementer</a></li>';
-									}
-									
-									if ($user->hasPermission('admin.changeuser') ||
-										$user->hasPermission('admin')) {
-										echo '<li><a href="index.php?page=admin-changeuser">Logg inn som en annan</a></li>';
-									}
-
-									if ($user->hasPermission('admin.seatmap') ||
-										$user->hasPermission('admin')) {
-										echo '<li><a href="index.php?page=admin-seatmap">Edit seatmaps</a></li>';
-									}
 								} else if ($this->pageName == 'chief' || 
 									$this->pageName == 'edit-page' || 
 									$this->pageName == 'chief-groups' || 
@@ -164,6 +148,25 @@ class Site {
 										$user->hasPermission('crew-admin')) {
 										echo '<li><a href="index.php?page=chief-avatars">Profilbilder</a></li>';
 									}
+								}
+							}
+							//Admin stuff
+							if ($this->pageName == 'admin' || 
+								$this->pageName == 'admin-events') {
+								
+								if ($user->hasPermission('admin.events') ||
+									$user->hasPermission('admin')) {
+									echo '<li><a href="index.php?page=admin-events">Arrangementer</a></li>';
+								}
+								
+								if ($user->hasPermission('admin.changeuser') ||
+									$user->hasPermission('admin')) {
+									echo '<li><a href="index.php?page=admin-changeuser">Logg inn som en annan</a></li>';
+								}
+
+								if ($user->hasPermission('admin.seatmap') ||
+									$user->hasPermission('admin')) {
+									echo '<li><a href="index.php?page=admin-seatmap">Edit seatmaps</a></li>';
 								}
 							}
 						}
