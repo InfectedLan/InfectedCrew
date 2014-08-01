@@ -192,7 +192,8 @@ class Site {
 					if (Session::isAuthenticated()) {
 						$user = Session::getCurrentUser();
 						
-						if ($user->isGroupMember()) {
+						if ($user->isGroupMember() ||
+							$user->hasPermission('admin')) {
 							if (isset($_GET['page'])) {
 								// View the page specified by "pageName" variable.
 								$this->viewPage($this->pageName);
