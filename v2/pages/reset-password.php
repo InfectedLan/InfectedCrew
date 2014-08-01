@@ -2,7 +2,10 @@
 require_once 'session.php';
 
 if (!Session::isAuthenticated()) {
-	echo '<script src="scripts/reset-password.php"></script>';
+	echo '<script type="text/javascript">';
+		echo 'var code = ' . $_GET['code'] . ';';
+	echo '</script>';
+	echo '<script type="text/javascript" src="scripts/reset-password.js"></script>';
 
 	if (!isset($_GET['code'])) {
 		echo '<h2>Glemt passord?</h2>';
@@ -10,7 +13,7 @@ if (!Session::isAuthenticated()) {
 			echo '<p>Skriv inn ditt brukernavnet eller din e-postadresse for å nullstille passordet ditt: <input type="text" name="username"></p>';
 			echo '<input type="submit" value="Nullstill passord">';
 		echo '</form>';
-	} else {
+	} else {	
 		echo '<h2>Nullstill passord</h2>';
 		echo '<p>Skriv inn et nytt passord.</p>';
 		

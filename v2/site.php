@@ -316,24 +316,6 @@ class Site {
 					} else {
 						echo '<div class="icon"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
 					}
-				} else {				
-					if ($this->pageName == 'index' || !isset($_GET['page'])) {
-						echo '<div class="icon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
-					} else {
-						echo '<div class="icon"><a href="index.php"><img src="images/home.png"></a></div>';   
-					}
-					
-					if ($this->pageName == 'register') {
-						echo '<div class="icon" id="active"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
-					} else {
-						echo '<div class="icon"><a href="index.php?page=register"><img src="images/crew.png"></a></div>';
-					}
-					
-					if ($this->pageName == 'reset-password') {
-						echo '<div class="icon" id="active"><a href="index.php?page=reset-password"><img src="images/crew.png"></a></div>';
-					} else {
-						echo '<div class="icon"><a href="index.php?page=reset-password"><img src="images/crew.png"></a></div>';
-					}
 				}
 			echo '</body>';
 		echo '</html>';
@@ -364,7 +346,6 @@ class Site {
 			echo '</table>';
 		echo '</form>';
 		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=forgotten">Reset passordet ditt!</a>';
-		echo '<br /><i>På grunn av endring i måten infected\'s nettside fungerer på innsiden, har vi måtte slette brukerne for å kunne gjøre noen oppgraderinger. Derfor er alle nødt til å registrere seg på nytt.</i><br />';
 		echo '<p>Du har samme bruker her som på <a href="https://tickets.infected.no/">tickets.infected.no</a></p>';
 	}
 	

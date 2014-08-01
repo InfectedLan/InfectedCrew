@@ -1,3 +1,7 @@
+var code;
+
+alert(code);
+
 $(document).ready(function() {
 	$('.request-reset-password').submit(function(e) {
 		e.preventDefault();
@@ -9,7 +13,6 @@ $(document).ready(function() {
 	        }
 	    }, 'json');
 	});
-
 	$('.reset-password').submit(function(e) {
 		e.preventDefault();
 	    $.post('../json/reset-password.php?key=' + code, $('.reset-password').serialize(), function(data) {
