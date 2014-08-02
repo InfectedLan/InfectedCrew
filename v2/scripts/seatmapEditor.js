@@ -44,7 +44,7 @@ function redirectToSplash()
 function addRow()
 {
 	//TODO
-	seatmapId
+	//seatmapId
 	$.getJSON('../json/newRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data){
 		if(data.result)
 		{
@@ -83,8 +83,31 @@ function selectRow(rowId)
 		$("#seatmapEditorContextButtons").html(""); //Clear it
 		$("#seatmapEditorContextButtons").append('<b>Rad ' + getRowFromId(rowId) + ':</b>');
 		$("#seatmapEditorContextButtons").append('<input type="button" value="Slett" onclick="deleteRow(' + rowId + ')" />');
+		$("#seatmapEditorContextButtons").append('<input type="button" value="Legg til seter" onclick="addSeats(' + rowId + ')" />');
+		$("#seatmapEditorContextButtons").append('<input type="button" value="Fjern seter" onclick="removeSeats(' + rowId + ')" />');
 		$("#seatmapEditorContextButtons").append(' | ');
 	}
+}
+function deleteRow(rowId)
+{
+	$.getJSON('../json/deleteRow.php?row=' + rowId, function(data){
+		if(data.result)
+		{
+			renderSeatmap();
+		}
+		else
+		{
+			error("Det skjedde en feil under slettingen av raden!");
+		}
+	});
+}
+function addSeats(rowId)
+{
+
+}
+function removeSeats(rowId)
+{
+	
 }
 function renderSeatmap()
 {
