@@ -59,13 +59,18 @@ function showEditor() {
 		echo '<div id="seatmapEditorPanel">';
 			echo '<h1>Endrer på seatmappet "' . $seatmap->getHumanName() . '"</h1>';
 			//Buttons
-			echo '<input type="button" value="Legg til rad" onclick="addRow()" /> | ';
+			echo '<input type="button" id="btnNewRow" value="Legg til rad på [0,0]" onclick="addRow()" /> | ';
+			echo '<input type="button" id="btnSetCoords" value="Skriv inn kordinater selv" onclick="promptPosition()" /> | ';
 			//Context sensitive buttons
 			echo '<span id="seatmapEditorContextButtons">';
 
 			echo '</span>';
 			//Navigation buttons
 			echo '<input type="button" value="Tilbake" onclick="redirectToSplash()" />';
+			//Mouse pos indicator
+			echo '<div id="mousePos">';
+				echo '<i>Mus-posisjon: [0,0]. Klikk for å velge.</i>';
+			echo '</div>';
 		echo '</div>';
 		echo '<div id="seatmapCanvas">';
 			echo '<i>Laster inn data...</i>';
