@@ -367,7 +367,8 @@ class Site {
 		$page = RestrictedPageHandler::getPageByName($pageName);
 		
 		if ($page != null) {
-			$page->display();
+			echo '<h1>' . $page->getTitle() . '</h1>';
+			echo $page->getContent();
 		} else {
 			$directory = 'pages/';
 			$fileName = $directory . $pageName . '.php';

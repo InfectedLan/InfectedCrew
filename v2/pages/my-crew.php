@@ -13,7 +13,8 @@ if (Session::isAuthenticated()) {
 				$page = RestrictedPageHandler::getPageByName($team->getName());
 				
 				if ($page != null) {
-					$page->display();
+					echo '<h1>' . $page->getTitle() . '</h1>';
+					echo $page->getContent();
 				}
 				
 				$team->display();
@@ -27,7 +28,8 @@ if (Session::isAuthenticated()) {
 				$page = RestrictedPageHandler::getPageByName($group->getName());
 				
 				if ($page != null) {
-					$page->display();
+					echo '<h1>' . $page->getTitle() . '</h1>';
+					echo $page->getContent();
 				}
 				
 				$group->display();
