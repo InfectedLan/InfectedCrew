@@ -101,9 +101,29 @@ function deleteRow(rowId)
 		}
 	});
 }
+//Thanks to stackOverflow: http://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript
+function isNumber(obj) { return !isNaN(parseFloat(obj)) }
+
 function addSeats(rowId)
 {
-
+	var amount = window.prompt("Hvor mange seter vil du legge til?", "1");
+	if(isNumber(amount))
+	{
+		$.getJSON('../json/rowAddSeats.php?row=' + rowId + "&numSeats=" + amount, function(data){
+			if(data.result)
+			{
+				renderSeatmap();
+			}
+			else
+			{
+				error("Det skjedde en feil da vi skulle legge til flere seter!");
+			}
+		});
+	}
+	else if(amount != null)
+	{
+		error("Du må skrive inn et tall!");
+	}
 }
 function removeSeats(rowId)
 {
