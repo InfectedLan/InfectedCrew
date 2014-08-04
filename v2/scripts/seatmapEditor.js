@@ -66,6 +66,16 @@ function getRowFromId(rowId)
 		}
 	}
 }
+function getRow(rowId)
+{
+	for(var i = 0; i < seatmapData.rows.length; i++)
+	{
+		if(seatmapData.rows[i].id == rowId)
+		{
+			return seatmapData.rows[i];
+		}
+	}
+}
 function selectRow(rowId)
 {
 	if(rowId==selectedRow)
@@ -85,7 +95,14 @@ function selectRow(rowId)
 		$("#seatmapEditorContextButtons").append('<input type="button" value="Slett" onclick="deleteRow(' + rowId + ')" />');
 		$("#seatmapEditorContextButtons").append('<input type="button" value="Legg til seter" onclick="addSeats(' + rowId + ')" />');
 		$("#seatmapEditorContextButtons").append('<input type="button" value="Fjern seter" onclick="removeSeats(' + rowId + ')" />');
+		$("#seatmapEditorContextButtons").append('<input type="button" id="btnMoveRow" value="Flytt raden til [' + xPos + ',' + yPos + ']" onclick="moveRow(' + rowId + ')" />');
 		$("#seatmapEditorContextButtons").append(' | ');
+		
+		var row = getRow(rowId);
+		xPos = row.x;
+		yPos = row.y;
+
+		updatePlacementButtons();
 	}
 }
 function deleteRow(rowId)
@@ -116,7 +133,7 @@ function addSeats(rowId)
 			}
 			else
 			{
-				error("Det skjedde en feil da vi skulle legge til flere seter!");
+				error(data.message);
 			}
 		});
 	}
@@ -137,7 +154,7 @@ function removeSeats(rowId)
 			}
 			else
 			{
-				error("Det skjedde en feil da vi skulle legge til flere seter!");
+				error(data.message);
 			}
 		});
 	}
@@ -145,6 +162,19 @@ function removeSeats(rowId)
 	{
 		error("Du må skrive inn et tall!");
 	}
+}
+function moveRow(rowId)
+{
+	$.getJSON('../json/moveRow.php?row=' + rowId + '&x=' + xPos + '&y=' + yPos, function(data){
+		if(data.result)
+		{
+			renderSeatmap();
+		}
+		else
+		{
+			error(data.message);
+		}
+	});
 }
 function renderSeatmap()
 {
@@ -184,7 +214,15 @@ function promptPosition()
 	xPos = window.prompt("Skriv inn en X-koordinat", xPos);
 	yPos = window.prompt("Skriv inn en Y-koordinat", yPos);
 
+	updatePlacementButtons();
+}
+function updatePlacementButtons()
+{
 	$("#btnNewRow").attr("value", "Legg til rad på [" + xPos + "," + yPos + "]");
+	if( $("#btnMoveRow").length ) //Only if exists
+	{
+		$("#btnMoveRow").attr("value", "Flytt raden til [" + xPos + "," + yPos + "]");
+	}
 }
 $( document ).ready(function() {
     $("#seatmapCanvas").mousemove(function( e ) {
@@ -202,6 +240,6 @@ $( document ).ready(function() {
 	  	//or $(this).offset(); if you really just want the current element's offset
 	   	xPos = Math.round(e.pageX - parentOffset.left);
 	   	yPos = Math.round(e.pageY - parentOffset.top);
-	   	$("#btnNewRow").attr("value", "Legg til rad på [" + xPos + "," + yPos + "]");
+	   	updatePlacementButtons();
     });
 });
