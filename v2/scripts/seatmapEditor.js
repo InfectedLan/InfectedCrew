@@ -127,7 +127,24 @@ function addSeats(rowId)
 }
 function removeSeats(rowId)
 {
-	
+	var amount = window.prompt("Hvor mange seter vil du fjerne?", "1");
+	if(isNumber(amount))
+	{
+		$.getJSON('../json/rowRemoveSeats.php?row=' + rowId + "&numSeats=" + amount, function(data){
+			if(data.result)
+			{
+				renderSeatmap();
+			}
+			else
+			{
+				error("Det skjedde en feil da vi skulle legge til flere seter!");
+			}
+		});
+	}
+	else if(amount != null)
+	{
+		error("Du må skrive inn et tall!");
+	}
 }
 function renderSeatmap()
 {
