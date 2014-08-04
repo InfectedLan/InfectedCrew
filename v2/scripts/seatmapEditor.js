@@ -243,3 +243,7 @@ $( document ).ready(function() {
 	   	updatePlacementButtons();
     });
 });
+function uploadBackground()
+{
+	
+}

@@ -61,6 +61,7 @@ function showEditor() {
 			//Buttons
 			echo '<input type="button" id="btnNewRow" value="Legg til rad på [0,0]" onclick="addRow()" /> | ';
 			echo '<input type="button" id="btnSetCoords" value="Skriv inn kordinater selv" onclick="promptPosition()" /> | ';
+			echo '<input type="button" id="btnUploadImage" value="Last opp ny bakgrunn" onclick="uploadBackground()" /> | ';
 			//Context sensitive buttons
 			echo '<span id="seatmapEditorContextButtons">';
 
