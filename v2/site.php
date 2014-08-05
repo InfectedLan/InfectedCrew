@@ -25,6 +25,7 @@ class Site {
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
 				echo '<script src="scripts/jquery.js"></script>';
+				echo '<script src="scripts/jquery.form.min.js"></script>';
 				echo '<script src="scripts/session.js"></script>';
 				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
 			echo '</head>';
