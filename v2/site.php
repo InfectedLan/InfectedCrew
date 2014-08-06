@@ -28,6 +28,7 @@ class Site {
 				echo '<script src="scripts/jquery.form.min.js"></script>';
 				echo '<script src="scripts/session.js"></script>';
 				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
+				echo '<script src="scripts/sharedScripts.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -183,12 +184,16 @@ class Site {
 				echo '</header>';
 				echo '<div id="content">';
 					// TODO: Implement this in a better way.
+					echo '<div id="error" class="warning" style="display:none;"></div>';
+					echo '<div id="info" class="information" style="display:none;"></div>';
+
+					//Miiiight be wulnerable. Remove when we can.
 					if (isset($_GET["error"])) {
-						echo '<div class="warning">' . XssBegone($_GET["error"]) . '</div>';
+						echo '<script>error("' . XssBegone($_GET["error"]) . '");</script>';
 					}
 					
 					if (isset($_GET["info"])) {
-						echo '<div class="information">' . XssBegone($_GET["info"]) . '</div>';
+						echo '<script>info("' . XssBegone($_GET["info"]) . '");</script>';
 					}
 					
 					if (Session::isAuthenticated()) {
