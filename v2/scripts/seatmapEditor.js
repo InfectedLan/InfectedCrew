@@ -184,6 +184,7 @@ function renderSeatmap()
 			seatmapData = data;
 			//Render seatmap
 			$("#seatmapCanvas").html('');
+			$("#seatmapCanvas").css('background-image', data.backgroundImage);
 			for(var i = 0; i < data.rows.length; i++)
 			{
 				var returnData = [];
@@ -243,7 +244,3 @@ $( document ).ready(function() {
 	   	updatePlacementButtons();
     });
 });
-function uploadBackground()
-{
-	
-}

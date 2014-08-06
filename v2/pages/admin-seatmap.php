@@ -53,15 +53,26 @@ function showEditor() {
 		echo '<script>';
 			echo '$(document).ready(function() {';
 				echo 'renderSeatmap();';
+				echo '$("#uploadBgForm").ajaxForm(function() {';
+					echo 'location.reload();';
+				echo '});';
 			echo '});';
 		echo '</script>';
 
 		echo '<div id="seatmapEditorPanel">';
 			echo '<h1>Endrer på seatmappet "' . $seatmap->getHumanName() . '"</h1>';
+			//Fille uploader widget
+			echo '<form id="uploadBgForm" action="../json/seatmapUploadBg.php" method="post" enctype="multipart/form-data">';
+				echo '<input type="file" id="uploadBgImage" name="bgImageFile" />';
+     			echo '<input type="submit" value="Last opp nytt bakgrunnsbilde" />';
+     			echo '<input type="hidden" name="seatmapId" value="' . $seatmap->getId() . '" />';
+			echo '</form>';
+			echo '<br />';
+			echo '<br />';
 			//Buttons
 			echo '<input type="button" id="btnNewRow" value="Legg til rad på [0,0]" onclick="addRow()" /> | ';
 			echo '<input type="button" id="btnSetCoords" value="Skriv inn kordinater selv" onclick="promptPosition()" /> | ';
-			echo '<input type="button" id="btnUploadImage" value="Last opp ny bakgrunn" onclick="uploadBackground()" /> | ';
+			//echo '<input type="button" id="btnUploadImage" value="Last opp ny bakgrunn" onclick="uploadBackground()" /> | ';
 			//Context sensitive buttons
 			echo '<span id="seatmapEditorContextButtons">';
 
