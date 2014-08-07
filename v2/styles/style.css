@@ -81,6 +81,8 @@ header a {
 	border-color: #B23636;
 	margin-top: 30px;
 	padding: 5px;
+	display: block;
+	position: relative;
 }
 .information {
 	border: 1px solid;
@@ -89,6 +91,8 @@ header a {
 	border-color: #3ba7b9;
 	margin-top: 30px;
 	padding: 5px;
+	display: block;
+	position: relative;
 }
 
 .user {
@@ -221,4 +225,10 @@ header a {
 	border-style: solid;
     border-width: 1px;
     height: 1000px;
+}
+.closeButton {
+	margin-right: 0px;
+	margin-top: 0px;
+	position: absolute;
+	font-size: 11px;
 }

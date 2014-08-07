@@ -1,12 +1,30 @@
 function error(what)
 {
 	//Do something
-	$("#error").html(what);
+	$("#innerError").html(what);
 	$("#error").fadeIn(300);
 }
 function info(what)
 {
 	//Do even more something
-	$("#info").html(what);
-	$("#info"),fadeIn(300);
+	$("#innerInfo").html(what);
+	$("#info").fadeIn(300);
 }
+function closeError()
+{
+	$("#innerError").html("");
+	$("#error").fadeOut(300);
+}
+function closeInfo()
+{
+	$("#innerInfo").html("");
+	$("#info").fadeOut(300);
+}
+$( document ).ready(function() {
+    $("#errorClose").click(function() {
+    	closeError();
+    });
+    $("#infoClose").click(function() {
+    	closeInfo();
+    });
+});
