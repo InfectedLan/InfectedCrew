@@ -10,7 +10,7 @@ class Site {
 	
 	public function __construct() {
 		// Set the variables.
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : null;
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
 	}
 	
 	// Execute the site.
@@ -26,9 +26,9 @@ class Site {
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
 				echo '<script src="scripts/jquery.js"></script>';
 				echo '<script src="scripts/jquery.form.min.js"></script>';
+				echo '<script src="scripts/common.js"></script>';
 				echo '<script src="scripts/session.js"></script>';
 				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
-				echo '<script src="scripts/sharedScripts.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -187,13 +187,12 @@ class Site {
 					echo '<div id="error" class="warning" style="display:none;"></div>';
 					echo '<div id="info" class="information" style="display:none;"></div>';
 
-					//Miiiight be wulnerable. Remove when we can.
-					if (isset($_GET["error"])) {
-						echo '<script>error("' . XssBegone($_GET["error"]) . '");</script>';
+					if (isset($_GET['error'])) {
+						echo '<script>error("' . $_GET['error'] . '");</script>';
 					}
 					
-					if (isset($_GET["info"])) {
-						echo '<script>info("' . XssBegone($_GET["info"]) . '");</script>';
+					if (isset($_GET['info'])) {
+						echo '<script>info("' . $_GET['info'] . '");</script>';
 					}
 					
 					if (Session::isAuthenticated()) {
@@ -201,14 +200,9 @@ class Site {
 						
 						if ($user->isGroupMember() ||
 							$user->hasPermission('admin')) {
-							if (isset($_GET['page'])) {
-								// View the page specified by "pageName" variable.
-								$this->viewPage($this->pageName);
-							} else {
-								// View the page specified by "pageName" variable.
-								$this->viewNotifications();
-								$this->viewPage('home');
-							}
+							// View the page specified by "pageName" variable.
+							$this->viewNotifications();
+							$this->viewPage($this->pageName);
 						} else {
 							$publicPages = array('apply', 
 												 'crew', 
@@ -343,7 +337,7 @@ class Site {
 				echo '</tr>';
 			echo '</table>';
 		echo '</form>';
-		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=forgotten">Reset passordet ditt!</a>';
+		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=reset-password">Reset passordet ditt!</a>';
 		echo '<p>Du har samme bruker her som på <a href="https://tickets.infected.no/">tickets.infected.no</a></p>';
 	}
 	
