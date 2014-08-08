@@ -184,22 +184,22 @@ class Site {
 				echo '</header>';
 				echo '<div id="content">';
 					// TODO: Implement this in a better way.
-					echo '<span id="error" class="warning" style="display:none;">';
-						echo '<div id="innerError">';
+					echo '<div id="error" class="warning" style="display:none;">';
+						echo '<span id="innerError">';
 
-						echo '</div>';
+						echo '</span>';
 						echo '<div id="errorClose" class="closeButton">';
 							echo '<i>lukk</i>';
 						echo '</div>';
-					echo '</span>';
-					echo '<span id="info" class="information" style="display:none;">';
-						echo '<div id="innerInfo">';
+					echo '</div>';
+					echo '<div id="info" class="information" style="display:none;">';
+						echo '<span id="innerInfo">';
 
-						echo '</div>';
+						echo '</span>';
 						echo '<div id="infoClose" class="closeButton">';
 							echo '<i>lukk</i>';
 						echo '</div>';
-					echo '</span>';
+					echo '</div>';
 
 					//Miiiight be wulnerable. Remove when we can.
 					if (isset($_GET["error"])) {
