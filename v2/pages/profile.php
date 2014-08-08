@@ -105,6 +105,21 @@ if (Session::isAuthenticated()) {
 					echo '</td>';
 				echo '</tr>';
 			
+				if ($user->hasTicket()) {
+					$ticket = $user->getTicket();
+					$seat = $ticket->getSeat();
+					$row = $seat->getRow();
+					
+					echo '<tr>';
+						echo '<td>Sete:</td>';
+						echo '<td>' . $seat->getNumber() . ' </td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Rad:</td>';
+						echo '<td>' . $row->getNumber() . '</td>';
+					echo '</tr>';
+				}
+			
 				if ($profile->getId() == $user->getId()) {
 					echo '<tr>';
 						echo '<td></td>';
