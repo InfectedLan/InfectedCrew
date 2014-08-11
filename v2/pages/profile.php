@@ -23,8 +23,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getFirstname() . ' ' . $profile->getLastname() . '</td>';
 				echo '</tr>';
 			
-				if ($user->hasPermission('admin') ||
-					$user->hasPermission('crew-admin')) {
+				if ($user->hasPermission('admin')) {
 					echo '<tr>';
 						echo '<td>Brukernavn:</td>';
 						echo '<td>' . $profile->getUsername() . '</td>';
@@ -40,8 +39,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getAge() . ' År</td>';
 				echo '</tr>';
 				
-				if ($user->hasPermission('admin') ||
-					$user->hasPermission('crew-admin')) {
+				if ($user->hasPermission('admin')) {
 					echo '<tr>';
 						echo '<td>Fødselsdato</td>';
 						echo '<td>' . date('d.m.Y', $profile->getBirthdate()) . '</td>';
@@ -52,13 +50,12 @@ if (Session::isAuthenticated()) {
 					echo '<td>Kjønn:</td>';
 					echo '<td>' . $profile->getGenderName() . '</td>';
 				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Telefon:</td>';
-					echo '<td>' . $profile->getPhone() . '</td>';
-				echo '</tr>';
 				
-				if ($user->hasPermission('admin') ||
-					$user->hasPermission('crew-admin')) {
+				if ($user->hasPermission('admin')) {
+					echo '<tr>';
+						echo '<td>Telefon:</td>';
+						echo '<td>' . $profile->getPhone() . '</td>';
+					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Adresse:</td>';
 							$address = $profile->getAddress();
@@ -72,7 +69,7 @@ if (Session::isAuthenticated()) {
 				
 					$postalCode = $profile->getPostalCode();
 					
-					if ($postalCode != 0) {
+					if (!isset($postalCode)) {
 						echo '<tr>';
 							echo '<td></td>';
 							echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
@@ -84,6 +81,15 @@ if (Session::isAuthenticated()) {
 					echo '<td>Kallenavn:</td>';
 					echo '<td>' . $profile->getNickname() . '</td>';
 				echo '</tr>';
+				
+				if ($user->hasPermission('admin') &&
+					$profile->hasEmergencyContact()) {
+					echo '<tr>';
+						echo '<td>Foresatte\'s telefon:</td>';
+						echo '<td>' . $profile->getEmergencyContact()->getPhone() . '</td>';
+					echo '</tr>';
+				}
+				
 				echo '<tr>';
 					echo '<td>Gruppe:</td>';
 					echo '<td>';
@@ -104,6 +110,21 @@ if (Session::isAuthenticated()) {
 						}
 					echo '</td>';
 				echo '</tr>';
+			
+				if ($user->hasTicket()) {
+					$ticket = $user->getTicket();
+					$seat = $ticket->getSeat();
+					$row = $seat->getRow();
+					
+					echo '<tr>';
+						echo '<td>Sete:</td>';
+						echo '<td>' . $seat->getNumber() . ' </td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Rad:</td>';
+						echo '<td>' . $row->getNumber() . '</td>';
+					echo '</tr>';
+				}
 			
 				if ($profile->getId() == $user->getId()) {
 					echo '<tr>';
