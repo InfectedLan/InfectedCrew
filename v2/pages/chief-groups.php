@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('admin') ||
 		$user->isGroupMember() && $user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
-		
+		echo '<script src="scripts/chief-groups.js"> </script>';
 		echo '<h1>Grupper</h1>';
 		
 		if (!empty($groupList)) {
@@ -27,6 +27,8 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						// TODO: Pass $group->getId() to JavaScript.
 						echo '<form class="chief-groups-edit" action="" method="post">';
+							//THIS is how we pass id if we want to use form submitting(Which isnt that bad of an idea, actually)
+							echo '<input type="hidden" name="id" value="' . $group->getId() . '" />';
 							echo '<td><input type="text" name="title" value="' . $group->getTitle() . '"></td>';
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '"></td>';
@@ -53,9 +55,10 @@ if (Session::isAuthenticated()) {
 							echo '</form>';
 						echo '<td>';
 							// TODO: Pass $group->getId() to JavaScript.
-							echo '<form class="chief-groups-remove" action="" method="post">';
+							/*echo '<form class="chief-groups-remove" action="" method="post">';
 								echo '<input type="submit" value="Slett">';
-							echo '</form>';
+							echo '</form>';*/
+							echo '<input type="button" value="Slett" onClick="removeGroup(' . $group->getId() . ')" />';
 						echo '</td>';
 					echo '</tr>';
 				}
