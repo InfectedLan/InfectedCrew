@@ -34,7 +34,7 @@ if (Session::isAuthenticated()) {
 						
 						echo '<td><input type="text" name="theme" value="' . $value->getTheme() . '"></td>';
 						echo '<td><input type="text" name="participants" value="' . $value->getParticipants() . '"></td>';
-						echo '<td><input type="text" name="price" value="' . $value->getPrice() . '"></td>';			
+						echo '<td><input type="text" name="price" value="' . $value->getTicketType()->getPrice() . '"></td>';			
 						
 						echo '<td><input type="date" name="startDate" value="' . date('Y-m-d', $value->getStartTime()) . '"><input type="time" name="startTime" value="' . date('H:i', $value->getStartTime()) . '"></td>';
 						echo '<td><input type="date" name="endDate" value="' . date('Y-m-d', $value->getEndTime()) . '"><input type="time" name="endTime" value="' . date('H:i', $value->getEndTime()) . '"></td>';
