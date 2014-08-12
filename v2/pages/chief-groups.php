@@ -3,18 +3,14 @@ require_once 'session.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/grouphandler.php';
 
-$returnPage = basename(__FILE__, '.php');
-
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('leader.group') ||
-		$user->isGroupMember() && $user->isGroupLeader() ||
-		$user->hasPermission('admin') ||
-		$user->hasPermission('crew-admin')) {
-		echo '<h1>Grupper</h1>';
-		
+	if ($user->hasPermission('admin') ||
+		$user->isGroupMember() && $user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
+		
+		echo '<h1>Grupper</h1>';
 		
 		if (!empty($groupList)) {
 			echo '<table>';
@@ -29,7 +25,8 @@ if (Session::isAuthenticated()) {
 				
 				foreach ($groupList as $group) {
 					echo '<tr>';
-						echo '<form action="scripts/process_group.php?action=3&groupId=' . $group->getId() . '&returnPage=' . $returnPage . '" method="post">';
+						// TODO: Pass $group->getId() to JavaScript.
+						echo '<form class="chief-groups-edit" action="" method="post">';
 							echo '<td><input type="text" name="title" value="' . $group->getTitle() . '"></td>';
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '"></td>';
@@ -55,7 +52,8 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
 						echo '<td>';
-							echo '<form action="scripts/process_group.php?action=2&groupId=' . $group->getId() . '&returnPage=' . $returnPage . '" method="post">';
+							// TODO: Pass $group->getId() to JavaScript.
+							echo '<form class="chief-groups-remove" action="" method="post">';
 								echo '<input type="submit" value="Slett">';
 							echo '</form>';
 						echo '</td>';
@@ -64,7 +62,7 @@ if (Session::isAuthenticated()) {
 			echo '</table>';
 			
 			echo '<h3>Legg til et ny gruppe</h3>';
-			echo '<form action="scripts/process_group?action=1&returnPage=' . $returnPage . '" method="post">';
+			echo '<form class="chief-groups-add" action="" method="post">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';
@@ -105,9 +103,10 @@ if (Session::isAuthenticated()) {
 					if (!empty($memberList)) {
 						foreach ($memberList as $member) {
 							echo '<tr>';
-								echo '<td>' . $member->getDisplayName() . '</td>';
+								echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
 								echo '<td>';
-									echo '<form action="scripts/process_group.php?action=5&userId=' . $member->getId() . '&returnPage=' . $returnPage . '" method="post">';
+									// TODO: Pass $member->getId() to JavaScript.
+									echo '<form class="chief-groups-removeuser" action="" method="post">';
 										echo '<input type="submit" value="Fjern">';
 									echo '</form>';
 								echo '</td>';
@@ -119,7 +118,8 @@ if (Session::isAuthenticated()) {
 					
 					if (!empty($freeUserList)) {
 						echo '<tr>';
-							echo '<form action="scripts/process_group.php?action=4&groupId=' . $group->getId() . '&returnPage=' . $returnPage . '" method="post">';
+							// TODO: Pass $group->getId() to JavaScript.
+							echo '<form class="chief-groups-adduser" action="" method="post">';
 								echo '<td>';
 									echo '<select name="userId">';
 										foreach ($freeUserList as $user) {
