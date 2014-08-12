@@ -133,7 +133,7 @@ if (Session::isAuthenticated()) {
 								echo '</form>';
 							echo '</tr>';
 						}
-					echo '</ul>';
+					echo '</table>';
 				}
 			} else {
 				echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
