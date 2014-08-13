@@ -125,9 +125,7 @@ if (Session::isAuthenticated()) {
 						foreach ($memberList as $member) {
 							echo '<tr>';
 								echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
-								echo '<td>';
-									echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $member->getId() . ')"></td>';
-								echo '</td>';
+								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $member->getId() . ')"></td>';
 							echo '</tr>';
 						}
 					} else {

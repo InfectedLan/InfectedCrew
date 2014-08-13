@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-groups-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addGroup.php' + '?' + $('.chief-groups-add').serialize(), function(data){
+		$.getJSON('../json/addGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-adduser').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addUserToGroup.php' + '?' + $('.chief-groups-adduser').serialize(), function(data){
+		$.getJSON('../json/addUserToGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {

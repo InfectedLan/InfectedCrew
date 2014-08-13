@@ -10,7 +10,7 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('admin') ||
 			$user->isGroupLeader()) {
 			$teamList = $user->getGroup()->getTeams();
-			
+			echo '<script src="scripts/chief-teams.js"> </script>';
 			echo '<h1>Lag</h1>';
 			
 			if (!empty($teamList)) {
@@ -26,8 +26,9 @@ if (Session::isAuthenticated()) {
 					
 					foreach ($teamList as $team) {
 						echo '<tr>';
-							// TODO: Pass $group->getId() and $team->getId() to JavaScript.
 							echo '<form class="chief-teams-edit" action="" method="post">';
+								echo '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
+								echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 								echo '<td>' . $group->getTitle() . ':<input type="text" name="title" value="' . $team->getTitle() . '"></td>';
 								echo '<td>' . count($team->getMembers()) . '</td>';
 								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
@@ -52,19 +53,14 @@ if (Session::isAuthenticated()) {
 								echo '</td>';
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
-							echo '<td>';
-								// TODO: Pass $group->getId() and $team->getId() to JavaScript.
-								echo '<form class="chief-teams-remove" action="" method="post">';
-									echo '<input type="submit" value="Slett">';
-								echo '</form>';
-							echo '</td>';
+							echo '<td><input type="button" value="Slett" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
 				
 				echo '<h3>Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-				// TODO: Pass $group->getId() to JavaScript.
 				echo '<form class="chief-teams-add" action="" method="post">';
+					echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 					echo '<table>';
 						echo '<tr>';
 							echo '<td>Navn:</td>';
@@ -95,6 +91,34 @@ if (Session::isAuthenticated()) {
 				
 				echo '<h3>Medlemmer</h3>';
 				
+				$freeUserList = getFreeUsers($group);
+						
+				if (!empty($freeUserList)) {
+					echo '<table>';
+						echo '<tr>';
+							echo '<form class="chief-teams-adduser" action="" method="post">';
+								echo '<td>';
+									echo '<select name="userId">';
+										foreach ($freeUserList as $user) {
+											echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
+										}
+									echo '</select>';
+								echo '</td>';
+								echo '<td>';
+									echo '<select name="teamId">';
+										foreach ($teamList as $team) {
+											echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+										}
+									echo '</select>';
+								echo '</td>';
+								echo '<td><input type="submit" value="Legg til"></td>';
+							echo '</form>';
+						echo '</tr>';
+					echo '</table>';
+				} else {
+					echo '<p>Alle medlemmer av "' . $group->getTitle() . '"crew er allerede med i et lag.</p>';
+				}
+				
 				foreach ($teamList as $team) {
 					$memberList = $team->getMembers();
 					
@@ -104,34 +128,12 @@ if (Session::isAuthenticated()) {
 							foreach ($memberList as $member) {
 								echo '<tr>';
 									echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
-									echo '<td>';
-										// TODO: Pass $member->getId() to JavaScript.
-										echo '<form class="chief-teams-removeuser" action="" method="post">';
-											echo '<input type="submit" value="Fjern">';
-										echo '</form>';
-									echo '</td>';
+									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $member->getId() . ')"></td>';
+
 								echo '</tr>';
 							}
 						} else {
 							echo '<i>Det er ingen medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '.</i>';
-						}
-						
-						$freeUserList = getFreeUsers($group);
-						
-						if (!empty($freeUserList)) {
-							echo '<tr>';
-								// TODO: Pass $team->getId() to JavaScript.
-								echo '<form class="chief-teams-adduser" action="" method="post">';
-									echo '<td>';
-										echo '<select name="userId">';
-											foreach ($freeUserList as $user) {
-												echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
-											}
-										echo '</select>';
-									echo '</td>';
-									echo '<td><input type="submit" value="Legg til"></td>';
-								echo '</form>';
-							echo '</tr>';
 						}
 					echo '</table>';
 				}
