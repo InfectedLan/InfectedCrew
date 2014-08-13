@@ -31,7 +31,15 @@ if (Session::isAuthenticated()) {
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '"></td>';
 							echo '<td>';
-								echo '<select name="leader">';
+								echo '<input type="text" id="userSearchBox' . $group->getId() . '" placeholder="Skriv her for å søke..." size="20"/>';
+								//I know, very hacky. But it works.
+								echo '<script>';
+									echo '$("#userSearchBox' . $group->getId() . '").on("input", function(){';
+										echo 'updateSearchField(' . $group->getId() . ');';
+									echo '});';
+								echo '</script>';
+								echo '<select name="leader" id="memberSelect' . $group->getId() . '" style="width:200px;">';
+									/*
 									if ($group->getleader() != null) {
 										echo '<option value="0">Ingen</option>';
 									} else {
@@ -46,6 +54,13 @@ if (Session::isAuthenticated()) {
 										} else {
 											echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
 										}
+									}
+									*/
+									$leader = $group->getLeader();
+									if ($group->getleader() != null) {
+										echo '<option value="' . $leader->getId() . '">' . $leader->getFirstname() . ' "' . $leader->getNickname() . '" ' . $leader->getLastname() . '</option>';
+									} else {
+										echo '<option value="0" selected>Ingen</option>';
 									}
 								echo '</select>';
 							echo '</td>';

@@ -52,3 +52,27 @@ function removeUserFromGroup(userId) {
 		}
 	});
 }
+
+function updateSearchField(id) {
+	//We have the id of the group, so we can get elements from that. \o/
+	//Use this to ensure we get correct response back.dunno if needed
+	updateKey = Math.random();
+	$.getJSON('../json/searchusers.php?key=' + encodeURIComponent(updateKey) + "&query=" + encodeURIComponent( $('#userSearchBox' + id).val() ), function(data){
+		if(data.result == true && data.key == updateKey)
+		{
+			$('#memberSelect' + id).empty();
+			var userLength = data.users.length;
+			if(userLength==0)
+			{
+				$('#memberSelect' + id).append('<option value="0" selected>Ingen</option>');
+			}
+			else
+			{
+				for(var i = 0; i < userLength; i++)
+				{
+					$('#memberSelect' + id).append('<option value="' + data.users[i].userId + '" ' + (i==0 ? 'selected' : '') + '>' + data.users[i].firstname + ' "' + data.users[i].nickname + '" ' + data.users[i].lastname + '</option>');
+				}
+			}
+		}
+  	});
+}
