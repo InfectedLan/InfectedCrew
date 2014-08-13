@@ -90,6 +90,32 @@ if (Session::isAuthenticated()) {
 			
 			$freeUserList = UserHandler::getNonMemberUsers();
 			
+			if (!empty($freeUserList)) {
+				echo '<table>';
+					echo '<tr>';
+						echo '<form class="chief-groups-adduser" action="" method="post">';
+							echo '<td>';
+								echo '<select name="userId">';
+									foreach ($freeUserList as $user) {
+										echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
+									}
+								echo '</select>';
+							echo '</td>';
+							echo '<td>';
+								echo '<select name="groupId">';
+									foreach ($groupList as $group) {
+										echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
+									}
+								echo '</select>';
+							echo '</td>';
+							echo '<td><input type="submit" value="Legg til"></td>';
+						echo '</form>';
+					echo '</tr>';
+				echo '</table>';
+			} else {
+				echo '<p>Alle registrerte medlemmer er allerede med i et crew.</p>';
+			}
+			
 			foreach ($groupList as $group) {
 				$memberList = $group->getMembers();
 				
@@ -106,22 +132,6 @@ if (Session::isAuthenticated()) {
 						}
 					} else {
 						echo '<i>Det er ingen medlemmer i ' . $group->getTitle() . '.</i>';
-					}
-					
-					if (!empty($freeUserList)) {
-						echo '<tr>';
-							echo '<form class="chief-groups-adduser" action="" method="post">';
-								echo '<input type="hidden" name="id" value="' . $group->getId() . '">';
-								echo '<td>';
-									echo '<select name="userId">';
-										foreach ($freeUserList as $user) {
-											echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
-										}
-									echo '</select>';
-								echo '</td>';
-								echo '<td><input type="submit" value="Legg til"></td>';
-							echo '</form>';
-						echo '</tr>';
 					}
 				echo '</table>';
 			}
