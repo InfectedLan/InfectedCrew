@@ -10,7 +10,7 @@ if (Session::isAuthenticated()) {
 		$user->isGroupMember() && $user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
 		echo '<script src="scripts/chief-groups.js"> </script>';
-		echo '<h1>Grupper</h1>';
+		echo '<h1>Crewene</h1>';
 		
 		if (!empty($groupList)) {
 			echo '<table>';
@@ -25,10 +25,8 @@ if (Session::isAuthenticated()) {
 				
 				foreach ($groupList as $group) {
 					echo '<tr>';
-						// TODO: Pass $group->getId() to JavaScript.
 						echo '<form class="chief-groups-edit" action="" method="post">';
-							//THIS is how we pass id if we want to use form submitting(Which isnt that bad of an idea, actually)
-							echo '<input type="hidden" name="id" value="' . $group->getId() . '" />';
+							echo '<input type="hidden" name="id" value="' . $group->getId() . '">';
 							echo '<td><input type="text" name="title" value="' . $group->getTitle() . '"></td>';
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '"></td>';
@@ -52,14 +50,8 @@ if (Session::isAuthenticated()) {
 								echo '</select>';
 							echo '</td>';
 							echo '<td><input type="submit" value="Endre"></td>';
-							echo '</form>';
-						echo '<td>';
-							// TODO: Pass $group->getId() to JavaScript.
-							/*echo '<form class="chief-groups-remove" action="" method="post">';
-								echo '<input type="submit" value="Slett">';
-							echo '</form>';*/
-							echo '<input type="button" value="Slett" onClick="removeGroup(' . $group->getId() . ')" />';
-						echo '</td>';
+						echo '</form>';
+						echo '<td><input type="button" value="Slett" onClick="removeGroup(' . $group->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
@@ -108,10 +100,7 @@ if (Session::isAuthenticated()) {
 							echo '<tr>';
 								echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
 								echo '<td>';
-									// TODO: Pass $member->getId() to JavaScript.
-									echo '<form class="chief-groups-removeuser" action="" method="post">';
-										echo '<input type="submit" value="Fjern">';
-									echo '</form>';
+									echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $member->getId() . ')"></td>';
 								echo '</td>';
 							echo '</tr>';
 						}
@@ -121,8 +110,8 @@ if (Session::isAuthenticated()) {
 					
 					if (!empty($freeUserList)) {
 						echo '<tr>';
-							// TODO: Pass $group->getId() to JavaScript.
 							echo '<form class="chief-groups-adduser" action="" method="post">';
+								echo '<input type="hidden" name="id" value="' . $group->getId() . '">';
 								echo '<td>';
 									echo '<select name="userId">';
 										foreach ($freeUserList as $user) {

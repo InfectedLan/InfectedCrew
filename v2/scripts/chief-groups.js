@@ -2,12 +2,10 @@ $(document).ready(function() {
 	$('.chief-groups-add').submit(function(e) {
 		e.preventDefault();
 		$.getJSON('../json/addGroup.php' + '?' + $('.chief-groups-add').serialize(), function(data){
-			if(data.result) {
-				//info(data.message); // TODO: Display "data.message" to user.
+			if (data.result) {
 				location.reload();
-			}
-			else {
-				error(data.message); // TODO: Display "data.message" to user.
+			} else {
+				error(data.message); 
 			}
 		});
 	});
@@ -15,26 +13,42 @@ $(document).ready(function() {
 	$('.chief-groups-edit').submit(function(e) {
 		e.preventDefault();
 	    $.getJSON('../json/changeGroup.php' + '?' + $(this).serialize(), function(data){
-			if(data.result) {
-				//info(data.message); // TODO: Display "data.message" to user.
+			if (data.result) {
 				location.reload();
+			} else {
+				error(data.message); 
 			}
-			else {
-				error(data.message); // TODO: Display "data.message" to user.
+		});
+	});
+	
+	$('.chief-groups-adduser').submit(function(e) {
+		e.preventDefault();
+		$.getJSON('../json/addUserToGroup.php' + '?' + $('.chief-groups-adduser').serialize(), function(data){
+			if (data.result) {
+				location.reload();
+			} else {
+				error(data.message); 
 			}
 		});
 	});
 });
 
-function removeGroup(id)
-{
-	$.getJSON('../json/removeGroup.php?id=' + id, function(data){
-		if(data.result) {
-			//info(data.message); // TODO: Display "data.message" to user.
+function removeGroup(groupId) {
+	$.getJSON('../json/removeGroup.php?id=' + groupId, function(data){
+		if (data.result) {
 			location.reload();
+		} else {
+			error(data.message);
 		}
-		else {
-			error(data.message); // TODO: Display "data.message" to user.
+	});
+}
+
+function removeUserFromGroup(userId) {
+	$.getJSON('../json/removeUserFromGroup.php?id=' + userId, function(data){
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
 		}
 	});
 }

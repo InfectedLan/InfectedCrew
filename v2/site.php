@@ -83,8 +83,7 @@ class Site {
 									$this->pageName == 'functions-site-list-pages' || 
 									$this->pageName == 'functions-mycrew' || 
 									$this->pageName == 'functions-site-list-games' || 
-									$this->pageName == 'functions-info' ||
-									$user->isGroupLeader()) {
+									$this->pageName == 'functions-info') {
 									
 									if ($user->hasPermission('functions.find.user') ||
 										$user->hasPermission('admin') ||
@@ -130,7 +129,7 @@ class Site {
 									if ($user->hasPermission('chief.groups') ||
 										$user->isGroupLeader() ||
 										$user->hasPermission('admin')) {
-										echo '<li><a href="index.php?page=chief-groups">Grupper</a></li>';
+										echo '<li><a href="index.php?page=chief-groups">Crew</a></li>';
 									}
 									
 									if ($user->hasPermission('chief.teams') ||
@@ -360,7 +359,7 @@ class Site {
 			$user = Session::getCurrentUser();
 			
 			// TODO: Rewrite this.
-			if ($user->isGroupMember() && $user->isGroupLeader()) {
+			/* if ($user->isGroupMember() && $user->isGroupLeader()) {
 				$soknads = mysql_query("SELECT * FROM `soknader` WHERE `crew` = '" . $user->getGroup()->getName() . "' AND `status`='PROCESSING';"); // TODO: Update this.
 			
 				if ($soknads != FALSE && mysql_num_rows($soknads) > 0) {
@@ -372,7 +371,7 @@ class Site {
 				if ($pics != FALSE && mysql_num_rows($pics) > 0) {
 					echo '<div class="information">Du har <b>' . mysql_num_rows($pics) . '</b> avatarer som må godkjennes!</div>';
 				}
-			}
+			} */
 		}
 	}
 	
