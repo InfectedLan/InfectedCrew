@@ -5,11 +5,9 @@ require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 	
 class Site {
-	// Variable definitions.
 	private $pageName;
 	
 	public function __construct() {
-		// Set the variables.
 		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
 	}
 	

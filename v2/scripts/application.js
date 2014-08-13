@@ -1,12 +1,12 @@
 $(document).ready(function() {
 	$('.application').submit(function(e) {
 		e.preventDefault();
-	    $.post('../json/application.php', $('.application').serialize(), function(data) {
+		$.getJSON('../json/application.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
-	        	info(data.message);
-	        } else {
-	         	error(data.message);
-	        }
-	    }, 'json');
+				info(data.message);
+			} else {
+				error(data.message); 
+			}
+		});
 	});
 });
