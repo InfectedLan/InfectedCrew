@@ -25,7 +25,7 @@ if (Session::isAuthenticated()) {
 				
 				foreach ($groupList as $group) {
 					echo '<tr>';
-						echo '<form class="chief-groups-edit" action="" method="post">';
+						echo '<form class="chief-groups-edit" method="post">';
 							echo '<input type="hidden" name="id" value="' . $group->getId() . '">';
 							echo '<td><input type="text" name="title" value="' . $group->getTitle() . '"></td>';
 							echo '<td>' . count($group->getMembers()) . '</td>';
@@ -72,12 +72,11 @@ if (Session::isAuthenticated()) {
 			echo '</table>';
 			
 			echo '<h3>Legg til et ny gruppe</h3>';
-			echo '<form class="chief-groups-add" action="" method="post">';
+			echo '<form class="chief-groups-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';
 						echo '<td><input type="text" name="title"></td>';
-					echo '<tr>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Beskrivelse:</td>';
@@ -108,7 +107,7 @@ if (Session::isAuthenticated()) {
 			if (!empty($freeUserList)) {
 				echo '<table>';
 					echo '<tr>';
-						echo '<form class="chief-groups-adduser" action="" method="post">';
+						echo '<form class="chief-groups-adduser" method="post">';
 							echo '<td>';
 								echo '<select name="userId">';
 									foreach ($freeUserList as $user) {

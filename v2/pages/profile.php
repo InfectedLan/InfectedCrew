@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Alder:</td>';
-					echo '<td>' . $profile->getAge() . ' År</td>';
+					echo '<td>' . $profile->getAge() . ' år</td>';
 				echo '</tr>';
 				
 				if ($user->hasPermission('admin')) {
