@@ -10,7 +10,7 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('admin') ||
 			$user->isGroupLeader()) {
 			$teamList = $user->getGroup()->getTeams();
-			echo '<script src="scripts/chief-teams.js"> </script>';
+			echo '<script src="scripts/chief-teams.js"></script>';
 			echo '<h1>Lag</h1>';
 			
 			if (!empty($teamList)) {

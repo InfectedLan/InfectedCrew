@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('admin') ||
 		$user->isGroupMember() && $user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
-		echo '<script src="scripts/chief-groups.js"> </script>';
+		echo '<script src="scripts/chief-groups.js"></script>';
 		echo '<h1>Crewene</h1>';
 		
 		if (!empty($groupList)) {
