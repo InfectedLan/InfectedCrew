@@ -1,7 +1,3 @@
-var code;
-
-alert(code);
-
 $(document).ready(function() {
 	$('.request-reset-password').submit(function(e) {
 		e.preventDefault();

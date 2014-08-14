@@ -101,14 +101,12 @@ class Site {
 									}
 									
 									if ($user->hasPermission('functions.site-list-games') ||
-										$user->hasPermission('admin') ||
-										$user->getGroup()->getId() == 26) {
+										$user->hasPermission('admin')) {
 										echo '<li><a href="index.php?page=functions-site-list-games">Spill</a></li>';
 									}
 									
 									if ($user->hasPermission('functions.info') ||
-										$user->hasPermission('admin') ||
-										$user->getGroup()->getId() == 15) {
+										$user->hasPermission('admin')) {
 										echo '<li><a href="index.php?page=functions-info">Infoskjerm</a></li>';
 									}
 								} else if ($this->pageName == 'chief' || 
@@ -150,7 +148,6 @@ class Site {
 								}
 							}
 							
-							//Admin stuff
 							if ($this->pageName == 'admin' || 
 								$this->pageName == 'admin-events') {
 								
@@ -229,6 +226,7 @@ class Site {
 					} else {
 						if (isset($_GET['page'])) {
 							$publicPages = array('register',
+												 'activation',
 												 'reset-password');
 							
 							if (in_array($this->pageName, $publicPages)) {

@@ -1,8 +1,8 @@
 <?php
-require_once 'handlers/userhandler.php';
+require_once 'handlers/registrationcodehandler.php';
 
 if (isset($_GET['code'])) {
-	UserHandler::removeRegistrationCode($_GET['code']);
+	RegistrationCodeHandler::removeRegistrationCode($_GET['code']);
 	
 	echo 'Brukeren din er nå aktivert og klar for bruk.';
 } else {
