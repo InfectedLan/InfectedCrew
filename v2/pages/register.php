@@ -83,7 +83,7 @@ echo '<form class="register" name="input" method="post">';
 		echo '</tr>';
 		echo '<tr>';
 			echo '<td>Foresatte\'s telefon:</td>';
-			echo '<td><input type="text" name="parent"></td>';
+			echo '<td><input type="text" name="emergencycontactphone"></td>';
 			echo '<td>(Påkrevd hvis du er under 18)</td>';
 		echo '</tr>';
 		echo '<tr>';
