@@ -71,7 +71,7 @@ if (Session::isAuthenticated()) {
 				}
 			echo '</table>';
 			
-			echo '<h3>Legg til et ny gruppe</h3>';
+			echo '<h3>Legg til et nytt crew</h3>';
 			echo '<form class="chief-groups-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
