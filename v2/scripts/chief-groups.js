@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-groups-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addGroup.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-edit').submit(function(e) {
 		e.preventDefault();
-	    $.getJSON('../json/changeGroup.php' + '?' + $(this).serialize(), function(data){
+	    $.getJSON('../api/json/changeGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-adduser').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addUserToGroup.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addUserToGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 function removeGroup(groupId) {
-	$.getJSON('../json/removeGroup.php?id=' + groupId, function(data){
+	$.getJSON('../api/json/removeGroup.php?id=' + groupId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -44,7 +44,7 @@ function removeGroup(groupId) {
 }
 
 function removeUserFromGroup(userId) {
-	$.getJSON('../json/removeUserFromGroup.php?id=' + userId, function(data){
+	$.getJSON('../api/json/removeUserFromGroup.php?id=' + userId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -57,7 +57,7 @@ function updateSearchField(id) {
 	//We have the id of the group, so we can get elements from that. \o/
 	//Use this to ensure we get correct response back.dunno if needed
 	updateKey = Math.random();
-	$.getJSON('../json/searchusers.php?key=' + encodeURIComponent(updateKey) + "&query=" + encodeURIComponent( $('#userSearchBox' + id).val() ), function(data){
+	$.getJSON('../api/json/searchusers.php?key=' + encodeURIComponent(updateKey) + "&query=" + encodeURIComponent( $('#userSearchBox' + id).val() ), function(data){
 		if(data.result == true && data.key == updateKey)
 		{
 			$('#memberSelect' + id).empty();

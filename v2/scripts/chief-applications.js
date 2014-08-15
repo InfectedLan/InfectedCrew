@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-applications-reject').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/rejectApplication.php' + '?' + $(this).serialize(), function(data) {
+		$.getJSON('../api/json/rejectApplication.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 });
 
 function acceptApplication(id) {
-	$.getJSON('../json/acceptApplication.php?id=' + id, function(data) {
+	$.getJSON('../api/json/acceptApplication.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

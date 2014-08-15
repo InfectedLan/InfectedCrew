@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-teams-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addTeam.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.chief-teams-edit').submit(function(e) {
 		e.preventDefault();
-	    $.getJSON('../json/editTeam.php' + '?' + $(this).serialize(), function(data){
+	    $.getJSON('../api/json/editTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 	$('.chief-teams-adduser').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../json/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 function removeTeam(groupId, teamId) {
-	$.getJSON('../json/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
+	$.getJSON('../api/json/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -44,7 +44,7 @@ function removeTeam(groupId, teamId) {
 }
 
 function removeUserFromTeam(userId) {
-	$.getJSON('../json/removeUserFromTeam.php?id=' + userId, function(data){
+	$.getJSON('../api/json/removeUserFromTeam.php?id=' + userId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {

@@ -1,7 +1,7 @@
 $(document).ready(function() {
-	$('.admin-permissions-add').submit(function(e) {
+	$('.login').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addPermission.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/login.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {

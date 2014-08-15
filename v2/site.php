@@ -22,11 +22,12 @@ class Site {
 				echo '<meta name="author" content="' . implode(', ', Settings::$authors) . '">';
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="stylesheet" type="text/css" href="styles/style.css">';
-				echo '<script src="scripts/jquery.js"></script>';
-				echo '<script src="scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/jquery.js"></script>';
+				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
-				echo '<script src="scripts/session.js"></script>';
-				echo '<script src="scripts/ckeditor/ckeditor.js"></script>';
+				echo '<script src="scripts/login.js"></script>';
+				echo '<script src="scripts/logout.js"></script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -172,7 +173,7 @@ class Site {
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
 							
-							echo 'Logget inn som ' . $user->getFullName() . '. <a class="logout" href=".">Logg ut</a>';
+							echo 'Logget inn som ' . $user->getFullName() . '. <input type="button" value="Logg ut" onClick="logout()">';
 						}
 					echo '</div>';
 				echo '</header>';
