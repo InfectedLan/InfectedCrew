@@ -58,7 +58,7 @@ if (Session::isAuthenticated()) {
 									*/
 									$leader = $group->getLeader();
 									if ($group->getleader() != null) {
-										echo '<option value="' . $leader->getId() . '">' . $leader->getFirstname() . ' "' . $leader->getNickname() . '" ' . $leader->getLastname() . '</option>';
+										echo '<option value="' . $leader->getId() . '">' . $leader->getDisplayName() . '</option>';
 									} else {
 										echo '<option value="0" selected>Ingen</option>';
 									}
@@ -138,7 +138,7 @@ if (Session::isAuthenticated()) {
 					if (!empty($memberList)) {
 						foreach ($memberList as $member) {
 							echo '<tr>';
-								echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
+								echo '<td>' . $member->getDisplayName(). '</td>';
 								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $member->getId() . ')"></td>';
 							echo '</tr>';
 						}

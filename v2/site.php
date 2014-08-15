@@ -221,6 +221,8 @@ class Site {
 							
 							if (in_array($this->pageName, $publicPages)) {
 								$this->viewPage($this->pageName);
+							} else {
+								$this->viewPage('crew');
 							}
 						}
 					} else {
@@ -231,6 +233,8 @@ class Site {
 							
 							if (in_array($this->pageName, $publicPages)) {
 								$this->viewPage($this->pageName);
+							} else {
+								$this->viewLogin();
 							}
 						} else {
 							$this->viewLogin();
@@ -328,7 +332,7 @@ class Site {
 	}
 
 	private function viewLogin() {
-		echo '<form class="login">';
+		echo '<form class="login" method="post">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td><h2>Logg inn</h2></td>';
