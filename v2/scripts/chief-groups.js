@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-groups-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addGroup.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addGroup.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-edit').submit(function(e) {
 		e.preventDefault();
-	    $.getJSON('../api/json/editGroup.php' + '?' + $(this).serialize(), function(data){
+	    $.getJSON('../api/json/editGroup.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-adduser').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addUserToGroup.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/addUserToGroup.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 function removeGroup(groupId) {
-	$.getJSON('../api/json/removeGroup.php?id=' + groupId, function(data){
+	$.getJSON('../api/json/removeGroup.php?id=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -44,7 +44,7 @@ function removeGroup(groupId) {
 }
 
 function removeUserFromGroup(userId) {
-	$.getJSON('../api/json/removeUserFromGroup.php?id=' + userId, function(data){
+	$.getJSON('../api/json/removeUserFromGroup.php?id=' + userId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

@@ -28,12 +28,6 @@ class Site {
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
-				echo '<script type="text/javascript">';
-					echo 'window.onload = function()';
-					echo '{';
-						echo 'CKEDITOR.replace(\'editor1\');';
-					echo '};';
-				echo '</script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
@@ -156,12 +150,18 @@ class Site {
 									}
 								} else if ($this->pageName == 'admin' || 
 									$this->pageName == 'admin-events' || 
+									$this->pageName == 'admin-permissions' || 
 									$this->pageName == 'admin-change-user' || 
 									$this->pageName == 'admin-seatmap') {
 									
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin.events')) {
 										echo '<li><a href="index.php?page=admin-events">Arrangementer</a></li>';
+									}
+									
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('admin.permissions')) {
+										echo '<li><a href="index.php?page=admin-permissions">Tilganger</a></li>';
 									}
 									
 									if ($user->hasPermission('*') ||
@@ -321,10 +321,12 @@ class Site {
 					if ($user->hasPermission('*') ||
 						$user->hasPermission('admin') ||
 						$user->hasPermission('admin.events') ||
+						$user->hasPermission('admin.permissions') ||
 						$user->hasPermission('admin.change-user') ||
 						$user->hasPermission('admin.seatmap')) {
 						if ($this->pageName == 'admin' || 
 							$this->pageName == 'admin-events' ||
+							$this->pageName == 'admin-permissions' ||
 							$this->pageName == 'admin-change-user' ||
 							$this->pageName == 'admin-seatmap') {
 							echo ' <div class="icon" id="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></div>';
