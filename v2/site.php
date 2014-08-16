@@ -28,7 +28,12 @@ class Site {
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
-				
+				echo '<script type="text/javascript">';
+					echo 'window.onload = function()';
+					echo '{';
+						echo 'CKEDITOR.replace(\'editor1\');';
+					echo '};';
+				echo '</script>';
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
