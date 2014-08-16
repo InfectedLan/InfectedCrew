@@ -241,10 +241,14 @@ class Site {
 				if (Session::isAuthenticated()) {
 					$user = Session::getCurrentUser();
 				
-					if ($this->pageName == 'index' || !isset($_GET['page'])) {
-						echo '<div class="homeicon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
-					} else {
-						echo '<div class="homeicon"><a href="index.php"><img src="images/home.png"></a></div>';   
+					if ($user->hasPermission('*') ||
+						$user->isGroupMember()) {
+				
+						if ($this->pageName == 'index' || !isset($_GET['page'])) {
+							echo '<div class="homeicon" id="active"><a href="index.php"><img src="images/home.png"></a></div>';
+						} else {
+							echo '<div class="homeicon"><a href="index.php"><img src="images/home.png"></a></div>';   
+						}
 					}
 					
 					if ($this->pageName == 'crew') {
