@@ -7,7 +7,8 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 	
-		if ($user->hasPermission('admin') ||
+		if ($user->hasPermission('*') ||
+			$user->hasPermission('chief.teams') ||
 			$user->isGroupLeader()) {
 			$teamList = $user->getGroup()->getTeams();
 			echo '<script src="scripts/chief-teams.js"></script>';

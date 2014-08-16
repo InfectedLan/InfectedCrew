@@ -14,7 +14,7 @@ if (isset($_GET['returnPage']) && Session::isAuthenticated()) {
 		$user->hasPermission('functions.mycrew') || 
 		$user->hasPermission('functions.edit-page') || 
 		$user->isGroupLeader() || 
-		$user->hasPermission('admin') || 
+		$user->hasPermission('*') || 
 		$user->hasPermission('site-admin') || 
 		$user->hasPermission('crew-admin')) {
 		if (isset($_GET['site']) && isset($_GET['id'])) {

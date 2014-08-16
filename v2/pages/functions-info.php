@@ -12,12 +12,8 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 		
-		if ($user->isGroupLeader() || 
-			$group->getId() == 15 || 
-			$group->getId() == 26 || 
-			$user->hasPermission('admin') || 
-			$user->hasPermission('crew-admin') ||
-			$user->hasPermission('function-info')) {
+		if ($user->hasPermission('*') || 
+			$user->hasPermission('functions.info')) {
 			echo '<h1>Infoskjerm</h1>';
 			
 			echo '<h3>Agenda</h3>';

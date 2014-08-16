@@ -5,8 +5,9 @@ require_once 'handlers/avatarhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('chief.avatars')) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('chief.avatars') ||
+		$user->isGroupLeader()) {
 		echo '<h3>Godkjenn profilbilder</h3>';
 		
 		$pendingAvatarList = AvatarHandler::getPendingAvatars();

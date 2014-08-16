@@ -9,10 +9,8 @@ $returnPage = basename(__FILE__, '.php');
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('functions.site-list-games') || 
-		$user->getGroup()->getId() == 26 ||
-		$user->hasPermission('admin') || 
-		$user->hasPermission('site-admin')) {
+	if ($user->hasPermission('*') || 
+		$user->hasPermission('functions.site-list-games')) {
 		echo '<h3>Spill:</h3>';
 		
 		$gameList = GameHandler::getGames();
@@ -44,7 +42,7 @@ if (Session::isAuthenticated()) {
 						echo '</form>';
 						
 						if ($user->isGroupLeader() || 
-							$user->hasPermission('admin') || 
+							$user->hasPermission('*') || 
 							$user->hasPermission('site-admin')) {
 							echo '<form action="scripts/process_game.php?action=2&id=' . $game->getId() . '&returnPage=' . $returnPage . '" method="post">';
 								echo '<td><input type="submit" value="Slett"></td>';
@@ -56,7 +54,7 @@ if (Session::isAuthenticated()) {
 		}
 		
 		if ($user->isGroupLeader() || 
-			$user->hasPermission('admin') || 
+			$user->hasPermission('*') || 
 			$user->hasPermission('site-admin')) {
 			echo '<form action="scripts/process_game.php?action=1&returnPage=' . $returnPage . '" method="post">';
 				echo '<table>';
@@ -125,7 +123,7 @@ if (Session::isAuthenticated()) {
 							echo '<td>' . $value->getEmail() . '</td>';
 							
 							if ($user->isGroupLeader() || 
-								$user->hasPermission('admin') || 
+								$user->hasPermission('*') || 
 								$user->hasPermission('site-admin')) {
 								echo '<form name="input" action="scripts/process_gameApplication.php?action=2&id=' . $value->getId() . '&returnPage=' .  $returnPage . '" method="post">';
 									echo '<td><input type="submit" value="Slett"></td>';

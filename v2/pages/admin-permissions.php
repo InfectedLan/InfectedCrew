@@ -5,8 +5,8 @@ require_once 'handlers/userhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('admin-permissions')) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('admin.permissions')) {
 		echo '<script src="scripts/admin-permissions.js"></script>';
 		echo '<h1>Rettigheter</h1>';
 		

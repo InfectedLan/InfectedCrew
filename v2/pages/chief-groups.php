@@ -6,8 +6,9 @@ require_once 'handlers/grouphandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->isGroupMember() && $user->isGroupLeader()) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('chief.groups') ||
+		$user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
 		echo '<script src="scripts/chief-groups.js"></script>';
 		echo '<h1>Crewene</h1>';

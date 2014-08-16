@@ -8,9 +8,8 @@ $returnPage = basename(__FILE__, '.php');
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('functions.site-list-pages') || 
-		$user->hasPermission('admin') || 
-		$user->hasPermission('site-admin')) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('functions.site-list-pages')) {
 		$pageList = PageHandler::getPages();
 		
 		echo '<article class="contentBox">';
@@ -26,7 +25,7 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
 						
-						if ($user->hasPermission('admin')) {
+						if ($user->hasPermission('*')) {
 							echo '<form name="input" action="scripts/process_page.php?site=0&action=2&id=' . $value->getId() . '&returnPage=' . $returnPage . '" method="post">';
 								echo '<td><input type="submit" value="Slett"></td>';
 							echo '</form>';

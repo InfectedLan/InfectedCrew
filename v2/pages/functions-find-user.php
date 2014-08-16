@@ -4,8 +4,8 @@ require_once 'session.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('functions.find.user') ||
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('functions.find-user') ||
 		$user->isGroupLeader()) {
 		echo '<h1>Søk etter bruker</h3>';
 	} else {

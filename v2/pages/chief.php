@@ -4,8 +4,7 @@ require_once 'session.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('crew-admin') ||
+	if ($user->hasPermission('*') ||
 		$user->hasPermission('chief') ||
 		$user->isGroupLeader()) {
 		echo '<h1>Chief</h1>';

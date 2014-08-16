@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.chief-groups-edit').submit(function(e) {
 		e.preventDefault();
-	    $.getJSON('../api/json/changeGroup.php' + '?' + $(this).serialize(), function(data){
+	    $.getJSON('../api/json/editGroup.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {

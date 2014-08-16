@@ -7,9 +7,9 @@ $username = isset($_POST['username']) ? $_POST['username'] : 0;
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('admin.changeuser')) {
-		echo '<script src="scripts/admin-changeuser.js"></script>';
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('admin.change-user')) {
+		echo '<script src="scripts/admin-change-user.js"></script>';
 		echo '<h1>Bytt bruker</h1>';
 		echo '<p>Dette er en admin-funksjon som lar deg være logget inn som en annen bruker. <br>';
 		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';

@@ -6,8 +6,8 @@ require_once 'handlers/locationhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->hasPermission('admin-events')) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('admin.events')) {
 		echo '<script src="scripts/admin-events.js"></script>';
 		echo '<h3>Arrangementer:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';

@@ -10,11 +10,9 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 		
-		if ($user->hasPermission('functions.mycrew') || 
-			$user->isGroupLeader() || 
-			$user->hasPermission('admin') || 
-			$user->hasPermission('crew-admin') || 
-			$user->hasPermission('function-mycrew')) {
+		if ($user->hasPermission('*') || 
+			$user->hasPermission('functions.my-crew') || 
+			$user->isGroupLeader()) {
 			echo '<h3>Mine sider</h3>';
 			
 			$pageList = CrewPageHandler::getPagesForGroup($group->getId());
@@ -63,7 +61,7 @@ if (Session::isAuthenticated()) {
 			echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 			
 			if ($user->isGroupLeader() || 
-				$user->hasPermission('admin') || 
+				$user->hasPermission('*') || 
 				$user->hasPermission('crew-admin') ||
 				$user->hasPermission('function-mycrew')) {
 				echo '<form action="scripts/process_page.php?site=1&action=1&teamId=0&returnPage=' . $returnPage . '" method="post">';

@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	$profile = UserHandler::getUser($id);
 	
 	if ($profile != null) {
-		if ($user->hasPermission('admin') ||
+		if ($user->hasPermission('*') ||
 			$user->hasPermission('crew-admin') ||
 			$user->hasPermission('tickets-admin') ||
 			$user->getId() == $profile->getId()) {
@@ -23,7 +23,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getFirstname() . ' ' . $profile->getLastname() . '</td>';
 				echo '</tr>';
 			
-				if ($user->hasPermission('admin')) {
+				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Brukernavn:</td>';
 						echo '<td>' . $profile->getUsername() . '</td>';
@@ -39,7 +39,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getAge() . ' år</td>';
 				echo '</tr>';
 				
-				if ($user->hasPermission('admin')) {
+				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Fødselsdato</td>';
 						echo '<td>' . date('d.m.Y', $profile->getBirthdate()) . '</td>';
@@ -51,7 +51,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getGenderName() . '</td>';
 				echo '</tr>';
 				
-				if ($user->hasPermission('admin')) {
+				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Telefon:</td>';
 						echo '<td>' . $profile->getPhone() . '</td>';
@@ -82,7 +82,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getNickname() . '</td>';
 				echo '</tr>';
 				
-				if ($user->hasPermission('admin') &&
+				if ($user->hasPermission('*') &&
 					$profile->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';

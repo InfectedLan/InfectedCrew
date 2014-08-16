@@ -5,11 +5,12 @@ require_once 'handlers/applicationhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
-	if ($user->hasPermission('admin') ||
-		$user->isGroupMember() && $user->isGroupLeader()) {
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('chief.applications') ||
+		$user->isGroupLeader()) {
 		$group = $user->getGroup();
 		$pendingApplicationList = ApplicationHandler::getPendingApplications($group);
-		echo '<script src="scripts/chief-applications.js"> </script>';
+		echo '<script src="scripts/chief-applications.js"></script>';
 		echo '<h1>Søknader</h1>';
 		echo '<p>Det er for øyeblikket ' . count($pendingApplicationList) . ' søknader som trenger behandling.</p>';
 		
