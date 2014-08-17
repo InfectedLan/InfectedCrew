@@ -3,6 +3,7 @@ require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/applicationhandler.php';
 	
 class Site {
 	private $pageName;
@@ -358,14 +359,14 @@ class Site {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Brukernavn:</td>';
-					echo '<td><input type="text" name="username"></td>';
+					echo '<td><input type="text" name="username" required autofocus></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Passord:</td>';
-					echo '<td><input type="password" name="password"></td>';
+					echo '<td><input type="password" name="password" required></td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td><input type="submit" id="submit" value="Logg inn"><td>';
+					echo '<td><input type="submit" value="Logg inn"><td>';
 				echo '</tr>';
 			echo '</table>';
 		echo '</form>';
@@ -377,20 +378,15 @@ class Site {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
-			// TODO: Rewrite this.
-			/* if ($user->isGroupMember() && $user->isGroupLeader()) {
-				$soknads = mysql_query("SELECT * FROM `soknader` WHERE `crew` = '" . $user->getGroup()->getName() . "' AND `status`='PROCESSING';"); // TODO: Update this.
-			
-				if ($soknads != FALSE && mysql_num_rows($soknads) > 0) {
-					echo '<div class="information">Du har <b>' . mysql_num_rows($soknads) . '</b> søknader som venter på svar!</div>';
+			if ($user->hasPermission('*') ||
+				$user->hasPermission('chief.applications') ||
+				$user->isGroupLeader()) {
+				$pendingApplicationList = ApplicationHandler::getPendingApplications($user->getGroup());
+				
+				if (!empty($pendingApplicationList)) {
+					echo '<div class="information">Du har <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar!</div>';
 				}
-			
-				$pics = mysql_query("SELECT * FROM `avatars` WHERE `state`='1';");
-			
-				if ($pics != FALSE && mysql_num_rows($pics) > 0) {
-					echo '<div class="information">Du har <b>' . mysql_num_rows($pics) . '</b> avatarer som må godkjennes!</div>';
-				}
-			} */
+			}
 		}
 	}
 	
@@ -402,11 +398,11 @@ class Site {
 			echo '<h1>' . $page->getTitle() . '</h1>';
 			echo $page->getContent();
 		} else {
-			$directory = 'pages/';
-			$fileName = $directory . $pageName . '.php';
+			$directory = 'pages';
+			$fileName = $directory . '/' . $pageName . '.php';
 			
 			// If page doesn't exist in the database, check if there is a .php file that do. Else an error is shown.
-			if (in_array($fileName, glob($directory . '*.php'))) {
+			if (in_array($fileName, glob($directory . '/*.php'))) {
 				include $fileName;
 			} else {
 				echo '<article>';
