@@ -33,7 +33,7 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Tekst:</td>';
 						echo '<td>';
-							echo '<textarea id="editor1" name="content" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
+							echo '<textarea id="editor1" name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
 							echo '<script>';
 								// Replace the <textarea id="editor1"> with a CKEditor
 								// instance, using default configuration.
