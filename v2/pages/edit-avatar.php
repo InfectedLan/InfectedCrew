@@ -14,10 +14,6 @@ if (Session::isAuthenticated()) {
 		
 		echo '<img src="' . $avatar->getFile() . '" width="50%" height="50%">';
 		
-		/* if (User::getAvatar($_SESSION["username"]) == "default.png") {
-			echo '<i>Du er nødt til å laste opp en avatar for å søke!</i><br />';
-		} */
-		
 		echo '<b>Nytt profilbilde: </b>';
 		echo '<form action="do/doAvatar.php" method="post" enctype="multipart/form-data"><input type="hidden" name="MAX_FILE_SIZE" value="7000000" /><label for="file">Filnavn:</label><input type="file" name="file" id="file"><br><input type="submit" name="submit" value="Last opp!"></form><br />';
 	} else if ($state == 2) {

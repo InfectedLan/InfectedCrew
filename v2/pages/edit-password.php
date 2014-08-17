@@ -9,15 +9,15 @@ if (Session::isAuthenticated()) {
 		echo '<table>';
 			echo '<tr>';
 				echo '<td>Gammelt passord:</td>';
-				echo '<td><input type="password" name="oldPassword"></td>';
+				echo '<td><input type="password" name="oldPassword" required autofocus></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Nytt passord:</td>';
-				echo '<td><input type="password" name="newPassword"></td>';
+				echo '<td><input type="password" name="newPassword" required></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Gjenta nytt passord:</td>';
-				echo '<td><input type="password" name="confirmNewPassword"></td>';
+				echo '<td><input type="password" name="confirmNewPassword" required></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td><input type="submit" value="Lagre"></td>';

@@ -12,15 +12,11 @@ if (Session::isAuthenticated()) {
 		echo '<table>';
 			echo '<tr>';
 				echo '<td>Fornavn:</td>';
-				echo '<td><input type="text" name="firstname" value="' . $user->getFirstname() . '"></td>';
+				echo '<td><input type="text" name="firstname" value="' . $user->getFirstname() . '"  required autofocus></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Etternavn:</td>';
-				echo '<td><input type="text" name="lastname" value="' . $user->getLastname() . '"></td>';
-			echo '</tr>';
-			echo '<tr>';
-				echo '<td>E-post:</td>';
-				echo '<td><input type="email" name="email" value="' . $user->getEmail() . '"></td>';
+				echo '<td><input type="text" name="lastname" value="' . $user->getLastname() . '"  required></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Kjønn:</td>';
@@ -74,15 +70,15 @@ if (Session::isAuthenticated()) {
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Telefon:</td>';
-				echo '<td><input type="tel" name="phone" value="' .  str_replace(' ', '', $user->getPhone()) . '"></td>';
+				echo '<td><input type="tel" name="phone" value="' .  str_replace(' ', '', $user->getPhone()) . '" required></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Gateadresse:</td>';
-				echo '<td><input type="text" name="address" value="' . $user->getAddress() . '"></td>';
+				echo '<td><input type="text" name="address" value="' . $user->getAddress() . '"  required></td>';
 			echo '</tr>';
 			echo '<tr>';
 				echo '<td>Postnummer:</td>';
-				echo '<td><input class="postalcode" type="number" name="postalcode" min="1" max="10000" value="' . $user->getPostalCode() . '"></td>';
+				echo '<td><input class="postalcode" type="number" name="postalcode" min="1" max="9999" value="' . $user->getPostalCode() . '"  required></td>';
 				echo '<td><span class="city">' . $user->getCity() . '</span></td>';
 			echo '</tr>';
 			echo '<tr>';
@@ -94,7 +90,8 @@ if (Session::isAuthenticated()) {
 			echo '</tr>';
 		echo '</table>';
 	echo '</form>';
-	echo '<a href="index.php?page=edit-password">Endre passord</a> <a href="index.php?page=edit-avatar">Endre/Last opp profilbilde</a>';
+	echo '<a href="index.php?page=edit-password">Endre passord</a>';
+	echo '<a href="index.php?page=edit-avatar">Endre/Last opp profilbilde</a>';
 } else {
 	echo '<p>Du er ikke logget inn!</p>';
 }
