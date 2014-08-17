@@ -91,7 +91,7 @@ if (Session::isAuthenticated()) {
 				}
 				
 				echo '<tr>';
-					echo '<td>Gruppe:</td>';
+					echo '<td>Crew:</td>';
 					echo '<td>';
 						if ($profile->isGroupMember()) {
 							echo $profile->getGroup()->getTitle();
