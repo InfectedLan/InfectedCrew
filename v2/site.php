@@ -381,7 +381,7 @@ class Site {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.applications') ||
 				$user->isGroupLeader()) {
-				$pendingApplicationList = ApplicationHandler::getPendingApplications($user->getGroup());
+				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
 				
 				if (!empty($pendingApplicationList)) {
 					echo '<div class="information">Du har <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar!</div>';
