@@ -1,7 +1,7 @@
 body {
 	font-family:Arial;
 	background-color:#ffffff;
-	width: 1050px;
+	width: 1060px;
 	margin-left: auto;
 	margin-right: auto;
 	padding-right: 50px;
@@ -61,8 +61,6 @@ header a {
 	border: solid 1px;
 	border-color: rgba(0,0,0,0.30);
 	border-radius: 1px;
-	-moz-border-radius: 1px;
-	-webkit-border-radius: 1px;
 	background-color: #FFFFFF;
 	min-height: 600px;
 	margin-top: 25px;
@@ -70,8 +68,7 @@ header a {
 	margin-right: auto;
 	margin-bottom: 5%;
 	float: right;
-
-	-webkit-box-shadow: 0px 0px 0px 7px rgba(106,189,223,0.30);
+	padding: 5px;
 }
 
 .warning {
@@ -84,6 +81,7 @@ header a {
 	display: block;
 	position: relative;
 }
+
 .information {
 	border: 1px solid;
 	border-radius:2px;
@@ -205,11 +203,13 @@ header a {
 	min-height: 27px;
 	min-width: 27px;
 }
+
 .selectedRow {
 	border-style: solid;
     border-width: 5px;
     border-color: rgb(100, 100, 100);
 }
+
 .seat {
 	background: green;
 	width: 27px;
@@ -220,15 +220,66 @@ header a {
 	font-size: 10px;
 	text-align: center;
 }
+
 #seatmapCanvas {
 	position: relative;
 	border-style: solid;
     border-width: 1px;
     height: 1000px;
 }
+
 .closeButton {
 	margin-right: 0px;
 	margin-top: 0px;
 	position: absolute;
 	font-size: 11px;
+}
+
+/* Search */
+input.search {
+	width: 350px;
+	height: 25px;
+	padding: 5px;
+	border-radius: 2px;
+	border: 1px solid #ababab;
+	font-size: 20px;
+	line-height: 25px;
+	color: #ababab;
+}
+
+input.search:hover, input.search:focus {
+	color: #3b3b3b;
+	border: 1px solid #36a2d2;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+ul.search-results {
+	padding: 0;
+    list-style-type: none;
+	display: none;
+	width: 360px;
+	margin-top: 4px;
+	border: 1px solid #ababab;
+	border-radius: 2px;
+	box-shadow: rgba(0, 0, 0, .15) 0 1px 3px;
+}
+
+ul.search-results li {
+	padding: 8px;
+	cursor: pointer;
+	border-top: 1px solid #cdcdcd;
+	transition: background-color .3s ease-in-out;
+}
+
+ul.search-results li a {
+	text-decoration: none;
+	color: #000000;
+}
+
+ul.search-results li:hover {
+	background-color: #F7F7F7;
+}
+
+ul.search-results li:first-child {
+	border-top: none;
 }

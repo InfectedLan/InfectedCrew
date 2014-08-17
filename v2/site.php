@@ -80,16 +80,16 @@ class Site {
 								}
 							
 								if ($this->pageName == 'functions' || 
-									$this->pageName == 'functions-find-user' ||
+									$this->pageName == 'functions-find-users' ||
 									$this->pageName == 'functions-my-crew' || 
 									$this->pageName == 'functions-info' ||
 									$this->pageName == 'functions-site-list-games' || 
 									$this->pageName == 'functions-site-list-pages') {
 									
 									if ($user->hasPermission('*') ||
-										$user->hasPermission('functions.find-user') ||
+										$user->hasPermission('functions.find-users') ||
 										$user->isGroupLeader()) {
-										echo '<li><a href="index.php?page=functions-find-user">Søk etter bruker</a></li>';
+										echo '<li><a href="index.php?page=functions-find-users">Søk etter bruker</a></li>';
 									}
 									
 									if ($user->hasPermission('*') ||
@@ -281,14 +281,14 @@ class Site {
 					
 					if ($user->hasPermission('*') ||
 						$user->hasPermission('functions') ||
-						$user->hasPermission('functions.find-user') ||
+						$user->hasPermission('functions.find-users') ||
 						$user->hasPermission('functions.my-crew') ||
 						$user->hasPermission('functions.info') ||
 						$user->hasPermission('functions.site-list-games') ||
 						$user->hasPermission('functions.site-list-pages') ||
 						$user->isGroupLeader()) {
 						if ($this->pageName == 'functions' || 
-							$this->pageName == 'functions-find-user' || 
+							$this->pageName == 'functions-find-users' || 
 							$this->pageName == 'functions-my-crew' || 
 							$this->pageName == 'functions-info' ||
 							$this->pageName == 'functions-site-list-games' || 
