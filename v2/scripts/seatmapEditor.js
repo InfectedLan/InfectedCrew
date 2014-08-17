@@ -184,7 +184,7 @@ function renderSeatmap()
 			seatmapData = data;
 			//Render seatmap
 			$("#seatmapCanvas").html('');
-			$("#seatmapCanvas").css('background-image', 'url("' + data.backgroundImage + '")');
+			$("#seatmapCanvas").css('background-image', 'url("../api/content/' + data.backgroundImage + '")');
 			for(var i = 0; i < data.rows.length; i++)
 			{
 				var returnData = [];

@@ -224,8 +224,9 @@ header a {
 #seatmapCanvas {
 	position: relative;
 	border-style: solid;
+	background-repeat: no-repeat;
     border-width: 1px;
-    height: 1000px;
+    min-height: 1400px;
 }
 
 .closeButton {
