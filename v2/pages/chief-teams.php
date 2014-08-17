@@ -65,12 +65,12 @@ if (Session::isAuthenticated()) {
 					echo '<table>';
 						echo '<tr>';
 							echo '<td>Navn:</td>';
-							echo '<td><input type="text" name="title"></td>';
+							echo '<td><input type="text" name="title" required></td>';
 						echo '<tr>';
 						echo '</tr>';
 						echo '<tr>';
 							echo '<td>Beskrivelse:</td>';
-							echo '<td><input type="text" name="description"></td>';
+							echo '<td><input type="text" name="description" required></td>';
 						echo '</tr>';
 						echo '<tr>';
 							echo '<td>Chief:</td>';

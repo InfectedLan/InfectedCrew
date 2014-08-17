@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 		$user->isGroupLeader()) {
 		echo '<script type="text/javascript" src="scripts/functions-find-users.js"></script>';
 		echo '<h1>Søk etter bruker</h1>';
-		echo '<input class="search" type="text" placeholder="Skriv for å søke..." autocomplete="off">';
+		echo '<input class="search" type="text" placeholder="Skriv for å søke..." autocomplete="off" autofocus>';
 		echo '<ul class="search-results"></ul>';
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
