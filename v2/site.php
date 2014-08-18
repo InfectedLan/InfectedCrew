@@ -377,15 +377,18 @@ class Site {
 	private function viewNotifications() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
+			$pendingApplicationList = null;
 			
 			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.applications') ||
-				$user->isGroupLeader()) {
+				$user->hasPermission('chief.applications')) {
+				$pendingApplicationList = ApplicationHandler::getPendingApplications();
+			} else if ($user->isGroupLeader() && 
+				$user->isGroupMember()) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
-				
-				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Du har <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar!</div>';
-				}
+			}
+
+			if (!empty($pendingApplicationList)) {
+				echo '<div class="information">Du har <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar!</div>';
 			}
 		}
 	}
