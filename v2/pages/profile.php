@@ -10,8 +10,7 @@ if (Session::isAuthenticated()) {
 	
 	if ($profile != null) {
 		if ($user->hasPermission('*') ||
-			$user->hasPermission('crew-admin') ||
-			$user->hasPermission('tickets-admin') ||
+			$user->hasPermission('functions-search-users') ||
 			$user->getId() == $profile->getId()) {
 
 			echo '<h1>' . $profile->getFirstname() . ' "' . $profile->getNickname() . '" ' . $profile->getLastname() . '</h1>';
@@ -126,12 +125,20 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 			
-				if ($profile->getId() == $user->getId()) {
-					echo '<tr>';
-						echo '<td></td>';
-						echo '<td><a href="index.php?page=edit-profile">Endre bruker</a></td>';
-					echo '</tr>';
-				}
+				echo '<tr>';
+					echo '<td>';
+					echo '</td>';
+					echo '<td>';
+						if ($profile->getId() == $user->getId()) {
+							echo '<a href="index.php?page=edit-profile">Endre bruker</a> ';
+						}
+						
+						if ($user->hasPermission('*') ||
+							$user->hasPermission('admin.permissions')) {
+							echo '<a href="index.php?page=edit-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
+						}
+					echo '</td>';
+				echo '</tr>';
 			echo '</table>';
 		} else {
 			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
