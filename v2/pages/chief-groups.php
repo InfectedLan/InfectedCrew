@@ -32,36 +32,21 @@ if (Session::isAuthenticated()) {
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '" required></td>';
 							echo '<td>';
-								echo '<input type="text" id="userSearchBox' . $group->getId() . '" placeholder="Skriv her for å søke..." size="20"/>';
-								//I know, very hacky. But it works.
-								echo '<script>';
-									echo '$("#userSearchBox' . $group->getId() . '").on("input", function(){';
-										echo 'updateSearchField(' . $group->getId() . ');';
-									echo '});';
-								echo '</script>';
-								echo '<select name="leader" id="memberSelect' . $group->getId() . '" style="width:200px;">';
-									/*
-									if ($group->getleader() != null) {
+								echo '<select class="chosen-select" name="leader">';
+									$leader = $group->getLeader();
+									
+									if ($leader != null) {
 										echo '<option value="0">Ingen</option>';
 									} else {
 										echo '<option value="0" selected>Ingen</option>';
 									}
 									
-									foreach ($userList as $value) {
-										$leader = $group->getLeader();
-										
-										if ($leader != null && $value->getId() == $leader->getId()) {
-											echo '<option value="' . $value->getId() . '" selected>' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
+									foreach ($userList as $key => $userValue) {
+										if ($leader != null && $userValue->getId() == $leader->getId()) {
+											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
-											echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
+											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 										}
-									}
-									*/
-									$leader = $group->getLeader();
-									if ($group->getleader() != null) {
-										echo '<option value="' . $leader->getId() . '">' . $leader->getDisplayName() . '</option>';
-									} else {
-										echo '<option value="0" selected>Ingen</option>';
 									}
 								echo '</select>';
 							echo '</td>';
@@ -86,7 +71,7 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Chief:</td>';
 						echo '<td>';
-							echo '<select name="leader">';
+							echo '<select class="chosen-select" name="leader">';
 								echo '<option value="0">Ingen</option>';
 								
 								foreach ($userList as $value) {
@@ -110,14 +95,14 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<form class="chief-groups-adduser" method="post">';
 							echo '<td>';
-								echo '<select name="userId">';
+								echo '<select class="chosen-select" name="userId">';
 									foreach ($freeUserList as $user) {
 										echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
 									}
 								echo '</select>';
 							echo '</td>';
 							echo '<td>';
-								echo '<select name="groupId">';
+								echo '<select class="chosen-select" name="groupId">';
 									foreach ($groupList as $group) {
 										echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 									}

@@ -34,20 +34,20 @@ if (Session::isAuthenticated()) {
 								echo '<td>' . count($team->getMembers()) . '</td>';
 								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
 								echo '<td>';
-									echo '<select name="leader">';
-										if ($team->getLeader() != null) {
+									echo '<select class="chosen-select" name="leader">';
+										$leader = $team->getLeader();
+										
+										if ($leader != null) {
 											echo '<option value="0">Ingen</option>';
 										} else {
 											echo '<option value="0" selected>Ingen</option>';
 										}
 										
-										foreach ($userList as $key => $user) {
-											$leader = $team->getLeader();
-											
-											if ($leader != null && $user->getId() == $leader->getId()) {
-												echo '<option value="' . $user->getId() . '" selected>' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
+										foreach ($userList as $key => $userValue) {
+											if ($leader != null && $userValue->getId() == $leader->getId()) {
+												echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 											} else {
-												echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
+												echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 											}
 										}
 									echo '</select>';
@@ -75,7 +75,7 @@ if (Session::isAuthenticated()) {
 						echo '<tr>';
 							echo '<td>Chief:</td>';
 							echo '<td>';
-								echo '<select name="leader">';
+								echo '<select class="chosen-select" name="leader">';
 									echo '<option value="0" selected>Ingen</option>';
 									
 									foreach ($userList as $value) {
@@ -99,7 +99,7 @@ if (Session::isAuthenticated()) {
 						echo '<tr>';
 							echo '<form class="chief-teams-adduser" action="" method="post">';
 								echo '<td>';
-									echo '<select name="userId">';
+									echo '<select class="chosen-select" name="userId">';
 										foreach ($freeUserList as $user) {
 											echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
 										}
