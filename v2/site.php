@@ -4,7 +4,8 @@ require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/applicationhandler.php';
-	
+require_once 'handlers/avatarhandler.php';
+
 class Site {
 	private $pageName;
 	
@@ -209,8 +210,12 @@ class Site {
 						
 						if ($user->hasPermission('*') ||
 							$user->isGroupMember()) {
+							// Only show notification on the default page.
+							if (!isset($_GET['page'])) {
+								$this->viewNotifications();
+							}
+							
 							// View the page specified by "pageName" variable.
-							$this->viewNotifications();
 							$this->viewPage($this->pageName);
 						} else {
 							$publicPages = array('apply', 
@@ -378,16 +383,23 @@ class Site {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			$pendingApplicationList = null;
+			$pendingAvatarList = null;
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.applications')) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplications();
+				$pendingAvatarList = AvatarHandler::getPendingAvatars();
 			} else if ($user->isGroupLeader() && $user->isGroupMember()) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
+				$pendingAvatarList = AvatarHandler::getPendingAvatars();
 			}
 
 			if (!empty($pendingApplicationList)) {
-				echo '<div class="information">Du har <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar!</div>';
+				echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
+			}
+			
+			if (!empty($pendingAvatarList)) {
+				echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> profilbilder som venter på godkjenning.</div>';
 			}
 		}
 	}
