@@ -213,7 +213,7 @@ class Site {
 							$this->viewNotifications();
 							$this->viewPage($this->pageName);
 						} else {
-							$publicPages = array('application', 
+							$publicPages = array('apply', 
 												 'crew', 
 												 'profile', 
 												 'edit-profile', 
@@ -273,10 +273,10 @@ class Site {
 							echo '<div class="icon"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
 						}
 					} else {
-						if ($this->pageName == 'application') {
-							echo '<div class="icon" id="active"><a href="index.php?page=application"><img src="images/apply.png"></a></div>';
+						if ($this->pageName == 'apply') {
+							echo '<div class="icon" id="active"><a href="index.php?page=apply"><img src="images/apply.png"></a></div>';
 						} else {
-							echo '<div class="icon"><a href="index.php?page=application"><img src="images/apply.png"></a></div>';
+							echo '<div class="icon"><a href="index.php?page=apply"><img src="images/apply.png"></a></div>';
 						}
 					}
 					

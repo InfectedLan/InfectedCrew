@@ -1,18 +1,9 @@
-$(document).ready(function() {
-	$('.chief-applications-reject').submit(function(e) {
-		e.preventDefault();
-		$.getJSON('../api/json/rejectApplication.php' + '?' + $(this).serialize(), function(data) {
-			if (data.result) {
-				location.reload();
-			} else {
-				error(data.message); 
-			}
-		});
-	});
-});
+function viewApplication(id) {
+	$(location).attr('href', 'index.php?page=application&id=' + id);
+}
 
-function acceptApplication(id) {
-	$.getJSON('../api/json/acceptApplication.php?id=' + id, function(data) {
+function removeApplication(id) {
+	$.getJSON('../api/json/removeApplication.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
