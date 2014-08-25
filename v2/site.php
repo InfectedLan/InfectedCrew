@@ -382,8 +382,7 @@ class Site {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.applications')) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplications();
-			} else if ($user->isGroupLeader() && 
-				$user->isGroupMember()) {
+			} else if ($user->isGroupLeader() && $user->isGroupMember()) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
 			}
 

@@ -9,7 +9,15 @@ if (Session::isAuthenticated()) {
 		$user->hasPermission('chief.applications') ||
 		$user->isGroupLeader()) {
 		$group = $user->getGroup();
-		$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
+		$pendingApplicationList = null;
+			
+		if ($user->hasPermission('*') ||
+			$user->hasPermission('chief.applications')) {
+			$pendingApplicationList = ApplicationHandler::getPendingApplications();
+		} else if ($user->isGroupLeader() &&  $user->isGroupMember()) {
+			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
+		}
+		
 		echo '<script src="scripts/chief-applications.js"></script>';
 		echo '<h1>Søknader</h1>';
 		echo '<p>Det er for øyeblikket ' . count($pendingApplicationList) . ' søknader som trenger behandling.</p>';
