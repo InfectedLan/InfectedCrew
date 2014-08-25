@@ -237,6 +237,7 @@ header a {
 }
 
 /* Search */
+/* 
 input.search {
 	width: 350px;
 	height: 25px;
@@ -283,4 +284,4 @@ ul.search-results li:hover {
 
 ul.search-results li:first-child {
 	border-top: none;
-}
+} */
