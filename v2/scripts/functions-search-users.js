@@ -1,13 +1,24 @@
 $(document).ready(function() {  
-	$('.search input').on('keyup', function(e) {
+	$('input.search').on('keyup', function(e) {
 		// Set Timeout
 		clearTimeout($.data(this, 'timer'));
-		$(this).data('timer', setTimeout(search, 100));
+
+		// Set Search String
+		var search_string = $(this).val();
+
+		// Do Search
+		if (search_string == '') {
+			$('ul.search-results').fadeOut();
+		} else {
+			$('ul.search-results').fadeIn();
+			$(this).data('timer', setTimeout(search, 100));
+		};
 	});
 });
 
 function search() {
-	var query = $('.search input').val();
+	var query = $('input.search').val();
+	$('b.search-string').html(query);
 	
 	if (query !== '') {
 		$.getJSON('../api/json/searchForUser.php' + '?query=' + query, function(data) {
@@ -17,13 +28,13 @@ function search() {
 				for (var i = 0; i < data.users.length; i++) {
 					var user = data.users[i];
 					
-					content += '<li><a href="index.php?page=profile&id=' + user.id + '">' + user.firstname + ' "' + user.nickname + '" ' + user.lastname + '</a></li>';
+					content += '<li><a href="index.php?page=profile&id=' + user.id + '"><b class="highlight">' + user.firstname + ' "' + user.nickname + '" ' + user.lastname + '</b></a></li>';
 				}
 			} else {
-				content = '<li>Ingen resultater funnet.</li>';
+				content = '<li><b>Ingen resultater funnet.</b></li>';
 			}
 			
-			$('ul.results').html(content);
+			$('ul.search-results').html(content);
 		});
 	}
 	
