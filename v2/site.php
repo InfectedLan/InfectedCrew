@@ -26,9 +26,9 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<script src="../api/scripts/jquery.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
-				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
 			echo '</head>';
 			echo '<body>';

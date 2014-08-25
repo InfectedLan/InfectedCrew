@@ -13,67 +13,55 @@ if (Session::isAuthenticated()) {
 			$user->hasPermission('functions-search-users') ||
 			$user->getId() == $profile->getId()) {
 
-			echo '<h1>' . $profile->getFirstname() . ' "' . $profile->getNickname() . '" ' . $profile->getLastname() . '</h1>';
-			echo '<img src="' . $profile->getAvatar()->getFile() . '" width="1" height="1" style="margin-left: 50%; position: relative; width: 400px; height: 300px;">';
-
-			echo '<table style="position: relative; width: 50%; top: -300px;">';
+			echo '<h3>' . $profile->getDisplayName(). '</h3>';
+			
+			echo '<table style="float: left;">';
 				echo '<tr>';
 					echo '<td>Navn:</td>';
-					echo '<td>' . $profile->getFirstname() . ' ' . $profile->getLastname() . '</td>';
+					echo '<td>' . $profile->getFullName() . '</td>';
 				echo '</tr>';
-			
-				if ($user->hasPermission('*')) {
-					echo '<tr>';
-						echo '<td>Brukernavn:</td>';
-						echo '<td>' . $profile->getUsername() . '</td>';
-					echo '</tr>';
-				}
-				
+				echo '<tr>';
+					echo '<td>Brukernavn:</td>';
+					echo '<td>' . $profile->getUsername() . '</td>';
+				echo '</tr>';
 				echo '<tr>';
 					echo '<td>E-post:</td>';
 					echo '<td>' . $profile->getEmail() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td>Alder:</td>';
-					echo '<td>' . $profile->getAge() . ' år</td>';
+					echo '<td>Fødselsdato</td>';
+					echo '<td>' . date('d.m.Y', $profile->getBirthdate()) . '</td>';
 				echo '</tr>';
-				
-				if ($user->hasPermission('*')) {
-					echo '<tr>';
-						echo '<td>Fødselsdato</td>';
-						echo '<td>' . date('d.m.Y', $profile->getBirthdate()) . '</td>';
-					echo '</tr>';
-				}
-				
 				echo '<tr>';
 					echo '<td>Kjønn:</td>';
 					echo '<td>' . $profile->getGenderName() . '</td>';
 				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Alder:</td>';
+					echo '<td>' . $profile->getAge() . ' år</td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Telefon:</td>';
+					echo '<td>' . $profile->getPhone() . '</td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Adresse:</td>';
+						$address = $profile->getAddress();
+						
+						if (!empty($address)) {
+							echo '<td>' . $address . '</td>';
+						} else {
+							echo '<td><i>Ikke oppgitt</i></td>';
+						}
+				echo '</tr>';
+			
+				$postalCode = $profile->getPostalCode();
 				
-				if ($user->hasPermission('*')) {
+				if (!empty($postalCode)) {
 					echo '<tr>';
-						echo '<td>Telefon:</td>';
-						echo '<td>' . $profile->getPhone() . '</td>';
+						echo '<td></td>';
+						echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
 					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Adresse:</td>';
-							$address = $profile->getAddress();
-							
-							if (!empty($address)) {
-								echo '<td>' . $address . '</td>';
-							} else {
-								echo '<td><i>Ikke oppgitt</i></td>';
-							}
-					echo '</tr>';
-				
-					$postalCode = $profile->getPostalCode();
-					
-					if (!isset($postalCode)) {
-						echo '<tr>';
-							echo '<td></td>';
-							echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
-						echo '</tr>';
-					}
 				}
 				
 				echo '<tr>';
@@ -81,37 +69,38 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $profile->getNickname() . '</td>';
 				echo '</tr>';
 				
-				if ($user->hasPermission('*') &&
-					$profile->hasEmergencyContact()) {
+				if ($profile->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';
 						echo '<td>' . $profile->getEmergencyContact()->getPhone() . '</td>';
 					echo '</tr>';
 				}
 				
-				echo '<tr>';
-					echo '<td>Crew:</td>';
-					echo '<td>';
-						if ($profile->isGroupMember()) {
-							echo $profile->getGroup()->getTitle();
-						} else {
-							echo '<i>Ingen</i>';
-						}
-					echo '</td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Lag:</td>';
-					echo '<td>';
-						if ($profile->isTeamMember()) {
-							echo $profile->getTeam()->getTitle();
-						} else {
-							echo '<i>Ingen</i>';
-						}
-					echo '</td>';
-				echo '</tr>';
+				if ($profile->isGroupMember()) {
+					echo '<tr>';
+						echo '<td>Crew:</td>';
+						echo '<td>';
+							if ($profile->isGroupMember()) {
+								echo $profile->getGroup()->getTitle();
+							} else {
+								echo '<i>Ingen</i>';
+							}
+						echo '</td>';
+					echo '</tr>';
+					
+					if ($profile->isTeamMember()) {
+						echo '<tr>';
+							echo '<td>Lag:</td>';
+							echo '<td>';
+								
+									echo $profile->getTeam()->getTitle();
+							echo '</td>';
+						echo '</tr>';
+					}	
+				}
 			
-				if ($user->hasTicket()) {
-					$ticket = $user->getTicket();
+				if ($profile->hasTicket()) {
+					$ticket = $profile->getTicket();
 					$seat = $ticket->getSeat();
 					$row = $seat->getRow();
 					
@@ -140,6 +129,7 @@ if (Session::isAuthenticated()) {
 					echo '</td>';
 				echo '</tr>';
 			echo '</table>';
+			echo '<img src="' . $profile->getAvatar()->getFile() . '" width="500px" height="400px" style="float: right;">';
 		} else {
 			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
 		}
