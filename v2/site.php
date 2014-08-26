@@ -418,16 +418,29 @@ class Site {
 		$page = RestrictedPageHandler::getPageByName($pageName);
 		
 		if ($page != null) {
-			echo '<h1>' . $page->getTitle() . '</h1>';
+			echo '<h3>' . $page->getTitle() . '</h3>';
 			echo $page->getContent();
 		} else {
-			$directory = 'pages';
-			$fileName = $directory . '/' . $pageName . '.php';
+			$directoryList = array(Settings::api_path . 'pages',
+								   'pages');
+			$includedPages = array();
+			$found = false;
 			
-			// If page doesn't exist in the database, check if there is a .php file that do. Else an error is shown.
-			if (in_array($fileName, glob($directory . '/*.php'))) {
-				include $fileName;
-			} else {
+			foreach ($directoryList as $directory) {
+				$filePath = $directory . '/' . $pageName . '.php';
+			
+				if (!in_array($pageName, $includedPages) &&
+					in_array($filePath, glob($directory . '/*.php'))) {
+					// Make sure we don't include pages with same name twice, 
+					// and set the found varialbe so that we don't have to display the not found message.
+					array_push($includedPages, $pageName);
+					$found = true;
+				
+					include_once $filePath;
+				}
+			}
+			
+			if (!$found) {
 				echo '<article>';
 					echo '<h1>Siden ble ikke funnet!</h1>';
 				echo '</article>';

@@ -6,10 +6,10 @@ if (Session::isAuthenticated()) {
 	
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('admin')) {
-		echo '<h3>Admin</h3>';
-		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
+		echo '<h1>Admin</h1>';
+		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
 	} else {
-		echo '<p>Du har ikke tilgang til dette.';
+		echo '<p>Du har ikke tilgang til dette.</p>';
 	}
 }
 ?>
