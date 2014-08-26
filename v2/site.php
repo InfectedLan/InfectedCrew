@@ -23,6 +23,7 @@ class Site {
 				echo '<meta name="keywords" content="' . Settings::keywords . '">';
 				echo '<meta name="author" content="' . implode(', ', Settings::$authors) . '">';
 				echo '<meta charset="UTF-8">';
+				echo '<link rel="shortcut icon" href="images/favicon.ico">';
 				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<link rel="stylesheet" href="../api/scripts/chosen/chosen.css">';
 				echo '<script src="../api/scripts/jquery.js"></script>';
