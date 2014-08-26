@@ -16,10 +16,11 @@ if (Session::isAuthenticated()) {
 			echo '<tr>';
 				echo '<th>Navn:</th>';
 				echo '<th>Tema:</th>';
-				echo '<th>Start:</th>';
-				echo '<th>Slutt:</th>';
 				echo '<th>Sted:</th>';
 				echo '<th>Deltakere:</th>';
+				echo '<th>Booking:</th>';
+				echo '<th>Start:</th>';
+				echo '<th>Slutt:</th>';
 			echo '</tr>';
 			
 			$eventList = EventHandler::getEvents();
@@ -35,6 +36,16 @@ if (Session::isAuthenticated()) {
 						echo '</td>';
 						echo '<td><input type="text" name="theme" value="' . $event->getTheme() . '"></td>';
 						echo '<td>';
+							echo '<select name="location">';
+								echo '<option value="' . $event->getLocation()->getId() . '">' . $event->getLocation()->getTitle() . '</option>';
+							echo '</select>';
+						echo '</td>';	
+						echo '<td><input type="text" name="participants" value="' . $event->getParticipants() . '"></td>';		
+						echo '<td>';
+							echo '<input type="date" name="bookingDate" value="' . date('Y-m-d', $event->getBookingTime()) . '">';
+							echo '<input type="time" name="bookingTime" value="' . date('H:i', $event->getBookingTime()) . '">';
+						echo '</td>';
+						echo '<td>';
 							echo '<input type="date" name="startDate" value="' . date('Y-m-d', $event->getStartTime()) . '">';
 							echo '<input type="time" name="startTime" value="' . date('H:i', $event->getStartTime()) . '">';
 						echo '</td>';
@@ -42,14 +53,12 @@ if (Session::isAuthenticated()) {
 							echo '<input type="date" name="endDate" value="' . date('Y-m-d', $event->getEndTime()) . '">';
 							echo '<input type="time" name="endTime" value="' . date('H:i', $event->getEndTime()) . '">';
 						echo '</td>';
-						echo '<td>';
-							echo '<select name="location">';
-								echo '<option value="' . $event->getLocation()->getId() . '">' . $event->getLocation()->getTitle() . '</option>';
-							echo '</select>';
-						echo '</td>';	
-						echo '<td><input type="text" name="participants" value="' . $event->getParticipants() . '"></td>';		
 						echo '<td><input type="submit" value="Endre"></td>';
 					echo '</form>';
+					
+					if ($user->hasPermission('*')) {
+						echo '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
+					}
 				echo '</tr>';
 			}
 		echo '</table>';
@@ -61,16 +70,6 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Tema:</td>';
 					echo '<td><input type="text" name="theme" required></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Start:</td>';
-					echo '<td><input type="date" name="startDate" required></td>';
-					echo '<td><input type="time" name="startTime" required></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Slutt:</td>';
-					echo '<td><input type="date" name="endDate" required></td>';
-					echo '<td><input type="time" name="endTime" required></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Sted:</td>';
@@ -85,6 +84,22 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Deltakere:</td>';
 					echo '<td><input type="number" name="participants"  required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Booking:</td>';
+					echo '<td><input type="date" name="bookingDate" required></td>';
+					echo '<td><input type="time" name="bookingTime" required></td>';
+				echo '</tr>';
+				
+				echo '<tr>';
+					echo '<td>Start:</td>';
+					echo '<td><input type="date" name="startDate" required></td>';
+					echo '<td><input type="time" name="startTime" required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Slutt:</td>';
+					echo '<td><input type="date" name="endDate" required></td>';
+					echo '<td><input type="time" name="endTime" required></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td><input type="submit" value="Legg til"></td>';
