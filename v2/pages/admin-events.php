@@ -29,9 +29,9 @@ if (Session::isAuthenticated()) {
 					echo '<form class="admin-events-edit" name="input" method="post">';
 						echo '<input type="hidden" name="id" value="' . $event->getId() . '">';
 						echo '<td>';
-							$when = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
+							$season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
 							
-							echo 'Infected ' . $when . ' ' . date('Y', $event->getStartTime());
+							echo 'Infected ' . $season . ' ' . date('Y', $event->getStartTime());
 						echo '</td>';
 						echo '<td><input type="text" name="theme" value="' . $event->getTheme() . '"></td>';
 						echo '<td>';
