@@ -1,29 +1,36 @@
-function error(what)
-{
+$(function() {
+	$('.chosen-select').chosen({
+		no_results_text: "Ingen resultater for "
+	});
+});
+
+function error(what) {
 	//Do something
 	$("#innerError").html(what);
 	$("#error").fadeIn(300);
 }
-function info(what)
-{
+
+function info(what) {
 	//Do even more something
 	$("#innerInfo").html(what);
 	$("#info").fadeIn(300);
 }
-function closeError()
-{
+
+function closeError() {
 	$("#innerError").html("");
 	$("#error").fadeOut(300);
 }
-function closeInfo()
-{
+
+function closeInfo() {
 	$("#innerInfo").html("");
 	$("#info").fadeOut(300);
 }
+
 $( document ).ready(function() {
     $("#errorClose").click(function() {
     	closeError();
     });
+	
     $("#infoClose").click(function() {
     	closeInfo();
     });
