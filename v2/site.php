@@ -230,7 +230,7 @@ class Site {
 						} else {
 							$publicPages = array('apply', 
 												 'crew', 
-												 'profile', 
+												 'my-profile', 
 												 'edit-profile', 
 												 'edit-password', 
 												 'edit-avatar');
@@ -283,9 +283,9 @@ class Site {
 						
 						if ($this->pageName == 'my-crew' ||
 							in_array(strtolower($this->pageName), $groupPageNameList)) {
-							echo '<div class="icon" id="active"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
+							echo '<div class="icon" id="active"><a href="index.php?page=my-crew"><img src="images/my-crew.png"></a></div>';
 						} else {
-							echo '<div class="icon"><a href="index.php?page=my-crew"><img src="images/mycrew.png"></a></div>';
+							echo '<div class="icon"><a href="index.php?page=my-crew"><img src="images/my-crew.png"></a></div>';
 						}
 					} else {
 						if ($this->pageName == 'apply') {
@@ -351,10 +351,10 @@ class Site {
 						}
 					}
 
-					if ($this->pageName == 'profile') {
-						echo '<div class="icon" id="active"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
+					if ($this->pageName == 'my-profile') {
+						echo '<div class="icon" id="active"><a href="index.php?page=my-profile"><img src="images/my-profile.png"></a></div>';
 					} else {
-						echo '<div class="icon"><a href="index.php?page=profile"><img src="images/profile.png"></a></div>';
+						echo '<div class="icon"><a href="index.php?page=my-profile"><img src="images/my-profile.png"></a></div>';
 					}
 				}
 			echo '</body>';
