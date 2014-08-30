@@ -27,36 +27,31 @@ if (Session::isAuthenticated()) {
 				
 				foreach ($gameList as $game) {
 					echo '<tr>';
-						echo '<form action="scripts/process_game.php?action=3&id=' . $game->getId() . '&returnPage=' . $returnPage . '" method="post">';
+						echo '<form class="functions-site-list-games-edit" method="post">';
+							echo '<input type="hidden" name="id" value="' . $game->getId() . '">';
 							echo '<td><input type="text" name="title" value="' . $game->getTitle() . '"></td>';
 							echo '<td><input type="text" name="price" value="' . $game->getPrice() . '"></td>';
 							echo '<td><input type="text" name="mode" value="' . $game->getMode() . '"></td>';
 							echo '<td><input type="text" name="description" value="' . $game->getDescription() . '"></td>';
-							echo '<td>Den <input type="date" name="deadlineDate" value="' . date('Y-m-d', $game->getDeadline()) . '"> klokken <input type="time" name="deadlineTime" value="' . date('H:i', $game->getDeadline()) . '"></td>';
+							echo '<td>Den <input type="date" name="deadlineDate" value="' . date('Y-m-d', $game->getDeadline()) . '" placeholder="åååå-mm-dd"> klokken <input type="time" name="deadlineTime" value="' . date('H:i:s', $game->getDeadline()) . '" placeholder="tt:mm:ss"></td>';
+							
 							if ($game->isPublished()) {
 								echo '<td><input type="checkbox" name="published" value="1" checked></td>';
 							} else {
 								echo '<td><input type="checkbox" name="published" value="1"></td>';
 							}
+							
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
 						
-						if ($user->isGroupLeader() || 
-							$user->hasPermission('*') || 
-							$user->hasPermission('site-admin')) {
-							echo '<form action="scripts/process_game.php?action=2&id=' . $game->getId() . '&returnPage=' . $returnPage . '" method="post">';
-								echo '<td><input type="submit" value="Slett"></td>';
-							echo '</form>';
+						if ($user->hasPermission('*')) {
+							echo '<td><input type="button" value="Slett" onClick="removeGame(' . $game->getId() . ')"></td>';
 						}
 					echo '</tr>';
 				}
 			echo '</table>';
-		}
-		
-		if ($user->isGroupLeader() || 
-			$user->hasPermission('*') || 
-			$user->hasPermission('site-admin')) {
-			echo '<form action="scripts/process_game.php?action=1&returnPage=' . $returnPage . '" method="post">';
+
+			echo '<form class="functions-site-list-games-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';
@@ -66,7 +61,7 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Premie:</td>';
 						echo '<td><input type="text" name="price"></td>';
-						echo '<td>kr</td>';
+						echo '<td>,-</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Modus:</td>';
@@ -80,8 +75,8 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Registreringsfrist:</td>';
-						echo '<td><input type="date" name="deadlineDate" placeholder="dd.mm.åååå"></td>';
-						echo '<td><input type="time" name="deadlineTime" placeholder="time:minutt"></td>';
+						echo '<td><input type="date" name="deadlineDate" value="' . date('Y-m-d') . '" placeholder="åååå-mm-dd"></td>';
+						echo '<td><input type="time" name="deadlineTime" value="' . date('H:i:s') . '" placeholder="tt:mm:ss"></td>';
 					echo '</tr>';
 				echo '</table>';
 				echo '<textarea id="editor1" name="content" rows="10" cols="80"></textarea>';
