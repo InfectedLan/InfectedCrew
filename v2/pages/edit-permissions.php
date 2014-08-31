@@ -13,7 +13,7 @@ if (Session::isAuthenticated()) {
 
 		if ($permissionUser != null) {
 			echo '<script src="scripts/edit-permissions.js"></script>';
-			echo '<h3>Endre ' . $permissionUser->getDisplayName() . '\'s rettigheter</h3>';
+			echo '<h3>Du endrer nå "' . $permissionUser->getFullName() . '" sine rettigheter</h3>';
 			
 			echo '<form class="edit-permissions" method="post">';
 				echo '<input type="hidden" name="id" value="' . $permissionUser->getId() . '">';
