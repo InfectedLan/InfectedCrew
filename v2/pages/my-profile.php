@@ -114,20 +114,28 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 			
-				echo '<tr>';
-					echo '<td>';
-					echo '</td>';
-					echo '<td>';
-						if ($profile->getId() == $user->getId()) {
+				if ($profile->getId() == $user->getId()) {
+					echo '<tr>';
+						echo '<td>';
 							echo '<a href="index.php?page=edit-profile">Endre bruker</a> ';
-						}
-						
-						if ($user->hasPermission('*') ||
-							$user->hasPermission('admin.permissions')) {
+						echo '</td>';
+						echo '<td>';
+							echo '<a href="index.php?page=edit-avatar">Endre avatar</a> ';
+						echo '</td>';
+					echo '</tr>';
+				}
+					
+				if ($user->hasPermission('*') ||
+					$user->hasPermission('admin.permissions')) {
+					echo '<tr>';
+						echo '<td>';
+							//echo 'Admin-kontroll'; 
+						echo '</td>';
+						echo '<td>';
 							echo '<a href="index.php?page=edit-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
-						}
-					echo '</td>';
-				echo '</tr>';
+						echo '</td>';
+					echo '</tr>';
+				}
 			echo '</table>';
 			echo '<img src="' . $profile->getAvatar()->getFile() . '" width="500px" height="400px" style="float: right;">';
 		} else {
