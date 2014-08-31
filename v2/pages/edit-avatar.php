@@ -15,8 +15,15 @@ if (Session::isAuthenticated()) {
 		echo '<img src="' . $avatar->getFile() . '" width="50%" height="50%">';
 		
 		echo '<b>Nytt profilbilde: </b>';
-		echo '<form action="do/doAvatar.php" method="post" enctype="multipart/form-data"><input type="hidden" name="MAX_FILE_SIZE" value="7000000" /><label for="file">Filnavn:</label><input type="file" name="file" id="file"><br><input type="submit" name="submit" value="Last opp!"></form><br />';
-	} else if ($state == 2) {
+		echo '<form action="../api/json/uploadAvatar.php" method="post" enctype="multipart/form-data">';
+			echo '<input type="hidden" name="MAX_FILE_SIZE" value="7000000" />';
+			echo '<label for="file">Filnavn:</label>';
+			echo '<input type="file" name="file" id="file">';
+			echo '<br>';
+			echo '<input type="submit" name="submit" value="Last opp!">';
+		echo '</form>';
+		echo '<br />';
+	} else if ($state == 0) {
 		echo '<script src="api/jcrop/js/jquery.min.js"></script>';
 		echo '<script src="api/jcrop/js/jquery.Jcrop.js"></script>';
 		echo '<link rel="stylesheet" href="api/jcrop/css/jquery.Jcrop.css" type="text/css">';

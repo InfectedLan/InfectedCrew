@@ -34,11 +34,12 @@ if (Session::isAuthenticated()) {
 						echo '<td>Tekst:</td>';
 						echo '<td>';
 							echo '<textarea id="editor1" name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
-							echo '<script>';
+							//Removed due to XSS - Liam
+							/*echo '<script>';
 								// Replace the <textarea id="editor1"> with a CKEditor
 								// instance, using default configuration.
 								echo 'CKEDITOR.replace(\'editor1\');';
-							echo '</script>';
+							echo '</script>';*/
 						echo '</td>';
 					echo '</tr>';
 					echo '<tr>';
