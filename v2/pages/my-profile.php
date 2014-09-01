@@ -134,7 +134,16 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 			echo '</table>';
-			echo '<img src="../api/' . $profile->getAvatar()->getHd() . '" width="500px" height="400px" style="float: right;">';
+			
+			$avatarFile = null;
+			
+			if ($profile->hasAvatar()) {
+				$avatarFile = $user->getAvatar()->geHd();
+			} else {
+				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
+			}
+		
+			echo '<img src="../api/' . $avatarFile . '" width="500px" height="400px" style="float: right;">';
 		} else {
 			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
 		}
