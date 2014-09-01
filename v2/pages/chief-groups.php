@@ -129,9 +129,11 @@ if (Session::isAuthenticated()) {
 							echo '</tr>';
 						}
 						
-						echo '<tr>';
-							echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromGroup(' . $group->getId() . ')"></td>';
-						echo '</tr>';
+						if (count($groupList) > 1) {
+							echo '<tr>';
+								echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromGroup(' . $group->getId() . ')"></td>';
+							echo '</tr>';
+						}
 					} else {
 						echo '<i>Det er ingen medlemmer i ' . $group->getTitle() . '.</i>';
 					}
