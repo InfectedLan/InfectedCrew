@@ -43,8 +43,18 @@ function removeTeam(groupId, teamId) {
 	});
 }
 
-function removeUserFromTeam(userId) {
-	$.getJSON('../api/json/removeUserFromTeam.php?id=' + userId, function(data){
+function removeUserFromTeam(id) {
+	$.getJSON('../api/json/removeUserFromTeam.php?id=' + id, function(data){
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function removeUsersFromTeam(id) {
+	$.getJSON('../api/json/removeUsersFromTeam.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

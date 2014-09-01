@@ -130,9 +130,12 @@ if (Session::isAuthenticated()) {
 								echo '<tr>';
 									echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
 									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $member->getId() . ')"></td>';
-
 								echo '</tr>';
 							}
+							
+							echo '<tr>';
+								echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
+							echo '</tr>';
 						} else {
 							echo '<i>Det er ingen medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '.</i>';
 						}

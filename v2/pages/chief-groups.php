@@ -128,6 +128,7 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $member->getId() . ')"></td>';
 							echo '</tr>';
 						}
+						
 						echo '<tr>';
 							echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromGroup(' . $group->getId() . ')"></td>';
 						echo '</tr>';
