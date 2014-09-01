@@ -6,8 +6,18 @@ if (Session::isAuthenticated()) {
 	$avatar = $user->getAvatar();
 	
 	// TODO: Sjekk om det er noen som har et uncropped bilde.
-	
-	if ($user->hasAvatar()) {
+	echo '<script>';
+		echo 'function deleteAvatar() {';
+			echo '$.getJSON(\'../api/json/deleteavatar.php\', function(data) {';
+				echo 'if(data.result) {';
+					echo 'location.reload()';
+				echo '} else { ';
+					echo 'error(data.message);';
+				echo '}';
+			echo '});';
+		echo '}';
+	echo '</script>';
+	if (isset($avatar)) {
 		switch ($avatar->getState()) {
 			case 0:
 				echo '<script>';
@@ -42,7 +52,7 @@ if (Session::isAuthenticated()) {
 				echo '</script>';
 
 			echo '<h1>Beskjær bilde</h1>';
-			echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="400" height="300">';
+			echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="800">';
 			echo '<form action="../api/json/cropavatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
 				echo '<input type="hidden" id="x" name="x">';
 				echo '<input type="hidden" id="y" name="y">';
@@ -55,13 +65,13 @@ if (Session::isAuthenticated()) {
 			
 			case 1:
 				echo '<h1>Ditt bilde venter på godkjenning</h1>';
-				echo '<img src="../api/' . $avatar->getHd() . '" width="400" height="300">';
-				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
+				echo '<br />Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
 				
 			case 2:
 				echo '<h1>Nåværende avatar:</h1>';
-				echo '<img src="../api/' . $avatar->getHd() . '" width="400" height="300">';
+				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
 				echo '<br>';
 				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
