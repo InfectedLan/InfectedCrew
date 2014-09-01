@@ -25,8 +25,8 @@ if (Session::isAuthenticated()) {
 		echo '<table>';
 			echo '<tr>';
 				echo '<th>Søker\'s navn</th>';
-				echo '<th>Dato</th>';
 				echo '<th>Crew</th>';
+				echo '<th>Dato</th>';
 				echo '<th>Status</th>';
 			echo '</tr>';
 			
