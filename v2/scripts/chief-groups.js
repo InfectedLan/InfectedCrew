@@ -33,8 +33,8 @@ $(document).ready(function() {
 	});
 });
 
-function removeGroup(groupId) {
-	$.getJSON('../api/json/removeGroup.php?id=' + groupId, function(data) {
+function removeGroup(id) {
+	$.getJSON('../api/json/removeGroup.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -43,8 +43,18 @@ function removeGroup(groupId) {
 	});
 }
 
-function removeUserFromGroup(userId) {
-	$.getJSON('../api/json/removeUserFromGroup.php?id=' + userId, function(data) {
+function removeUserFromGroup(id) {
+	$.getJSON('../api/json/removeUserFromGroup.php?id=' + id, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function removeUsersFromGroup(id) {
+	$.getJSON('../api/json/removeUsersFromGroup.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
