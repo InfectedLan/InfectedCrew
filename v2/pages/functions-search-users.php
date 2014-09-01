@@ -8,7 +8,8 @@ if (Session::isAuthenticated()) {
 		$user->hasPermission('functions.search-users') ||
 		$user->isGroupLeader()) {
 		echo '<script src="scripts/functions-search-users.js"></script>';
-		echo '<h1>Søk etter bruker</h1>';
+		echo '<h3>Søk etter bruker</h3>';
+		
 		echo '<input class="search" type="text" placeholder="Skriv for å søke..." autocomplete="off" autofocus>';
 		echo '<ul class="search-results"></ul>';
 	} else {

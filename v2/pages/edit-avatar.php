@@ -17,6 +17,7 @@ if (Session::isAuthenticated()) {
 			echo '});';
 		echo '}';
 	echo '</script>';
+	
 	if (isset($avatar)) {
 		switch ($avatar->getState()) {
 			case 0:
