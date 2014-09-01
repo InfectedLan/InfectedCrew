@@ -23,10 +23,17 @@ if (Session::isAuthenticated()) {
 			case 0:
 				echo '<script>';
 					echo '$(document).ready(function() {';
-						echo '$("#cropform").ajaxForm(function(data) {';
-							//echo 'alert(data.message);';
-							echo 'location.reload();';
-						echo '});';
+						echo 'var options = {';
+							echo 'success: function(responseText, statusText, xhr, $form) {';
+								echo 'var data = jQuery.parseJSON(responseText);';
+								echo 'if(data.result) {';
+									echo 'location.reload();';
+								echo '} else {';
+									echo 'error(data.message);';
+								echo '}';
+							echo '}';
+						echo '};';
+						echo '$("#cropform").ajaxForm(options);';
 					echo '});';
 				echo '</script>';
 				echo '<script src="../api/scripts/jcrop/js/jquery.Jcrop.js"></script>';
@@ -34,7 +41,21 @@ if (Session::isAuthenticated()) {
 				echo '<script type="text/javascript">';
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
+							//Calculate size factor. The crop pane is 800 wide.
+							$temp = explode(".", $avatar->getTemp());
+							$extension = strtolower(end($temp));
+							$image = 0;
+							if($extension=="png")
+							{
+								$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
+							}
+							elseif($extension=="jpeg"||$extension=="jpg")
+							{
+								$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
+							}
+							$scaleFactor = 800 / imagesx($image);
 							echo 'aspectRatio: 400/300,';
+							echo 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
 							echo 'onSelect: updateCoords';
 						echo '});';
 					echo '});';
