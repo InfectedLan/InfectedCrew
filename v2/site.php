@@ -183,7 +183,7 @@ class Site {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin.seatmap')) {
-										echo '<li><a href="index.php?page=admin-seatmap">Edit seatmaps</a></li>';
+										echo '<li><a href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
 									}
 								}
 							}

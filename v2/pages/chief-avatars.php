@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 					}
 				echo '">';
 					echo '<p>' . $avatarUser->getFirstname() . ' ' . $avatarUser->getLastname() . '</p>';
-					echo '<img src="' . $avatarUser->getPendingAvatar()->getFile() . '" width="400">';
+					echo '<img src="../api/' . $avatarUser->getPendingAvatar()->getSd() . '" width="300" height="200">';
 					echo '<table>';
 						echo '<tr>';
 							echo '<td><a href="scripts/process_avatar.php?action=3&id=' . $value->getId() . '">Godkjenn</a></td>';

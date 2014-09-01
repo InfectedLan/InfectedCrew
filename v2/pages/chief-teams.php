@@ -12,7 +12,7 @@ if (Session::isAuthenticated()) {
 			$user->isGroupLeader()) {
 			$teamList = $user->getGroup()->getTeams();
 			echo '<script src="scripts/chief-teams.js"></script>';
-			echo '<h1>Lag</h1>';
+			echo '<h3>Lag</h3>';
 			
 			if (!empty($teamList)) {
 				echo '<table>';

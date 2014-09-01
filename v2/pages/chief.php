@@ -7,7 +7,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('chief') ||
 		$user->isGroupLeader()) {
-		echo '<h1>Chief</h1>';
+		echo '<h3>Chief</h3>';
 		
 		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
 	} else {

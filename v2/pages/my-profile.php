@@ -57,9 +57,8 @@ if (Session::isAuthenticated()) {
 			
 				$postalCode = $profile->getPostalCode();
 				
-				if (!empty($postalCode)) {
+				if ($postalCode != 0) {
 					echo '<tr>';
-						echo '<td></td>';
 						echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
 					echo '</tr>';
 				}
@@ -128,16 +127,14 @@ if (Session::isAuthenticated()) {
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('admin.permissions')) {
 					echo '<tr>';
+						echo '<td></td>';
 						echo '<td>';
-							//echo 'Admin-kontroll'; 
-						echo '</td>';
-						echo '<td>';
-							echo '<a href="index.php?page=edit-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
+							echo '<a href="index.php?page=admin-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
 						echo '</td>';
 					echo '</tr>';
 				}
 			echo '</table>';
-			echo '<img src="' . $profile->getAvatar()->getFile() . '" width="500px" height="400px" style="float: right;">';
+			echo '<img src="../api/' . $profile->getAvatar()->getHd() . '" width="500px" height="400px" style="float: right;">';
 		} else {
 			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
 		}

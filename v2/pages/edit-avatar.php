@@ -5,75 +5,74 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	$avatar = $user->getAvatar();
 	
-	// Sjekk om det er noen som har et uncropped bilde.
-	
+	// TODO: Sjekk om det er noen som har et uncropped bilde.
 	
 	if ($user->hasAvatar()) {
-		$state = $avatar->getState();
-		if ($state == 0) {
-			echo '<script>';
-				echo '$(document).ready(function() {';
-					echo '$("#cropform").ajaxForm(function() {';
-						echo 'location.reload();';
+		switch ($avatar->getState()) {
+			case 0:
+				echo '<script>';
+					echo '$(document).ready(function() {';
+						echo '$("#cropform").ajaxForm(function() {';
+							echo 'location.reload();';
+						echo '});';
 					echo '});';
-				echo '});';
-			echo '</script>';
-			//echo '<script src="api/scripts/jcrop/jquery.min.js"></script>';
-			echo '<script src="../api/scripts/jcrop/js/jquery.Jcrop.js"></script>';
-			echo '<link rel="stylesheet" href="../api/scripts/jcrop/css/jquery.Jcrop.css" type="text/css">';
-			echo '<script type="text/javascript">';
-				echo '$(function(){';
-					echo '$(\'#cropbox\').Jcrop({';
-						echo 'aspectRatio: 400/300,';
-						echo 'onSelect: updateCoords';
+				echo '</script>';
+				echo '<script src="../api/scripts/jcrop/js/jquery.Jcrop.js"></script>';
+				echo '<link rel="stylesheet" href="../api/scripts/jcrop/css/jquery.Jcrop.css">';
+				echo '<script type="text/javascript">';
+					echo '$(function() {';
+						echo '$(\'#cropbox\').Jcrop({';
+							echo 'aspectRatio: 400/300,';
+							echo 'onSelect: updateCoords';
+						echo '});';
 					echo '});';
-				echo '});';
 
-				echo 'function updateCoords(c)';
-				echo '{';
-					echo '$(\'#x\').val(c.x);';
-					echo '$(\'#y\').val(c.y);';
-					echo '$(\'#w\').val(c.w);';
-					echo '$(\'#h\').val(c.h);';
-				echo '};';
+					echo 'function updateCoords(c) {';
+						echo '$(\'#x\').val(c.x);';
+						echo '$(\'#y\').val(c.y);';
+						echo '$(\'#w\').val(c.w);';
+						echo '$(\'#h\').val(c.h);';
+					echo '};';
 
-				echo 'function checkCoords()';
-				echo '{';
-					echo 'if (parseInt($(\'#w\').val())) return true;';
-					echo 'alert(\'Please select a crop region then press submit.\');';
-					echo 'return false;';
-				echo '};';
-			echo '</script>';
+					echo 'function checkCoords() {';
+						echo 'if (parseInt($(\'#w\').val())) return true;';
+						echo 'alert(\'Please select a crop region then press submit.\');';
+						echo 'return false;';
+					echo '};';
+				echo '</script>';
 
 			echo '<h1>Beskjær bilde</h1>';
-			echo '<img width="800" src="../api/' . $avatar->getTemp() . '" id="cropbox">';
+			echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="400" height="300">';
 			echo '<form action="../api/json/cropavatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
 				echo '<input type="hidden" id="x" name="x">';
 				echo '<input type="hidden" id="y" name="y">';
 				echo '<input type="hidden" id="w" name="w">';
 				echo '<input type="hidden" id="h" name="h">';
 				echo '<input type="submit" value="Beskjær">';
-			echo '</form><br />';
-			echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()" />';
-		} else if ($state == 1) {
-			echo '<h1>Ditt bilde venter på godkjenning</h1>';
-			echo '<img src="../api/' . $avatar->getHd() . '">';
-			echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()" />';
-		} else if($state == 2) {
-			echo '<h1>Nåværende avatar:</h1>';
+			echo '</form><br>';
+			echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+				break;
 			
-			echo '<img src="../api/' . $avatar->getFile() . '" width="50%" height="50%">';
-			echo '<br />';
-			echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()" />';
+			case 1:
+				echo '<h1>Ditt bilde venter på godkjenning</h1>';
+				echo '<img src="../api/' . $avatar->getHd() . '" width="400" height="300">';
+				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+				break;
+				
+			case 2:
+				echo '<h1>Nåværende avatar:</h1>';
+				echo '<img src="../api/' . $avatar->getHd() . '" width="400" height="300">';
+				echo '<br>';
+				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+				break;
+				
+			default:
+				echo '<b>Avataren din er ikke godkjent!</b>';
+				echo '<br>';
+				echo '<input type="button" value="Slett og start på nytt" onClick="deleteAvatar()">';
+				break;
 		}
-		else {
-			echo '<b>Avataren din er ikke godkjent!</b>';
-			echo '<br />';
-			echo '<input type="button" value="Slett og start på nytt" onClick="deleteAvatar()" />';
-		}
-	}
-	else
-	{
+	} else {
 		echo '<script>';
 			echo '$(document).ready(function() {';
 				echo '$("#uploadForm").ajaxForm(function() {';

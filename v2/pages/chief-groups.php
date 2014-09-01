@@ -11,7 +11,7 @@ if (Session::isAuthenticated()) {
 		$user->isGroupLeader()) {
 		$groupList = GroupHandler::getGroups();
 		echo '<script src="scripts/chief-groups.js"></script>';
-		echo '<h1>Crewene</h1>';
+		echo '<h3>Crewene</h3>';
 		
 		if (!empty($groupList)) {
 			echo '<table>';
