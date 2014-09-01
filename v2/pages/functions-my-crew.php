@@ -1,8 +1,6 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/crewpagehandler.php';
-
-$returnPage = basename(__FILE__, '.php');
+require_once 'handlers/restrictedpagehandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -13,9 +11,10 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('*') || 
 			$user->hasPermission('functions.my-crew') || 
 			$user->isGroupLeader()) {
+			echo '<script src="scripts/functions-my-crew.js"></script>';
 			echo '<h3>Mine sider</h3>';
 			
-			$pageList = CrewPageHandler::getPagesForGroup($group->getId());
+			$pageList = RestrictedPageHandler::getPagesForGroup($group->getId());
 			
 			if (!empty($pageList)) {
 				$teamList = $group->getTeams();
@@ -38,17 +37,11 @@ if (Session::isAuthenticated()) {
 							}
 							
 							echo '<td><a href="index.php?page=' . $value->getName() . '">Vis</a></td>';
-							echo '<form name="input" action="index.php?page=edit-page&site=1&id=' . $value->getId() . '&returnPage=' . $returnPage . '" method="post">';
-								echo '<td><input type="submit" value="Endre"></td>';
-							echo '</form>';
-							
-							
+							echo '<td><input type="button" value="Endre" onClick="editPage(' . $value->getId() . ')"></td>';
 							
 							if ($value->getName() != strtolower($group->getName()) &&
 								!in_array(strtolower($value->getName()), $teamNameList)) {
-								echo '<form name="input" action="scripts/process_page.php?site=1&action=2&id=' . $value->getId() . '&returnPage=' . $returnPage . '" method="post">';
-									echo '<td><input type="submit" value="Slett"></td>';
-								echo '</form>';
+								echo '<td><input type="button" value="Slett" onClick="removePage(' . $value->getId() . ')"></td>';
 							}
 						echo '</tr>';
 					}

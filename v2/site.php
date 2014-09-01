@@ -134,7 +134,7 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('chief.home') ||
 										$user->isGroupLeader()) {
-										echo '<li><a href="index.php?page=edit-page&site=1&id=1&returnPage=index.php?page=chief">Hjem</a></li>';
+										echo '<li><a href="index.php?page=edit-page&id=1">Hjem</a></li>';
 									}
 									
 									if ($user->hasPermission('*') ||
@@ -322,7 +322,7 @@ class Site {
 						$user->hasPermission('chief.avatars') ||
 						$user->hasPermission('chief.applications') ||
 						$user->isGroupLeader()) {
-						if ($this->pageName == 'edit-page' && $_GET['site'] == 1 && $_GET['id'] == 1 || 
+						if ($this->pageName == 'edit-page' && $_GET['id'] == 1 || 
 							$this->pageName == 'chief' || 
 							$this->pageName == 'chief-groups' ||
 							$this->pageName == 'chief-teams' ||

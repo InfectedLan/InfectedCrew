@@ -138,7 +138,7 @@ if (Session::isAuthenticated()) {
 			$avatarFile = null;
 			
 			if ($profile->hasValidAvatar()) {
-				$avatarFile = $user->getAvatar()->getHd();
+				$avatarFile = $profile->getAvatar()->getHd();
 			} else {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
 			}
