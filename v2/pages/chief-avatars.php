@@ -8,6 +8,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('chief.avatars') ||
 		$user->isGroupLeader()) {
+		echo '<script src="scripts/chief-avatars.js"></script>';
 		echo '<h3>Godkjenn profilbilder</h3>';
 		
 		$pendingAvatarList = AvatarHandler::getPendingAvatars();
@@ -15,8 +16,8 @@ if (Session::isAuthenticated()) {
 		if (!empty($pendingAvatarList)) {
 			$index = 0;
 		
-			foreach ($pendingAvatarList as $value) {
-				$avatarUser = $value->getUser();
+			foreach ($pendingAvatarList as $avatar) {
+				$avatarUser = $avatar->getUser();
 			
 				echo '<div class="';
 					if ($index % 2 == 0) {
@@ -25,12 +26,12 @@ if (Session::isAuthenticated()) {
 						echo 'avatarRight';
 					}
 				echo '">';
-					echo '<p>' . $avatarUser->getFirstname() . ' ' . $avatarUser->getLastname() . '</p>';
-					echo '<img src="../api/' . $avatarUser->getPendingAvatar()->getSd() . '" width="300" height="200">';
+					echo '<p>' . $avatarUser->getDisplayName() . '</p>';
+					echo '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" width="300" height="200">';
 					echo '<table>';
 						echo '<tr>';
-							echo '<td><a href="scripts/process_avatar.php?action=3&id=' . $value->getId() . '">Godkjenn</a></td>';
-							echo '<td><a href="scripts/process_avatar.php?action=4&id=' . $value->getId() . '">Avslå</a></td>';
+							echo '<td><input type="button" value="Godta" onClick="acceptAvatar(' . $avatar->getId() . ')"></td>';
+							echo '<td><input type="button" value="Avslå" onClick="rejectAvatar(' . $avatar->getId() . ')"></td>';
 						echo '</tr>';
 					echo '</table>';
 				echo '</div>';
