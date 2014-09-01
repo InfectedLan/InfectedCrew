@@ -10,7 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : reset(RestrictedPageHandler::getPages())->getName();
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : '';
 	}
 	
 	// Execute the site.
@@ -26,8 +26,7 @@ class Site {
 				echo '<link rel="shortcut icon" href="images/favicon.ico">';
 				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<link rel="stylesheet" href="../api/scripts/chosen/chosen.css">';
-				echo '<script src="../api/scripts/jquery.js"></script>';
-				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
 				echo '<script src="../api/scripts/chosen/chosen.jquery.js"></script>';
 				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
