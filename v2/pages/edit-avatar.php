@@ -23,7 +23,8 @@ if (Session::isAuthenticated()) {
 			case 0:
 				echo '<script>';
 					echo '$(document).ready(function() {';
-						echo '$("#cropform").ajaxForm(function() {';
+						echo '$("#cropform").ajaxForm(function(data) {';
+							//echo 'alert(data.message);';
 							echo 'location.reload();';
 						echo '});';
 					echo '});';
@@ -86,9 +87,17 @@ if (Session::isAuthenticated()) {
 	} else {
 		echo '<script>';
 			echo '$(document).ready(function() {';
-				echo '$("#uploadForm").ajaxForm(function() {';
-					echo 'location.reload();';
-				echo '});';
+				echo 'var options = {';
+					echo 'success: function(responseText, statusText, xhr, $form) {';
+						echo 'var data = jQuery.parseJSON(responseText);';
+						echo 'if(data.result) {';
+							echo 'location.reload();';
+						echo '} else {';
+							echo 'error(data.message);';
+						echo '}';
+					echo '}';
+				echo '};';
+				echo '$("#uploadForm").ajaxForm(options);';
 			echo '});';
 		echo '</script>';
 		echo '<b>Last opp profilbilde: </b>';
