@@ -10,7 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : reset(RestrictedPageHandler::getPages())->getName();
 	}
 	
 	// Execute the site.

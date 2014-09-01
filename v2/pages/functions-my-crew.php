@@ -26,22 +26,22 @@ if (Session::isAuthenticated()) {
 				
 				echo '<table>';
 					// Loop through the pages.
-					foreach ($pageList as $value) {
+					foreach ($pageList as $page) {
 						// Add the current page to the page view.
 						
 						echo '<tr>';
-							if ($value->getName() == strtolower($group->getName())) {
+							if ($page->getName() == strtolower($group->getName())) {
 								echo '<td>Hovedside</td>';
 							} else{
-								echo '<td>' . $value->getTitle() . '</td>';
+								echo '<td>' . $page->getTitle() . '</td>';
 							}
 							
-							echo '<td><a href="index.php?page=' . $value->getName() . '">Vis</a></td>';
-							echo '<td><input type="button" value="Endre" onClick="editPage(' . $value->getId() . ')"></td>';
+							echo '<td><a href="index.php?page=' . $page->getName() . '">Vis</a></td>';
+							echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
 							
-							if ($value->getName() != strtolower($group->getName()) &&
-								!in_array(strtolower($value->getName()), $teamNameList)) {
-								echo '<td><input type="button" value="Slett" onClick="removePage(' . $value->getId() . ')"></td>';
+							if ($page->getName() != strtolower($group->getName()) &&
+								!in_array(strtolower($page->getName()), $teamNameList)) {
+								echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 							}
 						echo '</tr>';
 					}
@@ -56,7 +56,7 @@ if (Session::isAuthenticated()) {
 			if ($user->isGroupLeader() || 
 				$user->hasPermission('*') || 
 				$user->hasPermission('crew-admin') ||
-				$user->hasPermission('function-mycrew')) {
+				$user->hasPermission('function-my-crew')) {
 				echo '<form action="scripts/process_page.php?site=1&action=1&teamId=0&returnPage=' . $returnPage . '" method="post">';
 			} else {
 				echo '<form action="scripts/process_page.php?site=1&action=1&returnPage=' . $returnPage . '" method="post">';
