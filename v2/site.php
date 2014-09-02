@@ -10,7 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : '';
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
 	}
 	
 	// Execute the site.
@@ -66,7 +66,7 @@ class Site {
 											array_push($teamNameList, strtolower($team->getName()));
 										}
 										
-										echo '<li><a href="index.php?page=my-crew">Hele ' . $group->getTitle() . '</a></li>';
+										echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
 										
 										foreach ($teamList as $team) {
 											echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
