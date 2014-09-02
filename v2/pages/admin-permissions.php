@@ -20,16 +20,19 @@ if (Session::isAuthenticated()) {
 					echo '<input type="hidden" name="id" value="' . $permissionUser->getId() . '">';
 					echo '<table>';
 						foreach (PermissionsHandler::getPermissions() as $permission) {
-							echo '<tr>';
-								echo '<td>';
-									if (in_array($permission->getValue(), $permissionUser->getPermissions())) {
-										echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '" checked>' . $permission->getValue();
-									} else {
-										echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '">' . $permission->getValue();
-									}
-								echo '</td>';
-								echo '<td>' . wordwrap($permission->getDescription(), 100, '<br>') . '</td>';
-							echo '</tr>';
+							if ($user->hasPermission('*') ||
+								$user->hasPermission($permission->getValue())) {
+								echo '<tr>';
+									echo '<td>';
+										if (in_array($permission->getValue(), $permissionUser->getPermissions())) {
+											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '" checked>' . $permission->getValue();
+										} else {
+											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '">' . $permission->getValue();
+										}
+									echo '</td>';
+									echo '<td>' . wordwrap($permission->getDescription(), 100, '<br>') . '</td>';
+								echo '</tr>';
+							}
 						}
 						
 						echo '<tr>';
