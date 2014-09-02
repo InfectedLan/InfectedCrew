@@ -10,35 +10,21 @@ if (Session::isAuthenticated()) {
 			$team = TeamHandler::getTeam($_GET['teamId']);
 			
 			if ($team != null) {
-				$page = RestrictedPageHandler::getPageByName($team->getName());
-				
-				if ($page != null) {
-					echo '<h3>' . $page->getTitle() . '</h3>';
-					echo $page->getContent();
-				}
-				
-				$team->display();
+				$team->displayWithInfo();
 			} else {
-				echo '<p>Denne gruppen finnes ikke!</p>';
+				echo '<p>Dette laget finnes ikke!</p>';
 			}
 		} else {
 			$group = $user->getGroup();
 			
 			if ($group != null) {
-				$page = RestrictedPageHandler::getPageByName($group->getName());
-				
-				if ($page != null) {
-					echo '<h3>' . $page->getTitle() . '</h3>';
-					echo $page->getContent();
-				}
-				
-				$group->display();
+				$group->displayWithInfo();
 			} else {
 				echo '<p>Dette crewet finnes ikke!</p>';
 			}
 		}
 	} else {
-		echo '<p>Du er ikke i noen gruppe!</p>';
+		echo '<p>Du er ikke i noe crew!</p>';
 	}
 } else {
 	echo '<p>Du er ikke logget inn!</p>';

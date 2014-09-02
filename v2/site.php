@@ -66,16 +66,27 @@ class Site {
 											array_push($teamNameList, strtolower($team->getName()));
 										}
 										
-										echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
-										
-										foreach ($teamList as $team) {
-											echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
-										}
-										
-										foreach ($groupPageList as $page) {
-											if (strtolower($page->getName()) != strtolower($group->getName())) {
-												if (!in_array(strtolower($page->getName()), $teamNameList)) {
-													echo '<li><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
+										// Only show 
+										if (!empty($groupPageList) ||
+											!empty($teamList)) {
+											echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
+
+											// Only create link for groups that actually contain teams.
+											if (!empty($teamList)) {
+												echo '<li><a href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
+											
+												foreach ($teamList as $team) {
+													echo '<li><a href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
+												}
+											}
+											
+											if (!empty($groupPageList)) {
+												foreach ($groupPageList as $page) {
+													if (strtolower($page->getName()) != strtolower($group->getName())) {
+														if (!in_array(strtolower($page->getName()), $teamNameList)) {
+															echo '<li><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
+														}
+													}
 												}
 											}
 										}
