@@ -81,7 +81,7 @@ if (Session::isAuthenticated()) {
 				echo '<input type="hidden" id="y" name="y">';
 				echo '<input type="hidden" id="w" name="w">';
 				echo '<input type="hidden" id="h" name="h">';
-				echo '<input type="submit" value="Beskjær">';
+				echo '<input type="submit" value="Lagre">';
 			echo '</form><br>';
 			echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
