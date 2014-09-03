@@ -3,7 +3,6 @@ require_once 'session.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	$avatar = $user->getAvatar();
 	
 	// TODO: Sjekk om det er noen som har et uncropped bilde.
 	echo '<script>';
@@ -18,7 +17,9 @@ if (Session::isAuthenticated()) {
 		echo '}';
 	echo '</script>';
 	
-	if (isset($avatar)) {
+	if ($user->hasAvatar()) {
+		$avatar = $user->getAvatar();
+		
 		switch ($avatar->getState()) {
 			case 0:
 				echo '<script>';

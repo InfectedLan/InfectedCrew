@@ -9,8 +9,7 @@ if (Session::isAuthenticated()) {
 	echo '<h1>Søk deg inn i crew</h1>';
 	
 	if (!$user->isGroupMember()) {
-		$avatar = $user->getAvatar();
-		if (isset($avatar) && ( $avatar->getState() == 1 || $avatar->getState() == 2 ) ) {
+		if ($user->hasCroppedAvatar()) {
 			echo '<script src="scripts/apply.js"></script>';
 
 			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>
@@ -49,7 +48,7 @@ if (Session::isAuthenticated()) {
 				echo '</form>';
 			echo '</table>';
 		} else {
-			echo '<h3>Du er nødt til å laste opp et profilbilde for å søke. Dette gjør du <a href="index.php?page=edit-avatar">her.</a>';
+			echo '<p>Du er nødt til å laste opp et profilbilde for å søke. Dette gjør du <a href="index.php?page=edit-avatar">her.</a></p>';
 		}
 	} else {
 		$group = $user->getGroup();

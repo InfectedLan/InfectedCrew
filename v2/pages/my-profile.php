@@ -59,6 +59,7 @@ if (Session::isAuthenticated()) {
 				
 				if ($postalCode != 0) {
 					echo '<tr>';
+						echo '<td></td>';
 						echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
 					echo '</tr>';
 				}
