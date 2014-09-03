@@ -9,7 +9,8 @@ if (Session::isAuthenticated()) {
 	echo '<h1>Søk deg inn i crew</h1>';
 	
 	if (!$user->isGroupMember()) {
-		if ($user->hasValidAvatar()) {
+		$avatar = $user->getAvatar();
+		if (isset($avatar) && ( $avatar->getState() == 1 || $avatar->getState() == 2 ) ) {
 			echo '<script src="scripts/apply.js"></script>';
 
 			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>
