@@ -1,5 +1,6 @@
 $(function() {
 	$('.chosen-select').chosen({
+		search_contains: true,
 		no_results_text: "Ingen resultater for "
 	});
 });
