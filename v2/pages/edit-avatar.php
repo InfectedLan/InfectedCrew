@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	echo '<script>';
 		echo 'function deleteAvatar() {';
 			echo '$.getJSON(\'../api/json/deleteavatar.php\', function(data) {';
-				echo 'if(data.result) {';
+				echo 'if (data.result) {';
 					echo 'location.reload()';
 				echo '} else { ';
 					echo 'error(data.message);';
@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 						echo 'var options = {';
 							echo 'success: function(responseText, statusText, xhr, $form) {';
 								echo 'var data = jQuery.parseJSON(responseText);';
-								echo 'if(data.result) {';
+								echo 'if (data.result) {';
 									echo 'location.reload();';
 								echo '} else {';
 									echo 'error(data.message);';
@@ -38,7 +38,7 @@ if (Session::isAuthenticated()) {
 				echo '</script>';
 				echo '<script src="../api/scripts/jcrop/js/jquery.Jcrop.js"></script>';
 				echo '<link rel="stylesheet" href="../api/scripts/jcrop/css/jquery.Jcrop.css">';
-				echo '<script type="text/javascript">';
+				echo '<script>';
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
 							//Calculate size factor. The crop pane is 800 wide.
@@ -89,7 +89,7 @@ if (Session::isAuthenticated()) {
 			case 1:
 				echo '<h1>Ditt bilde venter på godkjenning</h1>';
 				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
-				echo '<br />Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+				echo '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
 				
 			case 2:
@@ -111,7 +111,7 @@ if (Session::isAuthenticated()) {
 				echo 'var options = {';
 					echo 'success: function(responseText, statusText, xhr, $form) {';
 						echo 'var data = jQuery.parseJSON(responseText);';
-						echo 'if(data.result) {';
+						echo 'if (data.result) {';
 							echo 'location.reload();';
 						echo '} else {';
 							echo 'error(data.message);';
