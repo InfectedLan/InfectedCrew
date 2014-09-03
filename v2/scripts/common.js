@@ -5,16 +5,32 @@ $(function() {
 	});
 });
 
-function error(what) {
+function error(what, func) {
 	//Do something
 	$("#innerError").html(what);
 	$("#error").fadeIn(300);
+	if(typeof func === "undefined")
+	{
+		errorFunction = 0;
+	}
+	else
+	{
+		errorFunction = func;
+	}
 }
 
-function info(what) {
+function info(what, func) {
 	//Do even more something
 	$("#innerInfo").html(what);
 	$("#info").fadeIn(300);
+	if(typeof func === "undefined")
+	{
+		infoFunction = 0;
+	}
+	else
+	{
+		infoFunction = func;
+	}
 }
 
 function closeError() {
@@ -30,9 +46,13 @@ function closeInfo() {
 $( document ).ready(function() {
     $("#errorClose").click(function() {
     	closeError();
+    	errorFunction();
     });
 	
     $("#infoClose").click(function() {
     	closeInfo();
+    	infoFunction();
     });
 });
+var errorFunction = 0;
+var infoFunction = 0;
