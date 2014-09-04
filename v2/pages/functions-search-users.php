@@ -5,8 +5,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.search-users') ||
-		$user->isGroupLeader()) {
+		$user->hasPermission('functions.search-users')) {
 		echo '<script src="scripts/functions-search-users.js"></script>';
 		echo '<h3>Søk etter bruker</h3>';
 		

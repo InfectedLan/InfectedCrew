@@ -10,7 +10,7 @@ if (Session::isAuthenticated()) {
 	
 	if ($profile != null) {
 		if ($user->hasPermission('*') ||
-			$user->hasPermission('functions-search-users') ||
+			$user->hasPermission('functions.search-users') ||
 			$user->getId() == $profile->getId()) {
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';

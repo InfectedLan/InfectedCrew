@@ -106,8 +106,7 @@ class Site {
 										$this->pageName == 'functions-site-list-pages') {
 										
 										if ($user->hasPermission('*') ||
-											$user->hasPermission('functions.search-users') ||
-											$user->isGroupLeader()) {
+											$user->hasPermission('functions.search-users')) {
 											echo '<li><a href="index.php?page=functions-search-users">Søk etter bruker</a></li>';
 										}
 										
