@@ -32,7 +32,7 @@ if (Session::isAuthenticated()) {
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '" required></td>';
 							echo '<td>';
-								echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								echo '<select class="chosen-select select" name="leader" data-placeholder="Velg en chief...">';
 									$leader = $group->getLeader();
 									
 									echo '<option value="0"></option>';
