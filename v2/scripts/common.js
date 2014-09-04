@@ -5,12 +5,8 @@ $(function() {
 		search_contains: true,
 		no_results_text: "Ingen resultater for "
 	});
-});
-
-$(function() {
-	// Replace the <textarea id="editor1"> with a CKEditor
-	// instance, using default configuration.
-	CKEDITOR.replace('ckeditor');
+	
+	$('.editor').ckeditor();
 });
 					
 function error(what, func) {

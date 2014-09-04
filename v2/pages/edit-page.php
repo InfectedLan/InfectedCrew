@@ -27,7 +27,7 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
 						echo '</tr>';
 					echo '</table>';
-					echo '<textarea name="content" id="ckeditor" rows="10" cols="80">' . $page->getContent() . '</textarea>';
+					echo '<textarea name="content" class="editor" rows="10" cols="80">' . $page->getContent() . '</textarea>';
 					echo '<input type="submit" value="Endre">';
 				echo '</form>';
 			} else {

@@ -32,6 +32,7 @@ class Site {
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/chosen/chosen.jquery.js"></script>';
 				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
+				echo '<script src="../api/scripts/ckeditor/adapters/jquery.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
