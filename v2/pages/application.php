@@ -72,12 +72,7 @@ if (Session::isAuthenticated()) {
 					case 1:
 						echo '<form class="chief-applications-reject" method="post">';
 							echo '<input type="hidden" name="id" value="' . $application->getId() . '">';
-							echo '<textarea id="editor1" name="reason" rows="10" cols="80" placeholder="Skriv hvorfor du vil avslå her."></textarea>';
-							echo '<script>';
-								// Replace the <textarea id="editor1"> with a CKEditor
-								// instance, using default configuration.
-								echo 'CKEDITOR.replace(\'editor1\');';
-							echo '</script>';
+							echo '<textarea id="ckeditor" name="reason" rows="10" cols="80" placeholder="Skriv hvorfor du vil avslå her."></textarea>';
 							echo '<input type="submit" value="Avslå">';
 						echo '</form>';
 						echo '<input type="button" value="Godkjenn" onClick="acceptApplication(' . $application->getId() . ')">';

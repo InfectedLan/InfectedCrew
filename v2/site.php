@@ -10,7 +10,9 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : reset(RestrictedPageHandler::getPages())->getName();
+		$defaultPage = Session::isAuthenticated() ? reset(RestrictedPageHandler::getPages())->getName() : null;
+		
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : $defaultPage;
 	}
 	
 	// Execute the site.

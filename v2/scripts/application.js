@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	$('.chief-applications-reject').submit(function(e) {
 		e.preventDefault();
+		CKEDITOR.instances.ckeditor.updateElement();
+		
 		$.getJSON('../api/json/rejectApplication.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();

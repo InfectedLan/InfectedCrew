@@ -27,12 +27,7 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
 						echo '</tr>';
 					echo '</table>';
-					echo '<textarea name="content" id="editor1" rows="10" cols="80">' . $page->getContent() . '</textarea>';
-					echo '<script>';
-						// Replace the <textarea id="editor1"> with a CKEditor
-						// instance, using default configuration.
-						echo 'CKEDITOR.replace(\'editor1\');';
-					echo '</script>';
+					echo '<textarea name="content" id="ckeditor" rows="10" cols="80">' . $page->getContent() . '</textarea>';
 					echo '<input type="submit" value="Endre">';
 				echo '</form>';
 			} else {
