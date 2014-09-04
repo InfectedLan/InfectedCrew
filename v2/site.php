@@ -10,7 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : reset(RestrictedPageHandler::getPages())->getName();
 	}
 	
 	// Execute the site.
@@ -24,8 +24,8 @@ class Site {
 				echo '<meta name="author" content="' . implode(', ', Settings::$authors) . '">';
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="shortcut icon" href="images/favicon.ico">';
-				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<link rel="stylesheet" href="../api/scripts/chosen/chosen.css">';
+				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/chosen/chosen.jquery.js"></script>';
@@ -93,7 +93,8 @@ class Site {
 									}
 								}
 							
-								if ($user->isGroupMember()) {
+								if ($user->hasPermission('*') ||
+									$user->isGroupMember()) {
 									if ($this->pageName == 'functions' || 
 										$this->pageName == 'functions-search-users' ||
 										$this->pageName == 'functions-my-crew' || 
@@ -299,7 +300,8 @@ class Site {
 						}
 					}
 					
-					if ($user->isGroupMember()) {
+					if ($user->hasPermission('*') ||
+						$user->isGroupMember()) {
 						if ($user->hasPermission('*') ||
 							$user->hasPermission('functions') ||
 							$user->hasPermission('functions.search-users') ||
