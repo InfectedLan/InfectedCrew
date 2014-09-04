@@ -99,7 +99,15 @@ if (Session::isAuthenticated()) {
 					}	
 				}
 			
-				if ($profile->hasTicket()) {
+				$ticketText = $profile->hasTicket() ? 'Ja' : 'Nei';
+			
+				echo '<tr>';
+					echo '<td>Har billett:</td>';
+					echo '<td>' . $ticketText . ' </td>';
+				echo '</tr>';
+			
+				if ($profile->hasTicket() &&
+					$profile->hasSeat()) {
 					$ticket = $profile->getTicket();
 					$seat = $ticket->getSeat();
 					$row = $seat->getRow();
