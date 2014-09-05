@@ -25,7 +25,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>E-post:</td>';
-					echo '<td>' . $profile->getEmail() . '</td>';
+					echo '<td><a href="mailto:' . $profile->getEmail() . '">' . $profile->getEmail() . '</a></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Fødselsdato</td>';
@@ -41,7 +41,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Telefon:</td>';
-					echo '<td>' . $profile->getPhone() . '</td>';
+					echo '<td>' . $profile->getPhoneString() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Adresse:</td>';
@@ -59,7 +59,7 @@ if (Session::isAuthenticated()) {
 				if ($postalCode != 0) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
+						echo '<td>' . $postalCode . ' ' . $profile->getCity() . '</td>';
 					echo '</tr>';
 				}
 				
@@ -71,7 +71,7 @@ if (Session::isAuthenticated()) {
 				if ($profile->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';
-						echo '<td>' . $profile->getEmergencyContact()->getPhone() . '</td>';
+						echo '<td>' . $profile->getEmergencyContact()->getPhoneString() . '</td>';
 					echo '</tr>';
 				}
 				
