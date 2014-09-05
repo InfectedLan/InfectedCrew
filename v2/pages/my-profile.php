@@ -150,7 +150,7 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
 			}
 		
-			echo '<img src="../api/' . $avatarFile . '" width="500px" height="400px" style="float: right;">';
+			echo '<img src="../api/' . $avatarFile . '" width="550px" height="400px" style="float: right;">';
 		} else {
 			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
 		}
