@@ -3,15 +3,15 @@ require_once 'session.php';
 require_once 'handlers/gamehandler.php';
 require_once 'handlers/gameapplicationhandler.php';
 
-$site = 'https://infected.no/v7/';
-$returnPage = basename(__FILE__, '.php');
+$site = 'http://infected.no/v7/';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('*') || 
 		$user->hasPermission('functions.site-list-games')) {
-		echo '<h3>Spill:</h3>';
+		echo '<script src="scripts/functions-site-list-games.js"></script>';
+		echo '<h3>Spill</h3>';
 		
 		$gameList = GameHandler::getGames();
 		
@@ -33,7 +33,14 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="price" value="' . $game->getPrice() . '"></td>';
 							echo '<td><input type="text" name="mode" value="' . $game->getMode() . '"></td>';
 							echo '<td><input type="text" name="description" value="' . $game->getDescription() . '"></td>';
-							echo '<td>Den <input type="date" name="deadlineDate" value="' . date('Y-m-d', $game->getDeadline()) . '" placeholder="åååå-mm-dd"> klokken <input type="time" name="deadlineTime" value="' . date('H:i:s', $game->getDeadline()) . '" placeholder="tt:mm:ss"></td>';
+							echo '<td>';
+								echo '<input type="date" name="startDate" value="' . date('Y-m-d', $game->getStartTime()) . '" placeholder="åååå-mm-dd">';
+								echo '<input type="time" name="startTime" value="' . date('H:i:s', $game->getStartTime()) . '" placeholder="tt:mm:ss">';
+							echo '</td>';
+							echo '<td>';
+								echo '<input type="date" name="endDate" value="' . date('Y-m-d', $game->getEndTime()) . '" placeholder="åååå-mm-dd">';
+								echo '<input type="time" name="endTime" value="' . date('H:i:s', $game->getEndTime()) . '" placeholder="tt:mm:ss">';
+							echo '</td>';
 							
 							if ($game->isPublished()) {
 								echo '<td><input type="checkbox" name="published" value="1" checked></td>';
@@ -43,95 +50,85 @@ if (Session::isAuthenticated()) {
 							
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
-						
-						if ($user->hasPermission('*')) {
-							echo '<td><input type="button" value="Slett" onClick="removeGame(' . $game->getId() . ')"></td>';
-						}
+						echo '<td><input type="button" value="Slett" onClick="removeGame(' . $game->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
 
+			echo '<h4>Legg til et spill</h4>';
+			
 			echo '<form class="functions-site-list-games-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';
-						echo '<td><input type="text" name="title"></td>';
+						echo '<td><input type="text" name="title" required></td>';
 						echo '<td>(Full tittel på spillet).</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Premie:</td>';
-						echo '<td><input type="text" name="price"></td>';
+						echo '<td><input type="number" name="price" required></td>';
 						echo '<td>,-</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Modus:</td>';
-						echo '<td><input type="text" name="mode"></td>';
+						echo '<td><input type="text" name="mode" required></td>';
 						echo '<td>(Hvilket oppsett har vi? Eks. 1on1).</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Beskrivelse:</td>';
-						echo '<td><input type="text" name="description"></td>';
+						echo '<td><input type="text" name="description" required></td>';
 						echo '<td>(Ekstrainformasjon som vises bak premie på hovedsiden).</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Registreringsfrist:</td>';
-						echo '<td><input type="date" name="deadlineDate" value="' . date('Y-m-d') . '" placeholder="åååå-mm-dd"></td>';
-						echo '<td><input type="time" name="deadlineTime" value="' . date('H:i:s') . '" placeholder="tt:mm:ss"></td>';
+						echo '<td>Påmeldingsstart:</td>';
+						echo '<td><input type="date" name="startDate" placeholder="' . date('Y-m-d') . '" required></td>';
+						echo '<td><input type="time" name="startTime" placeholder="' . date('H:i:s') . '" required></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Påmeldingsfrist:</td>';
+						echo '<td><input type="date" name="endDate" placeholder="' . date('Y-m-d') . '" required></td>';
+						echo '<td><input type="time" name="endTime" placeholder="' . date('H:i:s') . '" required></td>';
 					echo '</tr>';
 				echo '</table>';
-				echo '<textarea id="editor1" name="content" rows="10" cols="80"></textarea>';
-				echo '<script>';
-				// Replace the <textarea id="editor1"> with a CKEditor
-				// instance, using default configuration.
-				echo 'CKEDITOR.replace(\'editor1\');';
-				echo '</script>';	
+				echo '<textarea class="editor" name="content" rows="10" cols="80"></textarea>';
 				echo '<input type="submit" value="Legg til">';
 			echo '</form>';
 		}
 
-		echo '<h3>Compoer:</h3>';
+		echo '<h4>Compo påmeldinger</h4>';
 		
 		if (!empty($gameList)) {
 			foreach ($gameList as $game) {
-				$gameApplicationList = GameApplicationHandler::getGameApplications($game->getId());
+				$gameApplicationList = GameApplicationHandler::getGameApplications($game);
 				
-				echo '<h3><a href="' . $site . 'index.php?viewPage=game&id=' . $game->getId() . '">' . $game->getTitle() . '</a></h3>';
-				echo '<table>';
-				
-				if (!empty($gameApplicationList)) {
-					echo '<tr>';
-						echo '<th>Clan:</th>';
-						echo '<th>Tag:</th>';
-						echo '<th>Navn:</th>';
-						echo '<th>Nick:</th>';
-						echo '<th>Telefon:</th>';
-						echo '<th>E-post:</th>';
-					echo '</tr>';
-					
-					foreach ($gameApplicationList as $value) {
+				echo '<h3><a href="' . $site . 'pages/game/id/' . $game->getId() . '.html">' . $game->getTitle() . '</a></h3>';
+				echo '<table>';			
+					if (!empty($gameApplicationList)) {
 						echo '<tr>';
-							echo '<td>' . $value->getName() . '</td>';
-							echo '<td>' . $value->getTag() . '</td>';
-							echo '<td>' . $value->getContactname() . '</td>';
-							echo '<td>' . $value->getContactnick() . '</td>';
-							echo '<td>' . $value->getPhone() . '</td>';
-							echo '<td>' . $value->getEmail() . '</td>';
-							
-							if ($user->isGroupLeader() || 
-								$user->hasPermission('*') || 
-								$user->hasPermission('site-admin')) {
-								echo '<form name="input" action="scripts/process_gameApplication.php?action=2&id=' . $value->getId() . '&returnPage=' .  $returnPage . '" method="post">';
-									echo '<td><input type="submit" value="Slett"></td>';
-								echo '</form>';
-							}
+							echo '<th>Clan:</th>';
+							echo '<th>Tag:</th>';
+							echo '<th>Navn:</th>';
+							echo '<th>Nick:</th>';
+							echo '<th>Telefon:</th>';
+							echo '<th>E-post:</th>';
+						echo '</tr>';
+						
+						foreach ($gameApplicationList as $gameApplication) {
+							echo '<tr>';
+								echo '<td>' . $gameApplication->getName() . '</td>';
+								echo '<td>' . $gameApplication->getTag() . '</td>';
+								echo '<td>' . $gameApplication->getContactname() . '</td>';
+								echo '<td>' . $gameApplication->getContactnick() . '</td>';
+								echo '<td>' . $gameApplication->getPhone() . '</td>';
+								echo '<td>' . $gameApplication->getEmail() . '</td>';
+								echo '<td><input type="button" value="Fjern" onClick="removeGameApplication(' . $gameApplication->getId() . ')"></td>';
+							echo '</tr>';
+						}
+					} else {
+						echo '<tr>';
+							echo '<td>Ingen har meldt seg på compo i <i>' . $game->getTitle() . '</i> enda.</td>';
 						echo '</tr>';
 					}
-				} else {
-					echo '<tr>';
-						echo '<td>Ingen har meldt seg på compo i <i>' . $game->getTitle() . '</i> enda.</td>';
-					echo '</tr>';
-				}
-				
 				echo '</table>';
 			}
 		} else {
