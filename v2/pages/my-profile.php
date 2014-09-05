@@ -98,20 +98,12 @@ if (Session::isAuthenticated()) {
 						echo '</tr>';
 					}	
 				}
-			
-				$ticketText = $profile->hasTicket() ? 'Ja'  : 'Nei';
-			
-				echo '<tr>';
-					echo '<td>Har billett:</td>';
-					echo '<td>' . $ticketText . ' </td>';
-				echo '</tr>';
 				
 				$ticketCount = count($profile->getTickets());
 				
-				if ($profile->hasTicket() &&
-					$ticketCount > 1) {
+				if ($profile->hasTicket()) {
 					echo '<tr>';
-						echo '<td>Antall billetter:</td>';
+						echo '<td>Antall billett(er):</td>';
 						echo '<td>' . $ticketCount . ' </td>';
 					echo '</tr>';
 				}
