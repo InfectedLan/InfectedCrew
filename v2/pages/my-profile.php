@@ -99,12 +99,22 @@ if (Session::isAuthenticated()) {
 					}	
 				}
 			
-				$ticketText = $profile->hasTicket() ? 'Ja' : 'Nei';
+				$ticketText = $profile->hasTicket() ? 'Ja'  : 'Nei';
 			
 				echo '<tr>';
 					echo '<td>Har billett:</td>';
 					echo '<td>' . $ticketText . ' </td>';
 				echo '</tr>';
+				
+				$ticketCount = count($profile->getTickets());
+				
+				if ($profile->hasTicket() &&
+					$ticketCount > 1) {
+					echo '<tr>';
+						echo '<td>Antall billetter:</td>';
+						echo '<td>' . $ticketCount . ' </td>';
+					echo '</tr>';
+				}
 			
 				if ($profile->hasTicket() &&
 					$profile->hasSeat()) {
@@ -113,12 +123,8 @@ if (Session::isAuthenticated()) {
 					$row = $seat->getRow();
 					
 					echo '<tr>';
-						echo '<td>Rad:</td>';
-						echo '<td>' . $row->getNumber() . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Sete:</td>';
-						echo '<td>' . $seat->getNumber() . ' </td>';
+						echo '<td>Plass:</td>';
+						echo '<td>R' . $row->getNumber() . 'S' . $seat->getNumber() . '</td>';
 					echo '</tr>';
 				}
 			
