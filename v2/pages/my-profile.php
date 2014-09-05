@@ -118,12 +118,20 @@ if (Session::isAuthenticated()) {
 						echo '<td>R' . $row->getNumber() . 'S' . $seat->getNumber() . '</td>';
 					echo '</tr>';
 				}
-			
+				
+				if ($user->hasPermission('*') ||
+					$profile->getId() == $user->getId()) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td>';
+							echo '<a href="index.php?page=edit-profile&id=' . $profile->getId() . '">Endre bruker</a> ';
+						echo '</td>';
+					echo '</tr>';
+				}
+				
 				if ($profile->getId() == $user->getId()) {
 					echo '<tr>';
-						echo '<td>';
-							echo '<a href="index.php?page=edit-profile">Endre bruker</a> ';
-						echo '</td>';
+						echo '<td></td>';
 						echo '<td>';
 							echo '<a href="index.php?page=edit-avatar">Endre avatar</a> ';
 						echo '</td>';
