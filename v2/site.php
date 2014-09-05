@@ -48,7 +48,7 @@ class Site {
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
-					echo '<img src="images/Infected_crew_logo.png">';
+					echo '<a href="."><img src="images/Infected_crew_logo.png"></a>';
 					echo '<ul>';
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
