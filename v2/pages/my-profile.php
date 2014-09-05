@@ -113,12 +113,12 @@ if (Session::isAuthenticated()) {
 					$row = $seat->getRow();
 					
 					echo '<tr>';
-						echo '<td>Sete:</td>';
-						echo '<td>' . $seat->getNumber() . ' </td>';
-					echo '</tr>';
-					echo '<tr>';
 						echo '<td>Rad:</td>';
 						echo '<td>' . $row->getNumber() . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Sete:</td>';
+						echo '<td>' . $seat->getNumber() . ' </td>';
 					echo '</tr>';
 				}
 			
