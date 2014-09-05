@@ -14,7 +14,6 @@ if (Session::isAuthenticated()) {
 			$user->getId() == $profile->getId()) {
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';
-			
 			echo '<table style="float: left;">';
 				echo '<tr>';
 					echo '<td>Navn:</td>';
@@ -152,12 +151,12 @@ if (Session::isAuthenticated()) {
 		
 			echo '<img src="../api/' . $avatarFile . '" width="550px" height="400px" style="float: right;">';
 		} else {
-			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
+			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
 	} else {
-		echo 'Brukeren du spør etter finnes ikke.';
+		echo '<p>Brukeren du ser etter finnes ikke.</p>';
 	}
 } else {
-	echo 'Du er ikke logget inn!';
+	echo '<p>Du er ikke logget inn!</p>';
 }
 ?>
