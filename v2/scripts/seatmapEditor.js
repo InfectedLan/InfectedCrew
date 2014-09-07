@@ -183,20 +183,20 @@ function renderSeatmap()
 		{
 			seatmapData = data;
 			//Render seatmap
-			$("#seatmapCanvas").html('');
-			$("#seatmapCanvas").css('background-image', 'url("../api/content/seatmapBackground/' + data.backgroundImage + '")');
+			$("#seatmapEditorCanvas").html('');
+			$("#seatmapEditorCanvas").css('background-image', 'url("../api/content/seatmapBackground/' + data.backgroundImage + '")');
 			for(var i = 0; i < data.rows.length; i++)
 			{
 				var returnData = [];
-				returnData.push('<div class="row" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
+				returnData.push('<div class="editorRow" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
 				for(var s = 0; s < data.rows[i].seats.length; s++)
 				{
-					returnData.push('<div class="seat" id="seat' + data.rows[i].seats[s].id + '">');
+					returnData.push('<div class="editorSeat" id="seat' + data.rows[i].seats[s].id + '">');
 					returnData.push(data.rows[i].seats[s].humanName);
 					returnData.push('</div>');
 				}
 				returnData.push('</div>');
-				$("#seatmapCanvas").append(returnData.join(""));
+				$("#seatmapEditorCanvas").append(returnData.join(""));
 
 				var rowId = data.rows[i].id;
 				$("#row" + data.rows[i].id).click({row: rowId}, function(e) {
@@ -206,7 +206,7 @@ function renderSeatmap()
 		}
 		else
 		{
-			$("#seatmapCanvas").html('<i>En feil oppstod under håndteringen av seatmappet...</i>');
+			$("#seatmapEditorCanvas").html('<i>En feil oppstod under håndteringen av seatmappet...</i>');
 		}
   	});
 }
@@ -226,7 +226,7 @@ function updatePlacementButtons()
 	}
 }
 $( document ).ready(function() {
-    $("#seatmapCanvas").mousemove(function( e ) {
+    $("#seatmapEditorCanvas").mousemove(function( e ) {
     	//Mouse move handler
     	var parentOffset = $(this).offset(); 
 	  	//or $(this).offset(); if you really just want the current element's offset
@@ -234,7 +234,7 @@ $( document ).ready(function() {
 	   	var tempYPos = Math.round(e.pageY - parentOffset.top);
 	   	$("#mousePos").html("<i>Mus-posisjon: [" + tempXPos + "," + tempYPos + "]. Klikk for å velge.</i>");
     });
-    $("#seatmapCanvas").click(function( e ) {
+    $("#seatmapEditorCanvas").click(function( e ) {
     	if(e.target != this) return;
     	//Mouse move handler
     	var parentOffset = $(this).offset(); 

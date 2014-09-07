@@ -196,7 +196,7 @@ header a {
 	margin-top: -362px;
 }
 
-.row {
+.editorRow {
 	position: absolute;
 	background-image: url('../images/stripe.png');
 	padding: 1px;
@@ -210,7 +210,7 @@ header a {
     border-color: rgb(100, 100, 100);
 }
 
-.seat {
+.editorSeat {
 	background: green;
 	width: 27px;
 	height: 27px;
