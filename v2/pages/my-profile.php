@@ -1,6 +1,9 @@
 <?php
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
+require_once 'handlers/seatmaphandler.php';
+
+echo '<link rel="stylesheet" href="../api/style/seatmap.css">';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -157,7 +160,28 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
 			}
 		
-			echo '<img src="../api/' . $avatarFile . '" width="500px" style="float: right;">';
+			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
+
+			if ( ($user->hasPermission('*') ||
+					$user->hasPermission('admin.permissions') ) && $profile->hasTicket() )  {
+
+				$ticket = $profile->getTicket();
+				$seat = $ticket->getSeat();
+				echo '<br />';
+				echo '<br />';
+				echo '<h3>Omplasser bruker</h3>';
+				echo '<div id="seatmapCanvas"></div>';
+				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+				echo '<script src="scripts/my-profile.js"></script>';
+
+				echo '<script>';
+					echo 'var seatmapId = ' . SeatmapHandler::getSeatmap($ticket->getEvent()->getSeatmap())->getId() . ';';
+					echo 'var ticketId = ' . $ticket->getId() . ';';
+					echo '$(document).ready(function() {';
+						echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
+					echo '});';
+				echo '</script>';
+			}
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
