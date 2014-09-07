@@ -17,7 +17,7 @@ if (Session::isAuthenticated()) {
 		echo '<form class="admin-changeuser" name="input" method="post">';
 			echo '<table>';
 				echo '<tr>';
-					echo '<td>Brukernavn:</td>';
+					echo '<td>Bruker:</td>';
 					echo '<td>';
 						echo '<select class="chosen-select" name="userId" autofocus>';
 							$userList = UserHandler::getUsers();

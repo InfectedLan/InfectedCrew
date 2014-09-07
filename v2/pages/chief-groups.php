@@ -32,16 +32,12 @@ if (Session::isAuthenticated()) {
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '" required></td>';
 							echo '<td>';
-								echo '<select class="chosen-select" name="leader">';
+								echo '<select class="chosen-select select" name="leader" data-placeholder="Velg en chief...">';
 									$leader = $group->getLeader();
 									
-									if ($leader != null) {
-										echo '<option value="0">Ingen</option>';
-									} else {
-										echo '<option value="0" selected>Ingen</option>';
-									}
+									echo '<option value="0"></option>';
 									
-									foreach ($userList as $key => $userValue) {
+									foreach ($userList as $userValue) {
 										if ($leader != null && $userValue->getId() == $leader->getId()) {
 											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
@@ -71,8 +67,8 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Chief:</td>';
 						echo '<td>';
-							echo '<select class="chosen-select" name="leader">';
-								echo '<option value="0">Ingen</option>';
+							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								echo '<option value="0"></option>';
 								
 								foreach ($userList as $value) {
 									echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';

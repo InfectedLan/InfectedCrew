@@ -1,6 +1,6 @@
 body {
-	font-family:Arial;
-	background-color:#ffffff;
+	font-family: Arial;
+	background-color: #ffffff;
 	width: 1060px;
 	margin-left: auto;
 	margin-right: auto;
@@ -14,22 +14,7 @@ header {
 
 header img {
 	opacity: 0.70;
-	max-width: 300px;
-	float:left;
-}
-
-header a {
-	color:rgba(0,0,0,0.8);
-	font-family:Arial;
-	font-family:"Arial";
-	margin-left: 12px;
-	font-size: 16px;
-	text-height:auto;
-	padding-bottom:2px;
-}
-
-header li {
-	list-style-type: none;
+	float: left;
 }
 
 header ul {
@@ -38,20 +23,26 @@ header ul {
 	padding-top: 73px;
 }
 
-header a:hover {
-	border-bottom: 3px solid rgba(31,165,208,0.50);
-}
-
-header a:active {
-	border-bottom: 3px solid rgba(31,165,208,1);
-}
-
 header ul li {
 	display: inline-block;
 }
 
-header a {
+header ul li a {
 	text-decoration: none;
+	color: rgba(0,0,0,0.8);
+	font-family: Arial;
+	margin-left: 12px;
+	font-size: 16px;
+	text-height: auto;
+	padding-bottom: 2px;
+}
+
+header ul li a:hover {
+	border-bottom: 3px solid rgba(31,165,208,0.50);
+}
+
+header ul li a:active {
+	border-bottom: 3px solid rgba(31,165,208,1);
 }
 
 #content {

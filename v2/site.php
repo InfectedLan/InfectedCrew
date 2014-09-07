@@ -10,7 +10,9 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'home';
+		$defaultPage = Session::isAuthenticated() ? reset(RestrictedPageHandler::getPages())->getName() : null;
+		
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : $defaultPage;
 	}
 	
 	// Execute the site.
@@ -24,19 +26,29 @@ class Site {
 				echo '<meta name="author" content="' . implode(', ', Settings::$authors) . '">';
 				echo '<meta charset="UTF-8">';
 				echo '<link rel="shortcut icon" href="images/favicon.ico">';
-				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<link rel="stylesheet" href="../api/scripts/chosen/chosen.css">';
+				echo '<link rel="stylesheet" href="styles/style.css">';
 				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/chosen/chosen.jquery.js"></script>';
 				echo '<script src="../api/scripts/ckeditor/ckeditor.js"></script>';
+				echo '<script src="../api/scripts/ckeditor/adapters/jquery.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
+				echo '<script>';
+					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
+					echo '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
+					echo 'm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)';
+					echo '})(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');';
+
+					echo 'ga(\'create\', \'UA-54254513-3\', \'auto\');';
+					echo 'ga(\'send\', \'pageview\');';
+				echo '</script>';	
 			echo '</head>';
 			echo '<body>';
 				echo '<header>';
-					echo '<img src="images/Infected_crew_logo.png">';
+					echo '<a href="."><img src="images/Infected_crew_logo.png"></a>';
 					echo '<ul>';
 						if (Session::isAuthenticated()) {
 							$user = Session::getCurrentUser();
@@ -93,7 +105,8 @@ class Site {
 									}
 								}
 							
-								if ($user->isGroupMember()) {
+								if ($user->hasPermission('*') ||
+									$user->isGroupMember()) {
 									if ($this->pageName == 'functions' || 
 										$this->pageName == 'functions-search-users' ||
 										$this->pageName == 'functions-my-crew' || 
@@ -102,8 +115,7 @@ class Site {
 										$this->pageName == 'functions-site-list-pages') {
 										
 										if ($user->hasPermission('*') ||
-											$user->hasPermission('functions.search-users') ||
-											$user->isGroupLeader()) {
+											$user->hasPermission('functions.search-users')) {
 											echo '<li><a href="index.php?page=functions-search-users">Søk etter bruker</a></li>';
 										}
 										
@@ -299,7 +311,8 @@ class Site {
 						}
 					}
 					
-					if ($user->isGroupMember()) {
+					if ($user->hasPermission('*') ||
+						$user->isGroupMember()) {
 						if ($user->hasPermission('*') ||
 							$user->hasPermission('functions') ||
 							$user->hasPermission('functions.search-users') ||

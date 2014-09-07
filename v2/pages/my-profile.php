@@ -13,11 +13,10 @@ if (Session::isAuthenticated()) {
 	
 	if ($profile != null) {
 		if ($user->hasPermission('*') ||
-			$user->hasPermission('functions-search-users') ||
+			$user->hasPermission('functions.search-users') ||
 			$user->getId() == $profile->getId()) {
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';
-			
 			echo '<table style="float: left;">';
 				echo '<tr>';
 					echo '<td>Navn:</td>';
@@ -29,7 +28,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>E-post:</td>';
-					echo '<td>' . $profile->getEmail() . '</td>';
+					echo '<td><a href="mailto:' . $profile->getEmail() . '">' . $profile->getEmail() . '</a></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Fødselsdato</td>';
@@ -45,7 +44,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Telefon:</td>';
-					echo '<td>' . $profile->getPhone() . '</td>';
+					echo '<td>' . $profile->getPhoneString() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Adresse:</td>';
@@ -63,7 +62,7 @@ if (Session::isAuthenticated()) {
 				if ($postalCode != 0) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>' . sprintf("%04d", $postalCode) . ' ' . $profile->getCity() . '</td>';
+						echo '<td>' . $postalCode . ' ' . $profile->getCity() . '</td>';
 					echo '</tr>';
 				}
 				
@@ -75,7 +74,7 @@ if (Session::isAuthenticated()) {
 				if ($profile->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';
-						echo '<td>' . $profile->getEmergencyContact()->getPhone() . '</td>';
+						echo '<td>' . $profile->getEmergencyContact()->getPhoneString() . '</td>';
 					echo '</tr>';
 				}
 				
@@ -101,27 +100,41 @@ if (Session::isAuthenticated()) {
 						echo '</tr>';
 					}	
 				}
-			
+				
+				$ticketCount = count($profile->getTickets());
+				
 				if ($profile->hasTicket()) {
+					echo '<tr>';
+						echo '<td>Antall billett(er):</td>';
+						echo '<td>' . $ticketCount . ' </td>';
+					echo '</tr>';
+				}
+			
+				if ($profile->hasTicket() &&
+					$profile->hasSeat()) {
 					$ticket = $profile->getTicket();
 					$seat = $ticket->getSeat();
 					$row = $seat->getRow();
 					
 					echo '<tr>';
-						echo '<td>Sete:</td>';
-						echo '<td>' . $seat->getNumber() . ' </td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Rad:</td>';
-						echo '<td>' . $row->getNumber() . '</td>';
+						echo '<td>Plass:</td>';
+						echo '<td>R' . $row->getNumber() . 'S' . $seat->getNumber() . '</td>';
 					echo '</tr>';
 				}
-			
+				
+				if ($user->hasPermission('*') ||
+					$profile->getId() == $user->getId()) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td>';
+							echo '<a href="index.php?page=edit-profile&id=' . $profile->getId() . '">Endre bruker</a> ';
+						echo '</td>';
+					echo '</tr>';
+				}
+				
 				if ($profile->getId() == $user->getId()) {
 					echo '<tr>';
-						echo '<td>';
-							echo '<a href="index.php?page=edit-profile">Endre bruker</a> ';
-						echo '</td>';
+						echo '<td></td>';
 						echo '<td>';
 							echo '<a href="index.php?page=edit-avatar">Endre avatar</a> ';
 						echo '</td>';
@@ -147,7 +160,7 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
 			}
 		
-			echo '<img src="../api/' . $avatarFile . '" width="500px" height="400px" style="float: right;">';
+			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
 
 			if ( ($user->hasPermission('*') ||
 					$user->hasPermission('admin.permissions') ) && $profile->hasTicket() )  {
@@ -170,12 +183,12 @@ if (Session::isAuthenticated()) {
 				echo '</script>';
 			}
 		} else {
-			echo 'Kun administratorer har lov til å se på vanlige deltagere!';
+			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
 	} else {
-		echo 'Brukeren du spør etter finnes ikke.';
+		echo '<p>Brukeren du ser etter finnes ikke.</p>';
 	}
 } else {
-	echo 'Du er ikke logget inn!';
+	echo '<p>Du er ikke logget inn!</p>';
 }
 ?>

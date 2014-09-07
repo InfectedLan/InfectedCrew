@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
 						echo '</td>';
 						echo '<td><input type="text" name="theme" value="' . $event->getTheme() . '"></td>';
 						echo '<td>';
-							echo '<select name="location">';
+							echo '<select class="chosen-select" name="location">';
 								echo '<option value="' . $event->getLocation()->getId() . '">' . $event->getLocation()->getTitle() . '</option>';
 							echo '</select>';
 						echo '</td>';	
@@ -74,7 +74,7 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Sted:</td>';
 					echo '<td>';
-						echo '<select name="location">';
+						echo '<select class="chosen-select" name="location">';
 							foreach (LocationHandler::getLocations() as $location) {
 								echo '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
 							}

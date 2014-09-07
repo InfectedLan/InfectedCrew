@@ -34,16 +34,12 @@ if (Session::isAuthenticated()) {
 								echo '<td>' . count($team->getMembers()) . '</td>';
 								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
 								echo '<td>';
-									echo '<select class="chosen-select" name="leader">';
+									echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 										$leader = $team->getLeader();
 										
-										if ($leader != null) {
-											echo '<option value="0">Ingen</option>';
-										} else {
-											echo '<option value="0" selected>Ingen</option>';
-										}
-										
-										foreach ($userList as $key => $userValue) {
+										echo '<option value="0"></option>';
+
+										foreach ($userList as $userValue) {
 											if ($leader != null && $userValue->getId() == $leader->getId()) {
 												echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 											} else {
@@ -75,8 +71,8 @@ if (Session::isAuthenticated()) {
 						echo '<tr>';
 							echo '<td>Chief:</td>';
 							echo '<td>';
-								echo '<select class="chosen-select" name="leader">';
-									echo '<option value="0" selected>Ingen</option>';
+								echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+									echo '<option value="0"></option>';
 									
 									foreach ($userList as $value) {
 										echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
@@ -97,7 +93,7 @@ if (Session::isAuthenticated()) {
 				if (!empty($freeUserList)) {
 					echo '<table>';
 						echo '<tr>';
-							echo '<form class="chief-teams-adduser" action="" method="post">';
+							echo '<form class="chief-teams-adduser" method="post">';
 								echo '<td>';
 									echo '<select class="chosen-select" name="userId">';
 										foreach ($freeUserList as $user) {
@@ -106,7 +102,7 @@ if (Session::isAuthenticated()) {
 									echo '</select>';
 								echo '</td>';
 								echo '<td>';
-									echo '<select name="teamId">';
+									echo '<select class="chosen-select" name="teamId">';
 										foreach ($teamList as $team) {
 											echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 										}
