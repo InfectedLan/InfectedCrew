@@ -122,10 +122,10 @@ class Site {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' ||
 											$this->pageName == 'functions-my-crew' || 
+											$this->pageName == 'functions-site-list-pages' ||
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-list-games' || 
-											$this->pageName == 'functions-seatmap' || 
-											$this->pageName == 'functions-site-list-pages') {
+											$this->pageName == 'functions-seatmap') {
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('functions.search-users')) {
@@ -144,13 +144,13 @@ class Site {
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.site-list-games')) {
-												echo '<li><a href="index.php?page=functions-site-list-games">Spill</a></li>';
+												$user->hasPermission('functions.site-list-pages')) {
+												echo '<li><a href="index.php?page=functions-site-list-pages">Endre hovedsiden</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.site-list-pages')) {
-												echo '<li><a href="index.php?page=functions-site-list-pages">Infected.no</a></li>';
+												$user->hasPermission('functions.site-list-games')) {
+												echo '<li><a href="index.php?page=functions-site-list-games">Spill</a></li>';
 											}
 
 											if ($user->hasPermission('*') ||
