@@ -124,6 +124,7 @@ class Site {
 											$this->pageName == 'functions-my-crew' || 
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-list-games' || 
+											$this->pageName == 'functions-seatmap' || 
 											$this->pageName == 'functions-site-list-pages') {
 											
 											if ($user->hasPermission('*') ||
@@ -150,6 +151,11 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('functions.site-list-pages')) {
 												echo '<li><a href="index.php?page=functions-site-list-pages">Infected.no</a></li>';
+											}
+
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('functions.seatmap')) {
+												echo '<li><a href="index.php?page=functions-seatmap">Seatmap</a></li>';
 											}
 										} else if ($this->pageName == 'chief' || 
 											$this->pageName == 'edit-page' ||

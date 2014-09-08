@@ -5,7 +5,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.tickets')) {
+		$user->hasPermission('functions.seatmap')) {
 
 		echo '<link rel="stylesheet" href="../api/style/seatmap.css">';
 	
@@ -16,9 +16,8 @@ if (Session::isAuthenticated()) {
 
 		echo '<script>';
 			echo 'var seatmapId = ' . SeatmapHandler::getSeatmap(EventHandler::getCurrentEvent()->getSeatmap())->getId() . ';';
-			echo 'var ticketId = ' . $ticket->getId() . ';';
 			echo '$(document).ready(function() {';
-				echo 'downloadAndRenderSeatmap("#seatmapCanvas", function() {}, function() {});';
+				echo 'downloadAndRenderSeatmap("#seatmapCanvas");';
 			echo '});';
 		echo '</script>';
 	} else {

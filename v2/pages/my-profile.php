@@ -163,7 +163,7 @@ if (Session::isAuthenticated()) {
 			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
 
 			if ( ($user->hasPermission('*') ||
-					$user->hasPermission('admin.permissions') ) && $profile->hasTicket() )  {
+					$user->hasPermission('chief.tickets') ) && $profile->hasTicket() )  {
 
 				$ticket = $profile->getTicket();
 				$seat = $ticket->getSeat();
