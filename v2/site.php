@@ -314,7 +314,7 @@ class Site {
 									}
 								} else {
 									if ($this->pageName == 'apply') {
-										echo '<li class="active">a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
+										echo '<li class="active"><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 									}
