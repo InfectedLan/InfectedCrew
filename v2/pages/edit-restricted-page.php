@@ -1,6 +1,6 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/pagehandler.php';
+require_once 'handlers/restrictedpagehandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
@@ -8,18 +8,18 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.edit-page') || 
-		$user->hasPermission('functions.site-list-pages') ||
+		$user->hasPermission('functions.my-crew') || 
+		$user->hasPermission('functions.restricted-edit-page') || 
 		$user->isGroupLeader()) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
-			$page = PageHandler::getPage($id);
+			$page = RestrictedPageHandler::getPage($id);
 				
 			if ($page != null) {
-				echo '<script src="scripts/edit-page.js"></script>';
+				echo '<script src="scripts/restricted-edit-page.js"></script>';
 				echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 				
-				echo '<form class="edit-page-edit" method="post">';
+				echo '<form class="restricted-edit-page-edit" method="post">';
 					echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
 					echo '<table>';
 						echo '<tr>';

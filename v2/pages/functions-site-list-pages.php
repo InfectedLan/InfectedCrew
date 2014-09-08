@@ -3,7 +3,6 @@ require_once 'session.php';
 require_once 'handlers/pagehandler.php';
 
 $site = 'https://infected.no/v7/';
-$returnPage = basename(__FILE__, '.php');
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -11,30 +10,25 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('functions.site-list-pages')) {
 		$pageList = PageHandler::getPages();
+		echo '<script src="scripts/functions-site-list-pages.js"></script>';
+		echo '<h3>Sider:</h3>';
 		
-		echo '<article class="contentBox">';
-			echo '<h3>Sider:</h3>';
-			echo '<table>';	
-				// Loop through the pages.
-				foreach ($pageList as $value) {
-					// Add the current page to the page view.
-					echo '<tr>';
-						echo '<td>' . $value->getTitle() . '</td>';
-						echo '<td><a href="' . $site . 'index.php?viewPage=' . $value->getName() . '">Vis</a></td>';
-						echo '<form name="input" action="index.php?page=edit-page&site=0&id=' . $value->getId() . '&returnPage=' . $returnPage . '" method="post">';
-							echo '<td><input type="submit" value="Endre"></td>';
-						echo '</form>';
-						
-						if ($user->hasPermission('*')) {
-							echo '<form name="input" action="scripts/process_page.php?site=0&action=2&id=' . $value->getId() . '&returnPage=' . $returnPage . '" method="post">';
-								echo '<td><input type="submit" value="Slett"></td>';
-							echo '</form>';
-						}
-					echo '</tr>';
-				}
-			echo '</table>';
-		echo '</article>';
-		echo '<article class="contentBox">';
+		echo '<table>';	
+			// Loop through the pages.
+			foreach ($pageList as $page) {
+				// Add the current page to the page view.
+				echo '<tr>';
+					echo '<td>' . $page->getTitle() . '</td>';
+					echo '<td><a href="' . $site . 'pages/' . $page->getName() . '.html">Vis</a></td>';
+					echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
+					
+					if ($user->hasPermission('*')) {
+						echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
+					}
+				echo '</tr>';
+			}
+		echo '</table>';
+		
 			echo '<h3>Legg til ny side:</h3>';
 			echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 			echo '<p>For å få innholdet i bokser, kan du bruke HTML-kode.<br>';
@@ -82,15 +76,10 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				echo '</table>';
 			echo '</form>';
-		echo '</article>';
 	} else {
-		echo '<article class="contentBox"';
-			echo 'Du har ikke rettigheter til dette!';
-		echo '</article>';
+		echo 'Du har ikke rettigheter til dette!';
 	}
 } else {
-	echo '<article class="contentBox"';
-		echo 'Du er ikke logget inn!';
-	echo '</article>';
+	echo 'Du er ikke logget inn!';
 }
 ?>
