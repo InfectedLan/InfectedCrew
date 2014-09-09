@@ -218,6 +218,10 @@ class Site {
 												$user->hasPermission('admin.seatmap')) {
 												echo '<li><a href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
 											}
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('admin.utils.generateclass')) {
+												echo '<li><a href="index.php?page=admin-utils-generateclass">Generer klasse</a></li>';
+											}
 										}
 									}
 								}
