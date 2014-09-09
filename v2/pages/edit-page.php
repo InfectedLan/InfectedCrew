@@ -9,8 +9,7 @@ if (Session::isAuthenticated()) {
 	
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('functions.edit-page') || 
-		$user->hasPermission('functions.site-list-pages') ||
-		$user->isGroupLeader()) {
+		$user->hasPermission('functions.site-list-pages')) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
 			$page = PageHandler::getPage($id);
