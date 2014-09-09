@@ -158,7 +158,7 @@ class Site {
 												echo '<li><a href="index.php?page=functions-seatmap">Seatmap</a></li>';
 											}
 										} else if ($this->pageName == 'chief' || 
-											$this->pageName == 'edit-page' ||
+											$this->pageName == 'edit-restricted-page' ||
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||
 											$this->pageName == 'chief-avatars' ||
@@ -167,7 +167,7 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('chief.home') ||
 												$user->isGroupLeader()) {
-												echo '<li><a href="index.php?page=edit-page&id=1">Hjem</a></li>';
+												echo '<li><a href="index.php?page=edit-restricted-page&id=1">Hjem</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -355,7 +355,7 @@ class Site {
 										$user->hasPermission('chief.avatars') ||
 										$user->hasPermission('chief.applications') ||
 										$user->isGroupLeader()) {
-										if ($this->pageName == 'edit-page' && $_GET['id'] == 1 || 
+										if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 || 
 											$this->pageName == 'chief' || 
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||

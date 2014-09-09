@@ -6,7 +6,7 @@ $(document).ready(function() {
 });
 
 function addPage(form) {
-	$.getJSON('../api/json/addPage.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/addRestrictedPage.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -16,11 +16,11 @@ function addPage(form) {
 }
 
 function editPage(id) {
-	$(location).attr('href', 'index.php?page=edit-page&id=' + id);
+	$(location).attr('href', 'index.php?page=edit-restricted-page&id=' + id);
 }
 
 function removePage(id) {
-	$.getJSON('../api/json/removePage.php?id=' + id, function(data) {
+	$.getJSON('../api/json/removeRestrictedPage.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

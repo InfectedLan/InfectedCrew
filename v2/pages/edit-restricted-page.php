@@ -16,10 +16,10 @@ if (Session::isAuthenticated()) {
 			$page = RestrictedPageHandler::getPage($id);
 				
 			if ($page != null) {
-				echo '<script src="scripts/restricted-edit-page.js"></script>';
+				echo '<script src="scripts/edit-restricted-page.js"></script>';
 				echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 				
-				echo '<form class="restricted-edit-page-edit" method="post">';
+				echo '<form class="edit-restricted-page-edit" method="post">';
 					echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
 					echo '<table>';
 						echo '<tr>';

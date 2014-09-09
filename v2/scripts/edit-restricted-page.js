@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.restricted-edit-page-edit').submit(function(e) {
+	$('.edit-restricted-page-edit').submit(function(e) {
 		e.preventDefault();
 		
 		$.getJSON('../api/json/editRestrictedPage.php' + '?' + $(this).serialize(), function(data) {
