@@ -50,6 +50,7 @@ function generate() {
 	//Generer klasse
 
 	var classData = [];
+	classData.push('<?php');
 	classData.push('class ' + capitaliseFirstLetter(name) + ' {');
 	for(var i = 0; i < numRows; i++)
 	{
@@ -79,11 +80,14 @@ function generate() {
 	}
 
 	classData.push('}');
+	classData.push('?>');
 
 	$("#classResult").text(classData.join('\n'));
 
 	//Generer handler
 	var handlerData =[];
+
+	handlerData.push('<?php');
 
 	handlerData.push("require_once 'settings.php';");
 	handlerData.push("require_once 'mysql.php';");
@@ -112,6 +116,7 @@ function generate() {
 			handlerData.push('		}');
 		handlerData.push('	}');
 	handlerData.push('}');
+	handlerData.push('?>');
 
 	$("#handlerResult").text(handlerData.join('\n'));
 }
