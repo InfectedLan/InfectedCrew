@@ -18,7 +18,17 @@ if (Session::isAuthenticated()) {
 			$group = $user->getGroup();
 			
 			if ($group != null) {
-				$group->displayWithInfo();
+				echo '<h3>' . $group->getTitle() . '</h3>';
+			
+				$page = RestrictedPageHandler::getPageByName($group->getName());
+			
+				if ($page != null) {
+					echo $page->getContent();
+				}
+				
+				echo  $group->getDescription();
+				
+				$group->display();
 			} else {
 				echo '<p>Dette crewet finnes ikke!</p>';
 			}

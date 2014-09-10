@@ -1,13 +1,16 @@
 $(document).ready(function() {
-	$('.edit-page-edit').submit(function(e) {
+	$('.edit-page').submit(function(e) {
 		e.preventDefault();
-		
-		$.getJSON('../api/json/editPage.php' + '?' + $(this).serialize(), function(data) {
-			if (data.result) {
-				location.reload();
-			} else {
-				error(data.message); 
-			}
-		});
+		editPage(this);
 	});
 });
+
+function editPage(form) {
+	$.getJSON('../api/json/editPage.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			$(location).attr('href', 'index.php?page=functions-site-pages');
+		} else {
+			error(data.message); 
+		}
+	});
+}

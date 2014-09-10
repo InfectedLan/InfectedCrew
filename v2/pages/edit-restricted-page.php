@@ -1,6 +1,6 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/pagehandler.php';
+require_once 'handlers/restrictedpagehandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
@@ -8,17 +8,18 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.edit-page') || 
-		$user->hasPermission('functions.site-pages')) {
+		$user->hasPermission('functions.my-crew') || 
+		$user->hasPermission('functions.restricted-edit-page') || 
+		$user->isGroupLeader()) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
-			$page = PageHandler::getPage($id);
+			$page = RestrictedPageHandler::getPage($id);
 				
 			if ($page != null) {
-				echo '<script src="scripts/edit-page.js"></script>';
+				echo '<script src="scripts/edit-restricted-page.js"></script>';
 				echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 				
-				echo '<form class="edit-page" method="post">';
+				echo '<form class="edit-restricted-page-edit" method="post">';
 					echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
 					echo '<table>';
 						echo '<tr>';
@@ -26,7 +27,7 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
 						echo '</tr>';
 					echo '</table>';
-					echo '<textarea name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
+					echo '<textarea name="content" class="editor" rows="10" cols="80">' . $page->getContent() . '</textarea>';
 					echo '<input type="submit" value="Endre">';
 				echo '</form>';
 			} else {
