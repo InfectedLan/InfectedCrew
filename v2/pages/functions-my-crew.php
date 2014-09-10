@@ -39,8 +39,7 @@ if (Session::isAuthenticated()) {
 							echo '<td><a href="index.php?page=' . $page->getName() . '">Vis</a></td>';
 							echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
 							
-							if ($page->getName() != strtolower($group->getName()) &&
-								!in_array(strtolower($page->getName()), $teamNameList)) {
+							if ($page->getName() != strtolower($group->getName())) {
 								echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 							}
 						echo '</tr>';

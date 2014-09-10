@@ -122,7 +122,7 @@ class Site {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' ||
 											$this->pageName == 'functions-my-crew' || 
-											$this->pageName == 'functions-site-list-pages' ||
+											$this->pageName == 'functions-site-pages' ||
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-list-games' || 
 											$this->pageName == 'functions-seatmap') {
@@ -144,8 +144,8 @@ class Site {
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.site-list-pages')) {
-												echo '<li><a href="index.php?page=functions-site-list-pages">Endre hovedsiden</a></li>';
+												$user->hasPermission('functions.site-pages')) {
+												echo '<li><a href="index.php?page=functions-site-pages">Endre hovedsiden</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -334,14 +334,14 @@ class Site {
 										$user->hasPermission('functions.my-crew') ||
 										$user->hasPermission('functions.info') ||
 										$user->hasPermission('functions.site-list-games') ||
-										$user->hasPermission('functions.site-list-pages') ||
+										$user->hasPermission('functions.site-pages') ||
 										$user->isGroupLeader()) {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' || 
 											$this->pageName == 'functions-my-crew' || 
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-list-games' || 
-											$this->pageName == 'functions-site-list-pages') {
+											$this->pageName == 'functions-site-pages') {
 											echo '<li class="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';

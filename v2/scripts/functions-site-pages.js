@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.functions-site-list-pages-add').submit(function(e) {
+	$('.functions-site-pages-add').submit(function(e) {
 		e.preventDefault();
 		addPage(this);
 	});
