@@ -1,10 +1,10 @@
 $(document).ready(function() {
-	$('.functions-site-list-games-add').submit(function(e) {
+	$('.functions-site-games-add').submit(function(e) {
 		e.preventDefault();
 	    addGame(this);
 	});
 	
-	$('.functions-site-list-games-edit').submit(function(e) {
+	$('.functions-site-games-edit').submit(function(e) {
 		e.preventDefault();
 	    editGame(this);
 	});

@@ -319,14 +319,14 @@ class Site {
 										$user->hasPermission('functions.search-users') ||
 										$user->hasPermission('functions.my-crew') ||
 										$user->hasPermission('functions.info') ||
-										$user->hasPermission('functions.site-list-games') ||
+										$user->hasPermission('functions.site-games') ||
 										$user->hasPermission('functions.site-pages') ||
 										$user->isGroupLeader()) {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' || 
 											$this->pageName == 'functions-my-crew' || 
 											$this->pageName == 'functions-info' ||
-											$this->pageName == 'functions-site-list-games' || 
+											$this->pageName == 'functions-site-games' || 
 											$this->pageName == 'functions-site-pages') {
 											echo '<li class="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
 										} else {
