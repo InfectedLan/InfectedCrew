@@ -149,7 +149,7 @@ if (Session::isAuthenticated()) {
 				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td><td><input type="button" value="Slett" onClick="removeUser(' . $profile->getId() . ')"></td>';
+						echo '<td><input type="button" value="Slett" onClick="removeUser(' . $profile->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
