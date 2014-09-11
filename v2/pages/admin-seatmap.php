@@ -84,7 +84,7 @@ function showEditor() {
 				echo '<i>Mus-posisjon: [0,0]. Klikk for å velge.</i>';
 			echo '</div>';
 		echo '</div>';
-		echo '<div id="seatmapCanvas">';
+		echo '<div id="seatmapEditorCanvas">';
 			echo '<i>Laster inn data...</i>';
 		echo '</div>';
 	}

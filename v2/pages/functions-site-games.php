@@ -9,8 +9,8 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('*') || 
-		$user->hasPermission('functions.site-list-games')) {
-		echo '<script src="scripts/functions-site-list-games.js"></script>';
+		$user->hasPermission('functions.list-games')) {
+		echo '<script src="scripts/functions-list-games.js"></script>';
 		echo '<h3>Spill</h3>';
 		
 		$gameList = GameHandler::getGames();
@@ -27,7 +27,7 @@ if (Session::isAuthenticated()) {
 				
 				foreach ($gameList as $game) {
 					echo '<tr>';
-						echo '<form class="functions-site-list-games-edit" method="post">';
+						echo '<form class="functions-site-games-edit" method="post">';
 							echo '<input type="hidden" name="id" value="' . $game->getId() . '">';
 							echo '<td><input type="text" name="title" value="' . $game->getTitle() . '"></td>';
 							echo '<td><input type="text" name="price" value="' . $game->getPrice() . '"></td>';
@@ -57,7 +57,7 @@ if (Session::isAuthenticated()) {
 
 			echo '<h4>Legg til et spill</h4>';
 			
-			echo '<form class="functions-site-list-games-add" method="post">';
+			echo '<form class="functions-site-games-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';

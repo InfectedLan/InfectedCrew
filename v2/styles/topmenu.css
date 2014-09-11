@@ -20,6 +20,6 @@
 	margin: 0 5px 0 5px;
 }
 
-.topmenu ul li a:hover {
+.topmenu ul .active, .topmenu ul li a:hover {
 	border-bottom: 3px solid rgba(31,165,208,0.50);
 }
