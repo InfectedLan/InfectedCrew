@@ -15,6 +15,7 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('functions.search-users') ||
 			$user->getId() == $profile->getId()) {
+			echo '<script src="scripts/my-profile.js"></script>';
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
@@ -126,18 +127,14 @@ if (Session::isAuthenticated()) {
 					$profile->getId() == $user->getId()) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>';
-							echo '<a href="index.php?page=edit-profile&id=' . $profile->getId() . '">Endre bruker</a> ';
-						echo '</td>';
+						echo '<td><a href="index.php?page=edit-profile&id=' . $profile->getId() . '">Endre bruker</a></td>';
 					echo '</tr>';
 				}
 				
 				if ($profile->getId() == $user->getId()) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>';
-							echo '<a href="index.php?page=edit-avatar">Endre avatar</a> ';
-						echo '</td>';
+						echo '<td><a href="index.php?page=edit-avatar">Endre avatar</a></td>';
 					echo '</tr>';
 				}
 					
@@ -145,9 +142,14 @@ if (Session::isAuthenticated()) {
 					$user->hasPermission('admin.permissions')) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>';
-							echo '<a href="index.php?page=admin-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
-						echo '</td>';
+						echo '<td><a href="index.php?page=admin-permissions&id=' . $profile->getId() . '">Endre rettigheter</a></td>';
+					echo '</tr>';
+				}
+				
+				if ($user->hasPermission('*')) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><td><input type="button" value="Slett" onClick="removeUser(' . $profile->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
@@ -172,7 +174,6 @@ if (Session::isAuthenticated()) {
 				echo '<h3>Omplasser bruker</h3>';
 				echo '<div id="seatmapCanvas"></div>';
 				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
-				echo '<script src="scripts/my-profile.js"></script>';
 
 				echo '<script>';
 					echo 'var seatmapId = ' . SeatmapHandler::getSeatmap($ticket->getEvent()->getSeatmap())->getId() . ';';

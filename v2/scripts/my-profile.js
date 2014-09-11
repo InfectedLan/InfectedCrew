@@ -1,3 +1,13 @@
+function removeUser(id) {
+	$.getJSON('../api/json/removeUser.php?id=' + id, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
 var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
 	if(!taken) {
 		return "free";
@@ -7,6 +17,7 @@ var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
 	}
 	return "taken";
 }
+
 var callback = function() {
 	for(var i = 0; i < seatmapData.rows.length; i++)
 		{
@@ -21,6 +32,7 @@ var callback = function() {
 			}
 		}
 }
+
 function updateSeat(seatId) {
 	$.getJSON("../api/json/seatTicket.php?ticket=" + ticketId + "&seat="+seatId, function(data){
 		if(data.result)
