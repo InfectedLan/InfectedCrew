@@ -51,6 +51,11 @@ if (Session::isAuthenticated()) {
 						echo '<td><input type="button" value="Slett" onClick="removeGroup(' . $group->getId() . ')"></td>';
 					echo '</tr>';
 				}
+				
+				echo '<tr>';
+					echo '<td>Totalt:</td>';
+					echo '<td>' . count($userList) . '</td>';
+				echo '</tr>';
 			echo '</table>';
 			
 			echo '<h3>Legg til et nytt crew</h3>';
