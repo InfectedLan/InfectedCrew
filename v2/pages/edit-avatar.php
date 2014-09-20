@@ -124,7 +124,7 @@ if (Session::isAuthenticated()) {
 		echo '</script>';
 		echo '<b>Last opp profilbilde: </b>';
 		echo '<form action="../api/json/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
-			echo '<input type="hidden" name="MAX_FILE_SIZE" value="7000000" />';
+			echo '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
 			echo '<label for="file">Filnavn:</label>';
 			echo '<input type="file" name="file" id="file">';
 			echo '<br>';
