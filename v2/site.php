@@ -159,6 +159,11 @@ class Site {
 												$user->hasPermission('functions.seatmap')) {
 												echo '<li><a' . ($this->pageName == 'functions-seatmap' ? ' class="active"' : null) . ' href="index.php?page=functions-seatmap">Seatmap</a></li>';
 											}
+
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('functions.print-ticket-labels')) {
+												echo '<li><a href="../api/utils/printTableLabel.php">Print bordlapper</a></li>';
+											}
 										} else if ($this->pageName == 'chief' || 
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
 											$this->pageName == 'chief-groups' ||
