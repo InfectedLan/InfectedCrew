@@ -1,6 +1,8 @@
 <?php
 require_once 'session.php';
 
+$seatmapId = isset($_GET['id']) ? $_GET['id'] : EventHandler::getCurrentEvent()->getSeatmap()->getId();
+
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
@@ -15,7 +17,7 @@ if (Session::isAuthenticated()) {
 		echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
 
 		echo '<script>';
-			echo 'var seatmapId = ' . SeatmapHandler::getSeatmap(EventHandler::getCurrentEvent()->getSeatmap())->getId() . ';';
+			echo 'var seatmapId = ' . $seatmapId . ';';
 			echo '$(document).ready(function() {';
 				echo 'downloadAndRenderSeatmap("#seatmapCanvas");';
 			echo '});';
