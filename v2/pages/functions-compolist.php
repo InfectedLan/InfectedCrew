@@ -15,9 +15,11 @@ if (Session::isAuthenticated()) {
 			$event = EventHandler::getCurrentEvent();
 		}
 
+		//print_r($event);
+
 		$compos = CompoHandler::getComposForEvent($event);
 
-		echo '<h1>Compoer for ' . $event->getName() . '</h1>';
+		echo '<h1>Compoer for ' . $event->getTheme() . '</h1>';
 
 		foreach($compos as $compo) {
 			echo '<a href="index.php?page=functions-compo&id=' . $compo->getId() . '">' . $compo->getName() . '</a><br />';
