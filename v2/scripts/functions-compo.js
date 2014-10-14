@@ -39,8 +39,42 @@ function renderPendingMatches(pendingData) {
 	$("#teamListArea").append(appendArray.join(""));
 }
 function renderCurrentMatches(currentData) {
-
+	var appendArray = [];
+	appendArray.push("<h1>Nåværende matcher</h1>");
+	
+	appendArray.push('<hr />');
+	for(var i = 0; i < currentData.length; i++) {
+		appendArray.push('<h3>Match id: ' + currentData[i].id + '</h3>');
+		appendArray.push('<b>Start: </b>' + currentData[i].startString + ' (' + currentData[i].startTime + ')<br />');
+		appendArray.push('<b>Connect data: </b>' + currentData[i].connectData + '<br />');
+		appendArray.push('<b>Internal state: </b>' + (currentData[i].state == 0 ? 'Waiting for players to be ready' : (currentData[i].state == 1 ? 'Banning' : 'Ingame') ) + '<br />');
+		appendArray.push('<b>Participants: </b><br />');
+		appendArray.push("<table>");
+			for(var x = 0; x < currentData[i].participants.list.length; x++) {
+				appendArray.push('<tr>');
+					appendArray.push('<td>');
+						appendArray.push(currentData[i].participants.list[x].name + ' - ' + currentData[i].participants.list[x].tag + ' (id ' + currentData[i].participants.list[x].id + ')');
+					appendArray.push('</td>');
+					appendArray.push('<td>');
+						appendArray.push('<input type="button" value="Sett vinner" onClick="setWinner(' + currentData[i].id + ', ' + currentData[i].participants.list[x].id + ')" />');
+					appendArray.push('</td>');
+				appendArray.push('</tr>');
+			}
+		appendArray.push("</table>");
+		appendArray.push('<hr />');
+	}
+	
+	$("#teamListArea").append(appendArray.join(""));
 }
 function renderFinishedMatches(finishedData) {
 	
+}
+function setWinner(matchId, winnerId) {
+	$.getJSON('../api/json/setmatchwinner.php?matchId=' + matchId + '&winnerId=' + winnerId, function(data) {
+		if (data.result) {
+			renderMatchList();
+		} else {
+			error(data.message); 
+		}
+	});
 }
