@@ -125,6 +125,7 @@ class Site {
 											$this->pageName == 'functions-site-pages' ||
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-games' || 
+											$this->pageName == 'functions-compolist' || 
 											$this->pageName == 'functions-seatmap' ||
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] != 1 ||
 											$this->pageName == 'edit-page') {
@@ -163,6 +164,11 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('functions.checkin')) {
 												echo '<li><a' . ($this->pageName == 'functions-checkin-users' ? ' class="active"' : null) . ' href="index.php?page=functions-checkin-users">Innsjekk</a></li>';
+											}
+
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('functions.compolist')) {
+												echo '<li><a' . ($this->pageName == 'functions-compolist' ? ' class="active"' : null) . ' href="index.php?page=functions-compolist">Compo-manager</a></li>';
 											}
 
 											if ($user->hasPermission('*') ||
