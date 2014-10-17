@@ -216,6 +216,7 @@ class Site {
 											$this->pageName == 'admin-events' || 
 											$this->pageName == 'admin-permissions' || 
 											$this->pageName == 'admin-change-user' || 
+											$this->pageName == 'admin-change-user' || 
 											$this->pageName == 'admin-seatmap') {
 											
 											if ($user->hasPermission('*') ||
@@ -236,6 +237,11 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.seatmap')) {
 												echo '<li><a' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . ' href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
+											}
+
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('admin.api')) {
+												echo '<li><a' . ($this->pageName == 'admin-api' ? ' class="active"' : null) . ' href="index.php?page=admin-api">Api konsoll</a></li>';
 											}
 										}
 									}
