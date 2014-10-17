@@ -67,7 +67,31 @@ function renderCurrentMatches(currentData) {
 	$("#teamListArea").append(appendArray.join(""));
 }
 function renderFinishedMatches(finishedData) {
+	var appendArray = [];
+	appendArray.push("<h1>Ferdige matcher</h1>");
 	
+	appendArray.push('<hr />');
+	for(var i = 0; i < finishedData.length; i++) {
+		appendArray.push('<h3>Match id: ' + finishedData[i].id + '</h3>');
+		appendArray.push('<b>Start: </b>' + finishedData[i].startString + ' (' + finishedData[i].startTime + ')<br />');
+		appendArray.push('<b>Connect data: </b>' + finishedData[i].connectData + '<br />');
+		appendArray.push('<b>Participants: </b><br />');
+		appendArray.push("<table>");
+			for(var x = 0; x < finishedData[i].participants.list.length; x++) {
+				appendArray.push('<tr>');
+					appendArray.push('<td>');
+						appendArray.push(finishedData[i].participants.list[x].name + ' - ' + finishedData[i].participants.list[x].tag + ' (id ' + finishedData[i].participants.list[x].id + ')');
+						if(finishedData[i].participants.list[x].id == finishedData[i].winner.id) {
+							appendArray.push(' <b>Winner</b>');
+						}
+					appendArray.push('</td>');
+				appendArray.push('</tr>');
+			}
+		appendArray.push("</table>");
+		appendArray.push('<hr />');
+	}
+	
+	$("#teamListArea").append(appendArray.join(""));
 }
 function setWinner(matchId, winnerId) {
 	$.getJSON('../api/json/setmatchwinner.php?matchId=' + matchId + '&winnerId=' + winnerId, function(data) {
