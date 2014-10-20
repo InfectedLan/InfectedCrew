@@ -11,6 +11,9 @@ if (Session::isAuthenticated()) {
 		$user->hasPermission('admin.console')) {
 		echo '<script src="scripts/admin-api.js"></script>';
 		echo '<b>Api-command: </b><select class="search" id="apiName" placeholder="Skriv api-navn her"></select>';
+		echo '<br />';
+		echo '<div id="commandArgBox"></div>';
+		echo '<div id="resultBox"><i>Results kommer her</i></div>';
 	} else {
 		echo 'Du har ikke rettigheter til dette.';
 	}
