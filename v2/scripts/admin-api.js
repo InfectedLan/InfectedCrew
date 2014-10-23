@@ -43,7 +43,7 @@ function submitQuery() {
 	queryString = queryString + apiCommands[commandIndex].name;
 	queryString = queryString + '.php';
 	for(var i = 0; i < apiCommands[commandIndex].args.length; i++) {
-		queryString = queryString + (i == 0 ? '?' : '&') + apiCommands[commandIndex].args[i].name + '=' + $('#commandParameter' + i).val();
+		queryString = queryString + (i == 0 ? '?' : '&') + apiCommands[commandIndex].args[i].name + '=' + encodeURIComponent( $('#commandParameter' + i).val() );
 	}
 	$.getJSON(queryString, function(data) {
 		if (data.result) {
