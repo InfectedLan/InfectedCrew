@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.chief-teams-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addTeam.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/team/addTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.chief-teams-edit').submit(function(e) {
 		e.preventDefault();
-	    $.getJSON('../api/json/editTeam.php' + '?' + $(this).serialize(), function(data){
+	    $.getJSON('../api/json/team/editTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 	$('.chief-teams-adduser').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 function removeTeam(groupId, teamId) {
-	$.getJSON('../api/json/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
+	$.getJSON('../api/json/team/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -44,7 +44,7 @@ function removeTeam(groupId, teamId) {
 }
 
 function removeUserFromTeam(id) {
-	$.getJSON('../api/json/removeUserFromTeam.php?id=' + id, function(data){
+	$.getJSON('../api/json/team/removeUserFromTeam.php?id=' + id, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -54,7 +54,7 @@ function removeUserFromTeam(id) {
 }
 
 function removeUsersFromTeam(id) {
-	$.getJSON('../api/json/removeUsersFromTeam.php?id=' + id, function(data) {
+	$.getJSON('../api/json/team/removeUsersFromTeam.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

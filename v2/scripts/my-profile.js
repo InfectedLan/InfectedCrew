@@ -22,7 +22,7 @@ var callback = function() {
 		}
 }
 function updateSeat(seatId) {
-	$.getJSON("../api/json/seatTicket.php?ticket=" + ticketId + "&seat="+seatId, function(data){
+	$.getJSON("../api/json/ticket/seatTicket.php?ticket=" + ticketId + "&seat="+seatId, function(data){
 		if(data.result)
 		{
 			//downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);

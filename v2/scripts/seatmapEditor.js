@@ -26,7 +26,7 @@ function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah
 }
 function newSeatmap()
 {
-	$.getJSON('../api/json/newSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
+	$.getJSON('../api/json/seatma/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
 		if(data.result)
 		{
 			window.location = "index.php?page=admin-seatmap&id=" + data.id;
@@ -45,7 +45,7 @@ function addRow()
 {
 	//TODO
 	//seatmapId
-	$.getJSON('../api/json/newRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data){
+	$.getJSON('../api/json/row/addRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data){
 		if(data.result)
 		{
 			renderSeatmap();
@@ -107,7 +107,7 @@ function selectRow(rowId)
 }
 function deleteRow(rowId)
 {
-	$.getJSON('../api/json/deleteRow.php?row=' + rowId, function(data){
+	$.getJSON('../api/json/row/removeRow.php?row=' + rowId, function(data){
 		if(data.result)
 		{
 			renderSeatmap();
@@ -126,7 +126,7 @@ function addSeats(rowId)
 	var amount = window.prompt("Hvor mange seter vil du legge til?", "1");
 	if(isNumber(amount))
 	{
-		$.getJSON('../api/json/rowAddSeats.php?row=' + rowId + "&numSeats=" + amount, function(data){
+		$.getJSON('../api/json/row/addSeatsToRow.php?row=' + rowId + "&numSeats=" + amount, function(data){
 			if(data.result)
 			{
 				renderSeatmap();
@@ -147,7 +147,7 @@ function removeSeats(rowId)
 	var amount = window.prompt("Hvor mange seter vil du fjerne?", "1");
 	if(isNumber(amount))
 	{
-		$.getJSON('../api/json/rowRemoveSeats.php?row=' + rowId + "&numSeats=" + amount, function(data){
+		$.getJSON('../api/json/row/removeSeatsFromRow.php?row=' + rowId + "&numSeats=" + amount, function(data){
 			if(data.result)
 			{
 				renderSeatmap();
@@ -165,7 +165,7 @@ function removeSeats(rowId)
 }
 function moveRow(rowId)
 {
-	$.getJSON('../api/json/moveRow.php?row=' + rowId + '&x=' + xPos + '&y=' + yPos, function(data){
+	$.getJSON('../api/json/row/moveRow.php?row=' + rowId + '&x=' + xPos + '&y=' + yPos, function(data){
 		if(data.result)
 		{
 			renderSeatmap();

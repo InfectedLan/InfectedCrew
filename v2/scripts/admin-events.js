@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.admin-events-add').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/addEvent.php' + '?' + $(this).serialize(), function(data) {
+		$.getJSON('../api/json/event/addEvent.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	$('.admin-events-edit').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/editEvent.php' + '?' + $(this).serialize(), function(data) {
+		$.getJSON('../api/json/event/editEvent.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -27,7 +27,7 @@ function viewSeatmap(id) {
 }
 
 function removeEvent(id) {
-	$.getJSON('../api/json/removeEvent.php?id=' + id, function(data) {
+	$.getJSON('../api/json/event/removeEvent.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

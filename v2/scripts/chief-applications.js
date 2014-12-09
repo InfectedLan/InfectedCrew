@@ -3,7 +3,7 @@ function viewApplication(id) {
 }
 
 function removeApplication(id) {
-	$.getJSON('../api/json/removeApplication.php?id=' + id, function(data) {
+	$.getJSON('../api/json/application/removeApplication.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

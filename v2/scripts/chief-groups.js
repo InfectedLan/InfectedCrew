@@ -9,9 +9,11 @@ $(document).ready(function() {
 	    editGroup(this);
 	});
 	
-/* 	$('.chief-groups-edit').find('select[name=leader]').chosen().change(function(e) {
+	/*
+	$('.chief-groups-edit').find('select[name=leader]').chosen().change(function(e) {
 		editGroup(this.form);
-	}); */
+	}); 
+	*/
 	
 	$('.chief-groups-adduser').submit(function(e) {
 		e.preventDefault();
@@ -20,7 +22,7 @@ $(document).ready(function() {
 });
 
 function addGroup(form) {
-	$.getJSON('../api/json/addGroup.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/group/addGroup.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -30,7 +32,7 @@ function addGroup(form) {
 }
 
 function editGroup(form) {
-	$.getJSON('../api/json/editGroup.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/group/editGroup.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -40,7 +42,7 @@ function editGroup(form) {
 }
 
 function removeGroup(id) {
-	$.getJSON('../api/json/removeGroup.php?id=' + id, function(data) {
+	$.getJSON('../api/json/group/removeGroup.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -50,7 +52,7 @@ function removeGroup(id) {
 }
 
 function addUserToGroup(form) {
-	$.getJSON('../api/json/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -60,7 +62,7 @@ function addUserToGroup(form) {
 };
 
 function removeUserFromGroup(id) {
-	$.getJSON('../api/json/removeUserFromGroup.php?id=' + id, function(data) {
+	$.getJSON('../api/json/group/removeUserFromGroup.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -70,7 +72,7 @@ function removeUserFromGroup(id) {
 }
 
 function removeUsersFromGroup(id) {
-	$.getJSON('../api/json/removeUsersFromGroup.php?id=' + id, function(data) {
+	$.getJSON('../api/json/group/removeUsersFromGroup.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

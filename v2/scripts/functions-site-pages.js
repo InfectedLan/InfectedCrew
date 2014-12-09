@@ -6,7 +6,7 @@ $(document).ready(function() {
 });
 
 function addPage(form) {
-	$.getJSON('../api/json/addPage.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/page/addPage.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -20,7 +20,7 @@ function editPage(id) {
 }
 
 function removePage(id) {
-	$.getJSON('../api/json/removePage.php?id=' + id, function(data) {
+	$.getJSON('../api/json/page/removePage.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

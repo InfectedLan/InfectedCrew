@@ -6,7 +6,7 @@ $(document).ready(function() {
 });
 
 function editPage(form) {
-	$.getJSON('../api/json/editPage.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/page/editPage.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			$(location).attr('href', 'index.php?page=functions-site-pages');
 		} else {

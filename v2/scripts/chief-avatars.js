@@ -1,5 +1,5 @@
 function acceptAvatar(id) {
-	$.getJSON('../api/json/acceptAvatar.php?id=' + id, function(data) {
+	$.getJSON('../api/json/avatar/acceptAvatar.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -9,7 +9,7 @@ function acceptAvatar(id) {
 }
 
 function rejectAvatar(id) {
-	$.getJSON('../api/json/rejectAvatar.php?id=' + id, function(data) {
+	$.getJSON('../api/json/avatar/rejectAvatar.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

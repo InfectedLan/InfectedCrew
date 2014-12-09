@@ -2,7 +2,7 @@ var passThroughId = 0;
 function loadData() {
 	var ticketId = $("#ticketId").val();
 	passThroughId = ticketId;
-	$.getJSON('../api/json/getticketdata.php?id=' + encodeURIComponent(ticketId), function(data){
+	$.getJSON('../api/json/ticket/getTicketData.php?id=' + encodeURIComponent(ticketId), function(data){
 		if(data.result) {
 			$("#ticketDetails").append("<table>" +
 				"<tr><td>Fullt navn</td><td>" + data.userData.fullName + "</td></tr>" +
@@ -16,7 +16,7 @@ function loadData() {
 	});
 }
 function acceptTicket(id) {
-	$.getJSON('../api/json/checkinticket.php?id=' + encodeURIComponent(id), function(data){
+	$.getJSON('../api/json/ticket/checkInTicket.php?id=' + encodeURIComponent(id), function(data){
 		if(data.result) {
 			location.reload();
 		} else {

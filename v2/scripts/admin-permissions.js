@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.admin-permissions-edit').submit(function(e) {
 		e.preventDefault();
-		$.getJSON('../api/json/editUserPermissions.php' + '?' + $(this).serialize(), function(data) {
+		$.getJSON('../api/json/user/editUserPermissions.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				$(location).attr('href', 'index.php?page=admin-permissions');
 			} else {

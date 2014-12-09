@@ -3,7 +3,7 @@ $(document).ready(function() {
 	renderMatchList();
 });
 function renderMatchList() {
-	$.getJSON('../api/json/getMatchList.php' + '?id=' + compoId, function(data) {
+	$.getJSON('../api/json/match/getMatchList.php' + '?id=' + compoId, function(data) {
 		if (data.result) {
 			$("#teamListArea").html("");
 			renderPendingMatches(data.data.pending);

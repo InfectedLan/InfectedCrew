@@ -21,7 +21,7 @@ function search() {
 	$('b.search-string').html(query);
 	
 	if (query !== '') {
-		$.getJSON('../api/json/searchForUser.php' + '?query=' + query, function(data) {
+		$.getJSON('../api/json/user/findUser.php' + '?query=' + query, function(data) {
 			var content = '';
 			
 			if (data.result) {
