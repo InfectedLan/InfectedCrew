@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.admin-changeuser').submit(function(e) {
+	$('.developer-changeuser').submit(function(e) {
 		e.preventDefault();
 		$.getJSON('../api/json/changeToUser.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {

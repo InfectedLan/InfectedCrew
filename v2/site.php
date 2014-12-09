@@ -53,12 +53,12 @@ class Site {
 					if (Session::isAuthenticated()) {
 						$user = Session::getCurrentUser();
 						
-						echo 'Logget inn som ' . $user->getFullName() . ' <button type="button" class="btn btn-primary btn-sm" onClick="logout()">Logg ut</button>';
+						echo '<p>Logget inn som ' . $user->getFullName() . ' <button type="button" class="btn btn-primary btn-sm" onClick="logout()">Logg ut</button></p>';
 					}
 				echo '</div>';
 				echo '<header class="header">';
 					echo '<div class="logo">';
-						echo '<a href="."><img src="images/Infected_crew_logo.png"></a>';
+						echo '<a href="."><img src="images/logo.png"></a>';
 					echo '</div>';
 					echo '<nav class="topmenu">';
 						echo '<ul>';
@@ -84,7 +84,7 @@ class Site {
 												array_push($teamNameList, strtolower($team->getName()));
 											}
 											
-											// Only show 
+											// Only show pages for that group.
 											if (!empty($groupPageList) ||
 												!empty($teamList)) {
 												echo '<li><a' . ($this->pageName == 'my-crew' && !isset($_GET['teamId']) ? ' class="active"' : null) . ' href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
@@ -215,8 +215,6 @@ class Site {
 										} else if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' || 
 											$this->pageName == 'admin-permissions' || 
-											$this->pageName == 'admin-change-user' || 
-											$this->pageName == 'admin-change-user' || 
 											$this->pageName == 'admin-seatmap') {
 											
 											if ($user->hasPermission('*') ||
@@ -228,20 +226,23 @@ class Site {
 												$user->hasPermission('admin.permissions')) {
 												echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Tilganger</a></li>';
 											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('admin.change-user')) {
-												echo '<li><a' . ($this->pageName == 'admin-change-user' ? ' class="active"' : null) . ' href="index.php?page=admin-change-user">Logg inn som en annan</a></li>';
-											}
 
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.seatmap')) {
 												echo '<li><a' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . ' href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
 											}
+										} else if ($this->pageName == 'developer' || 
+											$this->pageName == 'developer-change-user' || 
+											$this->pageName == 'developer-console') {
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('developer.change-user')) {
+												echo '<li><a' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . ' href="index.php?page=developer-change-user">Logg inn som en annan</a></li>';
+											}
 
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('admin.api')) {
-												echo '<li><a' . ($this->pageName == 'admin-api' ? ' class="active"' : null) . ' href="index.php?page=admin-api">Api konsoll</a></li>';
+												$user->hasPermission('developer.console')) {
+												echo '<li><a' . ($this->pageName == 'developer-console' ? ' class="active"' : null) . ' href="index.php?page=developer-console">Konsoll</a></li>';
 											}
 										}
 									}
@@ -389,6 +390,18 @@ class Site {
 											echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
+										}
+									}
+									
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('developer') ||
+										$user->hasPermission('developer.change-user')) {
+										if ($this->pageName == 'developer' || 
+											$this->pageName == 'developer-change-user' ||
+											$this->pageName == 'developer-console') {
+											echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
+										} else {
+											echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 										}
 									}
 								}

@@ -2,19 +2,17 @@
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
 
-$username = isset($_POST['username']) ? $_POST['username'] : 0;
-
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.change-user')) {
-		echo '<script src="scripts/admin-change-user.js"></script>';
+		$user->hasPermission('developer.change-user')) {
+		echo '<script src="scripts/developer-change-user.js"></script>';
 		echo '<h1>Bytt bruker</h1>';
-		echo '<p>Dette er en admin-funksjon som lar deg være logget inn som en annen bruker. <br>';
+		echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
 		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
 		
-		echo '<form class="admin-changeuser" name="input" method="post">';
+		echo '<form class="developer-changeuser" name="input" method="post">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>Bruker:</td>';
