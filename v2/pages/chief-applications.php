@@ -34,22 +34,26 @@ if (Session::isAuthenticated()) {
 				$applicationUser = $application->getUser();
 			
 				echo '<tr>';
-					echo '<td>' . $applicationUser->getDisplayName() . '</td>';
+					echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getDisplayName() . '</a></td>';
 					echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 					echo '<td>' . date('d.m.Y', $application->getDatetime()) . '</td>';
 					echo '<td>';
-						switch ($application->getState()) {
-							case 1:
-								echo '<b>Ubehandlet</b>';
-								break;
-								
-							case 2:
-								echo '<b>Godkjent</b>';
-								break;
-								
-							case 3:
-								echo '<b>Avslått</b>';
-								break;
+						if ($application->isQueued()) {
+								echo '<b>Står i kø</b>';
+						} else {
+							switch ($application->getState()) {
+								case 1:
+									echo '<b>Ubehandlet</b>';
+									break;
+									
+								case 2:
+									echo '<b>Godkjent</b>';
+									break;
+									
+								case 3:
+									echo '<b>Avslått</b>';
+									break;
+							}
 						}
 						echo '</td>';
 					echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';

@@ -20,18 +20,22 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Status:</td>';
 						echo '<td>';
-							switch ($application->getState()) {
-								case 1:
-									echo '<b>Ubehandlet</b>';
-									break;
-									
-								case 2:
-									echo '<b>Godkjent</b>';
-									break;
-									
-								case 3:
-									echo '<b>Avslått</b>';
-									break;
+							if ($application->isQueued()) {
+								echo '<b>Står i kø</b>';
+							} else {
+								switch ($application->getState()) {
+									case 1:
+										echo '<b>Ubehandlet</b>';
+										break;
+										
+									case 2:
+										echo '<b>Godkjent</b>';
+										break;
+										
+									case 3:
+										echo '<b>Avslått</b>';
+										break;
+								}
 							}
 						echo '</td>';
 					echo '</tr>';
@@ -40,7 +44,7 @@ if (Session::isAuthenticated()) {
 				
 					echo '<tr>';
 						echo '<td>Søkers navn:</td>';
-						echo '<td>' . $applicationUser->getFullname(). '</td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Dato søkt:</td>';
@@ -76,6 +80,13 @@ if (Session::isAuthenticated()) {
 							echo '<input type="submit" value="Avslå">';
 						echo '</form>';
 						echo '<input type="button" value="Godkjenn" onClick="acceptApplication(' . $application->getId() . ')">';
+						
+						if (!$application->isQueued()) {
+							echo '<input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')">';
+						} else {
+							echo '<input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')">';
+						}
+						
 						break;
 						
 					case 3:
