@@ -56,7 +56,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>E-post:</td>';
-						echo '<td>' . $applicationUser->getEmail() . '</td>';
+						echo '<td><a href="mailto:someone@example.com">' . $applicationUser->getEmail() . '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Telefon:</td>';
