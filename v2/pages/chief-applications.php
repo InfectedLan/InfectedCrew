@@ -24,22 +24,22 @@ if (Session::isAuthenticated()) {
 		echo '<script src="scripts/chief-applications.js"></script>';
 		echo '<h3>Søknader</h3>';
 		
-		echo '<h3>Åpene søknader:</h3>';
+		echo '<h3>Åpne søknader:</h3>';
 		
 		if (!empty($pendingApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
 					echo '<th>Søker\'s navn</th>';
 					echo '<th>Crew</th>';
-					echo '<th>Dato</th>';
+					echo '<th>Dato søkt</th>';
 					echo '<th>Status</th>';
 				echo '</tr>';
 				
 				foreach ($pendingApplicationList as $application) {
 					$applicationUser = $application->getUser();
-				
+					
 					echo '<tr>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getDisplayName() . '</a></td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 						echo '<td>';
@@ -75,17 +75,21 @@ if (Session::isAuthenticated()) {
 		if (!empty($queuedApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
+					echo '<th>Plass</th>';
 					echo '<th>Søker\'s navn</th>';
 					echo '<th>Crew</th>';
-					echo '<th>Dato</th>';
+					echo '<th>Dato søkt</th>';
 					echo '<th>Status</th>';
 				echo '</tr>';
+				
+				$index = 1;
 				
 				foreach ($queuedApplicationList as $application) {
 					$applicationUser = $application->getUser();
 				
 					echo '<tr>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getDisplayName() . '</a></td>';
+						echo '<td>' . $index . '</td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 						echo '<td>';
@@ -110,6 +114,8 @@ if (Session::isAuthenticated()) {
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
 						echo '<td><input type="button" value="Slett" onClick="removeApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
+					
+					$index++;
 				}
 			echo '</table>';
 		} else {
