@@ -48,7 +48,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Dato søkt:</td>';
-						echo '<td>' . date('d.m.Y', $application->getDatetime()) . '</td>';
+						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Crew:</td>';
@@ -76,7 +76,7 @@ if (Session::isAuthenticated()) {
 					case 1:
 						echo '<form class="chief-applications-reject" method="post">';
 							echo '<input type="hidden" name="id" value="' . $application->getId() . '">';
-							echo '<textarea class="editor" name="reason" rows="10" cols="80" placeholder="Skriv hvorfor du vil avslå her."></textarea>';
+							echo '<textarea class="editor" name="comment" rows="10" cols="80" placeholder="Skriv hvorfor du vil avslå her."></textarea>';
 							echo '<input type="submit" value="Avslå">';
 						echo '</form>';
 						echo '<input type="button" value="Godkjenn" onClick="acceptApplication(' . $application->getId() . ')">';
@@ -90,7 +90,7 @@ if (Session::isAuthenticated()) {
 						break;
 						
 					case 3:
-						echo 'Begrunnelse for avslåelse: <i>' . $application->getReason() . '</i>';
+						echo 'Begrunnelse for avslåelse: <i>' . $application->getComment() . '</i>';
 						break;
 				}
 			} else {
