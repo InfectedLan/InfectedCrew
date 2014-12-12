@@ -62,7 +62,7 @@ if (Session::isAuthenticated()) {
 							}
 							echo '</td>';
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
-						echo '<td><input type="button" value="Slett" onClick="removeApplication(' . $application->getId() . ')"></td>';
+						echo '<td><input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
@@ -112,7 +112,7 @@ if (Session::isAuthenticated()) {
 							}
 							echo '</td>';
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
-						echo '<td><input type="button" value="Slett" onClick="removeApplication(' . $application->getId() . ')"></td>';
+						echo '<td><input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
 					
 					$index++;
