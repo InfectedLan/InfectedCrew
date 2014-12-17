@@ -7,7 +7,7 @@ if (Session::isAuthenticated()) {
 	// TODO: Sjekk om det er noen som har et uncropped bilde.
 	echo '<script>';
 		echo 'function deleteAvatar() {';
-			echo '$.getJSON(\'../api/json/deleteavatar.php\', function(data) {';
+			echo '$.getJSON(\'../api/json/avatar/deleteAvatar.php\', function(data) {';
 				echo 'if (data.result) {';
 					echo 'location.reload()';
 				echo '} else { ';
@@ -37,8 +37,8 @@ if (Session::isAuthenticated()) {
 						echo '$("#cropform").ajaxForm(options);';
 					echo '});';
 				echo '</script>';
-				echo '<script src="../api/scripts/jcrop/js/jquery.Jcrop.js"></script>';
-				echo '<link rel="stylesheet" href="../api/scripts/jcrop/css/jquery.Jcrop.css">';
+				echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
+				echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
 				echo '<script>';
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
@@ -77,7 +77,7 @@ if (Session::isAuthenticated()) {
 
 			echo '<h1>Beskjær bilde</h1>';
 			echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="800">';
-			echo '<form action="../api/json/cropavatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
+			echo '<form action="../api/json/avatar/cropAvatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
 				echo '<input type="hidden" id="x" name="x">';
 				echo '<input type="hidden" id="y" name="y">';
 				echo '<input type="hidden" id="w" name="w">';
@@ -123,7 +123,7 @@ if (Session::isAuthenticated()) {
 			echo '});';
 		echo '</script>';
 		echo '<b>Last opp profilbilde: </b>';
-		echo '<form action="../api/json/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
+		echo '<form action="../api/json/avatar/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
 			echo '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
 			echo '<label for="file">Filnavn:</label>';
 			echo '<input type="file" name="file" id="file">';
