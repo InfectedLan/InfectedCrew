@@ -103,14 +103,14 @@ if (Session::isAuthenticated()) {
 				
 				$ticketCount = count($profile->getTickets());
 				
-				if ($profile->hasTicket()) {
+				if ($profile->hasCurrentTicket()) {
 					echo '<tr>';
 						echo '<td>Antall billett(er):</td>';
 						echo '<td>' . $ticketCount . ' </td>';
 					echo '</tr>';
 				}
 			
-				if ($profile->hasTicket() &&
+				if ($profile->hasCurrentTicket() &&
 					$profile->hasSeat()) {
 					$ticket = $profile->getTicket();
 					$seat = $ticket->getSeat();
@@ -164,7 +164,7 @@ if (Session::isAuthenticated()) {
 
 			if (($user->hasPermission('*') ||
 				$user->hasPermission('functions.search-users') ||
-				$user->hasPermission('chief.tickets')) && $profile->hasTicket())  {
+				$user->hasPermission('chief.tickets')) && $profile->hasCurrentTicket())  {
 
 				$ticket = $profile->getTicket();
 				$seat = $ticket->getSeat();
