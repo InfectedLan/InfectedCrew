@@ -5,7 +5,7 @@ require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
 
-echo '<link rel="stylesheet" href="../api/style/seatmap.css">';
+echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -179,7 +179,7 @@ if (Session::isAuthenticated()) {
 				echo '<script src="scripts/my-profile.js"></script>';
 
 				echo '<script>';
-					echo 'var seatmapId = ' . SeatmapHandler::getSeatmap($ticket->getEvent()->getSeatmap())->getId() . ';';
+					echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';';
 					echo 'var ticketId = ' . $ticket->getId() . ';';
 					echo '$(document).ready(function() {';
 						echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';

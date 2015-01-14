@@ -9,7 +9,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('functions.seatmap')) {
 
-		echo '<link rel="stylesheet" href="../api/style/seatmap.css">';
+		echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 	
 		echo '<h1>Seatmap for årets arrangement</h1>';
 
