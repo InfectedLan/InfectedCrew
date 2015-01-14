@@ -113,7 +113,7 @@ if (Session::isAuthenticated()) {
 						echo '</tr>';
 					echo '</table>';
 				} else {
-					echo '<p>Alle medlemmer av "' . $group->getTitle() . '"crew er allerede med i et lag.</p>';
+					echo '<p>Alle medlemmer av "' . $group->getTitle() . '" crew er allerede med i et lag.</p>';
 				}
 				
 				foreach ($teamList as $team) {
