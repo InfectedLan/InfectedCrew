@@ -2,6 +2,8 @@
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/seatmaphandler.php';
+require_once 'handlers/eventhandler.php';
+require_once 'handlers/tickethandler.php';
 
 echo '<link rel="stylesheet" href="../api/style/seatmap.css">';
 
@@ -15,6 +17,7 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('functions.search-users') ||
 			$user->getId() == $profile->getId()) {
+			$event = EventHandler::getCurrentEvent();
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
@@ -103,14 +106,14 @@ if (Session::isAuthenticated()) {
 				
 				$ticketCount = count($profile->getTickets());
 				
-				if ($profile->hasTicket()) {
+				if (TicketHandler::hasTicketForEvent($event, $profile)) {
 					echo '<tr>';
 						echo '<td>Antall billett(er):</td>';
 						echo '<td>' . $ticketCount . ' </td>';
 					echo '</tr>';
 				}
 			
-				if ($profile->hasTicket() &&
+				if (TicketHandler::hasTicketForEvent($event, $profile) &&
 					$profile->hasSeat()) {
 					$ticket = $profile->getTicket();
 					$seat = $ticket->getSeat();
@@ -164,7 +167,7 @@ if (Session::isAuthenticated()) {
 
 			if (($user->hasPermission('*') ||
 				$user->hasPermission('functions.search-users') ||
-				$user->hasPermission('chief.tickets')) && $profile->hasTicket())  {
+				$user->hasPermission('chief.tickets')) && TicketHandler::hasTicketForEvent($event, $profile))  {
 
 				$ticket = $profile->getTicket();
 				$seat = $ticket->getSeat();
