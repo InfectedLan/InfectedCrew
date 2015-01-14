@@ -57,11 +57,13 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					
 					foreach ($userList as $userValue) {
-						echo '<tr>';
-							echo '<td>' . $userValue->getDisplayName() . '</td>';;
-							echo '<td>' . count($userValue->getPermissions()) . '</td>';
-							echo '<td><input type="button" value="Endre" onClick="editUserPermissions(' . $userValue->getId() . ')"></td>';
-						echo '</tr>';
+						if ($userValue != null) {
+							echo '<tr>';
+								echo '<td>' . $userValue->getDisplayName() . '</td>';;
+								echo '<td>' . count($userValue->getPermissions()) . '</td>';
+								echo '<td><input type="button" value="Endre" onClick="editUserPermissions(' . $userValue->getId() . ')"></td>';
+							echo '</tr>';
+						}
 					}
 				echo '</table>';
 			} else {
