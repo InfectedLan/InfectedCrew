@@ -125,6 +125,19 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 				
+				if ($user->hasPermission('*')) {
+					echo '<tr>';
+						echo '<td>Dato registrert:</td>';
+						echo '<td>' . date('d.m.Y', $profile->getRegisteredDate()) . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Aktivert:</td>';
+						echo '<td>';
+							echo $profile->isActivated() ? 'Ja' : 'Nei';
+						echo '</td>';
+					echo '</tr>';
+				}
+				
 				if ($user->hasPermission('*') ||
 					$profile->getId() == $user->getId()) {
 					echo '<tr>';
