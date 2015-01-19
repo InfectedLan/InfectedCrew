@@ -215,7 +215,8 @@ class Site {
 										} else if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' || 
 											$this->pageName == 'admin-permissions' || 
-											$this->pageName == 'admin-seatmap') {
+											$this->pageName == 'admin-seatmap' ||
+											$this->pageName == 'admin-email') {
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.events')) {
@@ -230,6 +231,12 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.seatmap')) {
 												echo '<li><a' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . ' href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('admin.email') ||
+												$user->hasPermission('admin.emails')) {
+												echo '<li><a' . ($this->pageName == 'admin-email' ? ' class="active"' : null) . ' href="index.php?page=admin-email">Send e-post</a></li>';
 											}
 										} else if ($this->pageName == 'developer' || 
 											$this->pageName == 'developer-change-user' || 
@@ -381,12 +388,15 @@ class Site {
 										$user->hasPermission('admin.events') ||
 										$user->hasPermission('admin.permissions') ||
 										$user->hasPermission('admin.change-user') ||
-										$user->hasPermission('admin.seatmap')) {
+										$user->hasPermission('admin.seatmap') ||
+										$user->hasPermission('admin.email') || 
+										$user->hasPermission('admin.emails')) {
 										if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' ||
 											$this->pageName == 'admin-permissions' ||
 											$this->pageName == 'admin-change-user' ||
-											$this->pageName == 'admin-seatmap') {
+											$this->pageName == 'admin-seatmap' ||
+											$this->pageName == 'admin-email') {
 											echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';

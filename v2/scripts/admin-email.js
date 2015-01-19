@@ -3,7 +3,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		$.getJSON('../api/json/email/sendEmails.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
-				location.reload();
+				info(data.message);
 			} else {
 				error(data.message); 
 			}
