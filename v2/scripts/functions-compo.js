@@ -1,7 +1,18 @@
-$(document).ready(function() {
-	setInterval(renderMatchList, 5000);
-	renderMatchList();
-});
+function initMatchList() {
+	$(document).ready(function() {
+		setInterval(renderMatchList, 5000);
+		renderMatchList();
+	});
+}
+function generateMatches() {
+	$.getJSON('../api/json/match/generateMatchesForCompo.php' + '?id=' + compoId, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message); 
+		}
+	});
+}
 function renderMatchList() {
 	$.getJSON('../api/json/match/getMatchList.php' + '?id=' + compoId, function(data) {
 		if (data.result) {
