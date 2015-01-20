@@ -7,8 +7,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.email') ||
-		$user->hasPermission('admin.emails')) {
+		$user->hasPermission('admin.email')) {
 		
 		echo '<script src="scripts/admin-email.js"></script>';
 		echo '<h3>E-poster:</h3>';
@@ -20,6 +19,8 @@ if (Session::isAuthenticated()) {
 					echo '<td>Mottakere:</td>';
 					echo '<td>';
 						echo '<select multiple class="chosen-select select" name="userIdList" data-placeholder="Velg mottakere...">';
+							echo '<option value="0">Alle</option>';
+							
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 							}
@@ -35,7 +36,7 @@ if (Session::isAuthenticated()) {
 					echo '<td><textarea name="message" class="editor" rows="10" cols="80"></textarea></td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td><input type="submit" value="Endre"></td>';
+					echo '<td><input type="submit" value="Send"></td>';
 				echo '</tr>';
 			echo '</form>';
 		echo '</table>';
