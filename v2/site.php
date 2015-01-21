@@ -234,8 +234,7 @@ class Site {
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('admin.email') ||
-												$user->hasPermission('admin.emails')) {
+												$user->hasPermission('admin.email')) {
 												echo '<li><a' . ($this->pageName == 'admin-email' ? ' class="active"' : null) . ' href="index.php?page=admin-email">Send e-post</a></li>';
 											}
 										} else if ($this->pageName == 'developer' || 
@@ -389,8 +388,7 @@ class Site {
 										$user->hasPermission('admin.permissions') ||
 										$user->hasPermission('admin.change-user') ||
 										$user->hasPermission('admin.seatmap') ||
-										$user->hasPermission('admin.email') || 
-										$user->hasPermission('admin.emails')) {
+										$user->hasPermission('admin.email')) {
 										if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' ||
 											$this->pageName == 'admin-permissions' ||
