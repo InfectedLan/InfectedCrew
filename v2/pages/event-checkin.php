@@ -7,8 +7,8 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.functions.checkin')) {
-		echo '<script src="scripts/functions-checkin-user.js"></script>';
+		$user->hasPermission('event.checkin')) {
+		echo '<script src="scripts/event-checkin.js"></script>';
 		echo '<h3>Sjekk inn billett</h3>';
 
 		$event = EventHandler::getCurrentEvent();

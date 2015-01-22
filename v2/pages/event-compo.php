@@ -7,7 +7,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.compoadmin')) {
+		$user->hasPermission('event.compoadmin')) {
 		$event = 0;
 		if(isset($_GET['id'])) {
 			$event = EventHandler::getEvent($_GET['id']);
@@ -22,7 +22,7 @@ if (Session::isAuthenticated()) {
 		echo '<h1>Compoer for ' . $event->getTheme() . '</h1>';
 
 		foreach($compos as $compo) {
-			echo '<a href="index.php?page=functions-compo&id=' . $compo->getId() . '">' . $compo->getName() . '</a><br />';
+			echo '<a href="index.php?page=event-compo&id=' . $compo->getId() . '">' . $compo->getName() . '</a><br />';
 		}
 
 	} else {

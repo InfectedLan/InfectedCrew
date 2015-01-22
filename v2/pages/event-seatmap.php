@@ -7,7 +7,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.seatmap')) {
+		$user->hasPermission('event.seatmap')) {
 
 		echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 	

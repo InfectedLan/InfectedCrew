@@ -126,7 +126,6 @@ class Site {
 											$this->pageName == 'functions-info' ||
 											$this->pageName == 'functions-site-games' || 
 											$this->pageName == 'functions-compolist' || 
-											$this->pageName == 'functions-seatmap' ||
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] != 1 ||
 											$this->pageName == 'edit-page') {
 											
@@ -144,36 +143,6 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('functions.site-pages')) {
 												echo '<li><a' . ($this->pageName == 'functions-site-pages' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=functions-site-pages">Endre hovedsiden</a></li>';
-											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.info')) {
-												echo '<li><a' . ($this->pageName == 'functions-info' ? ' class="active"' : null) . ' href="index.php?page=functions-info">Infoskjerm</a></li>';
-											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.site-games')) {
-												echo '<li><a' . ($this->pageName == 'functions-site-games' ? ' class="active"' : null) . ' href="index.php?page=functions-site-games">Endre compoer</a></li>';
-											}
-
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.seatmap')) {
-												echo '<li><a' . ($this->pageName == 'functions-seatmap' ? ' class="active"' : null) . ' href="index.php?page=functions-seatmap">Seatmap</a></li>';
-											}
-
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.checkin')) {
-												echo '<li><a' . ($this->pageName == 'functions-checkin-users' ? ' class="active"' : null) . ' href="index.php?page=functions-checkin-users">Innsjekk</a></li>';
-											}
-
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.compolist')) {
-												echo '<li><a' . ($this->pageName == 'functions-compolist' ? ' class="active"' : null) . ' href="index.php?page=functions-compolist">Compo-manager</a></li>';
-											}
-
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.print-ticket-labels')) {
-												echo '<li><a href="../api/utils/printTableLabel.php">Print bordlapper</a></li>';
 											}
 										} else if ($this->pageName == 'chief' || 
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
@@ -211,6 +180,36 @@ class Site {
 												$user->hasPermission('chief.applications') ||
 												$user->isGroupLeader()) {
 												echo '<li><a' . ($this->pageName == 'chief-applications' || $this->pageName == 'application' ? ' class="active"' : null) . ' href="index.php?page=chief-applications">Søknader</a></li>';
+											}
+										} else if ($this->pageName == 'event' || 
+											$this->pageName == 'event-checkin' ||
+											$this->pageName == 'event-seatmap' ||
+											$this->pageName == 'event-screen' ||
+											$this->pageName == 'event-compo') {
+
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.checkin')) {
+												echo '<li><a' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . ' href="index.php?page=event-checkin">Innsjekk</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.seatmap')) {
+												echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Seatmap</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.screen')) {
+												echo '<li><a' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . ' href="index.php?page=event-screen">Skjerm</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.compo')) {
+												echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.print-table-labels')) {
+												echo '<li><a href="../api/pages/utils/printTableLabel.php">Print bordlapper</a></li>';
 											}
 										} else if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' || 
@@ -381,7 +380,24 @@ class Site {
 											echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 										}
 									}
-
+									
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('event') ||
+										$user->hasPermission('event.checkin') ||
+										$user->hasPermission('event.seatmap') ||
+										$user->hasPermission('event.screen') ||
+										$user->hasPermission('event.compo')) {
+										if ($this->pageName == 'event' || 
+											$this->pageName == 'event-checkin' || 
+											$this->pageName == 'event-seatmap' ||
+											$this->pageName == 'event-screen' ||
+											$this->pageName == 'event-compo') {
+											echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
+										} else {
+											echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
+										}
+									}
+									
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin') ||
 										$user->hasPermission('admin.events') ||

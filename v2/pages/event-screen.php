@@ -13,7 +13,7 @@ if (Session::isAuthenticated()) {
 		$group = $user->getGroup();
 		
 		if ($user->hasPermission('*') || 
-			$user->hasPermission('functions.info')) {
+			$user->hasPermission('event.screen')) {
 			echo '<h1>Infoskjerm</h1>';
 			
 			echo '<h3>Agenda</h3>';
