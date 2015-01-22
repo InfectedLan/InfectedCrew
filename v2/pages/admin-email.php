@@ -20,6 +20,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>';
 						echo '<select multiple class="chosen-select select" name="userIdList" data-placeholder="Velg mottakere...">';
 							echo '<option value="0">Alle</option>';
+							echo '<option value="-1">Alle med billett</option>';
 							
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
