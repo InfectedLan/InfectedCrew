@@ -20,6 +20,7 @@ if (Session::isAuthenticated()) {
 					echo '<th>Medlemmer</th>';
 					echo '<th>Beskrivelse</th>';
 					echo '<th>Chief</th>';
+					echo '<th>Co-chief</th>';
 				echo '</tr>';
 				
 				$userList = UserHandler::getMemberUsers();
@@ -39,6 +40,21 @@ if (Session::isAuthenticated()) {
 									
 									foreach ($userList as $userValue) {
 										if ($leader != null && $userValue->getId() == $leader->getId()) {
+											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+										} else {
+											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+										}
+									}
+								echo '</select>';
+							echo '</td>';
+							echo '<td>';
+								echo '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
+									$coleader = $group->getCoLeader();
+									
+									echo '<option value="0"></option>';
+									
+									foreach ($userList as $userValue) {
+										if ($coleader != null && $userValue->getId() == $coleader->getId()) {
 											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -73,6 +89,18 @@ if (Session::isAuthenticated()) {
 						echo '<td>Chief:</td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								echo '<option value="0"></option>';
+								
+								foreach ($userList as $value) {
+									echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+								}
+							echo '</select>';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Co-chief:</td>';
+						echo '<td>';
+							echo '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
 								echo '<option value="0"></option>';
 								
 								foreach ($userList as $value) {
