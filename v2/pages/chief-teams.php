@@ -11,6 +11,7 @@ if (Session::isAuthenticated()) {
 			$user->hasPermission('chief.teams') ||
 			$user->isGroupLeader()) {
 			$teamList = $user->getGroup()->getTeams();
+			$userList = $group->getMembers();
 			echo '<script src="scripts/chief-teams.js"></script>';
 			echo '<h3>Lag</h3>';
 			
@@ -22,8 +23,6 @@ if (Session::isAuthenticated()) {
 						echo '<th>Beskrivelse</th>';
 						echo '<th>Chief</th>';
 					echo '</tr>';
-					
-					$userList = $group->getMembers();
 					
 					foreach ($teamList as $team) {
 						echo '<tr>';
@@ -54,38 +53,40 @@ if (Session::isAuthenticated()) {
 						echo '</tr>';
 					}
 				echo '</table>';
+			}
 				
-				echo '<h3>Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-				echo '<form class="chief-teams-add" action="" method="post">';
-					echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-					echo '<table>';
-						echo '<tr>';
-							echo '<td>Navn:</td>';
-							echo '<td><input type="text" name="title" required></td>';
-						echo '<tr>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td>Beskrivelse:</td>';
-							echo '<td><input type="text" name="description" required></td>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td>Chief:</td>';
-							echo '<td>';
-								echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-									echo '<option value="0"></option>';
-									
-									foreach ($userList as $value) {
-										echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
-									}
-								echo '</select>';
-							echo '</td>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td><input type="submit" value="Legg til"></td>';
-						echo '</tr>';
-					echo '</table>';
-				echo '</form>';
+			echo '<h3>Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
+			echo '<form class="chief-teams-add" action="" method="post">';
+				echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
+				echo '<table>';
+					echo '<tr>';
+						echo '<td>Navn:</td>';
+						echo '<td><input type="text" name="title" required></td>';
+					echo '<tr>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Beskrivelse:</td>';
+						echo '<td><input type="text" name="description" required></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Chief:</td>';
+						echo '<td>';
+							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								echo '<option value="0"></option>';
+								
+								foreach ($userList as $value) {
+									echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
+								}
+							echo '</select>';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td><input type="submit" value="Legg til"></td>';
+					echo '</tr>';
+				echo '</table>';
+			echo '</form>';
 				
+			if (!empty($teamList)) {
 				echo '<h3>Medlemmer</h3>';
 				
 				$freeUserList = getFreeUsers($group);
