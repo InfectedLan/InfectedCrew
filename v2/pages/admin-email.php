@@ -19,8 +19,10 @@ if (Session::isAuthenticated()) {
 					echo '<td>Mottakere:</td>';
 					echo '<td>';
 						echo '<select multiple class="chosen-select select" name="userIdList" data-placeholder="Velg mottakere...">';
-							echo '<option value="0">Alle</option>';
-							echo '<option value="-1">Alle med billett</option>';
+							echo '<option value="all">Alle</option>';
+							echo '<option value="allMembers">Alle medlemmer</option>';
+							echo '<option value="allWithTicket">Alle med en billett</option>';
+							echo '<option value="allWithTickets">Alle med flere billetter</option>';
 							
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
