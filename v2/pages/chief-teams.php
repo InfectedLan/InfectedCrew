@@ -69,7 +69,7 @@ if (Session::isAuthenticated()) {
 						echo '<td><input type="text" name="description" required></td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Chief:</td>';
+						echo '<td>Shift-leder:</td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 								echo '<option value="0"></option>';
