@@ -18,8 +18,7 @@ if (Session::isAuthenticated()) {
 					echo '<th>Navn</th>';
 					echo '<th>Medlemmer</th>';
 					echo '<th>Beskrivelse</th>';
-					echo '<th>Chief</th>';
-					echo '<th>Co-chief</th>';
+					echo '<th>Chief/Co-chief</th>';
 				echo '</tr>';
 				
 				$userList = UserHandler::getMemberUsers();
@@ -45,8 +44,7 @@ if (Session::isAuthenticated()) {
 										}
 									}
 								echo '</select>';
-							echo '</td>';
-							echo '<td>';
+								echo '<br>';
 								echo '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
 									$coleader = $group->getCoLeader();
 									
@@ -63,7 +61,6 @@ if (Session::isAuthenticated()) {
 							echo '</td>';
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
-						echo '<td><input type="button" value="Slett" onClick="removeGroup(' . $group->getId() . ')"></td>';
 					echo '</tr>';
 				}
 				
