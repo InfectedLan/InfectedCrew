@@ -20,7 +20,7 @@ if (Session::isAuthenticated()) {
 						echo '<th>Navn</th>';
 						echo '<th>Medlemmer</th>';
 						echo '<th>Beskrivelse</th>';
-						echo '<th>Chief</th>';
+						echo '<th>Shift-leder</th>';
 					echo '</tr>';
 					
 					foreach ($teamList as $team) {
