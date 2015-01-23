@@ -6,8 +6,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.applications') ||
-		$user->isGroupLeader()) {
+		$user->hasPermission('chief.applications')) {
 		$group = $user->getGroup();
 		$pendingApplicationList = null;
 		$queuedApplicationList = null;

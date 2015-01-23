@@ -7,8 +7,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.groups') ||
-		$user->isGroupLeader()) {
+		$user->hasPermission('chief.groups')) {
 		$groupList = GroupHandler::getGroups();
 		echo '<script src="scripts/chief-groups.js"></script>';
 		echo '<h3>Crewene</h3>';

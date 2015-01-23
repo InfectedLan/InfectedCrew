@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.functions-my-crew-add').submit(function(e) {
+	$('.chief-my-crew-add').submit(function(e) {
 		e.preventDefault();
 		addPage(this);
 	});

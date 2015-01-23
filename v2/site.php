@@ -121,23 +121,13 @@ class Site {
 										$user->isGroupMember()) {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' ||
-											$this->pageName == 'functions-my-crew' || 
 											$this->pageName == 'functions-site-pages' ||
-											$this->pageName == 'functions-info' ||
-											$this->pageName == 'functions-site-games' || 
-											$this->pageName == 'functions-compolist' || 
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] != 1 ||
 											$this->pageName == 'edit-page') {
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('functions.search-users')) {
 												echo '<li><a' . ($this->pageName == 'functions-search-users' ? ' class="active"' : null) . ' href="index.php?page=functions-search-users">Søk etter bruker</a></li>';
-											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.my-crew') ||
-												$user->isGroupLeader()) {
-												echo '<li><a' . ($this->pageName == 'functions-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=functions-my-crew">My Crew</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -150,37 +140,38 @@ class Site {
 											$this->pageName == 'chief-teams' ||
 											$this->pageName == 'chief-avatars' ||
 											$this->pageName == 'chief-applications' ||
+											$this->pageName == 'chief-my-crew' ||
 											$this->pageName == 'application') {
 
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.home') ||
-												$user->isGroupLeader()) {
+												$user->hasPermission('chief.home')) {
 												echo '<li><a' . ($this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=edit-restricted-page&id=1">Hjem</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.groups') ||
-												$user->isGroupLeader()) {
+												$user->hasPermission('chief.groups')) {
 												echo '<li><a' . ($this->pageName == 'chief-groups' ? ' class="active"' : null) . ' href="index.php?page=chief-groups">Crew</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.teams') ||
-												$user->isGroupLeader()) {
+												$user->hasPermission('chief.teams')) {
 												echo '<li><a' . ($this->pageName == 'chief-teams' ? ' class="active"' : null) . ' href="index.php?page=chief-teams">Lag</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.avatars') ||
-												$user->isGroupLeader()) {
+												$user->hasPermission('chief.avatars')) {
 												echo '<li><a' . ($this->pageName == 'chief-avatars' ? ' class="active"' : null) . ' href="index.php?page=chief-avatars">Profilbilder</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.applications') ||
-												$user->isGroupLeader()) {
+												$user->hasPermission('chief.applications')) {
 												echo '<li><a' . ($this->pageName == 'chief-applications' || $this->pageName == 'application' ? ' class="active"' : null) . ' href="index.php?page=chief-applications">Søknader</a></li>';
 											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('chief.my-crew')) {
+												echo '<li><a' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=chief-my-crew">My Crew</a></li>';
+											}							
 										} else if ($this->pageName == 'event' || 
 											$this->pageName == 'event-checkin' ||
 											$this->pageName == 'event-seatmap' ||
@@ -345,16 +336,9 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('functions') ||
 										$user->hasPermission('functions.search-users') ||
-										$user->hasPermission('functions.my-crew') ||
-										$user->hasPermission('functions.info') ||
-										$user->hasPermission('functions.site-games') ||
-										$user->hasPermission('functions.site-pages') ||
-										$user->isGroupLeader()) {
+										$user->hasPermission('functions.site-pages')) {
 										if ($this->pageName == 'functions' || 
 											$this->pageName == 'functions-search-users' || 
-											$this->pageName == 'functions-my-crew' || 
-											$this->pageName == 'functions-info' ||
-											$this->pageName == 'functions-site-games' || 
 											$this->pageName == 'functions-site-pages') {
 											echo '<li class="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
 										} else {
@@ -368,13 +352,14 @@ class Site {
 										$user->hasPermission('chief.teams') ||
 										$user->hasPermission('chief.avatars') ||
 										$user->hasPermission('chief.applications') ||
-										$user->isGroupLeader()) {
+										$user->hasPermission('chief.my-crew')) {
 										if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 || 
 											$this->pageName == 'chief' || 
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||
 											$this->pageName == 'chief-avatars' || 
-											$this->pageName == 'chief-applications') {
+											$this->pageName == 'chief-applications' ||
+											$this->pageName == 'chief-my-crew') {
 											echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';

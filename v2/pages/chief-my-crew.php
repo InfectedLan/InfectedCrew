@@ -9,9 +9,8 @@ if (Session::isAuthenticated()) {
 		$group = $user->getGroup();
 		
 		if ($user->hasPermission('*') || 
-			$user->hasPermission('functions.my-crew') || 
-			$user->isGroupLeader()) {
-			echo '<script src="scripts/functions-my-crew.js"></script>';
+			$user->hasPermission('chief.my-crew')) {
+			echo '<script src="scripts/chief-my-crew.js"></script>';
 			echo '<h3>Mine sider</h3>';
 			
 			$pageList = RestrictedPageHandler::getPagesForGroup($group->getId());
@@ -51,7 +50,7 @@ if (Session::isAuthenticated()) {
 			
 			echo '<h3>Legg til ny side:</h3>';
 			echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
-			echo '<form class="functions-my-crew-add" method="post">';
+			echo '<form class="chief-my-crew-add" method="post">';
 				echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 				echo '<table>';
 					echo '<tr>';

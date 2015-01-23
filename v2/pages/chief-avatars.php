@@ -6,8 +6,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.avatars') ||
-		$user->isGroupLeader()) {
+		$user->hasPermission('chief.avatars')) {
 		echo '<script src="scripts/chief-avatars.js"></script>';
 		echo '<h3>Godkjenn profilbilder</h3>';
 		
