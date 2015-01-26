@@ -10,9 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$defaultPage = Session::isAuthenticated() ? reset(RestrictedPageHandler::getPages())->getName() : null;
-		
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : $defaultPage;
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'crew';
 	}
 	
 	// Execute the site.
@@ -312,8 +310,11 @@ class Site {
 							
 								if ($user->hasPermission('*') ||
 									$user->isGroupMember()) {
-							
-									echo '<li' . ($this->pageName == 'index' || !isset($_GET['page']) ? ' class="active"' : null) . '><a href="index.php"><img src="images/home.png"></a></li>';
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('search.users')) {
+										
+										echo '<li' . ($this->pageName == 'search-users' ? ' class="active"' : null) . '><a href="index.php?page=search-users"><img src="images/search.png"></a></li>';
+									}
 								}
 								
 								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
@@ -335,10 +336,8 @@ class Site {
 									$user->isGroupMember()) {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('functions') ||
-										$user->hasPermission('functions.search-users') ||
 										$user->hasPermission('functions.site-pages')) {
 										if ($this->pageName == 'functions' || 
-											$this->pageName == 'functions-search-users' || 
 											$this->pageName == 'functions-site-pages') {
 											echo '<li class="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
 										} else {
