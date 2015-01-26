@@ -24,6 +24,7 @@ if (Session::isAuthenticated()) {
 							echo '<option value="allNonMembers">Alle som ikke er i crew</option>';
 							echo '<option value="allWithTicket">Alle med en billett</option>';
 							echo '<option value="allWithTickets">Alle med flere billetter</option>';
+							echo '<option value="allWithTicketLast3">Alle med billett siste 3 arrangementer</option>';
 							
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
