@@ -59,7 +59,7 @@ if (Session::isAuthenticated()) {
 					foreach ($userList as $userValue) {
 						if ($userValue != null) {
 							echo '<tr>';
-								echo '<td>' . $userValue->getDisplayName() . '</td>';;
+								echo '<td><a href="index.php?page=my-profile&id=' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</a></td>';
 								echo '<td>' . count($userValue->getPermissions()) . '</td>';
 								echo '<td><input type="button" value="Endre" onClick="editUserPermissions(' . $userValue->getId() . ')"></td>';
 							echo '</tr>';
