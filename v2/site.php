@@ -51,7 +51,7 @@ class Site {
 					if (Session::isAuthenticated()) {
 						$user = Session::getCurrentUser();
 						
-						echo '<p>Logget inn som ' . $user->getFullName() . ' <button type="button" class="btn btn-primary btn-sm" onClick="logout()">Logg ut</button></p>';
+						echo '<p>Logget inn som ' . $user->getFullName() . ' <button type="button" onClick="logout()">Logg ut</button></p>';
 					}
 				echo '</div>';
 				echo '<header class="header">';
@@ -124,6 +124,7 @@ class Site {
 											$this->pageName == 'chief-avatars' ||
 											$this->pageName == 'chief-applications' ||
 											$this->pageName == 'chief-my-crew' ||
+											$this->pageName == 'chief-email' ||
 											$this->pageName == 'application') {
 
 											if ($user->hasPermission('*') ||
@@ -154,7 +155,12 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('chief.my-crew')) {
 												echo '<li><a' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=chief-my-crew">My Crew</a></li>';
-											}							
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('chief.email')) {
+												echo '<li><a' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . ' href="index.php?page=chief-email">Send e-post</a></li>';
+											}
 										} else if ($this->pageName == 'event' || 
 											$this->pageName == 'event-checkin' ||
 											$this->pageName == 'event-seatmap' ||
@@ -188,8 +194,7 @@ class Site {
 										} else if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' || 
 											$this->pageName == 'admin-permissions' || 
-											$this->pageName == 'admin-seatmap' ||
-											$this->pageName == 'admin-email') {
+											$this->pageName == 'admin-seatmap') {
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.events')) {
@@ -204,11 +209,6 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.seatmap')) {
 												echo '<li><a' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . ' href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
-											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('admin.email')) {
-												echo '<li><a' . ($this->pageName == 'admin-email' ? ' class="active"' : null) . ' href="index.php?page=admin-email">Send e-post</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -329,14 +329,16 @@ class Site {
 										$user->hasPermission('chief.teams') ||
 										$user->hasPermission('chief.avatars') ||
 										$user->hasPermission('chief.applications') ||
-										$user->hasPermission('chief.my-crew')) {
+										$user->hasPermission('chief.my-crew') ||
+										$user->hasPermission('admin.email')) {
 										if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 || 
 											$this->pageName == 'chief' || 
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||
 											$this->pageName == 'chief-avatars' || 
 											$this->pageName == 'chief-applications' ||
-											$this->pageName == 'chief-my-crew') {
+											$this->pageName == 'chief-my-crew' ||
+											$this->pageName == 'chief-email') {
 											echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
@@ -366,14 +368,12 @@ class Site {
 										$user->hasPermission('admin.permissions') ||
 										$user->hasPermission('admin.change-user') ||
 										$user->hasPermission('admin.seatmap') ||
-										$user->hasPermission('admin.email') ||
 										$user->hasPermission('admin.website')) {
 										if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' ||
 											$this->pageName == 'admin-permissions' ||
 											$this->pageName == 'admin-change-user' ||
 											$this->pageName == 'admin-seatmap' ||
-											$this->pageName == 'admin-email' ||
 											$this->pageName == 'admin-website') {
 											echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 										} else {

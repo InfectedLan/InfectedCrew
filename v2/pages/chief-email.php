@@ -7,14 +7,14 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.email')) {
+		$user->hasPermission('chief.email')) {
 		
-		echo '<script src="scripts/admin-email.js"></script>';
+		echo '<script src="scripts/chief-email.js"></script>';
 		echo '<h3>E-poster:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
 
 		echo '<table>';
-			echo '<form class="admin-email-send" method="post">';
+			echo '<form class="chief-email-send" method="post">';
 				echo '<tr>';
 					echo '<td>Mottakere:</td>';
 					echo '<td>';
