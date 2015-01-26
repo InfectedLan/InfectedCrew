@@ -19,12 +19,18 @@ if (Session::isAuthenticated()) {
 					echo '<td>Mottakere:</td>';
 					echo '<td>';
 						echo '<select multiple class="chosen-select select" name="userIdList" data-placeholder="Velg mottakere...">';
-							echo '<option value="all">Alle</option>';
-							echo '<option value="allMembers">Alle i crew</option>';
-							echo '<option value="allNonMembers">Alle som ikke er i crew</option>';
-							echo '<option value="allWithTicket">Alle med en billett</option>';
-							echo '<option value="allWithTickets">Alle med flere billetter</option>';
-							echo '<option value="allWithTicketLast3">Alle med billett siste 3 arrangementer</option>';
+							if ($user->hasPermission('*')) {
+								echo '<option value="all">Alle</option>';
+								echo '<option value="allMembers">Alle i crew</option>';
+								echo '<option value="allNonMembers">Alle som ikke er i crew</option>';
+								echo '<option value="allWithTicket">Alle med en billett</option>';
+								echo '<option value="allWithTickets">Alle med flere billetter</option>';
+								echo '<option value="allWithTicketLast3">Alle med billett siste 3 arrangementer</option>';
+							}
+							
+							if ($user->isGroupMember()) {
+								echo '<option value="group">Alle i ' . $user->getGroup()->getTitle() . '</option>';
+							}
 							
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
