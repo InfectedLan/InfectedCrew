@@ -117,22 +117,7 @@ class Site {
 								
 									if ($user->hasPermission('*') ||
 										$user->isGroupMember()) {
-										if ($this->pageName == 'functions' || 
-											$this->pageName == 'functions-search-users' ||
-											$this->pageName == 'functions-site-pages' ||
-											$this->pageName == 'edit-restricted-page' && $_GET['id'] != 1 ||
-											$this->pageName == 'edit-page') {
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.search-users')) {
-												echo '<li><a' . ($this->pageName == 'functions-search-users' ? ' class="active"' : null) . ' href="index.php?page=functions-search-users">Søk etter bruker</a></li>';
-											}
-											
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('functions.site-pages')) {
-												echo '<li><a' . ($this->pageName == 'functions-site-pages' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=functions-site-pages">Endre hovedsiden</a></li>';
-											}
-										} else if ($this->pageName == 'chief' || 
+										if ($this->pageName == 'chief' || 
 											$this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||
@@ -225,6 +210,11 @@ class Site {
 												$user->hasPermission('admin.email')) {
 												echo '<li><a' . ($this->pageName == 'admin-email' ? ' class="active"' : null) . ' href="index.php?page=admin-email">Send e-post</a></li>';
 											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('admin.website')) {
+												echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
+											}
 										} else if ($this->pageName == 'developer' || 
 											$this->pageName == 'developer-change-user' || 
 											$this->pageName == 'developer-console') {
@@ -304,7 +294,6 @@ class Site {
 					echo '</article>';
 					echo '<nav class="menu">';
 						echo '<ul>';
-						
 							if (Session::isAuthenticated()) {
 								$user = Session::getCurrentUser();
 							
@@ -334,17 +323,6 @@ class Site {
 								
 								if ($user->hasPermission('*') ||
 									$user->isGroupMember()) {
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('functions') ||
-										$user->hasPermission('functions.site-pages')) {
-										if ($this->pageName == 'functions' || 
-											$this->pageName == 'functions-site-pages') {
-											echo '<li class="active"><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
-										} else {
-											echo '<li><a href="index.php?page=functions"><img src="images/functions.png"></a></li>';
-										}
-									}
-								
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('chief') ||
 										$user->hasPermission('chief.groups') ||
@@ -388,13 +366,15 @@ class Site {
 										$user->hasPermission('admin.permissions') ||
 										$user->hasPermission('admin.change-user') ||
 										$user->hasPermission('admin.seatmap') ||
-										$user->hasPermission('admin.email')) {
+										$user->hasPermission('admin.email') ||
+										$user->hasPermission('admin.website')) {
 										if ($this->pageName == 'admin' || 
 											$this->pageName == 'admin-events' ||
 											$this->pageName == 'admin-permissions' ||
 											$this->pageName == 'admin-change-user' ||
 											$this->pageName == 'admin-seatmap' ||
-											$this->pageName == 'admin-email') {
+											$this->pageName == 'admin-email' ||
+											$this->pageName == 'admin-website') {
 											echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';

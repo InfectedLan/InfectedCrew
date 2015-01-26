@@ -8,9 +8,9 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.site-pages')) {
+		$user->hasPermission('admin.website')) {
 		$pageList = PageHandler::getPages();
-		echo '<script src="scripts/functions-site-pages.js"></script>';
+		echo '<script src="scripts/admin-website.js"></script>';
 		echo '<h3>Sider:</h3>';
 		
 		echo '<table>';	
@@ -62,7 +62,7 @@ if (Session::isAuthenticated()) {
 			echo '</tr>';
 		echo '</table>';
 		
-		echo '<form class="functions-site-pages-add" method="post">';
+		echo '<form class="fadmin-website-add" method="post">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>Tittel:</td>';
