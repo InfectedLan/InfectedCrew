@@ -1,7 +1,7 @@
 <?php
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
-require_once 'handlers/permissionshandler.php';
+require_once 'handlers/permissionhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -19,15 +19,15 @@ if (Session::isAuthenticated()) {
 				echo '<form class="admin-permissions-edit" method="post">';
 					echo '<input type="hidden" name="id" value="' . $permissionUser->getId() . '">';
 					echo '<table>';
-						foreach (PermissionsHandler::getPermissions() as $permission) {
+						foreach (PermissionHandler::getPermissions() as $permission) {
 							if ($user->hasPermission('*') ||
 								$user->hasPermission($permission->getValue())) {
 								echo '<tr>';
 									echo '<td>';
-										if (in_array($permission->getValue(), $permissionUser->getPermissions())) {
-											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '" checked>' . $permission->getValue();
+										if (in_array($permission, $permissionUser->getPermissions())) {
+											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getId() . '" checked>' . $permission->getValue();
 										} else {
-											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getValue() . '">' . $permission->getValue();
+											echo '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getId() . '">' . $permission->getValue();
 										}
 									echo '</td>';
 									echo '<td>' . wordwrap($permission->getDescription(), 100, '<br>') . '</td>';
