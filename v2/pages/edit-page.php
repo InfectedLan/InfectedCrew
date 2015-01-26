@@ -8,8 +8,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.edit-page') || 
-		$user->hasPermission('functions.site-pages')) {
+		$user->hasPermission('admin.website')) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
 			$page = PageHandler::getPage($id);

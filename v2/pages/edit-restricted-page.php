@@ -8,8 +8,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.my-crew') || 
-		$user->hasPermission('functions.restricted-edit-page') || 
+		$user->hasPermission('chief.my-crew') || 
 		$user->isGroupLeader()) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
