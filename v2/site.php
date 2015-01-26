@@ -461,18 +461,27 @@ class Site {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.applications')) {
 				$pendingApplicationList = ApplicationHandler::getPendingApplications();
-				$pendingAvatarList = AvatarHandler::getPendingAvatars();
-			} else if ($user->isGroupLeader() && $user->isGroupMember()) {
-				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
-				$pendingAvatarList = AvatarHandler::getPendingAvatars();
-			}
-
-			if (!empty($pendingApplicationList)) {
-				echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
+				
+				if (!empty($pendingApplicationList)) {
+					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
+				}
+			} else if (($user->isGroupLeader() || $user->isGroupCoLeader()) && $user->isGroupMember()) {
+				$group = $user->getGroup();
+				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
+				
+				if (!empty($pendingApplicationList)) {
+					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader til ' . $group->getTitle() . ' som venter på svar fra deg.</div>';
+				}
 			}
 			
-			if (!empty($pendingAvatarList)) {
-				echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> profilbilder som venter på godkjenning.</div>';
+			if ($user->hasPermission('*') ||
+				$user->hasPermission('chief.applications') ||
+				($user->isGroupLeader() || $user->isGroupCoLeader()) && $user->isGroupMember()) {
+				$pendingAvatarList = AvatarHandler::getPendingAvatars();
+				
+				if (!empty($pendingAvatarList)) {
+					echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> profilbilder som venter på godkjenning.</div>';
+				}
 			}
 		}
 	}
