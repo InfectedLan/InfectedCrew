@@ -15,7 +15,7 @@ if (Session::isAuthenticated()) {
 	
 	if ($profile != null) {
 		if ($user->hasPermission('*') ||
-			$user->hasPermission('functions.search-users') ||
+			$user->hasPermission('search.users') ||
 			$user->getId() == $profile->getId()) {
 			$event = EventHandler::getCurrentEvent();
 
@@ -179,7 +179,7 @@ if (Session::isAuthenticated()) {
 			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
 
 			if (($user->hasPermission('*') ||
-				$user->hasPermission('functions.search-users') ||
+				$user->hasPermission('search.users') ||
 				$user->hasPermission('chief.tickets')) && TicketHandler::hasTicketForEvent($event, $profile))  {
 
 				$ticket = $profile->getTicket();
