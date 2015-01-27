@@ -105,7 +105,7 @@ function renderFinishedMatches(finishedData) {
 	$("#teamListArea").append(appendArray.join(""));
 }
 function setWinner(matchId, winnerId) {
-	$.getJSON('../api/json/setmatchwinner.php?matchId=' + matchId + '&winnerId=' + winnerId, function(data) {
+	$.getJSON('../api/json/match/setmatchwinner.php?matchId=' + matchId + '&winnerId=' + winnerId, function(data) {
 		if (data.result) {
 			renderMatchList();
 		} else {
