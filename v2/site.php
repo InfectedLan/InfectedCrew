@@ -10,7 +10,7 @@ class Site {
 	private $pageName;
 	
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'crew';
+		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'my-crew';
 	}
 	
 	// Execute the site.
@@ -63,43 +63,41 @@ class Site {
 							if (Session::isAuthenticated()) {
 								$user = Session::getCurrentUser();
 
-								if (isset($_GET['page'])) {
-									if ($user->isGroupMember()) {
-										$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
-										$groupPageNameList = array();
-									
-										foreach ($groupPageList as $value) {
-											array_push($groupPageNameList, strtolower($value->getName()));
-										}
+								if ($user->isGroupMember()) {
+									$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
+									$groupPageNameList = array();
+								
+									foreach ($groupPageList as $value) {
+										array_push($groupPageNameList, strtolower($value->getName()));
+									}
 
-										if ($this->pageName == 'my-crew' || 
-											in_array($this->pageName, $groupPageNameList)) {
-											$group = $user->getGroup();
-											$teamList = $group->getTeams();
-											$teamNameList = array();
-											
-											foreach ($teamList as $team) {
-												array_push($teamNameList, strtolower($team->getName()));
+									if ($this->pageName == 'my-crew' || 
+										in_array($this->pageName, $groupPageNameList)) {
+										$group = $user->getGroup();
+										$teamList = $group->getTeams();
+										$teamNameList = array();
+										
+										foreach ($teamList as $team) {
+											array_push($teamNameList, strtolower($team->getName()));
+										}
+										
+										// Only show pages for that group.
+										if (!empty($groupPageList) ||
+											!empty($teamList)) {
+											echo '<li><a' . ($this->pageName == 'my-crew' && !isset($_GET['teamId']) ? ' class="active"' : null) . ' href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
+
+											// Only create link for groups that actually contain teams.
+											if (!empty($teamList)) {
+												foreach ($teamList as $team) {
+													echo '<li><a' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) . ' href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
+												}
 											}
 											
-											// Only show pages for that group.
-											if (!empty($groupPageList) ||
-												!empty($teamList)) {
-												echo '<li><a' . ($this->pageName == 'my-crew' && !isset($_GET['teamId']) ? ' class="active"' : null) . ' href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
-
-												// Only create link for groups that actually contain teams.
-												if (!empty($teamList)) {
-													foreach ($teamList as $team) {
-														echo '<li><a' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) . ' href="index.php?page=my-crew&teamId=' . $team->getId() . '">' . $team->getTitle() . '</a></li>';
-													}
-												}
-												
-												if (!empty($groupPageList)) {
-													foreach ($groupPageList as $page) {
-														if (strtolower($page->getName()) != strtolower($group->getName())) {
-															if (!in_array(strtolower($page->getName()), $teamNameList)) {
-																echo '<li><a' . ($this->pageName == strtolower($page->getName()) ? ' class="active"' : null) . ' href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
-															}
+											if (!empty($groupPageList)) {
+												foreach ($groupPageList as $page) {
+													if (strtolower($page->getName()) != strtolower($group->getName())) {
+														if (!in_array(strtolower($page->getName()), $teamNameList)) {
+															echo '<li><a' . ($this->pageName == strtolower($page->getName()) ? ' class="active"' : null) . ' href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
 														}
 													}
 												}
@@ -253,10 +251,8 @@ class Site {
 							
 							if ($user->hasPermission('*') ||
 								$user->isGroupMember()) {
-								// Only show notification on the default page.
-								if (!isset($_GET['page'])) {
-									$this->viewNotifications();
-								}
+								// Show notifications.
+								$this->viewNotifications();
 								
 								// View the page specified by "pageName" variable.
 								$this->viewPage($this->pageName);
@@ -300,8 +296,6 @@ class Site {
 									}
 								}
 								
-								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
-								
 								if ($user->isGroupMember()) {
 									$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
 									$groupPageNameList = array();
@@ -314,6 +308,8 @@ class Site {
 								} else {
 									echo '<li' . ($this->pageName == 'apply' ? ' class="active"' : null) . '><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 								}
+								
+								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
 								
 								if ($user->hasPermission('*') ||
 									$user->isGroupMember()) {
