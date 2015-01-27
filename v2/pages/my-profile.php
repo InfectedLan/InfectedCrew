@@ -47,7 +47,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Telefon:</td>';
-					echo '<td>' . $profile->getPhoneString() . '</td>';
+					echo '<td>' . $profile->getPhoneAsString() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Adresse:</td>';
