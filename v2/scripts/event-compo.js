@@ -5,7 +5,9 @@ function initMatchList() {
 	});
 }
 function generateMatches() {
-	$.getJSON('../api/json/match/generateMatchesForCompo.php' + '?id=' + compoId, function(data) {
+	var startTime = $("#startTime").val();
+	var spacing = $("#compoSpacing").val();
+	$.getJSON('../api/json/match/generateMatchesForCompo.php' + '?id=' + compoId + '&startTime=' + startTime + '&compoSpacing=' + spacing, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
