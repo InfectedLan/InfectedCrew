@@ -404,7 +404,7 @@ class Site {
 					echo '<td><h2>Logg inn</h2></td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td>Brukernavn eller E-post:</td>';
+					echo '<td>Brukernavn, E-post eller Telefon:</td>';
 					echo '<td><input type="text" name="identifier" required autofocus></td>';
 				echo '</tr>';
 				echo '<tr>';
