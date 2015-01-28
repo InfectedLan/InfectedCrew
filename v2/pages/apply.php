@@ -12,10 +12,10 @@ if (Session::isAuthenticated()) {
 		if ($user->hasCroppedAvatar()) {
 			echo '<script src="scripts/apply.js"></script>';
 
-			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>
-				  og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>
-				  anbefaler vi at du leser igjennom beskrivelsene av våre ' . count(GroupHandler::getGroups()) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>
-				  <p>Klar til å søke? Fyll ut skjemaet under:</p>';
+			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>';
+			echo 'og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
+			echo 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count(GroupHandler::getGroups()) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>';
+			echo '<p>Klar til å søke? Fyll ut skjemaet under:</p>';
 			echo '<table>';
 				echo '<form class="application" method="post">';
 					echo '<tr>';
@@ -33,17 +33,11 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Tekst:</td>';
 						echo '<td>';
-							echo '<textarea id="editor1" name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
-							//Removed due to XSS - Liam
-							/*echo '<script>';
-								// Replace the <textarea id="editor1"> with a CKEditor
-								// instance, using default configuration.
-								echo 'CKEDITOR.replace(\'editor1\');';
-							echo '</script>';*/
+							echo '<textarea name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
 						echo '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td><input type="submit" value="Søk"></td>';
+						echo '<td><input type="submit" value="Send søknad"></td>';
 					echo '</tr>';
 				echo '</form>';
 			echo '</table>';
@@ -54,10 +48,8 @@ if (Session::isAuthenticated()) {
 		$group = $user->getGroup();
 		
 		echo '<p>Du er allerede med i <a href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a>!<br>';
-		echo '<a href="index.php">Tilbake</a></p>';
 	}
 } else {
 	echo '<p>Du må være logget inn for å søke!<br>';
-	echo '<a href="index.php">Tilbake</a></p>';
 }
 ?>
