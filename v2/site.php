@@ -146,7 +146,6 @@ class Site {
 												echo '<li><a href="../api/pages/utils/printTableLabel.php">Print bordlapper</a></li>';
 											}
 										} else if ($this->pageName == 'chief' || 
-											$this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
 											$this->pageName == 'chief-groups' ||
 											$this->pageName == 'chief-teams' ||
 											$this->pageName == 'chief-avatars' ||
@@ -154,11 +153,6 @@ class Site {
 											$this->pageName == 'chief-my-crew' ||
 											$this->pageName == 'chief-email' ||
 											$this->pageName == 'application') {
-
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.home')) {
-												echo '<li><a' . ($this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=edit-restricted-page&id=1">Hjem</a></li>';
-											}
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('chief.groups')) {
