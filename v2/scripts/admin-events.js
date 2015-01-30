@@ -23,7 +23,7 @@ $(document).ready(function() {
 });
 
 function viewSeatmap(id) {
-	$(location).attr('href', 'index.php?page=functions-seatmap&id=' + id);
+	$(location).attr('href', 'index.php?page=event-seatmap&id=' + id);
 }
 
 function removeEvent(id) {

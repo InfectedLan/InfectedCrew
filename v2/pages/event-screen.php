@@ -3,9 +3,6 @@ require_once 'session.php';
 require_once 'handlers/agendahandler.php';
 require_once 'handlers/slidehandler.php';
 
-$site = 'https://infected.no/v7/';
-$returnPage = basename(__FILE__, '.php');
-
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
@@ -14,8 +11,7 @@ if (Session::isAuthenticated()) {
 		
 		if ($user->hasPermission('*') || 
 			$user->hasPermission('event.screen')) {
-			echo '<h1>Infoskjerm</h1>';
-			
+			echo '<script src="scripts/event-screen.js"></script>';
 			echo '<h3>Agenda</h3>';
 			
 			$agendaList = AgendaHandler::getAgendas();
@@ -23,24 +19,23 @@ if (Session::isAuthenticated()) {
 			if (!empty($agendaList)) {
 				echo '<table>';
 					echo '<tr>';
-						echo '<th>Dato:</th>';
-						echo '<th>Tid:</th>';
 						echo '<th>Navn:</th>';
 						echo '<th>Informasjon:</th>';
+						echo '<th>Tid:</th>';
+						echo '<th>Dato:</th>';
 					echo '</tr>';
 					
 					foreach ($agendaList as $agenda) {
 						echo '<tr>';
-							echo '<form action="scripts/process_agenda.php?action=3&id=' . $agenda->getId() . '&returnPage=' . $returnPage . '" method="post">';
-								echo '<td><input type="date" name="date" value="' . date('Y-m-d', $agenda->getDatetime()) . '"></td>';
-								echo '<td><input type="time" name="time" value="' . date('H:i', $agenda->getDatetime()) . '"></td>';
-								echo '<td><input type="text" name="name" value="' . $agenda->getName() . '"></td>';
+							echo '<form class="event-screen-agenda-edit" method="post">';
+								echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
+								echo '<td><input type="text" name="title" value="' . $agenda->getName() . '"></td>';
 								echo '<td><input type="text" name="description" value="' . $agenda->getDescription() . '"></td>';
+								echo '<td><input type="time" name="startTime" value="' . date('H:i:s', $agenda->getStartTime()) . '"></td>';
+								echo '<td><input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '"></td>';
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
-							echo '<form name="input" action="scripts/process_agenda.php?action=2&id=' . $agenda->getId() . '&returnPage=' .  $returnPage . '" method="post">';
-								echo '<td><input type="submit" value="Slett"></td>';
-							echo '</form>';
+							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
@@ -51,23 +46,23 @@ if (Session::isAuthenticated()) {
 			echo '<h3>Legg til ny agenda:</h3>';
 			echo '<p>Fyll ut feltene under for å legge til en ny agenda.</p>';
 			
-			echo '<form action="scripts/process_agenda.php?action=1&returnPage=' . $returnPage . '" method="post">';
+			echo '<form class="event-screen-agenda-add" method="post">';
 				echo '<table>';
 					echo '<tr>';
-						echo '<td>Dato:</td>';
-						echo '<td><input type="date" name="date"></td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Start:</td>';
-						echo '<td><input type="time" name="time"></td>';
-					echo '</tr>';
-					echo '<tr>';
 						echo '<td>Navn:</td>';
-						echo '<td><input type="text" name="name"></td>';
+						echo '<td><input type="text" name="title"></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Informasjon:</td>';
 						echo '<td><input type="text" name="description"></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Tid:</td>';
+						echo '<td><input type="time" name="startTime"></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Dato:</td>';
+						echo '<td><input type="date" name="startDate"></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><input type="submit" value="Legg til"></td>';
@@ -75,6 +70,7 @@ if (Session::isAuthenticated()) {
 				echo '</table>';
 			echo '</form>';
 			
+			/*
 			echo '<h3>Slides</h3>';
 			
 			$slideList = SlideHandler::getSlides();
@@ -143,6 +139,7 @@ if (Session::isAuthenticated()) {
 				echo '</script>';
 				echo '<input type="submit" value="Legg til">';
 			echo '</form>';
+			*/
 		} else {
 			echo '<p>Du har ikke rettigheter til dette!</p>';
 		}
