@@ -22,17 +22,19 @@ if (Session::isAuthenticated()) {
 						echo '<th>Navn:</th>';
 						echo '<th>Informasjon:</th>';
 						echo '<th>Tid:</th>';
-						echo '<th>Dato:</th>';
 					echo '</tr>';
 					
 					foreach ($agendaList as $agenda) {
 						echo '<tr>';
 							echo '<form class="event-screen-agenda-edit" method="post">';
 								echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
-								echo '<td><input type="text" name="title" value="' . $agenda->getName() . '"></td>';
+								echo '<td><input type="text" name="title" value="' . $agenda->getTitle() . '"></td>';
 								echo '<td><input type="text" name="description" value="' . $agenda->getDescription() . '"></td>';
-								echo '<td><input type="time" name="startTime" value="' . date('H:i:s', $agenda->getStartTime()) . '"></td>';
-								echo '<td><input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '"></td>';
+								echo '<td>';
+									echo '<input type="time" name="startTime" value="' . date('H:i', $agenda->getStartTime()) . '">';
+									echo '<br>';
+									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '">';
+								echo '</td>';
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
 							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
