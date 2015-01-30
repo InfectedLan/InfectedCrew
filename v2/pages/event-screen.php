@@ -35,6 +35,13 @@ if (Session::isAuthenticated()) {
 									echo '<br>';
 									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '">';
 								echo '</td>';
+								
+								if ($agenda->isPublished()) {
+									echo '<td><input type="checkbox" name="published" value="1" checked></td>';
+								} else {
+									echo '<td><input type="checkbox" name="published" value="1"></td>';
+								}
+								
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
 							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
