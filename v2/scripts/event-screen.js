@@ -1,17 +1,17 @@
 $(document).ready(function() {
-	$('.event-screen-agenda-add').submit(function(e) {
+	$('.slide-add').submit(function(e) {
 		e.preventDefault();
-		addAgenda(this);
+		addSlide(this);
 	});
 	
-	$('.event-screen-agenda-edit').submit(function(e) {
+	$('.slide-edit').submit(function(e) {
 		e.preventDefault();
-		editAgenda(this);
+		editSlide(this);
 	});
 });
 
-function addAgenda(form) {
-	$.getJSON('../api/json/agenda/addAgenda.php' + '?' + $(form).serialize(), function(data) {
+function addSlide(form) {
+	$.getJSON('../api/json/slide/addSlide.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -20,8 +20,8 @@ function addAgenda(form) {
 	});
 }
 
-function editAgenda(form) {
-	$.getJSON('../api/json/agenda/editAgenda.php' + '?' + $(form).serialize(), function(data) {
+function editSlide(form) {
+	$.getJSON('../api/json/slide/editSlide.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -30,8 +30,8 @@ function editAgenda(form) {
 	});
 }
 
-function removeAgenda(id) {
-	$.getJSON('../api/json/agenda/removeAgenda.php?id=' + id, function(data) {
+function removeSlide(id) {
+	$.getJSON('../api/json/slide/removeSlide.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
