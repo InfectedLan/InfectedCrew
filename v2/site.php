@@ -120,7 +120,8 @@ class Site {
 											$this->pageName == 'event-seatmap' ||
 											$this->pageName == 'event-screen' ||
 											$this->pageName == 'event-agenda' ||
-											$this->pageName == 'event-compo') {
+											$this->pageName == 'event-compo' ||
+											$this->pageName == 'event-memberlist') {
 
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('event.checkin')) {
@@ -145,6 +146,11 @@ class Site {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('event.compo')) {
 												echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
+											}
+											
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('event.memberlist')) {
+												echo '<li><a' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . ' href="index.php?page=event-memberlist">Medlemsliste</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -320,7 +326,8 @@ class Site {
 											$this->pageName == 'event-seatmap' ||
 											$this->pageName == 'event-screen' ||
 											$this->pageName == 'event-agenda' ||
-											$this->pageName == 'event-compo') {
+											$this->pageName == 'event-compo' ||
+											$this->pageName == 'event-memberlist') {
 											echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 										} else {
 											echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';

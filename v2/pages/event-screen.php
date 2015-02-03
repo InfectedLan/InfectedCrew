@@ -1,6 +1,5 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/agendahandler.php';
 require_once 'handlers/slidehandler.php';
 
 if (Session::isAuthenticated()) {
@@ -92,72 +91,6 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				echo '</form>';
 			echo '</table>';
-			
-			
-			/* $agendaList = AgendaHandler::getAgendas();
-			
-			if (!empty($agendaList)) {
-				echo '<table>';
-					echo '<tr>';
-						echo '<th>Navn:</th>';
-						echo '<th>Informasjon:</th>';
-						echo '<th>Tid:</th>';
-					echo '</tr>';
-					
-					foreach ($agendaList as $agenda) {
-						echo '<tr>';
-							echo '<form class="event-screen-agenda-edit" method="post">';
-								echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
-								echo '<td><input type="text" name="title" value="' . $agenda->getTitle() . '"></td>';
-								echo '<td><input type="text" name="description" value="' . $agenda->getDescription() . '"></td>';
-								echo '<td>';
-									echo '<input type="time" name="startTime" value="' . date('H:i', $agenda->getStartTime()) . '">';
-									echo '<br>';
-									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '">';
-								echo '</td>';
-								
-								if ($agenda->isPublished()) {
-									echo '<td><input type="checkbox" name="published" value="1" checked></td>';
-								} else {
-									echo '<td><input type="checkbox" name="published" value="1"></td>';
-								}
-								
-								echo '<td><input type="submit" value="Endre"></td>';
-							echo '</form>';
-							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
-						echo '</tr>';
-					}
-				echo '</table>';
-			} else {
-				echo '<p>Det er ikke opprettet noen agenda\'er enda.';
-			}
-			
-			echo '<h3>Legg til ny agenda:</h3>';
-			echo '<p>Fyll ut feltene under for å legge til en ny agenda.</p>';
-			
-			echo '<form class="event-screen-agenda-add" method="post">';
-				echo '<table>';
-					echo '<tr>';
-						echo '<td>Navn:</td>';
-						echo '<td><input type="text" name="title"></td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Informasjon:</td>';
-						echo '<td><input type="text" name="description"></td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Tid:</td>';
-						echo '<td><input type="time" name="startTime"></td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Dato:</td>';
-						echo '<td><input type="date" name="startDate"></td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td><input type="submit" value="Legg til"></td>';
-					echo '</tr>';
-				echo '</table>';
-			echo '</form>'; */
 		} else {
 			echo '<p>Du har ikke rettigheter til dette!</p>';
 		}
