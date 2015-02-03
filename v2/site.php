@@ -154,8 +154,8 @@ class Site {
 											}
 											
 											if ($user->hasPermission('*') ||
-												$user->hasPermission('event.print-table-labels')) {
-												echo '<li><a href="../api/pages/utils/printTableLabel.php">Print bordlapper</a></li>';
+												$user->hasPermission('event.table-labels')) {
+												echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 											}
 										} else if ($this->pageName == 'chief' || 
 											$this->pageName == 'chief-groups' ||
