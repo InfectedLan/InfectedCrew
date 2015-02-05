@@ -141,6 +141,7 @@ if (Session::isAuthenticated()) {
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
 				}
 			echo '</table>';
