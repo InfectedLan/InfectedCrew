@@ -1,6 +1,7 @@
 <?php
 require_once 'session.php';
 require_once 'handlers/applicationhandler.php';
+require_once 'handlers/eventhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -129,6 +130,7 @@ if (Session::isAuthenticated()) {
 		if (!empty($acceptedApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
+					echo '<th>Arrangement</th>';
 					echo '<th>Søker\'s navn</th>';
 					echo '<th>Crew</th>';
 					echo '<th>Dato søkt</th>';
@@ -138,6 +140,7 @@ if (Session::isAuthenticated()) {
 					$applicationUser = $application->getUser();
 					
 					echo '<tr>';
+						echo '<td>' . $application->getEvent()->getTitle() . '</td>';
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
