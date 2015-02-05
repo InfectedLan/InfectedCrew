@@ -10,14 +10,17 @@ if (Session::isAuthenticated()) {
 		$group = $user->getGroup();
 		$pendingApplicationList = null;
 		$queuedApplicationList = null;
+		$acceptedApplicationList = null;
 			
 		if ($user->hasPermission('*') || 
 			$user->hasPermission('chief.applications')) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplications();
 			$queuedApplicationList = ApplicationHandler::getQueuedApplications();
+			$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
 		} else if ($user->isGroupLeader() && $user->isGroupMember()) {
-			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($user->getGroup());
-			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($user->getGroup());
+			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
+			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($group);
+			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsForGroup($group);
 		}
 		
 		echo '<script src="scripts/chief-applications.js"></script>';
@@ -119,6 +122,30 @@ if (Session::isAuthenticated()) {
 			echo '</table>';
 		} else {
 			echo '<p>Det er ingen søknader i køen.</p>';
+		}
+		
+		echo '<h3>Tidligere søknader:</h3>';
+		
+		if (!empty($acceptedApplicationList)) {
+			echo '<table>';
+				echo '<tr>';
+					echo '<th>Søker\'s navn</th>';
+					echo '<th>Crew</th>';
+					echo '<th>Dato søkt</th>';
+				echo '</tr>';
+				
+				foreach ($acceptedApplicationList as $application) {
+					$applicationUser = $application->getUser();
+					
+					echo '<tr>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
+						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+					echo '</tr>';
+				}
+			echo '</table>';
+		} else {
+			echo '<p>Det er ingen godkjente søknader i arkivet.</p>';
 		}
 	} else {
 		echo 'Bare crew ledere kan se søknader.';
