@@ -30,11 +30,7 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<form class="admin-events-edit" name="input" method="post">';
 						echo '<input type="hidden" name="id" value="' . $event->getId() . '">';
-						echo '<td>';
-							$season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
-							
-							echo 'Infected ' . $season . ' ' . date('Y', $event->getStartTime());
-						echo '</td>';
+						echo '<td>' . $event->getTitle() . '</td>';
 						echo '<td><input type="text" name="theme" value="' . $event->getTheme() . '"></td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="location" required>';
