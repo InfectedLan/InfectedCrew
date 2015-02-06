@@ -13,7 +13,7 @@ if (Session::isAuthenticated()) {
 			echo '<script src="scripts/chief-my-crew.js"></script>';
 			echo '<h3>Mine sider</h3>';
 			
-			$pageList = RestrictedPageHandler::getPagesForGroup($group->getId());
+			$pageList = RestrictedPageHandler::getPagesForGroup($group);
 			
 			if (!empty($pageList)) {
 				$teamList = $group->getTeams();
