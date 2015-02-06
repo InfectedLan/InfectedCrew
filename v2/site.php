@@ -64,25 +64,33 @@ class Site {
 								$user = Session::getCurrentUser();
 
 								if ($user->isGroupMember()) {
-									$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
-									$groupPageNameList = array();
-								
-									foreach ($groupPageList as $value) {
-										array_push($groupPageNameList, strtolower($value->getName()));
+									$group = $user->getGroup();
+									$pageList = null;
+									
+									// If the user is member of a team, also fetch team only pages.
+									if ($user->isTeamMember()) {
+										$pageList = RestrictedPageHandler::getPagesForTeam($group, $user->getTeam());
+									} else {
+										$pageList = RestrictedPageHandler::getPagesForGroup($group);
 									}
-
-									if ($this->pageName == 'my-crew' || 
-										in_array($this->pageName, $groupPageNameList)) {
-										$group = $user->getGroup();
+									
+									$pageNameList = array();
+								
+									foreach ($pageList as $page) {
+										array_push($pageNameList, strtolower($value->getName()));
+									}
+									
+									if ($this->pageName == 'my-crew' ||
+										in_array($this->pageName, $pageNameList)) {
 										$teamList = $group->getTeams();
 										$teamNameList = array();
 										
 										foreach ($teamList as $team) {
 											array_push($teamNameList, strtolower($team->getName()));
 										}
-										
+									
 										// Only show pages for that group.
-										if (!empty($groupPageList) ||
+										if (!empty($pageList) ||
 											!empty($teamList)) {
 											echo '<li><a' . ($this->pageName == 'my-crew' && !isset($_GET['teamId']) ? ' class="active"' : null) . ' href="index.php?page=my-crew">' . $group->getTitle() . '</a></li>';
 
@@ -93,8 +101,8 @@ class Site {
 												}
 											}
 											
-											if (!empty($groupPageList)) {
-												foreach ($groupPageList as $page) {
+											if (!empty($pageList)) {
+												foreach ($pageList as $page) {
 													if (strtolower($page->getName()) != strtolower($group->getName())) {
 														if (!in_array(strtolower($page->getName()), $teamNameList)) {
 															echo '<li><a' . ($this->pageName == strtolower($page->getName()) ? ' class="active"' : null) . ' href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></li>';
