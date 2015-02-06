@@ -8,7 +8,6 @@ if (Session::isAuthenticated()) {
 	
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('chief.applications')) {
-		$group = $user->getGroup();
 		$pendingApplicationList = null;
 		$queuedApplicationList = null;
 		$acceptedApplicationList = null;
@@ -17,7 +16,8 @@ if (Session::isAuthenticated()) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplications();
 			$queuedApplicationList = ApplicationHandler::getQueuedApplications();
 			$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
-		} else if ($user->hasPermission('chief.applications')) {
+		} else if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
+			$group = $user->getGroup();
 			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
 			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($group);
 			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsForGroup($group);
@@ -156,3 +156,4 @@ if (Session::isAuthenticated()) {
 } else {
 	echo 'Du er ikke logget inn!';
 }
+?>

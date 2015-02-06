@@ -438,7 +438,7 @@ class Site {
 				$pendingAvatarList = AvatarHandler::getPendingAvatars();
 				
 				if (!empty($pendingAvatarList)) {
-					echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> profilbilder som venter på godkjenning.</div>';
+					echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> ' . (count($pendingAvatarList) == 1 ? 'profilbilde' : 'profilbilder') . ' som venter på godkjenning.</div>';
 				}
 			}
 		}
