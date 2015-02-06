@@ -311,14 +311,14 @@ class Site {
 								}
 								
 								if ($user->isGroupMember()) {
-									$groupPageList = RestrictedPageHandler::getPagesForGroup($user->getGroup()->getId());
-									$groupPageNameList = array();
+									$pageList = RestrictedPageHandler::getPagesForGroup($user->getGroup());
+									$pageNameList = array();
 										
-									foreach ($groupPageList as $value) {
-										array_push($groupPageNameList, strtolower($value->getName()));
+									foreach ($pageList as $value) {
+										array_push($pageNameList, strtolower($value->getName()));
 									}
 									
-									echo '<li' . ($this->pageName == 'my-crew' || in_array(strtolower($this->pageName), $groupPageNameList) ? ' class="active"' : null) . '><a href="index.php?page=my-crew"><img src="images/my-crew.png"></a></li>';
+									echo '<li' . ($this->pageName == 'my-crew' || in_array(strtolower($this->pageName), $pageNameList) ? ' class="active"' : null) . '><a href="index.php?page=my-crew"><img src="images/my-crew.png"></a></li>';
 								} else {
 									echo '<li' . ($this->pageName == 'apply' ? ' class="active"' : null) . '><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 								}
