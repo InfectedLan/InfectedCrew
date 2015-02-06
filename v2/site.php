@@ -429,7 +429,7 @@ class Site {
 				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
 				
 				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ' crew, de venter bare på svar fra deg.</div>';
+					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ', de venter på svar fra deg.</div>';
 				}
 			}
 			
