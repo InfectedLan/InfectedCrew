@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$('.memberlist').submit(function(e) {
 		e.preventDefault();
-		location.href = '/api/pages/utils/printMemberList.php' + '?' + $(this).serialize();
+		window.open('/api/pages/utils/printMemberList.php' + '?' + $(this).serialize());
 	});
 });
