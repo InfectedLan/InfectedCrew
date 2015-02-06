@@ -13,12 +13,11 @@ if (Session::isAuthenticated()) {
 		$queuedApplicationList = null;
 		$acceptedApplicationList = null;
 			
-		if ($user->hasPermission('*') || 
-			$user->hasPermission('chief.applications')) {
+		if ($user->hasPermission('*')) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplications();
 			$queuedApplicationList = ApplicationHandler::getQueuedApplications();
 			$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
-		} else if ($user->isGroupLeader() && $user->isGroupMember()) {
+		} else if ($user->hasPermission('chief.applications')) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
 			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($group);
 			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsForGroup($group);
