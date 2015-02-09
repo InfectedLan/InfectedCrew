@@ -13,34 +13,26 @@ if (Session::isAuthenticated()) {
 			echo '<script src="scripts/chief-my-crew.js"></script>';
 			echo '<h3>Mine sider</h3>';
 			
-			$pageList = RestrictedPageHandler::getPagesForGroup($group);
+			$pageList = RestrictedPageHandler::getAllPagesForGroup($group);
+			$teamList = $group->getTeams();
 			
 			if (!empty($pageList)) {
-				$teamList = $group->getTeams();
-				$teamNameList = array();
-				
-				foreach ($teamList as $team) {
-					array_push($teamNameList, strtolower($team->getName()));
-				}
-				
 				echo '<table>';
+					echo '<tr>';
+						echo '<th>Navn</th>';
+						echo '<th>Tilgang</th>';
+					echo '</tr>';
+				
 					// Loop through the pages.
 					foreach ($pageList as $page) {
-						// Add the current page to the page view.
+						$team = $page->getTeam();
 						
 						echo '<tr>';
-							if ($page->getName() == strtolower($group->getName())) {
-								echo '<td>Hovedside</td>';
-							} else{
-								echo '<td>' . $page->getTitle() . '</td>';
-							}
-							
+							echo '<td>' . $page->getTitle() . '</td>';
+							echo '<td>' . ($team != null ? $team->getTitle() : 'Alle') . '</td>';
 							echo '<td><a href="index.php?page=' . $page->getName() . '">Vis</a></td>';
 							echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
-							
-							if ($page->getName() != strtolower($group->getName())) {
-								echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
-							}
+							echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
@@ -54,12 +46,36 @@ if (Session::isAuthenticated()) {
 				echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 				echo '<table>';
 					echo '<tr>';
-						echo '<td>Tittel:</td>';
-						echo '<td><input type="text" name="title"> (Dette blir også navnet på linken til siden).</td>';
+						echo '<td>Navn:</td>';
+						echo '<td><input type="text" name="title"> (Dette blir navnet på siden).</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Tilgang:</td>';
+						echo '<td>';
+							echo '<select class="chosen-select select" name="teamId">';	
+								if ($user->isGroupLeader()) {
+									echo '<option value="0" selected>Alle</option>';
+								} else {
+									echo '<option value="0">Alle</option>';
+								}
+								
+								foreach ($teamList as $team) {
+									if ($user->isTeamLeader()) {
+										echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
+									} else {
+										echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+									}
+								}
+							echo '</select>';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Innhold:</td>';
+						echo '<td>';
+							echo '<textarea class="editor" name="content" rows="10" cols="80"></textarea>';
+						echo '</td>';
 					echo '</tr>';
 				echo '</table>';
-				
-				echo '<textarea class="editor" name="content" rows="10" cols="80"></textarea>';
 				echo '<input type="submit" value="Legg til">';
 			echo '</form>';
 		} else {
