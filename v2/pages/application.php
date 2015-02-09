@@ -19,25 +19,7 @@ if (Session::isAuthenticated()) {
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Status:</td>';
-						echo '<td>';
-							if ($application->isQueued()) {
-								echo '<b>Står i kø</b>';
-							} else {
-								switch ($application->getState()) {
-									case 1:
-										echo '<b>Ubehandlet</b>';
-										break;
-										
-									case 2:
-										echo '<b>Godkjent</b>';
-										break;
-										
-									case 3:
-										echo '<b>Avslått</b>';
-										break;
-								}
-							}
-						echo '</td>';
+						echo '<td>' . $application->getStateAsString() . '</td>';
 					echo '</tr>';
 				
 					$applicationUser = $application->getUser();
