@@ -4,7 +4,7 @@ $(document).ready(function() {
 		
 		$.getJSON('../api/json/restrictedpage/editRestrictedPage.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
-				location.reload();
+				$(location).attr('href', 'index.php?page=chief-my-crew');
 			} else {
 				error(data.message); 
 			}

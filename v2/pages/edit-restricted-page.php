@@ -22,11 +22,38 @@ if (Session::isAuthenticated()) {
 						echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
 						echo '<table>';
 							echo '<tr>';
-								echo '<td>Tittel:</td>';
-								echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
+								echo '<td>Navn:</td>';
+								echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir navnet på siden).</td>';
+							echo '</tr>';
+							
+							if ($page->getGroup()->getId() == $user->getGroup()->getId()) {
+								$group = $user->getGroup();
+								
+								echo '<tr>';
+									echo '<td>Tilgang:</td>';
+									echo '<td>';
+										echo '<select class="chosen-select select" name="teamId">';	
+											echo '<option value="0">Alle</option>';
+											
+											foreach ($group->getTeams() as $team) {
+												if ($team->getId() == $page->getTeam()->getId()) {
+													echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
+												} else {
+													echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+												}
+											}
+										echo '</select>';
+									echo '</td>';
+								echo '</tr>';
+							}
+							
+							echo '<tr>';
+								echo '<td>Innhold:</td>';
+								echo '<td>';
+									echo '<textarea class="editor" name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
+								echo '</td>';
 							echo '</tr>';
 						echo '</table>';
-						echo '<textarea name="content" class="editor" rows="10" cols="80">' . $page->getContent() . '</textarea>';
 						echo '<input type="submit" value="Endre">';
 					echo '</form>';
 				} else {

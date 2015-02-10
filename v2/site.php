@@ -35,6 +35,7 @@ class Site {
 				echo '<script src="../api/libraries/chosen/chosen.jquery.js"></script>';
 				echo '<script src="../api/libraries/ckeditor/ckeditor.js"></script>';
 				echo '<script src="../api/libraries/ckeditor/adapters/jquery.js"></script>';
+				echo '<script src="scripts/site.js"></script>';
 				echo '<script src="scripts/common.js"></script>';
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
@@ -450,8 +451,20 @@ class Site {
 		$page = RestrictedPageHandler::getPageByName($pageName);
 		
 		if ($page != null) {
-			echo '<h3>' . $page->getTitle() . '</h3>';
-			echo $page->getContent();
+			if (Session::isAuthenticated()) {
+				$user = Session::getCurrentUser();
+			
+				if ($user->hasPermission('*') || 
+					$user->hasPermission('chief.my-crew')) {
+					echo '<h3>' . $page->getTitle() . '<input type="button" value="Endre" onClick="editRestrictedPage(' . $page->getId() . ')"></h3>';
+				} else {
+					echo '<h3>' . $page->getTitle() . '</h3>';
+				}
+				
+				echo $page->getContent();
+			} else {
+				echo 'Du har ikke tilgang til dette.';
+			}
 		} else {
 			$directoryList = array(Settings::api_path . 'pages',
 								   'pages');

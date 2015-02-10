@@ -14,7 +14,6 @@ if (Session::isAuthenticated()) {
 			echo '<h3>Mine sider</h3>';
 			
 			$pageList = RestrictedPageHandler::getAllPagesForGroup($group);
-			$teamList = $group->getTeams();
 			
 			if (!empty($pageList)) {
 				echo '<table>';
@@ -53,18 +52,10 @@ if (Session::isAuthenticated()) {
 						echo '<td>Tilgang:</td>';
 						echo '<td>';
 							echo '<select class="chosen-select select" name="teamId">';	
-								if ($user->isGroupLeader()) {
-									echo '<option value="0" selected>Alle</option>';
-								} else {
-									echo '<option value="0">Alle</option>';
-								}
+								echo '<option value="0">Alle</option>';
 								
-								foreach ($teamList as $team) {
-									if ($user->isTeamLeader()) {
-										echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
-									} else {
-										echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
-									}
+								foreach ($group->getTeams() as $team) {
+									echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 								}
 							echo '</select>';
 						echo '</td>';
