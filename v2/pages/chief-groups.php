@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
 									echo '<option value="0"></option>';
 									
 									foreach ($userList as $value) {
-										if ($value->compare($group->getLeader())) {
+										if ($value->equals($group->getLeader())) {
 											echo '<option value="' . $value->getId() . '" selected>' . $value->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
@@ -48,7 +48,7 @@ if (Session::isAuthenticated()) {
 									echo '<option value="0"></option>';
 									
 									foreach ($userList as $value) {
-										if ($value->compare($group->getCoLeader())) {
+										if ($value->equals($group->getCoLeader())) {
 											echo '<option value="' . $value->getId() . '" selected>' . $value->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
