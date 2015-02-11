@@ -11,6 +11,7 @@ if (Session::isAuthenticated()) {
 			$user->hasPermission('chief.teams')) {
 			$teamList = $user->getGroup()->getTeams();
 			$userList = $group->getMembers();
+
 			echo '<script src="scripts/chief-teams.js"></script>';
 			echo '<h3>Lag</h3>';
 			
@@ -33,15 +34,13 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
 								echo '<td>';
 									echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-										$leader = $team->getLeader();
-										
 										echo '<option value="0"></option>';
 
-										foreach ($userList as $userValue) {
-											if ($leader != null && $userValue->getId() == $leader->getId()) {
-												echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+										foreach ($userList as $value) {
+											if ($value->compare($team->getLeader())) {
+												echo '<option value="' . $value->getId() . '" selected>' . $value->getDisplayName() . '</option>';
 											} else {
-												echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+												echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
 											}
 										}
 									echo '</select>';
@@ -74,7 +73,7 @@ if (Session::isAuthenticated()) {
 								echo '<option value="0"></option>';
 								
 								foreach ($userList as $value) {
-									echo '<option value="' . $value->getId() . '">' . $value->getFirstname() . ' "' . $value->getNickname() . '" ' . $value->getLastname() . '</option>';
+									echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
 								}
 							echo '</select>';
 						echo '</td>';
@@ -88,7 +87,7 @@ if (Session::isAuthenticated()) {
 			if (!empty($teamList)) {
 				echo '<h3>Medlemmer</h3>';
 				
-				$freeUserList = getFreeUsers($group);
+				$freeUserList = UserHandler::getNonMemberUsers();
 						
 				if (!empty($freeUserList)) {
 					echo '<table>';
@@ -96,8 +95,8 @@ if (Session::isAuthenticated()) {
 							echo '<form class="chief-teams-adduser" method="post">';
 								echo '<td>';
 									echo '<select class="chosen-select" name="userId">';
-										foreach ($freeUserList as $user) {
-											echo '<option value="' . $user->getId() . '">' . $user->getFirstname() . ' "' . $user->getNickname() . '" ' . $user->getLastname() . '</option>';
+										foreach ($freeUserList as $value) {
+											echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
 										}
 									echo '</select>';
 								echo '</td>';
@@ -122,10 +121,10 @@ if (Session::isAuthenticated()) {
 					echo '<h4>' . $group->getTitle() . ':' . $team->getTitle() . '</h4>';
 					echo '<table>';
 						if (!empty($memberList)) {
-							foreach ($memberList as $member) {
+							foreach ($memberList as $value) {
 								echo '<tr>';
-									echo '<td>' . $member->getFirstname() . ' "' . $member->getNickname() . '" ' . $member->getLastname() . '</td>';
-									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $member->getId() . ')"></td>';
+									echo '<td>' . $value->getDisplayName() . '</td>';
+									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $value->getId() . ')"></td>';
 								echo '</tr>';
 							}
 							
@@ -150,17 +149,5 @@ if (Session::isAuthenticated()) {
 	}
 } else {
 	echo '<p>Du er ikke logget inn!</p>';
-}
-
-function getFreeUsers($group) {
-	$freeUserList = $group->getMembers();
-	
-	foreach ($freeUserList as $key => $freeUser) {
-		if ($freeUser->getTeam() != null) {
-			unset($freeUserList[$key]);
-		}
-	}
-	
-	return $freeUserList;
 }
 ?>

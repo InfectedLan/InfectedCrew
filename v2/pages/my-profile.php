@@ -21,6 +21,13 @@ if (Session::isAuthenticated()) {
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
+				if ($user->hasPermission('*')) {
+					echo '<tr>';
+						echo '<td>Id:</td>';
+						echo '<td>' . $profile->getId() . '</td>';
+					echo '</tr>';
+				}
+
 				echo '<tr>';
 					echo '<td>Navn:</td>';
 					echo '<td>' . $profile->getFullName() . '</td>';
