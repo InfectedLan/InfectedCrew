@@ -154,7 +154,7 @@ class Site {
 											
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('event.compo')) {
-												echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
+												echo '<li><a' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . ' href="index.php?page=event-compos">Compo</a></li>';
 											}
 											
 											if ($user->hasPermission('*') ||
@@ -328,7 +328,7 @@ class Site {
 											$this->pageName == 'event-seatmap' ||
 											$this->pageName == 'event-screen' ||
 											$this->pageName == 'event-agenda' ||
-											$this->pageName == 'event-compo' ||
+											$this->pageName == 'event-compos' ||
 											$this->pageName == 'event-memberlist') {
 											echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 										} else {
