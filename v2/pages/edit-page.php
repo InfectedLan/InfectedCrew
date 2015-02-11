@@ -2,8 +2,6 @@
 require_once 'session.php';
 require_once 'handlers/pagehandler.php';
 
-$id = isset($_GET['id']) ? $_GET['id'] : 0;
-
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	
@@ -11,7 +9,7 @@ if (Session::isAuthenticated()) {
 		$user->hasPermission('admin.website')) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
-			$page = PageHandler::getPage($id);
+			$page = PageHandler::getPage($_GET['id']);
 				
 			if ($page != null) {
 				echo '<script src="scripts/edit-page.js"></script>';

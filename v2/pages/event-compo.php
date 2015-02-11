@@ -19,7 +19,7 @@ if (Session::isAuthenticated()) {
 				echo '<div id="teamListArea"></div>';
 			} else {
 				echo '<h1>' . $compo->getName() .'</h1>';
-				echo '<i>Matcher har ikke blitt generert enda</i><br />';
+				echo '<i>Matcher har ikke blitt generert enda</i><br>';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>';
@@ -28,50 +28,52 @@ if (Session::isAuthenticated()) {
 						echo '<td>';
 							echo 'Match-mellomrom';
 						echo '</td>';
-						echo '<td>';
-						echo '</td>';
+						echo '<td></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>';
-							echo '<input type="text" id="startTime" value="' . time() . '"/>';
+							echo '<input type="text" id="startTime" value="' . time() . '">';
 						echo '</td>';
 						echo '<td>';
-							echo '<input type="text" id="compoSpacing" value="3600" />';
+							echo '<input type="text" id="compoSpacing" value="3600">';
 						echo '</td>';
 						echo '<td>';
-							echo '<input type="button" value="Generer matcher(stenger registrering)" onClick="generateMatches()" />';
+							echo '<input type="button" value="Generer matcher(stenger registrering)" onClick="generateMatches()">';
 						echo '</td>';
 					echo '</tr>';
 				echo '</table>';
 				
 
-				//Show list of teams
+				// Show list of teams
 				$teams = CompoHandler::getClans($compo);
-				//Count stats
+				// Count stats
 				$numQualified = 0;
-				foreach($teams as $clan) {
-					if($clan->isQualified($compo)) {
+				
+				foreach ($teams as $clan) {
+					if ($clan->isQualified($compo)) {
 						$numQualified++;
 					}
 				}
 				echo '<h3>Fullstendige lag:</h3>';
-				echo '<br />';
-				echo '<br />';
-				if($numQualified==0) {
+				echo '<br>';
+				echo '<br>';
+
+				if ($numQualified==0) {
 					echo '<i>Ingen lag er fullstendige enda!</i>';
 				}
+
 				echo '<ul>';
-				//print_r($teams);
-				foreach($teams as $clan) {
-					if($clan->isQualified($compo)) {
-						echo '<li class="teamEntry" id="teamButtonId' . $clan->getId() . '">' . $clan->getName() . '</li>';
+					foreach ($teams as $clan) {
+						if ($clan->isQualified($compo)) {
+							echo '<li class="teamEntry" id="teamButtonId' . $clan->getId() . '">' . $clan->getName() . '</li>';
+						}
 					}
-				}
 				echo '</ul>';
-				if(count($teams) != $numQualified) {
-					echo '<br />';
+
+				if (count($teams) != $numQualified) {
+					echo '<br>';
 					echo '<h3>Ufullstendige lag:</h3>';
-					echo '<br />';
+					echo '<br>';
 					echo '<ul>';
 						foreach($teams as $clan) {
 							if(!$clan->isQualified($compo)) {
@@ -79,12 +81,10 @@ if (Session::isAuthenticated()) {
 							}
 						}
 					echo '</ul>';
-					echo '<br />';
+					echo '<br>';
 					echo '<i>Disse lagene mangler spillere og vil ikke kunne delta med mindre de klarer å fylle laget</i>';
 				}
 			}
-
-			
 		} else {
 			echo '<p>Mangler felt!</p>';
 		}

@@ -23,6 +23,7 @@ function showSplash() {
 			foreach($seatmaps as $seatmap) {
 				echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
 			}
+
 			echo '</select>';
 			echo '<input type="button" value="Edit" onclick="editSeatmap()" />';
 			echo '<input type="button" value="Lag kopi" onclick="copySeatmap()" />';
@@ -41,13 +42,11 @@ function showSplash() {
 
 function showEditor() {
 	$seatmap = SeatmapHandler::getSeatmap($_GET["id"]);
-	if(!isset($seatmap))
-	{
+	
+	if ($seatma != null) {
 		echo '<h1>Seatmappet eksisterer ikke!</h1>';
 		echo '<input type="button" onclick="redirectToSplash()" value="Tilbake" />';
-	}
-	else
-	{
+	} else {
 		echo '<script>var seatmapId = ' . $seatmap->getId() . '; </script>';
 
 		echo '<script>';

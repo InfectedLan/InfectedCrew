@@ -3,17 +3,26 @@ require_once 'session.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/teamhandler.php';
 
-$groupId = isset($_GET['id']) ? $_GET['id'] : 0;
-$teamId = isset($_GET['teamId']) ? $_GET['teamId'] : 0;
-
 if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
+
 	if (isset($_GET['id'])) {
-		if (isset($_GET['teamId'])) {
-			$team = TeamHandler::getTeam($teamId);
-			$team->displayWithInfo();
+		if ($user->isGroupMember()) {	
+			if (isset($_GET['teamId'])) {
+				$team = TeamHandler::getTeam($_GET['teamId']);
+
+				if ($team != null) {
+					$team->displayWithInfo();
+				}
+			} else {
+				$group = GroupHandler::getGroup($_GET['id']);
+
+				if ($group != null) {
+					$group->displayWithInfo();
+				}
+			}
 		} else {
-			$group = GroupHandler::getGroup($groupId);
-			$group->displayWithInfo();
+			echo 'Du er ikke i crew.';
 		}
 	} else {
 		$groupList = GroupHandler::getGroups();

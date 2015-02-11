@@ -35,11 +35,11 @@ if (Session::isAuthenticated()) {
 								echo '<select class="chosen-select select" name="leader" data-placeholder="Velg en chief...">';
 									echo '<option value="0"></option>';
 									
-									foreach ($userList as $value) {
-										if ($value->equals($group->getLeader())) {
-											echo '<option value="' . $value->getId() . '" selected>' . $value->getDisplayName() . '</option>';
+									foreach ($userList as $userValue) {
+										if ($userValue->equals($group->getLeader())) {
+											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
-											echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 										}
 									}
 								echo '</select>';
@@ -47,11 +47,11 @@ if (Session::isAuthenticated()) {
 								echo '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
 									echo '<option value="0"></option>';
 									
-									foreach ($userList as $value) {
-										if ($value->equals($group->getCoLeader())) {
-											echo '<option value="' . $value->getId() . '" selected>' . $value->getDisplayName() . '</option>';
+									foreach ($userList as $userValue) {
+										if ($userValue->equals($group->getCoLeader())) {
+											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
-											echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 										}
 									}
 								echo '</select>';
@@ -84,8 +84,8 @@ if (Session::isAuthenticated()) {
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 								echo '<option value="0"></option>';
 								
-								foreach ($userList as $value) {
-									echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+								foreach ($userList as $userValue) {
+									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
 							echo '</select>';
 						echo '</td>';
@@ -96,8 +96,8 @@ if (Session::isAuthenticated()) {
 							echo '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
 								echo '<option value="0"></option>';
 								
-								foreach ($userList as $value) {
-									echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+								foreach ($userList as $userValue) {
+									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
 							echo '</select>';
 						echo '</td>';
@@ -118,8 +118,8 @@ if (Session::isAuthenticated()) {
 						echo '<form class="chief-groups-adduser" method="post">';
 							echo '<td>';
 								echo '<select class="chosen-select" name="userId">';
-									foreach ($freeUserList as $value) {
-										echo '<option value="' . $value->getId() . '">' . $value->getDisplayName() . '</option>';
+									foreach ($freeUserList as $userValue) {
+										echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 									}
 								echo '</select>';
 							echo '</td>';
@@ -130,7 +130,7 @@ if (Session::isAuthenticated()) {
 									}
 								echo '</select>';
 							echo '</td>';
-							echo '<td><input type="submit" value="Legg til"></td>';
+							echo '<td><input type="submit" userValue="Legg til"></td>';
 						echo '</form>';
 					echo '</tr>';
 				echo '</table>';
@@ -144,10 +144,10 @@ if (Session::isAuthenticated()) {
 				echo '<h4>' . $group->getTitle() . '</h4>';
 				echo '<table>';
 					if (!empty($memberList)) {
-						foreach ($memberList as $value) {
+						foreach ($memberList as $userValue) {
 							echo '<tr>';
-								echo '<td>' . $value->getDisplayName(). '</td>';
-								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $value->getId() . ')"></td>';
+								echo '<td>' . $userValue->getDisplayName(). '</td>';
+								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $userValue->getId() . ')"></td>';
 							echo '</tr>';
 						}
 						

@@ -23,19 +23,19 @@ if (Session::isAuthenticated()) {
 						echo '<th>Tid:</th>';
 					echo '</tr>';
 					
-					foreach ($agendaList as $value) {
+					foreach ($agendaList as $agenda) {
 						echo '<tr>';
 							echo '<form class="agenda-edit" method="post">';
-								echo '<input type="hidden" name="id" value="' . $value->getId() . '">';
-								echo '<td><input type="text" name="title" value="' . $value->getTitle() . '"></td>';
-								echo '<td><textarea name="description">' . $value->getContent() . '</textarea></td>';
+								echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
+								echo '<td><input type="text" name="title" value="' . $agenda->getTitle() . '"></td>';
+								echo '<td><textarea name="description">' . $agenda->getContent() . '</textarea></td>';
 								echo '<td>';
-									echo '<input type="time" name="startTime" value="' . date('H:i', $value->getStartTime()) . '">';
+									echo '<input type="time" name="startTime" value="' . date('H:i', $agenda->getStartTime()) . '">';
 									echo '<br>';
-									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $value->getStartTime()) . '">';
+									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '">';
 								echo '</td>';
 								
-								if ($value->isPublished()) {
+								if ($agenda->isPublished()) {
 									echo '<td><input type="checkbox" name="published" value="1" checked></td>';
 								} else {
 									echo '<td><input type="checkbox" name="published" value="1"></td>';
@@ -43,7 +43,7 @@ if (Session::isAuthenticated()) {
 								
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
-							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $value->getId() . ')"></td>';
+							echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';

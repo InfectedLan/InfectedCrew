@@ -16,9 +16,9 @@ if (Session::isAuthenticated()) {
 		$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . date('Y', $event->getStartTime());
 		
 		echo Settings::name . '_' . $eventName . '_' . '<input id="ticketId" type="text" autofocus>';
-		echo '<br />';
+		echo '<br>';
 		echo '<input type="button" value="Sjekk inn" onClick="loadData()"/>';
-		echo '<br />';
+		echo '<br>';
 		echo '<div id="ticketDetails"></div>';
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';

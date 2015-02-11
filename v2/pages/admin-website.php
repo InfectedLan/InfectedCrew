@@ -2,7 +2,7 @@
 require_once 'session.php';
 require_once 'handlers/pagehandler.php';
 
-$site = 'https://infected.no/v7/';
+$site = 'http://infected.no/v7/';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();

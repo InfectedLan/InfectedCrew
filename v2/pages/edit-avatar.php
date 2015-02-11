@@ -43,15 +43,13 @@ if (Session::isAuthenticated()) {
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
 							//Calculate size factor. The crop pane is 800 wide.
-							$temp = explode(".", $avatar->getTemp());
+							$temp = explode('.', $avatar->getTemp());
 							$extension = strtolower(end($temp));
 							$image = 0;
-							if($extension=="png")
-							{
+							
+							if ($extension == 'png') {
 								$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
-							}
-							elseif($extension=="jpeg"||$extension=="jpg")
-							{
+							} else if ($extension == 'jpeg' || $extension == 'jpg') {
 								$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
 							}
 							$scaleFactor = 800 / imagesx($image);

@@ -14,7 +14,7 @@ if (Session::isAuthenticated()) {
 			if ($page != null) {
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('chief.my-crew') &&
-					($page->getGroup()->getId() == $user->getGroup()->getId())) {
+					$user->getGroup()->equals($page->getGroup())) {
 					echo '<script src="scripts/edit-restricted-page.js"></script>';
 					echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 				
@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir navnet på siden).</td>';
 							echo '</tr>';
 							
-							if ($page->getGroup()->getId() == $user->getGroup()->getId()) {
+							if ($user->getGroup().equals($page->getGroup())) {
 								$group = $user->getGroup();
 								
 								echo '<tr>';
@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
 											echo '<option value="0">Alle</option>';
 											
 											foreach ($group->getTeams() as $team) {
-												if ($team->getId() == $page->getTeam()->getId()) {
+												if ($team->equals($page->getTeam()))
 													echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
 												} else {
 													echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';

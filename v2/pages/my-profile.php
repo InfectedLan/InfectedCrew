@@ -5,8 +5,6 @@ require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
 
-echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
 if (Session::isAuthenticated()) {
@@ -17,6 +15,8 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('search.users') ||
 			$user->getId() == $profile->getId()) {
+			echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
+
 			$event = EventHandler::getCurrentEvent();
 
 			echo '<h3>' . $profile->getDisplayName(). '</h3>';

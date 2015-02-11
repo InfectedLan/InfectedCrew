@@ -10,11 +10,13 @@ if (Session::isAuthenticated()) {
 	
 	if (!$user->isGroupMember()) {
 		if ($user->hasCroppedAvatar()) {
+			$groupList = GroupHandler::getGroups();
+
 			echo '<script src="scripts/apply.js"></script>';
 
 			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>';
 			echo 'og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
-			echo 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count(GroupHandler::getGroups()) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>';
+			echo 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count($groupList) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>';
 			echo '<p>Klar til å søke? Fyll ut skjemaet under:</p>';
 			echo '<table>';
 				echo '<form class="application" method="post">';
@@ -22,8 +24,6 @@ if (Session::isAuthenticated()) {
 						echo '<td>Crew:</td>';
 						echo '<td>';
 							echo '<select name="groupId">';
-								$groupList = GroupHandler::getGroups();
-								
 								foreach ($groupList as $group) {
 									echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 								}

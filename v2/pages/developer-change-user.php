@@ -19,7 +19,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>';
 						echo '<select class="chosen-select" name="userId" autofocus>';
 							$userList = UserHandler::getUsers();
-						
+							
 							foreach ($userList as $user) {
 								echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
 							}

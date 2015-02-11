@@ -87,3 +87,4 @@ if (Session::isAuthenticated()) {
 } else {
 	echo 'Du er ikke logget inn!';
 }
+?>
