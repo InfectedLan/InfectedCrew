@@ -25,22 +25,22 @@ if (Session::isAuthenticated()) {
 						echo '<th>Publisert?</th>';
 					echo '</tr>';
 					
-					foreach ($slideList as $slide) {
+					foreach ($slideList as $value) {
 						echo '<tr>';
 							echo '<form class="slide-edit" method="post">';
-								echo '<input type="hidden" name="id" value="' . $slide->getId() . '">';
-								echo '<td><input type="text" name="title" value="' . $slide->getTitle() . '"></td>';
-								echo '<td><input type="text" name="content" value="' . $slide->getContent() . '"></td>';
+								echo '<input type="hidden" name="id" value="' . $value->getId() . '">';
+								echo '<td><input type="text" name="title" value="' . $value->getTitle() . '"></td>';
+								echo '<td><textarea name="content">' . $value->getContent() . '</textarea></td>';
 								echo '<td>';
-									echo '<input type="time" name="startTime" value="' . date('H:i', $slide->getStartTime()) . '">';
-									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $slide->getStartTime()) . '"><br>';
+									echo '<input type="time" name="startTime" value="' . date('H:i', $value->getStartTime()) . '">';
+									echo '<input type="date" name="startDate" value="' . date('Y-m-d', $value->getStartTime()) . '"><br>';
 								echo '</td>';
 								echo '<td>';
-									echo '<input type="time" name="endTime" value="' . date('H:i', $slide->getEndTime()) . '">';
-									echo '<input type="date" name="endDate" value="' . date('Y-m-d', $slide->getEndTime()) . '"><br>';
+									echo '<input type="time" name="endTime" value="' . date('H:i', $value->getEndTime()) . '">';
+									echo '<input type="date" name="endDate" value="' . date('Y-m-d', $value->getEndTime()) . '"><br>';
 								echo '</td>';
 								
-								if ($slide->isPublished()) {
+								if ($value->isPublished()) {
 									echo '<td><input type="checkbox" name="published" value="1" checked></td>';
 								} else {
 									echo '<td><input type="checkbox" name="published" value="1"></td>';
@@ -49,7 +49,7 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
 							
-							echo '<td><input type="button" value="Fjern" onClick="removeSlide(' . $slide->getId() . ')"></td>';
+							echo '<td><input type="button" value="Fjern" onClick="removeSlide(' . $value->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
@@ -68,7 +68,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Innhold:</td>';
-						echo '<td><textarea id="editor1" name="content" rows="10" cols="80"></textarea></td>';
+						echo '<td><textarea class="editor" name="content" rows="10" cols="80"></textarea></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Start tidspunkt:</td>';
