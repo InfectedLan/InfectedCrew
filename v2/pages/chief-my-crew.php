@@ -27,9 +27,8 @@ if (Session::isAuthenticated()) {
 						$team = $page->getTeam();
 						
 						echo '<tr>';
-							echo '<td>' . $page->getTitle() . '</td>';
+							echo '<td><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></td>';
 							echo '<td>' . ($team != null ? $team->getTitle() : 'Alle') . '</td>';
-							echo '<td><a href="index.php?page=' . $page->getName() . '">Vis</a></td>';
 							echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
 							echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 						echo '</tr>';

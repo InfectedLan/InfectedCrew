@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir navnet på siden).</td>';
 							echo '</tr>';
 							
-							if ($user->getGroup().equals($page->getGroup())) {
+							if ($user->getGroup()->equals($page->getGroup())) {
 								$group = $user->getGroup();
 								
 								echo '<tr>';
@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
 											echo '<option value="0">Alle</option>';
 											
 											foreach ($group->getTeams() as $team) {
-												if ($team->equals($page->getTeam()))
+												if ($team->equals($page->getTeam())) {
 													echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
 												} else {
 													echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
