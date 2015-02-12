@@ -130,7 +130,7 @@ if (Session::isAuthenticated()) {
 									}
 								echo '</select>';
 							echo '</td>';
-							echo '<td><input type="submit" userValue="Legg til"></td>';
+							echo '<td><input type="submit" value="Legg til"></td>';
 						echo '</form>';
 					echo '</tr>';
 				echo '</table>';

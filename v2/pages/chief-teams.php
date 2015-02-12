@@ -26,36 +26,36 @@ if (Session::isAuthenticated()) {
 					
 					foreach ($teamList as $team) {
 						echo '<tr>';
-							echo '<form class="chief-teams-edit" action="" method="post">';
-								echo '<input type="hidden" name="teamId" userValue="' . $team->getId() . '">';
-								echo '<input type="hidden" name="groupId" userValue="' . $group->getId() . '">';
-								echo '<td>' . $group->getTitle() . ':<input type="text" name="title" userValue="' . $team->getTitle() . '"></td>';
+							echo '<form class="chief-teams-edit" method="post">';
+								echo '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
+								echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
+								echo '<td>' . $group->getTitle() . ':<input type="text" name="title" value="' . $team->getTitle() . '"></td>';
 								echo '<td>' . count($team->getMembers()) . '</td>';
-								echo '<td><input type="text" name="description" userValue="' . $team->getDescription() . '"></td>';
+								echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
 								echo '<td>';
 									echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 										echo '<option value="0"></option>';
 
 										foreach ($userList as $userValue) {
 											if ($userValue->equals($team->getLeader())) {
-												echo '<option userValue="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+												echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 											} else {
-												echo '<option userValue="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+												echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 											}
 										}
 									echo '</select>';
 								echo '</td>';
-								echo '<td><input type="submit" userValue="Endre"></td>';
+								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
-							echo '<td><input type="button" userValue="Slett" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')"></td>';
+							echo '<td><input type="button" value="Slett" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
 			}
 				
 			echo '<h3>Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-			echo '<form class="chief-teams-add" action="" method="post">';
-				echo '<input type="hidden" name="groupId" userValue="' . $group->getId() . '">';
+			echo '<form class="chief-teams-add" method="post">';
+				echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Navn:</td>';
@@ -70,16 +70,16 @@ if (Session::isAuthenticated()) {
 						echo '<td>Shift-leder:</td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-								echo '<option userValue="0"></option>';
+								echo '<option value="0"></option>';
 								
 								foreach ($userList as $userValue) {
-									echo '<option userValue="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
 							echo '</select>';
 						echo '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td><input type="submit" userValue="Legg til"></td>';
+						echo '<td><input type="submit" value="Legg til"></td>';
 					echo '</tr>';
 				echo '</table>';
 			echo '</form>';
@@ -107,7 +107,7 @@ if (Session::isAuthenticated()) {
 										}
 									echo '</select>';
 								echo '</td>';
-								echo '<td><input type="submit" userValue="Legg til"></td>';
+								echo '<td><input type="submit" value="Legg til"></td>';
 							echo '</form>';
 						echo '</tr>';
 					echo '</table>';
@@ -124,13 +124,13 @@ if (Session::isAuthenticated()) {
 							foreach ($memberList as $userValue) {
 								echo '<tr>';
 									echo '<td>' . $userValue->getDisplayName() . '</td>';
-									echo '<td><input type="button" userValue="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
+									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
 								echo '</tr>';
 							}
 							
 							if (count($teamList) > 1) {
 								echo '<tr>';
-									echo '<td><input type="button" userValue="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
+									echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
 								echo '</tr>';
 							}
 						} else {
