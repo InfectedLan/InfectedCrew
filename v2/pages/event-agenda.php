@@ -28,7 +28,7 @@ if (Session::isAuthenticated()) {
 							echo '<form class="agenda-edit" method="post">';
 								echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
 								echo '<td><input type="text" name="title" value="' . $agenda->getTitle() . '"></td>';
-								echo '<td><textarea name="description">' . $agenda->getContent() . '</textarea></td>';
+								echo '<td><textarea name="description">' . $agenda->getDescription() . '</textarea></td>';
 								echo '<td>';
 									echo '<input type="time" name="startTime" value="' . date('H:i', $agenda->getStartTime()) . '">';
 									echo '<br>';
