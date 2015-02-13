@@ -96,14 +96,14 @@ if (Session::isAuthenticated()) {
 								echo '<td>';
 									echo '<select class="chosen-select" name="userId">';
 										foreach ($freeUserList as $userValue) {
-											echo '<option userValue="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 										}
 									echo '</select>';
 								echo '</td>';
 								echo '<td>';
 									echo '<select class="chosen-select" name="teamId">';
 										foreach ($teamList as $team) {
-											echo '<option userValue="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+											echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 										}
 									echo '</select>';
 								echo '</td>';
