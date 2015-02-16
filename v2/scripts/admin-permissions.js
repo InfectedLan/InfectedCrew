@@ -18,7 +18,7 @@ function editUserPermissions(id) {
 function removeUserPermissions(id) {
 	$.getJSON('../api/json/permissions/removeUserPermissions.php?id=' + id, function(data) {
 		if (data.result) {
-			$(location).reload();
+			location.reload(); 
 		} else {
 			error(data.message); 
 		}
