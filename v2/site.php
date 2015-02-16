@@ -297,13 +297,11 @@ class Site {
 							if (Session::isAuthenticated()) {
 								$user = Session::getCurrentUser();
 							
+								
 								if ($user->hasPermission('*') ||
-									$user->isGroupMember()) {
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('search')) {
-										
-										echo '<li' . ($this->pageName == 'search-users' ? ' class="active"' : null) . '><a href="index.php?page=search-users"><img src="images/search.png"></a></li>';
-									}
+									$user->hasPermission('search.users')) {
+									
+									echo '<li' . ($this->pageName == 'search-users' ? ' class="active"' : null) . '><a href="index.php?page=search-users"><img src="images/search.png"></a></li>';
 								}
 								
 								if ($user->isGroupMember()) {
@@ -315,60 +313,57 @@ class Site {
 								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
 								
 								if ($user->hasPermission('*') ||
-									$user->isGroupMember()) {
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('event')) {
-										if ($this->pageName == 'event' || 
-											$this->pageName == 'event-checkin' || 
-											$this->pageName == 'event-seatmap' ||
-											$this->pageName == 'event-screen' ||
-											$this->pageName == 'event-agenda' ||
-											$this->pageName == 'event-compos' ||
-											$this->pageName == 'event-memberlist') {
-											echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
-										} else {
-											echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
-										}
+									$user->hasPermission('event')) {
+									if ($this->pageName == 'event' || 
+										$this->pageName == 'event-checkin' || 
+										$this->pageName == 'event-seatmap' ||
+										$this->pageName == 'event-screen' ||
+										$this->pageName == 'event-agenda' ||
+										$this->pageName == 'event-compos' ||
+										$this->pageName == 'event-memberlist') {
+										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									}
-									
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('chief')) {
-										if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 || 
-											$this->pageName == 'chief' || 
-											$this->pageName == 'chief-groups' ||
-											$this->pageName == 'chief-teams' ||
-											$this->pageName == 'chief-avatars' || 
-											$this->pageName == 'chief-applications' ||
-											$this->pageName == 'chief-my-crew' ||
-											$this->pageName == 'chief-email') {
-											echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
-										} else {
-											echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
-										}
+								}
+								
+								if ($user->hasPermission('*') ||
+									$user->hasPermission('chief')) {
+									if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 || 
+										$this->pageName == 'chief' || 
+										$this->pageName == 'chief-groups' ||
+										$this->pageName == 'chief-teams' ||
+										$this->pageName == 'chief-avatars' || 
+										$this->pageName == 'chief-applications' ||
+										$this->pageName == 'chief-my-crew' ||
+										$this->pageName == 'chief-email') {
+										echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 									}
-									
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('admin')) {
-										if ($this->pageName == 'admin' || 
-											$this->pageName == 'admin-events' ||
-											$this->pageName == 'admin-permissions' ||
-											$this->pageName == 'admin-change-user' ||
-											$this->pageName == 'admin-seatmap' ||
-											$this->pageName == 'admin-website') {
-											echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
-										} else {
-											echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
-										}
+								}
+								
+								if ($user->hasPermission('*') ||
+									$user->hasPermission('admin')) {
+									if ($this->pageName == 'admin' || 
+										$this->pageName == 'admin-events' ||
+										$this->pageName == 'admin-permissions' ||
+										$this->pageName == 'admin-change-user' ||
+										$this->pageName == 'admin-seatmap' ||
+										$this->pageName == 'admin-website') {
+										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									}
-									
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('developer')) {
-										if ($this->pageName == 'developer' || 
-											$this->pageName == 'developer-change-user') {
-											echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
-										} else {
-											echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
-										}
+								}
+								
+								if ($user->hasPermission('*') ||
+									$user->hasPermission('developer')) {
+									if ($this->pageName == 'developer' || 
+										$this->pageName == 'developer-change-user') {
+										echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									}
 								}
 
@@ -421,7 +416,8 @@ class Site {
 				if (!empty($pendingApplicationList)) {
 					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
 				}
-			} else if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
+			} else if ($user->hasPermission('chief.applications') && 
+					   $user->isGroupMember()) {
 				$group = $user->getGroup();
 				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
 				
