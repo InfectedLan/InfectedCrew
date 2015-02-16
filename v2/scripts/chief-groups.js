@@ -9,12 +9,6 @@ $(document).ready(function() {
 	    editGroup(this);
 	});
 	
-	/*
-	$('.chief-groups-edit').find('select[name=leader]').chosen().change(function(e) {
-		editGroup(this.form);
-	}); 
-	*/
-	
 	$('.chief-groups-adduser').submit(function(e) {
 		e.preventDefault();
 		addUserToGroup(this);
