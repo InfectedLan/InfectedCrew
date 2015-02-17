@@ -87,8 +87,8 @@ if (Session::isAuthenticated()) {
 			if (!empty($teamList)) {
 				echo '<h3>Medlemmer</h3>';
 				
-				$freeUserList = UserHandler::getNonMemberUsers();
-						
+				$freeUserList = getFreeUsers($group);
+
 				if (!empty($freeUserList)) {
 					echo '<table>';
 						echo '<tr>';
@@ -149,5 +149,17 @@ if (Session::isAuthenticated()) {
 	}
 } else {
 	echo '<p>Du er ikke logget inn!</p>';
+}
+
+function getFreeUsers($group) {
+	$freeUserList = $group->getMembers();
+	
+	foreach ($freeUserList as $key => $freeUser) {
+		if ($freeUser->isTeamMember()) {
+			unset($freeUserList[$key]);
+		}
+	}
+
+	return $freeUserList;
 }
 ?>
