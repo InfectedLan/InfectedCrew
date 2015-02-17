@@ -16,7 +16,7 @@ if (Session::isAuthenticated()) {
 			$event = EventHandler::getCurrentEvent();
 		}
 
-		$compos = CompoHandler::getComposForEvent($event);
+		$compos = CompoHandler::getComposByEvent($event);
 
 		echo '<h1>Compoer for ' . $event->getTheme() . '</h1>';
 

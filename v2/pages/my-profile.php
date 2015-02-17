@@ -9,56 +9,54 @@ $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	$profile = UserHandler::getUser($id);
+	$profileUser = UserHandler::getUser($id);
 	
-	if ($profile != null) {
+	if ($profileUser != null) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('search.users') ||
-			$user->getId() == $profile->getId()) {
+			$user->equals($profileUser)) {
 			echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 
-			$event = EventHandler::getCurrentEvent();
-
-			echo '<h3>' . $profile->getDisplayName(). '</h3>';
+			echo '<h3>' . $profileUser->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
 				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Id:</td>';
-						echo '<td>' . $profile->getId() . '</td>';
+						echo '<td>' . $profileUser->getId() . '</td>';
 					echo '</tr>';
 				}
 
 				echo '<tr>';
 					echo '<td>Navn:</td>';
-					echo '<td>' . $profile->getFullName() . '</td>';
+					echo '<td>' . $profileUser->getFullName() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Brukernavn:</td>';
-					echo '<td>' . $profile->getUsername() . '</td>';
+					echo '<td>' . $profileUser->getUsername() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>E-post:</td>';
-					echo '<td><a href="mailto:' . $profile->getEmail() . '">' . $profile->getEmail() . '</a></td>';
+					echo '<td><a href="mailto:' . $profileUser->getEmail() . '">' . $profileUser->getEmail() . '</a></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Fødselsdato</td>';
-					echo '<td>' . date('d.m.Y', $profile->getBirthdate()) . '</td>';
+					echo '<td>' . date('d.m.Y', $profileUser->getBirthdate()) . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Kjønn:</td>';
-					echo '<td>' . $profile->getGenderName() . '</td>';
+					echo '<td>' . $profileUser->getGenderAsString() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Alder:</td>';
-					echo '<td>' . $profile->getAge() . ' år</td>';
+					echo '<td>' . $profileUser->getAge() . ' år</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Telefon:</td>';
-					echo '<td>' . $profile->getPhoneAsString() . '</td>';
+					echo '<td>' . $profileUser->getPhoneAsString() . '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Adresse:</td>';
-						$address = $profile->getAddress();
+						$address = $profileUser->getAddress();
 						
 						if (!empty($address)) {
 							echo '<td>' . $address . '</td>';
@@ -67,62 +65,62 @@ if (Session::isAuthenticated()) {
 						}
 				echo '</tr>';
 			
-				$postalCode = $profile->getPostalCode();
+				$postalCode = $profileUser->getPostalCode();
 				
 				if ($postalCode != 0) {
 					echo '<tr>';
 						echo '<td></td>';
-						echo '<td>' . $postalCode . ' ' . $profile->getCity() . '</td>';
+						echo '<td>' . $postalCode . ' ' . $profileUser->getCity() . '</td>';
 					echo '</tr>';
 				}
 				
 				echo '<tr>';
 					echo '<td>Kallenavn:</td>';
-					echo '<td>' . $profile->getNickname() . '</td>';
+					echo '<td>' . $profileUser->getNickname() . '</td>';
 				echo '</tr>';
 				
-				if ($profile->hasEmergencyContact()) {
+				if ($profileUser->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';
-						echo '<td>' . $profile->getEmergencyContact()->getPhoneString() . '</td>';
+						echo '<td>' . $profileUser->getEmergencyContact()->getPhoneAsString() . '</td>';
 					echo '</tr>';
 				}
 				
-				if ($profile->isGroupMember()) {
+				if ($profileUser->isGroupMember()) {
 					echo '<tr>';
 						echo '<td>Crew:</td>';
 						echo '<td>';
-							if ($profile->isGroupMember()) {
-								echo $profile->getGroup()->getTitle();
+							if ($profileUser->isGroupMember()) {
+								echo $profileUser->getGroup()->getTitle();
 							} else {
 								echo '<i>Ingen</i>';
 							}
 						echo '</td>';
 					echo '</tr>';
 					
-					if ($profile->isTeamMember()) {
+					if ($profileUser->isTeamMember()) {
 						echo '<tr>';
 							echo '<td>Lag:</td>';
 							echo '<td>';
 								
-									echo $profile->getTeam()->getTitle();
+									echo $profileUser->getTeam()->getTitle();
 							echo '</td>';
 						echo '</tr>';
 					}	
 				}
 				
-				$ticketCount = count($profile->getTickets());
+				$ticketCount = count($profileUser->getTickets());
 				
-				if (TicketHandler::hasTicketForEvent($event, $profile)) {
+				if (TicketHandler::hasTicket($profileUser)) {
 					echo '<tr>';
 						echo '<td>Antall billett(er):</td>';
 						echo '<td>' . $ticketCount . ' </td>';
 					echo '</tr>';
 				}
 			
-				if (TicketHandler::hasTicketForEvent($event, $profile) &&
-					$profile->hasSeat()) {
-					$ticket = $profile->getTicket();
+				if (TicketHandler::hasTicket($profileUser) &&
+					$profileUser->hasSeat()) {
+					$ticket = $profileUser->getTicket();
 					$seat = $ticket->getSeat();
 					$row = $seat->getRow();
 					
@@ -135,27 +133,27 @@ if (Session::isAuthenticated()) {
 				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Dato registrert:</td>';
-						echo '<td>' . date('d.m.Y', $profile->getRegisteredDate()) . '</td>';
+						echo '<td>' . date('d.m.Y', $profileUser->getRegisteredDate()) . '</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Aktivert:</td>';
 						echo '<td>';
-							echo $profile->isActivated() ? 'Ja' : 'Nei';
+							echo $profileUser->isActivated() ? 'Ja' : 'Nei';
 						echo '</td>';
 					echo '</tr>';
 				}
 				
 				if ($user->hasPermission('*') ||
-					$profile->getId() == $user->getId()) {
+					$user->equals($profileUser)) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td>';
-							echo '<a href="index.php?page=edit-profile&id=' . $profile->getId() . '">Endre bruker</a> ';
+							echo '<a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a> ';
 						echo '</td>';
 					echo '</tr>';
 				}
 				
-				if ($profile->getId() == $user->getId()) {
+				if ($user->equals($profileUser)) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td>';
@@ -169,7 +167,7 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td>';
-							echo '<a href="index.php?page=admin-permissions&id=' . $profile->getId() . '">Endre rettigheter</a> ';
+							echo '<a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a> ';
 						echo '</td>';
 					echo '</tr>';
 				}
@@ -177,22 +175,21 @@ if (Session::isAuthenticated()) {
 			
 			$avatarFile = null;
 			
-			if ($profile->hasValidAvatar()) {
-				$avatarFile = $profile->getAvatar()->getHd();
+			if ($profileUser->hasValidAvatar()) {
+				$avatarFile = $profileUser->getAvatar()->getHd();
 			} else {
-				$avatarFile = AvatarHandler::getDefaultAvatar($profile);
+				$avatarFile = AvatarHandler::getDefaultAvatar($profileUser);
 			}
 		
 			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
 
 			if (($user->hasPermission('*') ||
 				$user->hasPermission('search.users') ||
-				$user->hasPermission('chief.tickets')) && TicketHandler::hasTicketForEvent($event, $profile))  {
-
-				$ticket = $profile->getTicket();
+				$user->hasPermission('chief.tickets')) && 
+				TicketHandler::hasTicket($profileUser)) {
+				$ticket = $profileUser->getTicket();
 				$seat = $ticket->getSeat();
-				echo '<br />';
-				echo '<br />';
+
 				echo '<h3>Omplasser bruker</h3>';
 				echo '<div id="seatmapCanvas"></div>';
 				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
