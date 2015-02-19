@@ -24,9 +24,7 @@ if (Session::isAuthenticated()) {
 				echo '<th>Slutt:</th>';
 			echo '</tr>';
 			
-			$eventList = EventHandler::getEvents();
-			
-			foreach ($eventList as $event) {
+			foreach (EventHandler::getEvents() as $event) {
 				echo '<tr>';
 					echo '<form class="admin-events-edit" name="input" method="post">';
 						echo '<input type="hidden" name="id" value="' . $event->getId() . '">';
@@ -67,7 +65,7 @@ if (Session::isAuthenticated()) {
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>Tema:</td>';
-					echo '<td><input type="text" name="theme" required></td>';
+					echo '<td><input type="text" name="theme"></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Sted:</td>';
