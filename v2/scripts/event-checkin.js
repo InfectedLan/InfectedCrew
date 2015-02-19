@@ -5,7 +5,7 @@ function loadData() {
 		if (data.result) {
 			// Remove old entries.
 			$("#ticketDetails").empty();
-			var user = data.userData[0];
+			var user = data.userData;
 
 			$("#ticketDetails").append('<table>' +
 									   	   '<tr>' +
