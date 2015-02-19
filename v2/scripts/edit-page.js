@@ -8,7 +8,7 @@ $(document).ready(function() {
 function editPage(form) {
 	$.getJSON('../api/json/page/editPage.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
-			$(location).attr('href', 'index.php?page=functions-site-pages');
+			$(location).attr('href', 'index.php?page=admin-website');
 		} else {
 			error(data.message); 
 		}

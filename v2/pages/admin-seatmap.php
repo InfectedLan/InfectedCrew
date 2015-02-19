@@ -15,15 +15,11 @@ function showSplash() {
 		echo '<h1>Seatmap-editor</h1>';
 		echo '<div id="seatmapIntro">';
 			echo 'For å starte, må du velge et seatmap du vil redigere, eller lage et nytt.<br>';
-			
-			$seatmaps = SeatmapHandler::getSeatmaps();
 
 			echo '<select id="seatmapSelect">';
-			
-			foreach($seatmaps as $seatmap) {
-				echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
-			}
-
+				foreach (SeatmapHandler::getSeatmaps() as $seatmap) {
+					echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
+				}
 			echo '</select>';
 			echo '<input type="button" value="Edit" onclick="editSeatmap()" />';
 			echo '<input type="button" value="Lag kopi" onclick="copySeatmap()" />';
@@ -43,7 +39,7 @@ function showSplash() {
 function showEditor() {
 	$seatmap = SeatmapHandler::getSeatmap($_GET["id"]);
 	
-	if ($seatma != null) {
+	if ($seatmap != null) {
 		echo '<h1>Seatmappet eksisterer ikke!</h1>';
 		echo '<input type="button" onclick="redirectToSplash()" value="Tilbake" />';
 	} else {
