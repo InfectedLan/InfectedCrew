@@ -126,7 +126,7 @@ class Site {
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
-										   $this->pageName == 'event-compo' ||
+										   $this->pageName == 'event-compos' ||
 										   $this->pageName == 'event-memberlist') {
 									
 									if ($user->hasPermission('*') ||
@@ -150,7 +150,7 @@ class Site {
 									}
 									
 									if ($user->hasPermission('*') ||
-										$user->hasPermission('event.compo')) {
+										$user->hasPermission('event.compos')) {
 										echo '<li><a' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . ' href="index.php?page=event-compos">Compo</a></li>';
 									}
 									
@@ -204,7 +204,8 @@ class Site {
 								} else if ($this->pageName == 'admin' || 
 									$this->pageName == 'admin-events' || 
 									$this->pageName == 'admin-permissions' || 
-									$this->pageName == 'admin-seatmap') {
+									$this->pageName == 'admin-seatmap' ||
+									$this->pageName == 'admin-website') {
 									
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin.events')) {
