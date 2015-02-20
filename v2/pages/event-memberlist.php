@@ -13,7 +13,7 @@ if (Session::isAuthenticated()) {
 			echo '<script src="scripts/event-memberlist.js"></script>';
 			echo '<h3>Medlemsliste</h3>';
 			
-			echo '<p>Velg år du vil hente ut medlemsliste for samt maksimal alder på medlemmene du vil ha med.</p>';
+			echo '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.<br></p>';
 			
 			echo '<form class="memberlist" method="post">';
 				echo '<table>';
@@ -45,6 +45,15 @@ if (Session::isAuthenticated()) {
 									}
 								}
 							echo '</select> År';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Format:</td>';
+						echo '<td>';
+							echo '<select name="format">';
+								echo '<option value="html" selected>Tekst</option>';
+								echo '<option value="csv">Regneark</option>';
+							echo '</select>';
 						echo '</td>';
 					echo '</tr>';
 					echo '<tr>';
