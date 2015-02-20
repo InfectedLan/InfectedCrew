@@ -1,0 +1,73 @@
+<?php
+require_once 'session.php';
+require_once 'handlers/tickethandler.php';
+
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
+	
+	if ($user->hasPermission('*') ||
+		$user->hasPermission('event.tickets')) {
+		
+		if (isset($_GET['id'])) {
+			$ticket = TicketHandler::getTicket($_GET['id']);
+			
+			if ($ticket != null) {
+				echo '<h3>' . $ticket->getString() . '</h3>';
+				
+				echo '<table>';
+					echo '<tr>';
+						echo '<td>Billettnummer:</td>';
+						echo '<td>' . $ticket->getId() . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Type:</td>';
+						echo '<td>' . $ticket->getType()->getTitle() . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						$buyerUser = $ticket->getBuyer();
+
+						echo '<td>Kjøpt av:</td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
+					echo '</tr>';
+					echo '<tr>';
+						$ticketUser = $ticket->getUser();
+
+						echo '<td>Brukes av:</td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
+					echo '</tr>';
+					echo '<tr>';
+						$seaterUser = $ticket->getSeater();
+
+						echo '<td>Plasseres av:</td>';
+						echo '<td><a href="index.php?page=my-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
+					echo '</tr>';
+
+					if ($ticket->isSeated()) {
+						echo '<tr>';
+							echo '<td>Plass:</td>';
+							echo '<td>' . $ticket->getSeat()->getString() . '</td>';
+						echo '</tr>';
+					}
+
+					echo '<tr>';
+						echo '<td>Kan returneres?</td>';
+						echo '<td>' . ($ticket->isRefundable() ? 'Ja' : 'Nei') . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Sjekket inn?</td>';
+						echo '<td>' . ($ticket->isCheckedIn() ? 'Ja' : 'Nei') . '</td>';
+					echo '</tr>';
+				echo '</table>';
+			} else {
+				echo '<p>Billetten finnes ikke.</p>';
+			}
+		} else {
+			echo '<p>Ingen billett spesifisert.</p>';
+		}
+	} else {
+		echo 'Du har ikke rettigheter til dette.';
+	}
+} else {
+	echo 'Du er ikke logget inn.';
+}
+?>
