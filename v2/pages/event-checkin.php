@@ -1,7 +1,7 @@
 <?php
 require_once 'session.php';
-require_once 'handlers/eventhandler.php';
 require_once 'settings.php';
+require_once 'handlers/eventhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();

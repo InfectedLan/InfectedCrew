@@ -49,9 +49,11 @@ if (Session::isAuthenticated()) {
 							
 							if ($extension == 'png') {
 								$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
-							} else if ($extension == 'jpeg' || $extension == 'jpg') {
+							} else if ($extension == 'jpeg' || 
+									   $extension == 'jpg') {
 								$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
 							}
+
 							$scaleFactor = 800 / imagesx($image);
 							echo 'aspectRatio: 400/300,';
 							echo 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
