@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * This file is part of InfectedCrew.
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
@@ -17,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<?php
 require_once 'site.php';
 
 // Force user to use https if we are not in a development environment. Seriously, i wont want to spend 1 hour setting up my dev environment because one line cannot allow me non-ssl.

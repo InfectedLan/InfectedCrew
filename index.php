@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * This file is part of InfectedCrew.
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
@@ -17,6 +18,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<?php
-	header('Location: v2');
+header('Location: v2');
 ?>

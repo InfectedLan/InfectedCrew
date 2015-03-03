@@ -23,6 +23,7 @@ function initMatchList() {
 		renderMatchList();
 	});
 }
+
 function generateMatches() {
 	var startTime = $("#startTime").val();
 	var spacing = $("#compoSpacing").val();
@@ -34,6 +35,7 @@ function generateMatches() {
 		}
 	});
 }
+
 function renderMatchList() {
 	$.getJSON('../api/json/match/getMatchList.php' + '?id=' + compoId, function(data) {
 		if (data.result) {
@@ -46,6 +48,7 @@ function renderMatchList() {
 		}
 	});
 }
+
 function renderPendingMatches(pendingData) {
 	var appendArray = [];
 	appendArray.push("<h1>Ventende matcher</h1>");
