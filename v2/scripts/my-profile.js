@@ -17,29 +17,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$(document).ready(function() {
+	$('.my-profile-group-add-user').submit(function(e) {
+		e.preventDefault();
+		addGroupUserToGroup(this);
+	});
+
+});
+
+function addUserToGroup(form) {
+	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message); 
+		}
+	});
+};
+
 var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
-	if(!taken) {
+	if (!taken) {
 		return "free";
 	}
-	if(takenData.id == ticketId) {
+
+	if (takenData.id == ticketId) {
 		return "current";
 	}
+
 	return "taken";
 }
+
 var callback = function() {
-	for(var i = 0; i < seatmapData.rows.length; i++)
-		{
-			for(var s = 0; s < seatmapData.rows[i].seats.length; s++)
-			{
-				if(!seatmapData.rows[i].seats[s].occupied)
-				{
-					$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
-						updateSeat(e.data.seatId);
-					});
-				}
+	for (var i = 0; i < seatmapData.rows.length; i++) {
+		for(var s = 0; s < seatmapData.rows[i].seats.length; s++) {
+			if (!seatmapData.rows[i].seats[s].occupied) {
+				$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
+					updateSeat(e.data.seatId);
+				});
 			}
 		}
+	}
 }
+
 function updateSeat(seatId) {
 	$.getJSON("../api/json/ticket/seatTicket.php?ticket=" + ticketId + "&seat="+seatId, function(data){
 		if(data.result)

@@ -23,6 +23,7 @@ require_once 'handlers/userhandler.php';
 require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
+require_once 'handlers/grouphandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -188,6 +189,18 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<form class="my-profile-group-add-user" method="post">';
+							echo '<td>';
+								echo '<select class="chosen-select" name="groupId">';
+									foreach (GroupHandler::getGroups() as $group) {
+										echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
+									}
+								echo '</select>';
+							echo '</td>';
+							echo '<td><input type="submit" value="Legg til i crew"></td>';
+						echo '</form>';
 					echo '</tr>';
 				}
 			echo '</table>';
