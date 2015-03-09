@@ -191,20 +191,23 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
 					echo '</tr>';
-					echo '<tr>';
-						echo '<td></td>';
-						echo '<td>';
-							echo '<form class="my-profile-group-add-user" method="post">';
-								echo '<input type="hidden" name="userId" value="' . $profileUser->getId() . '">';
-								echo '<select class="chosen-select" name="groupId">';
-									foreach (GroupHandler::getGroups() as $group) {
-										echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
-									}
-								echo '</select> ';
-								echo '<input type="submit" value="Legg til i crew">';
-							echo '</form>';
-						echo '</td>';
-					echo '</tr>';
+
+					if (!$profileUser->isGroupMember()) {
+						echo '<tr>';
+							echo '<td></td>';
+							echo '<td>';
+								echo '<form class="my-profile-group-add-user" method="post">';
+									echo '<input type="hidden" name="userId" value="' . $profileUser->getId() . '">';
+									echo '<select class="chosen-select" name="groupId">';
+										foreach (GroupHandler::getGroups() as $group) {
+											echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
+										}
+									echo '</select> ';
+									echo '<input type="submit" value="Legg til i crew">';
+								echo '</form>';
+							echo '</td>';
+						echo '</tr>';
+					}
 				}
 			echo '</table>';
 			
@@ -218,7 +221,7 @@ if (Session::isAuthenticated()) {
 		
 			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
 
-			/*if (($user->hasPermission('*') ||
+			if (($user->hasPermission('*') ||
 				$user->hasPermission('search.users') ||
 				$user->hasPermission('chief.tickets')) && // TODO: Verify this permission. 
 				$profileUser->hasTicket()) {
@@ -234,7 +237,7 @@ if (Session::isAuthenticated()) {
 						echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
 					echo '});';
 				echo '</script>';
-			}*/
+			}
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
