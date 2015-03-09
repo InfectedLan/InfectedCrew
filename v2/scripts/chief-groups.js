@@ -72,7 +72,7 @@ function addUserToGroup(form) {
 			error(data.message); 
 		}
 	});
-};
+}
 
 function removeUserFromGroup(id) {
 	$.getJSON('../api/json/group/removeUserFromGroup.php?id=' + id, function(data) {

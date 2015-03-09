@@ -36,6 +36,7 @@ if (Session::isAuthenticated()) {
 			$user->hasPermission('search.users') ||
 			$user->equals($profileUser)) {
 			echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
+			echo '<script src="scripts/my-profile.js"></script>';
 
 			echo '<h3>' . $profileUser->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
@@ -191,16 +192,18 @@ if (Session::isAuthenticated()) {
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<form class="my-profile-group-add-user" method="post">';
-							echo '<td>';
+						echo '<td></td>';
+						echo '<td>';
+							echo '<form class="my-profile-group-add-user" method="post">';
+								echo '<input type="hidden" name="userId" value="' . $profileUser->getId() . '">';
 								echo '<select class="chosen-select" name="groupId">';
 									foreach (GroupHandler::getGroups() as $group) {
 										echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 									}
-								echo '</select>';
-							echo '</td>';
-							echo '<td><input type="submit" value="Legg til i crew"></td>';
-						echo '</form>';
+								echo '</select> ';
+								echo '<input type="submit" value="Legg til i crew">';
+							echo '</form>';
+						echo '</td>';
 					echo '</tr>';
 				}
 			echo '</table>';
@@ -213,15 +216,14 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profileUser);
 			}
 		
-			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
+			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
 
-			if (($user->hasPermission('*') ||
+			/*if (($user->hasPermission('*') ||
 				$user->hasPermission('search.users') ||
 				$user->hasPermission('chief.tickets')) && // TODO: Verify this permission. 
 				$profileUser->hasTicket()) {
 				$ticket = $profileUser->getTicket();
 				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
-				echo '<script src="scripts/my-profile.js"></script>';
 
 				echo '<h3>Omplasser bruker</h3>';
 				echo '<div id="seatmapCanvas"></div>';
@@ -232,7 +234,7 @@ if (Session::isAuthenticated()) {
 						echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
 					echo '});';
 				echo '</script>';
-			}
+			}*/
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}

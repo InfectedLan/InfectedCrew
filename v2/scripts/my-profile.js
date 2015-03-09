@@ -23,17 +23,17 @@ $(document).ready(function() {
 		addGroupUserToGroup(this);
 	});
 
-});
-
-function addUserToGroup(form) {
-	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
-		if (data.result) {
-			location.reload();
-		} else {
-			error(data.message); 
+	var callback = function() {
+	for (var i = 0; i < seatmapData.rows.length; i++) {
+		for(var s = 0; s < seatmapData.rows[i].seats.length; s++) {
+			if (!seatmapData.rows[i].seats[s].occupied) {
+				$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
+					updateSeat(e.data.seatId);
+				});
+			}
 		}
-	});
-};
+	}
+}
 
 var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
 	if (!taken) {
@@ -46,28 +46,24 @@ var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
 
 	return "taken";
 }
+});
 
-var callback = function() {
-	for (var i = 0; i < seatmapData.rows.length; i++) {
-		for(var s = 0; s < seatmapData.rows[i].seats.length; s++) {
-			if (!seatmapData.rows[i].seats[s].occupied) {
-				$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
-					updateSeat(e.data.seatId);
-				});
-			}
+function addUserToGroup(form) {
+	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message); 
 		}
-	}
+	});
 }
 
 function updateSeat(seatId) {
 	$.getJSON("../api/json/ticket/seatTicket.php?ticket=" + ticketId + "&seat="+seatId, function(data){
-		if(data.result)
-		{
+		if (data.result) {
 			//downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);
 			location.reload();
-		}
-		else
-		{
+		} else {
 			error(data.message);
 		}
   	});
