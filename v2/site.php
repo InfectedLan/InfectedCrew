@@ -438,7 +438,7 @@ class Site {
 			} else if ($user->hasPermission('chief.applications') && 
 					   $user->isGroupMember()) {
 				$group = $user->getGroup();
-				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
+				$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
 				
 				if (!empty($pendingApplicationList)) {
 					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ', de venter på svar fra deg.</div>';
