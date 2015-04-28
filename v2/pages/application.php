@@ -32,16 +32,36 @@ if (Session::isAuthenticated()) {
 			$application = ApplicationHandler::getApplication($_GET['id']);
 			
 			if ($application != null) {
+				$applicationUser = $application->getUser();
+
 				echo '<script src="scripts/application.js"></script>';
 				echo '<h3>Søknad</h3>';
-				
+
+				$applicationList = ApplicationHandler::getUserApplications($applicationUser);
+
+				if (!empty($applicationList)) {
+					echo '<p>Denne brukeren har også søkt til disse crewene:</p>';
+
+					echo '<table>';
+						foreach ($applicationList as $value) {
+							if (!$application->equals($value)) {
+								$group = $value->getGroup();
+
+								echo '<tr>';
+									echo '<td>' . $group->getTitle() . '</td>';
+								echo '</tr>';
+							}
+						}
+					echo '</table>';
+				}
+
+				// TODO: Add information about the user here.
+
 				echo '<table>';
 					echo '<tr>';
 						echo '<td>Status:</td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
 					echo '</tr>';
-				
-					$applicationUser = $application->getUser();
 				
 					echo '<tr>';
 						echo '<td>Søkers navn:</td>';
@@ -57,7 +77,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>E-post:</td>';
-						echo '<td><a href="mailto:someone@example.com">' . $applicationUser->getEmail() . '</a></td>';
+						echo '<td><a href="mailto:' . $applicationUser->getEmail() . '">' . $applicationUser->getEmail() . '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td>Telefon:</td>';
