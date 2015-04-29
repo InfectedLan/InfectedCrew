@@ -134,11 +134,11 @@ class Site {
 									}
 								}
 									
-								if ($this->pageName == 'crew') {
+								if ($this->pageName == 'all-crew') {
 									$groupList = GroupHandler::getGroups();
 									
 									foreach ($groupList as $group) {
-										echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
+										echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
 									}
 								} else if ($this->pageName == 'event' || 
 										   $this->pageName == 'event-checkin' ||
@@ -329,7 +329,7 @@ class Site {
 									echo '<li' . ($this->pageName == 'apply' ? ' class="active"' : null) . '><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 								}
 								
-								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
+								echo '<li' . ($this->pageName == 'all-crew' ? ' class="active"' : null) . '><a href="index.php?page=all-crew"><img src="images/all-crew.png"></a></li>';
 								
 								if ($user->hasPermission('*') ||
 									$user->hasPermission('event')) {

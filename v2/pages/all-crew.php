@@ -19,42 +19,37 @@
  */
 
 require_once 'session.php';
-require_once 'handlers/restrictedpagehandler.php'; 
+require_once 'handlers/teamhandler.php';
+require_once 'handlers/grouphandler.php';
 require_once 'pages/crew.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->isGroupMember()) {
-		if (isset($_GET['teamId'])) {
-			$team = TeamHandler::getTeam($_GET['teamId']);
-			
-			if ($team != null) {
-				displayTeamWithInfo($team);
+
+	if (isset($_GET['id'])) {
+		if ($user->isGroupMember()) {	
+			if (isset($_GET['teamId'])) {
+				$team = TeamHandler::getTeam($_GET['teamId']);
+
+				if ($team != null) {
+					displayTeamWithInfo($team);
+				}
 			} else {
-				echo '<p>Dette laget finnes ikke!</p>';
+				$group = GroupHandler::getGroup($_GET['id']);
+
+				if ($group != null) {
+					displayGroupWithInfo($group);
+				}
 			}
 		} else {
-			$group = $user->getGroup();
-			
-			if ($group != null) {
-				echo '<h3>' . $group->getTitle() . '</h3>';
-			
-				$page = RestrictedPageHandler::getPageByName($group->getName());
-			
-				if ($page != null) {
-					echo $page->getContent();
-				}
-				
-				echo  $group->getDescription();
-				
-				displayGroup($group);
-			} else {
-				echo '<p>Dette crewet finnes ikke!</p>';
-			}
+			echo 'Du er ikke i crew.';
 		}
 	} else {
-		echo '<p>Du er ikke i noe crew!</p>';
+		$groupList = GroupHandler::getGroups();
+		
+		foreach ($groupList as $group) {	
+			displayGroupWithInfo($group);
+		}
 	}
 } else {
 	echo '<p>Du er ikke logget inn!</p>';
