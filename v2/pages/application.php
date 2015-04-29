@@ -40,55 +40,50 @@ if (Session::isAuthenticated()) {
 				$applicationList = ApplicationHandler::getUserApplications($applicationUser);
 
 				if (!empty($applicationList)) {
-					echo '<p>Denne brukeren har også søkt til disse crewene:</p>';
-
-					echo '<table>';
-						foreach ($applicationList as $value) {
-							if (!$application->equals($value)) {
-								$group = $value->getGroup();
-
-								echo '<tr>';
-									echo '<td>' . $group->getTitle() . '</td>';
-								echo '</tr>';
+					echo '<p>Denne brukeren har også levert søknad til følgende crew:</p>';
+					echo '<ul>';
+						foreach ($applicationList as $applicationValue) {
+							if (!$application->equals($applicationValue)) {
+								$group = $applicationValue->getGroup();
+								
+								echo '<li><a href="index.php?page=application&id=' . $applicationValue->getId() . '">' . $group->getTitle() . '</a></li>';
 							}
 						}
-					echo '</table>';
+					echo '</ul>';
 				}
-
-				// TODO: Add information about the user here.
 
 				echo '<table>';
 					echo '<tr>';
-						echo '<td>Status:</td>';
+						echo '<td><b>Status:</b></td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
 					echo '</tr>';
 				
 					echo '<tr>';
-						echo '<td>Søkers navn:</td>';
+						echo '<td><b>Søkers navn:</b></td>';
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Dato søkt:</td>';
+						echo '<td><b>Dato søkt:</b></td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Crew:</td>';
+						echo '<td><b>Crew:</b></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>E-post:</td>';
+						echo '<td><b>E-post:</b></td>';
 						echo '<td><a href="mailto:' . $applicationUser->getEmail() . '">' . $applicationUser->getEmail() . '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Telefon:</td>';
+						echo '<td><b>Telefon:</b></td>';
 						echo '<td>' . $applicationUser->getPhone() . '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Alder:</td>';
+						echo '<td><b>Alder:</b></td>';
 						echo '<td>' . $applicationUser->getAge() . '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Søknad:</td>';
+						echo '<td><b>Søknad:</b></td>';
 						echo '<td>' . wordwrap($application->getContent(), 64, '<br>') . '</td>';
 					echo '</tr>';
 				echo '</table>';
@@ -115,10 +110,10 @@ if (Session::isAuthenticated()) {
 						break;
 				}
 			} else {
-				echo '<p>Den angitte søknaden finnes ikke.</p>';
+				echo 'Den angitte søknaden finnes ikke.';
 			}
 		} else {
-			echo '<p>Ingen søknad spesifisert.</p>';
+			echo 'Ingen søknad spesifisert.';
 		}
 	} else {
 		echo 'Bare crew ledere kan se søknader.';
