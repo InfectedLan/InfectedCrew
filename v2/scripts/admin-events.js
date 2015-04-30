@@ -45,6 +45,16 @@ function viewSeatmap(id) {
 	$(location).attr('href', 'index.php?page=event-seatmap&id=' + id);
 }
 
+function copyMembers(id) {
+	$.getJSON('../api/json/event/copyMembers.php?id=' + id, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
 function removeEvent(id) {
 	$.getJSON('../api/json/event/removeEvent.php?id=' + id, function(data) {
 		if (data.result) {
