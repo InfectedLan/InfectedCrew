@@ -72,12 +72,17 @@ if (Session::isAuthenticated()) {
 					echo '<td></td>';
 
 					if ($user->hasPermission('*')) {
+						$currentEvent = EventHandler::getCurrentEvent();
+
 						// Allow user to transfer members from previus event if this event is the current one.
-						if ($event->equals(EventHandler::getCurrentEvent())) {
+						if ($event->equals($currentEvent)) {
 							echo '<td><input type="button" value="Kopier medlemmer" onClick="copyMembers(' . EventHandler::getPreviousEvent()->getId() . ')"></td>';
 						}
 
-						echo '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
+						// Prevent users from removing events that have already started, we don't want to delete old tickets etc.
+						if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
+							echo '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
+						}
 					}
 				echo '</tr>';
 			}
