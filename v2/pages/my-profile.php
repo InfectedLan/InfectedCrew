@@ -191,6 +191,14 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
 					echo '</tr>';
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="index.php?page=user-history">Vis historie</a></td>';
+					echo '</tr>';
+				}
+
+				if ($user->hasPermission('*') ||
+					$user->hasPermission('admin.permissions')) {
 
 					if (!$profileUser->isGroupMember()) {
 						echo '<tr>';
