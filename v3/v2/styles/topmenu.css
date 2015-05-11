@@ -1,0 +1,44 @@
+/**
+ * This file is part of InfectedCrew.
+ *
+ * Copyright (C) 2015 Infected <http://infected.no/>.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3.0 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.topmenu {
+	float: left;
+	margin: 70px 0 0 10px;
+}
+
+.topmenu ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.topmenu ul li {
+	display: inline-block;
+}
+
+.topmenu ul li a {
+	text-decoration: none;
+	color: rgba(0,0,0,0.8);
+	font-size: 16px;
+	margin: 0 5px 0 5px;
+}
+
+.topmenu ul .active, .topmenu ul li a:hover {
+	border-bottom: 3px solid rgba(31,165,208,0.50);
+}
