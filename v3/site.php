@@ -37,38 +37,41 @@ class Site {
 		echo '<!DOCTYPE html>';
 		echo '<html>';
 		  	echo '<head>';
-		  		echo '<title>' . Settings::name . ' Crew ' . EventHandler::getCurrentEvent()->getId() . '</title>';
+		  		echo '<title>' . Settings::name . ' Crew</title>';
 				echo '<meta name="description" content="' . Settings::description . '">';
 				echo '<meta name="keywords" content="' . Settings::keywords . '">';
 				echo '<meta name="author" content="halvors and petterroea">';
 				echo '<meta charset="UTF-8">';
-				echo '<script src="../api/scripts/login.js"></script>';
-				echo '<script src="../api/scripts/logout.js"></script>';
-
 				echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
 				//<!-- Bootstrap 3.3.4 -->
 				echo '<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />';
 				//<!-- FontAwesome 4.3.0 -->
 				echo '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- Ionicons 2.0.0 -->
-				echo '<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />';
 				//<!-- Theme style -->
 				echo '<link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- AdminLTE Skins. Choose a skin from the css/skins 
-				//	   folder instead of downloading all of them to reduce the load. -->
-				echo '<link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- iCheck -->
-				echo '<link href="plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />';
-				//<!-- Morris chart -->
-				echo '<link href="plugins/morris/morris.css" rel="stylesheet" type="text/css" />';
-				//<!-- jvectormap -->
-				echo '<link href="plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />';
-				//<!-- Date Picker -->
-				echo '<link href="plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />';
-				//<!-- Daterange picker -->
-				echo '<link href="plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />';
-				//<!-- bootstrap wysihtml5 - text editor -->
-				echo '<link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />';
+
+				if (Session::isAuthenticated()) {
+					//<!-- Ionicons 2.0.0 -->
+					echo '<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />';
+					//<!-- AdminLTE Skins. Choose a skin from the css/skins 
+					//	   folder instead of downloading all of them to reduce the load. -->
+					echo '<link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />';
+					//<!-- iCheck -->
+					echo '<link href="plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />';
+					//<!-- Morris chart -->
+					echo '<link href="plugins/morris/morris.css" rel="stylesheet" type="text/css" />';
+					//<!-- jvectormap -->
+					echo '<link href="plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />';
+					//<!-- Date Picker -->
+					echo '<link href="plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />';
+					//<!-- Daterange picker -->
+					echo '<link href="plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />';
+					//<!-- bootstrap wysihtml5 - text editor -->
+					echo '<link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />';
+				} else {
+				    //<!-- iCheck -->
+				    echo '<link href="plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />';
+				}
 
 				//<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 				//<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -86,11 +89,11 @@ class Site {
 					echo 'ga(\'send\', \'pageview\');';
 				echo '</script>';
 		  	echo '</head>';
-		  	echo '<body class="skin-blue sidebar-mini">';
+		  	
+			if (Session::isAuthenticated()) {
+				$user = Session::getCurrentUser();
 
-				if (Session::isAuthenticated()) {
-					$user = Session::getCurrentUser();
-
+				echo '<body class="skin-blue sidebar-mini">';
 					echo '<div class="wrapper">';
 				  		echo '<header class="main-header">';
 							echo '<!-- Logo -->';
@@ -353,10 +356,10 @@ class Site {
 												  	// <!-- Menu Footer -->
 												  	echo '<li class="user-footer">';
 														echo '<div class="pull-left">';
-													  		echo '<a href="?page=my-profile" class="btn btn-default btn-flat">Profile</a>';
+													  		echo '<a href="?page=my-profile" class="btn btn-default btn-flat">Min profil</a>';
 														echo '</div>';
 														echo '<div class="pull-right">';
-													  		echo '<a href="#" onClick="logout()" class="btn btn-default btn-flat">Sign out</a>';
+													  		echo '<a href="#" onClick="logout()" class="btn btn-default btn-flat">Logg ut</a>';
 														echo '</div>';
 												  	echo '</li>';
 												echo '</ul>';
@@ -404,6 +407,7 @@ class Site {
 											echo '<i class="fa fa-users"></i><span>Crewene</span>';
 									  	echo '</a>';
 									  	echo '<ul class="treeview-menu">';
+
 									  		$groupList = GroupHandler::getGroups();
 									
 											foreach ($groupList as $group) {
@@ -411,6 +415,7 @@ class Site {
 
 												//echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
 											}
+
 									  	echo '</ul>';
 									echo '</li>';
 
@@ -466,6 +471,7 @@ class Site {
 														}
 													}
 												}
+
 											echo '</ul>';
 										echo '</li>';
 									}
@@ -1247,71 +1253,70 @@ class Site {
 					echo '<script src="plugins/fastclick/fastclick.min.js"></script>';
 					//<!-- AdminLTE App -->
 					echo '<script src="dist/js/app.min.js" type="text/javascript"></script>';
-					
-					echo '<!-- AdminLTE dashboard demo (This is only for demo purposes) -->';
-					echo '<script src="dist/js/pages/dashboard.js" type="text/javascript"></script>';
-					
-					echo '<!-- AdminLTE for demo purposes -->';
-					echo '<script src="dist/js/demo.js" type="text/javascript"></script>';
-				}
-			echo '</body>';
-		echo '</html>';
-	}
 
-	private function viewLogin() {
-		echo '<form class="login" method="post">';
-			echo '<table>';
-				echo '<tr>';
-					echo '<td><h2>Logg inn</h2></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Brukernavn, E-post eller Telefon:</td>';
-					echo '<td><input type="text" name="identifier" required autofocus></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Passord:</td>';
-					echo '<td><input type="password" name="password" required></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td><input type="submit" value="Logg inn"><td>';
-				echo '</tr>';
-			echo '</table>';
-		echo '</form>';
-		echo 'Har du ikke en bruker? <a href="index.php?page=register">Registrer!</a>. Glemt passord? <a href="index.php?page=reset-password">Reset passordet ditt!</a>';
-		echo '<p>Du har samme bruker her som på <a href="https://tickets.infected.no/">tickets.infected.no</a></p>';
-	}
-	
-	private function viewNotifications() {
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-			$pendingApplicationList = null;
-			$pendingAvatarList = null;
-			
-			if ($user->hasPermission('*')) {
-				$pendingApplicationList = ApplicationHandler::getPendingApplications();
-				
-				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
-				}
-			} else if ($user->hasPermission('chief.applications') && 
-					   $user->isGroupMember()) {
-				$group = $user->getGroup();
-				$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
-				
-				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ', de venter på svar fra deg.</div>';
-				}
+					//<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+					echo '<script src="dist/js/pages/dashboard.js" type="text/javascript"></script>';
+					//<!-- AdminLTE for demo purposes -->
+					echo '<script src="dist/js/demo.js" type="text/javascript"></script>';
+
+					// Other
+					echo '<script src="../api/scripts/logout.js"></script>';
+				echo '</body>';
+			} else {
+				echo '<body class="login-page">';
+    				echo '<div class="login-box">';
+				      	echo '<div class="login-logo">';
+				        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+				      	echo '</div><!-- /.login-logo -->';
+				      	echo '<div class="login-box-body">';
+				        	echo '<p class="login-box-msg">Du bruker samme bruker overalt hos Infected.</p>';
+					        echo '<form class="login" method="post">';
+					          	echo '<div class="form-group has-feedback">';
+					            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
+					            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+					          	echo '</div>';
+					          	echo '<div class="form-group has-feedback">';
+					            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
+					            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+					          	echo '</div>';
+					          	echo '<div class="row">';
+					            	echo '<div class="col-xs-8">';
+					              		echo '<div class="checkbox icheck">';
+					                		echo '<label><input type="checkbox"> Husk meg</label>';
+					              		echo '</div>';        
+					            	echo '</div><!-- /.col -->';
+					           		echo '<div class="col-xs-4">';
+					              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
+					            	echo '</div><!-- /.col -->';
+					          	echo '</div>';
+					        echo '</form>';
+					        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
+					        echo '<a href="?page=register">Register deg</a>';
+					    echo '</div><!-- /.login-box-body -->';
+					echo '</div><!-- /.login-box -->';
+
+				    //<!-- jQuery 2.1.4 -->
+				    echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				    //<!-- Bootstrap 3.3.2 JS -->
+				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
+				    //<!-- iCheck -->
+				    echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
+				    echo '<script>';
+				    	echo '$(function () {';
+				        	echo '$(\'input\').iCheck({';
+				          		echo 'checkboxClass: \'icheckbox_square-blue\',';
+				          		echo 'radioClass: \'iradio_square-blue\',';
+				          		echo 'increaseArea: \'20%\''; // optional';
+				        	echo '});';
+				      	echo '});';
+				    echo '</script>';
+
+				    // Other
+				    echo '<script src="../api/scripts/login.js"></script>';
+				echo '</body>';
 			}
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.applications') && $user->isGroupMember()) {
-				$pendingAvatarList = AvatarHandler::getPendingAvatars();
-				
-				if (!empty($pendingAvatarList)) {
-					echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> ' . (count($pendingAvatarList) == 1 ? 'profilbilde' : 'profilbilder') . ' som venter på godkjenning.</div>';
-				}
-			}
-		}
+
+		echo '</html>';
 	}
 	
 	private function viewPage($pageName) {
