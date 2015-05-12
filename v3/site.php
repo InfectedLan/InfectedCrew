@@ -43,6 +43,7 @@ class Site {
 				echo '<meta name="author" content="halvors and petterroea">';
 				echo '<meta charset="UTF-8">';
 				echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
+				echo '<link rel="shortcut icon" href="images/favicon.ico">';
 				//<!-- Bootstrap 3.3.4 -->
 				echo '<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />';
 				//<!-- FontAwesome 4.3.0 -->
@@ -112,7 +113,7 @@ class Site {
 						  		echo '</a>';
 						  		echo '<div class="navbar-custom-menu">';
 						   			echo '<ul class="nav navbar-nav">';
-
+						   				/*
 							  			echo '<!-- Messages: style can be found in dropdown.less-->';
 							  			echo '<li class="dropdown messages-menu">';
 											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
@@ -189,59 +190,58 @@ class Site {
 												echo '<li class="footer"><a href="#">See All Messages</a></li>';
 											echo '</ul>';
 										echo '</li>';
+										*/
+
+										$pendingApplicationList = null;
+										$pendingAvatarList = null;
+
+										// Check for group applications.
+										if ($user->hasPermission('*')) {
+											$pendingApplicationList = ApplicationHandler::getPendingApplications();
+										} else if ($user->hasPermission('chief.applications') && 
+												   $user->isGroupMember()) {
+											$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($user->getGroup());
+										}
 										
-										if (Session::isAuthenticated()) {
-											$user = Session::getCurrentUser();
-											$pendingApplicationList = null;
-											$pendingAvatarList = null;
+										// Check for avatars.
+										if ($user->hasPermission('*') ||
+											$user->hasPermission('chief.applications') && $user->isGroupMember()) {
+											$pendingAvatarList = AvatarHandler::getPendingAvatars();
+										}
 
-											// Check for group applications.
-											if ($user->hasPermission('*')) {
-												$pendingApplicationList = ApplicationHandler::getPendingApplications();
-											} else if ($user->hasPermission('chief.applications') && 
-													   $user->isGroupMember()) {
-												$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($user->getGroup());
-											}
-											
-											// Check for avatars.
-											if ($user->hasPermission('*') ||
-												$user->hasPermission('chief.applications') && $user->isGroupMember()) {
-												$pendingAvatarList = AvatarHandler::getPendingAvatars();
-											}
-
-											$notificationsCount = count($pendingApplicationList) + count($pendingAvatarList);
-											
-											//<!-- Notifications: style can be found in dropdown.less -->';
-											echo '<li class="dropdown notifications-menu">';
-												echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-											  		echo '<i class="fa fa-bell-o"></i>';
-											  		echo '<span class="label label-warning">' . $notificationsCount . '</span>';
-												echo '</a>';
-												echo '<ul class="dropdown-menu">';
-											  		echo '<li class="header">You have ' . $notificationsCount . ' notifications</li>';
-											  		echo '<li>';
-														//<!-- inner menu: contains the actual data -->';
-														echo '<ul class="menu">';
-															
-															if (!empty($pendingApplicationList)) {
-																foreach ($pendingApplicationList as $pendingApplication) {
-																	echo '<li><a href="?page=application&id=' . $pendingApplication->getId() . '"><i class="fa fa-users text-aqua"></i>Søknaden til ' . $pendingApplication->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
-																}
+										$notificationsCount = count($pendingApplicationList) + count($pendingAvatarList);
+										
+										//<!-- Notifications: style can be found in dropdown.less -->';
+										echo '<li class="dropdown notifications-menu">';
+											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+										  		echo '<i class="fa fa-bell-o"></i>';
+										  		echo '<span class="label label-warning">' . $notificationsCount . '</span>';
+											echo '</a>';
+											echo '<ul class="dropdown-menu">';
+										  		echo '<li class="header">You have ' . $notificationsCount . ' notifications</li>';
+										  		echo '<li>';
+													//<!-- inner menu: contains the actual data -->';
+													echo '<ul class="menu">';
+														
+														if (!empty($pendingApplicationList)) {
+															foreach ($pendingApplicationList as $pendingApplication) {
+																echo '<li><a href="?page=application&id=' . $pendingApplication->getId() . '"><i class="fa fa-users text-aqua"></i>Søknaden til ' . $pendingApplication->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
 															}
+														}
 
-															if (!empty($pendingAvatarList)) {
-																foreach ($pendingAvatarList as $pendingAvatar) {
-																	echo '<li><a href="?page=chief-avatars"><i class="fa fa-users text-aqua"></i>Profilbilde til ' . $pendingAvatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
-																}
+														if (!empty($pendingAvatarList)) {
+															foreach ($pendingAvatarList as $pendingAvatar) {
+																echo '<li><a href="?page=chief-avatars"><i class="fa fa-users text-aqua"></i>Profilbilde til ' . $pendingAvatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
 															}
+														}
 
-														echo '</ul>';
-											  		echo '</li>';
-											  		echo '<li class="footer"><a href="#">View all</a></li>';
-												echo '</ul>';
-										  	echo '</li>';
-									  	}
+													echo '</ul>';
+										  		echo '</li>';
+										  		echo '<li class="footer"><a href="#">View all</a></li>';
+											echo '</ul>';
+									  	echo '</li>';
 
+									  	/*
 										//<!-- Tasks: style can be found in dropdown.less -->
 										echo '<li class="dropdown tasks-menu">';
 											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
@@ -312,58 +312,56 @@ class Site {
 												echo '</li>';
 											echo '</ul>';
 										echo '</li>';
+										*/
+
 					  					//<!-- User Account: style can be found in dropdown.less -->
 						  				echo '<li class="dropdown user user-menu">';
 						  				
-										  	if (Session::isAuthenticated()) {
-												$user = Session::getCurrentUser();
-											
-												if ($user->hasValidAvatar()) {
-													$avatarFile = $user->getAvatar()->getThumbnail();
-												} else {
-													$avatarFile = $user->getDefaultAvatar();
-												}
+											if ($user->hasValidAvatar()) {
+												$avatarFile = $user->getAvatar()->getThumbnail();
+											} else {
+												$avatarFile = $user->getDefaultAvatar();
+											}
 
-												echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-												  	echo '<img src="' . $avatarFile . '" class="user-image" alt="User Image" />';
-												  	echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
-												echo '</a>';
+											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="User Image" />';
+											  	echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
+											echo '</a>';
 
-												echo '<ul class="dropdown-menu">';
-													// <!-- User image -->
-											 		echo '<li class="user-header">';
-														echo '<img src="' . $avatarFile . '" class="img-circle" alt="User Image" />';
-														echo '<p>';
-												  			echo $user->getFullName();
-												  			echo '<small>' . $user->getRole() . '</small>';
-												  			echo '<small>Registret den ' . date('d', $user->getRegisteredDate()) . ' ' . DateUtils::getMonthFromInt(date('m', $user->getRegisteredDate())) . ' ' . date('Y', $user->getRegisteredDate()) . '</small>';
-														echo '</p>';
-											  		echo '</li>';
-											  		/*
-											  		//<!-- Menu Body -->
-											  		echo '<li class="user-body">';
-														echo '<div class="col-xs-4 text-center">';
-														  	echo '<a href="#">Followers</a>';
-														echo '</div>';
-														echo '<div class="col-xs-4 text-center">';
-														  	echo '<a href="#">Sales</a>';
-														echo '</div>';
-														echo '<div class="col-xs-4 text-center">';
-														  	echo '<a href="#">Friends</a>';
-														echo '</div>';
-													echo '</li>';
-													*/
-												  	// <!-- Menu Footer -->
-												  	echo '<li class="user-footer">';
-														echo '<div class="pull-left">';
-													  		echo '<a href="?page=my-profile" class="btn btn-default btn-flat">Min profil</a>';
-														echo '</div>';
-														echo '<div class="pull-right">';
-													  		echo '<a href="#" onClick="logout()" class="btn btn-default btn-flat">Logg ut</a>';
-														echo '</div>';
-												  	echo '</li>';
-												echo '</ul>';
-										  	}
+											echo '<ul class="dropdown-menu">';
+												// <!-- User image -->
+										 		echo '<li class="user-header">';
+													echo '<img src="' . $avatarFile . '" class="img-circle" alt="User Image" />';
+													echo '<p>';
+											  			echo $user->getFullName();
+											  			echo '<small>' . $user->getRole() . '</small>';
+											  			echo '<small>Registret den ' . date('d', $user->getRegisteredDate()) . ' ' . DateUtils::getMonthFromInt(date('m', $user->getRegisteredDate())) . ' ' . date('Y', $user->getRegisteredDate()) . '</small>';
+													echo '</p>';
+										  		echo '</li>';
+										  		/*
+										  		//<!-- Menu Body -->
+										  		echo '<li class="user-body">';
+													echo '<div class="col-xs-4 text-center">';
+													  	echo '<a href="#">Followers</a>';
+													echo '</div>';
+													echo '<div class="col-xs-4 text-center">';
+													  	echo '<a href="#">Sales</a>';
+													echo '</div>';
+													echo '<div class="col-xs-4 text-center">';
+													  	echo '<a href="#">Friends</a>';
+													echo '</div>';
+												echo '</li>';
+												*/
+											  	// <!-- Menu Footer -->
+											  	echo '<li class="user-footer">';
+													echo '<div class="pull-left">';
+												  		echo '<a href="?page=my-profile" class="btn btn-default btn-flat">Min profil</a>';
+													echo '</div>';
+													echo '<div class="pull-right">';
+												  		echo '<a href="#" onClick="logout()" class="btn btn-default btn-flat">Logg ut</a>';
+													echo '</div>';
+											  	echo '</li>';
+											echo '</ul>';
 										echo '</li>';
 						  				echo '<!-- Control Sidebar Toggle Button -->';
 										echo '<li>';
@@ -404,7 +402,7 @@ class Site {
 
 					   				echo '<li class="treeview">';
 									  	echo '<a href="?page=all-crew">';
-											echo '<i class="fa fa-users"></i><span>Crewene</span>';
+											echo '<i class="fa fa-users"></i><span>Crewene</span><i class="fa fa-angle-left pull-right"></i>';
 									  	echo '</a>';
 									  	echo '<ul class="treeview-menu">';
 
@@ -421,7 +419,7 @@ class Site {
 
 				   					echo '<li class="treeview">';
 									  	echo '<a href="?page=my-crew">';
-											echo '<i class="fa fa-users"></i><span>Mitt crew</span>';
+											echo '<i class="fa fa-users"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i>';
 									  	echo '</a>';
 									  	echo '<ul class="treeview-menu">';
 
@@ -1051,7 +1049,7 @@ class Site {
 							echo '<div class="pull-right hidden-xs">';
 						  		echo '<b>Version</b> 2.0';
 							echo '</div>';
-							echo '<strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.';
+							echo '<strong>Copyright &copy; 2015 <a href="https://infected.no/">Infected</a>.</strong> All rights reserved.';
 					  	echo '</footer>';
 					  
 					  	//<!-- Control Sidebar -->  
