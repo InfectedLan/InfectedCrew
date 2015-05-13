@@ -27,18 +27,42 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if (isset($_GET['id'])) {
-		if ($user->isGroupMember()) {	
+		if ($user->isGroupMember()) {
 			if (isset($_GET['teamId'])) {
 				$team = TeamHandler::getTeam($_GET['teamId']);
 
 				if ($team != null) {
-					displayTeamWithInfo($team);
+					echo '<div class="box">';
+						echo '<div class="box-header with-border">';
+							echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+						echo '</div>';
+						echo '<div class="box-body">';
+
+							echo $team->getDescription();
+
+						echo '</div><!-- /.box-body -->';	
+						echo '<div class="box-footer">';
+			            	displayTeam($team);
+			            echo '</div><!-- /.box-footer-->';
+					echo '</div><!-- /.box -->';
 				}
 			} else {
 				$group = GroupHandler::getGroup($_GET['id']);
 
 				if ($group != null) {
-					displayGroupWithInfo($group);
+					echo '<div class="box">';
+						echo '<div class="box-header with-border">';
+							echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+						echo '</div>';
+						echo '<div class="box-body">';
+
+							echo $group->getDescription();
+
+						echo '</div><!-- /.box-body -->';
+						echo '<div class="box-footer">';
+			            	displayGroup($group);
+			            echo '</div><!-- /.box-footer-->';
+					echo '</div><!-- /.box -->';
 				}
 			}
 		} else {
@@ -47,8 +71,20 @@ if (Session::isAuthenticated()) {
 	} else {
 		$groupList = GroupHandler::getGroups();
 		
-		foreach ($groupList as $group) {	
-			displayGroupWithInfo($group);
+		foreach ($groupList as $group) {
+			echo '<div class="box">';
+				echo '<div class="box-header with-border">';
+					echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+				echo '</div>';
+				echo '<div class="box-body">';
+
+					echo $group->getDescription();
+
+				echo '</div><!-- /.box-body -->';
+				echo '<div class="box-footer">';
+	            	displayGroup($group);
+	            echo '</div><!-- /.box-footer-->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 } else {
