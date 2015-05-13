@@ -38,17 +38,25 @@ if (Session::isAuthenticated()) {
 			$group = $user->getGroup();
 			
 			if ($group != null) {
-				echo '<h3>' . $group->getTitle() . '</h3>';
-			
-				$page = RestrictedPageHandler::getPageByName($group->getName());
-			
-				if ($page != null) {
-					echo $page->getContent();
-				}
+				echo '<div class="box">';
+					echo '<div class="box-header with-border">';
+						echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+					echo '</div>';
+					echo '<div class="box-body">';
+
+						$page = RestrictedPageHandler::getPageByName($group->getName());
 				
-				echo  $group->getDescription();
-				
-				displayGroup($group);
+						if ($page != null) {
+							echo $page->getContent();
+						}
+						
+						echo  $group->getDescription();
+
+					echo '</div><!-- /.box-body -->';
+					echo '<div class="box-footer">';
+		            	displayGroup($group);
+		            echo '</div><!-- /.box-footer-->';
+				echo '</div><!-- /.box -->';
 			} else {
 				echo '<p>Dette crewet finnes ikke!</p>';
 			}
