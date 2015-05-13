@@ -623,9 +623,43 @@ class Site {
 									echo '<li class="active">Dashboard</li>';
 						  		echo '</ol>';
 							echo '</section>';
-
+							
 							echo '<!-- Main content -->';
 							echo '<section class="content">';
+
+								if ($user->hasPermission('*') ||
+									$user->isGroupMember()) {
+									// View the page specified by "pageName" variable.
+									$this->viewPage($this->pageName);
+								} else {
+									$publicPages = array('apply', 
+														 'all-crew', 
+														 'my-profile', 
+														 'edit-profile', 
+														 'edit-password', 
+														 'edit-avatar');
+									
+									if (in_array($this->pageName, $publicPages)) {
+										$this->viewPage($this->pageName);
+									} else {
+										$this->viewPage('all-crew');
+									}
+								}
+								/*
+								} else {
+									$publicPages = array('register',
+														 'activation',
+														 'reset-password');
+									
+									if (in_array($this->pageName, $publicPages)) {
+										$this->viewPage($this->pageName);
+									} else {
+										$this->viewLogin();
+									}
+								}
+								*/
+
+								/*
 							  	echo '<!-- Small boxes (Stat box) -->';
 							  	echo '<div class="row">';
 									echo '<div class="col-lg-3 col-xs-6">';
@@ -1043,12 +1077,15 @@ class Site {
 									  	echo '</div><!-- /.box -->';
 									echo '</section><!-- right col -->';
 								echo '</div><!-- /.row (main row) -->';
+							*/
 							echo '</section><!-- /.content -->';
 					 	echo '</div><!-- /.content-wrapper -->';
 					  	echo '<footer class="main-footer">';
+					  		/*
 							echo '<div class="pull-right hidden-xs">';
 						  		echo '<b>Version</b> 2.0';
 							echo '</div>';
+							*/
 							echo '<strong>Copyright &copy; 2015 <a href="https://infected.no/">Infected</a>.</strong> All rights reserved.';
 					  	echo '</footer>';
 					  
@@ -1057,7 +1094,6 @@ class Site {
 							echo '<!-- Create the tabs -->';
 							echo '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">';
 						  		echo '<li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>';
-						  
 						  		echo '<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>';
 							echo '</ul>';
 							echo '<!-- Tab panes -->';
