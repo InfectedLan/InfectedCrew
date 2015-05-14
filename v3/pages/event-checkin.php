@@ -30,23 +30,25 @@ if (Session::isAuthenticated()) {
 		echo '<script src="scripts/event-checkin.js"></script>';
 
 		echo '<div class="box">';
-				echo '<div class="box-header with-border">';
-					echo '<h3 class="box-title">Sjekk inn billett</h3>';
-				echo '</div>';
-				echo '<div class="box-body">';
+			echo '<div class="box-header with-border">';
+				echo '<h3 class="box-title">Sjekk inn billett</h3>';
+			echo '</div>';
+			echo '<div class="box-body">';
 
-					$event = EventHandler::getCurrentEvent();
-					$season = date('m', $event->getStartTime()) == 2 ? 'VINTER' : 'HØST';
-					$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . date('Y', $event->getStartTime());
-					
-					echo Settings::name . '_' . $eventName . '_' . '<input id="ticketId" type="text" autofocus>';
-					echo '<br>';
-					echo '<input type="button" value="Sjekk inn" onClick="loadData()"/>';
-					echo '<br>';
-					echo '<div id="ticketDetails"></div>';
-
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+				$event = EventHandler::getCurrentEvent();
+				$season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
+				$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . '_' . date('Y', $event->getStartTime());
+				
+				echo '<form class="navbar-form navbar-left">';
+					echo '<div class="form-group">';
+				    	echo '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
+				    	echo '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
+				  	echo '</div>';
+				  	echo '<button type="submit" class="btn btn-primary" onClick="loadData()">Sjekk inn</button>';
+				echo '</form>';
+				echo '<div id="ticketDetails"></div>';
+			echo '</div><!-- /.box-body -->';
+		echo '</div><!-- /.box -->';
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}

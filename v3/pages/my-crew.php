@@ -54,9 +54,11 @@ if (Session::isAuthenticated()) {
 
 					echo '</div><!-- /.box-body -->';
 					echo '<div class="box-footer">';
-		            	displayGroup($group);
+		            	
 		            echo '</div><!-- /.box-footer-->';
 				echo '</div><!-- /.box -->';
+
+				displayGroup($group);
 			} else {
 				echo '<p>Dette crewet finnes ikke!</p>';
 			}

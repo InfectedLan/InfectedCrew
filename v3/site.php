@@ -24,6 +24,7 @@ require_once 'handlers/avatarhandler.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'utils/dateutils.php';
+require_once 'utils/stringutils.php';
 
 class Site {
 	private $pageName;
@@ -402,18 +403,14 @@ class Site {
 					  			echo '<ul class="sidebar-menu">';
 					   				echo '<li class="header">MAIN NAVIGATION</li>';
 
-					   				echo '<li class="treeview">';
+					   				echo '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
 									  	echo '<a href="?page=all-crew">';
 											echo '<i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i>';
 									  	echo '</a>';
 									  	echo '<ul class="treeview-menu">';
 
-									  		$groupList = GroupHandler::getGroups();
-									
-											foreach ($groupList as $group) {
-												echo '<li><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
-
-												//echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
+											foreach (GroupHandler::getGroups() as $group) {
+												echo '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
 											}
 
 									  	echo '</ul>';
@@ -422,7 +419,7 @@ class Site {
 					   				if ($user->isGroupMember()) {
 										$group = $user->getGroup();
 										
-										echo '<li class="treeview">';
+										echo '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
 										  	echo '<a href="?page=my-crew">';
 												echo '<i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i>';
 										  	echo '</a>';
@@ -457,7 +454,7 @@ class Site {
 													// Only create link for groups that actually contain teams.
 													if (!empty($teamList)) {
 														foreach ($teamList as $team) {
-															echo '<li><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i> ' . $team->getTitle() . '</a></li>';
+															echo '<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i> ' . $team->getTitle() . '</a></li>';
 														}
 													}
 													
@@ -479,7 +476,7 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('event')) {
 
-										echo '<li class="treeview">';
+										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
 										  	echo '<a href="?page=event">';
 												echo '<i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i>';
 										  	echo '</a>';
@@ -487,51 +484,37 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.checkin')) {
-													echo '<li><a href="?page=event-checkin"><i class="fa fa-circle-o"></i>Innsjekk</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . ' href="index.php?page=event-checkin">Innsjekk</a></li>';
+													echo '<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-circle-o"></i>Innsjekk</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.seatmap')) {
-													echo '<li><a href="?page=event-seatmap"><i class="fa fa-circle-o"></i>Setekart</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Seatmap</a></li>';
+													echo '<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-circle-o"></i>Setekart</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.screen')) {
-													echo '<li><a href="?page=event-screen"><i class="fa fa-circle-o"></i>Skjerm</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . ' href="index.php?page=event-screen">Skjerm</a></li>';
+													echo '<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-circle-o"></i>Skjerm</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.agenda')) {
-													echo '<li><a href="?page=event-agenda"><i class="fa fa-circle-o"></i>Agenda</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . ' href="index.php?page=event-agenda">Agenda</a></li>';
+													echo '<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-circle-o"></i>Agenda</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.compos')) {
-													echo '<li><a href="?page=event-compos"><i class="fa fa-circle-o"></i>Compo</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . ' href="index.php?page=event-compos">Compo</a></li>';
+													echo '<li' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . '><a href="?page=event-compos"><i class="fa fa-circle-o"></i>Compo</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.memberlist')) {
-													echo '<li><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>Medlemsliste</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . ' href="index.php?page=event-memberlist">Medlemsliste</a></li>';
+													echo '<li' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>Medlemsliste</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.table-labels')) {
 													echo '<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-circle-o"></i>Print bordlapper</a></li>';
-
-													//echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 												}
 
 											echo '</ul>';
@@ -541,7 +524,7 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('chief')) {
 
-										echo '<li class="treeview">';
+										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'chief') ? ' active' : null) . '">';
 										  	echo '<a href="?page=chief">';
 												echo '<i class="fa fa-gavel"></i><span>Chief</span><i class="fa fa-angle-left pull-right"></i>';
 										  	echo '</a>';
@@ -549,44 +532,32 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.groups')) {
-													echo '<li><a href="?page=chief-groups"><i class="fa fa-circle-o"></i>Crew</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'chief-groups' ? ' class="active"' : null) . ' href="index.php?page=chief-groups">Crew</a></li>';
+													echo '<li' . ($this->pageName == 'chief-groups' ? ' class="active"' : null) . '><a href="?page=chief-groups"><i class="fa fa-circle-o"></i>Crew</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.teams')) {
-													echo '<li><a href="?page=chief-teams"><i class="fa fa-circle-o"></i>Lag</a></li>';
-													
-													//echo '<li><a' . ($this->pageName == 'chief-teams' ? ' class="active"' : null) . ' href="index.php?page=chief-teams">Lag</a></li>';
+													echo '<li' . ($this->pageName == 'chief-teams' ? ' class="active"' : null) . '><a href="?page=chief-teams"><i class="fa fa-circle-o"></i>Lag</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.avatars')) {
-													echo '<li><a href="?page=chief-avatars"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
-													
-													//echo '<li><a' . ($this->pageName == 'chief-avatars' ? ' class="active"' : null) . ' href="index.php?page=chief-avatars">Profilbilder</a></li>';
+													echo '<li' . ($this->pageName == 'chief-avatars' ? ' class="active"' : null) . '><a href="?page=chief-avatars"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.applications')) {
-													echo '<li><a href="?page=chief-applications"><i class="fa fa-circle-o"></i>Søknader</a></li>';
-													
-													//echo '<li><a' . ($this->pageName == 'chief-applications' || $this->pageName == 'application' ? ' class="active"' : null) . ' href="index.php?page=chief-applications">Søknader</a></li>';
+													echo '<li' . ($this->pageName == 'chief-applications' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-applications"><i class="fa fa-circle-o"></i>Søknader</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.my-crew')) {
-													echo '<li><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>My crew</a></li>';
-													
-													//echo '<li><a' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . ' href="index.php?page=chief-my-crew">My Crew</a></li>';
+													echo '<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>My crew</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.email')) {
-													echo '<li><a href="?page=chief-email"><i class="fa fa-circle-o"></i>Send e-post</a></li>';
-													
-													//echo '<li><a' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . ' href="index.php?page=chief-email">Send e-post</a></li>';
+													echo '<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-circle-o"></i>Send e-post</a></li>';
 												}
 
 											echo '</ul>';
@@ -596,7 +567,7 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin')) {
 
-										echo '<li class="treeview">';
+										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';
 										  	echo '<a href="?page=admin">';
 												echo '<i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i>';
 										  	echo '</a>';
@@ -604,30 +575,22 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.events')) {
-													echo '<li><a href="?page=admin-events"><i class="fa fa-circle-o"></i>Arrangementer</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . ' href="index.php?page=admin-events">Arrangementer</a></li>';
+													echo '<li' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . '><a href="?page=admin-events"><i class="fa fa-circle-o"></i>Arrangementer</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.permissions')) {
-													echo '<li><a href="?page=admin-permissions"><i class="fa fa-circle-o"></i>Rettigheter</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Tilganger</a></li>';
+													echo '<li' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . '><a href="?page=admin-permissions"><i class="fa fa-circle-o"></i>Rettigheter</a></li>';
 												}
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.seatmap')) {
-													echo '<li><a href="?page=admin-seatmap"><i class="fa fa-circle-o"></i>Endre setekart</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . ' href="index.php?page=admin-seatmap">Endre seatmap</a></li>';
+													echo '<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-circle-o"></i>Endre setekart</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.website')) {
-													echo '<li><a href="?page=admin-website"><i class="fa fa-circle-o"></i>Endre hovedsiden</a></li>';
-
-													//echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
+													echo '<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-circle-o"></i>Endre hovedsiden</a></li>';
 												}
 
 											echo '</ul>';
@@ -1465,7 +1428,7 @@ class Site {
 				        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
 				      	echo '</div><!-- /.login-logo -->';
 				      	echo '<div class="login-box-body">';
-				        	echo '<p class="login-box-msg">Du bruker samme bruker overalt hos Infected.</p>';
+				        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
 					        echo '<form class="login" method="post">';
 					          	echo '<div class="form-group has-feedback">';
 					            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';

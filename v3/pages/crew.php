@@ -44,6 +44,24 @@ function displayGroup(Group $group) {
 			$index = 0;
 			
 			foreach ($memberList as $member) {
+				if ($member->hasValidAvatar()) {
+					$avatarFile = $member->getAvatar()->getThumbnail();
+				} else {
+					$avatarFile = AvatarHandler::getDefaultAvatar($member);
+				}
+
+				echo '<div class="row">';
+					echo '<div class="col-md-2">';
+				    	echo '<div class="thumbnail">';
+				      		echo '<img src="../api/' . $avatarFile . '" class="img-circle" alt="..."></a>';
+				      		echo '<div class="caption">';
+				        		echo '<p>' . $member->getDisplayName() . '<br>';
+				      		echo '</div>';
+				   		echo '</div>';
+				  	echo '</div>';
+				echo '</div>';
+
+				/*
 				echo '<div class="';
 					
 					if ($index % 2 == 0) {
@@ -53,7 +71,7 @@ function displayGroup(Group $group) {
 					}
 				echo '">';
 					$avatarFile = null;
-			
+					
 					if ($member->hasValidAvatar()) {
 						$avatarFile = $member->getAvatar()->getThumbnail();
 					} else {
@@ -74,7 +92,8 @@ function displayGroup(Group $group) {
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
-					
+				*/
+
 				$index++;
 			}
 		} else {
@@ -90,7 +109,7 @@ function displayTeamWithInfo(Team $team) {
 	echo '</div>';
 		
 	if (Session::isAuthenticated()) {
-		$team->displayTeam();
+		displayTeam($team);
 	}
 }
 
@@ -143,7 +162,7 @@ function displayTeam(Team $team) {
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
-					
+
 				$index++;
 			}
 		} else {

@@ -34,7 +34,7 @@ if (Session::isAuthenticated()) {
 			echo '<script src="scripts/chief-teams.js"></script>';
 
 			echo '<div class="row">';
-            	echo '<div class="col-md-6">';
+            	echo '<div class="col-md-12">';
               		echo '<div class="box box-solid">';
                 		echo '<div class="box-header with-border">';
                   			echo '<h3 class="box-title">Lag</h3>';
@@ -42,7 +42,7 @@ if (Session::isAuthenticated()) {
                 		echo '<div class="box-body">';
                   
 		                	if (!empty($teamList)) {
-								echo '<table>';
+								echo '<table class="table table-bordered">';
 									echo '<tr>';
 										echo '<th>Navn</th>';
 										echo '<th>Medlemmer</th>';
@@ -85,64 +85,6 @@ if (Session::isAuthenticated()) {
                 		echo '</div><!-- /.box-body -->';
               		echo '</div><!-- /.box -->';
             	echo '</div><!-- ./col -->';
-
-	            echo '<div class="col-md-6">';
-	              	echo '<div class="box box-solid">';
-	                	echo '<div class="box-header with-border">';
-	                  		echo '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-	                	echo '</div><!-- /.box-header -->';
-	                	echo '<div class="box-body">';
-							echo '<form class="chief-teams-add" method="post">';
-								echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-								echo '<table>';
-									echo '<tr>';
-										echo '<td>';
-											echo '<div class="form-group has-feedback">';
-												echo '<input type="text" class="form-control" name="title" placeholder="Navn" required>';
-											echo '</div>';
-										echo '</td>';
-									echo '<tr>';
-									echo '</tr>';
-									echo '<tr>';
-										echo '<td>';
-											echo '<div class="form-group has-feedback">';
-												echo '<input type="text" class="form-control" name="description" placeholder="Beskrivelse" required>';
-											echo '</div>';
-										echo '</td>';
-									echo '</tr>';
-									echo '<tr>';
-										echo '<td>';
-											echo '<div class="form-group">';
-										      	echo '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
-											     	
-											     	echo '<option value="0"></option>';
-												
-													foreach ($userList as $userValue) {
-														echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-													}
-
-										      	echo '</select>';
-										    echo '</div>';
-
-										    /*
-											echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-												echo '<option value="0"></option>';
-												
-												foreach ($userList as $userValue) {
-													echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-												}
-											echo '</select>';
-											*/
-										echo '</td>';
-									echo '</tr>';
-									echo '<tr>';
-										echo '<td><button class="btn btn-block btn-primary">Legg til</button></td>';
-									echo '</tr>';
-								echo '</table>';
-							echo '</form>';
-	                	echo '</div><!-- /.box-body -->';
-	            	echo '</div><!-- /.box -->';
-	            echo '</div><!-- ./col -->';
           	echo '</div><!-- /.row -->';
 
           	echo '<div class="row">';
@@ -209,6 +151,63 @@ if (Session::isAuthenticated()) {
 								echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
 							}
 
+	                	echo '</div><!-- /.box-body -->';
+	            	echo '</div><!-- /.box -->';
+	            echo '</div><!-- ./col -->';
+	            echo '<div class="col-md-4">';
+	              	echo '<div class="box box-solid">';
+	                	echo '<div class="box-header with-border">';
+	                  		echo '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
+	                	echo '</div><!-- /.box-header -->';
+	                	echo '<div class="box-body">';
+							echo '<form class="chief-teams-add" method="post">';
+								echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
+								echo '<table>';
+									echo '<tr>';
+										echo '<td>';
+											echo '<div class="form-group has-feedback">';
+												echo '<input type="text" class="form-control" name="title" placeholder="Navn" required>';
+											echo '</div>';
+										echo '</td>';
+									echo '<tr>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td>';
+											echo '<div class="form-group has-feedback">';
+												echo '<input type="text" class="form-control" name="description" placeholder="Beskrivelse" required>';
+											echo '</div>';
+										echo '</td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td>';
+											echo '<div class="form-group">';
+										      	echo '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
+											     	
+											     	echo '<option value="0"></option>';
+												
+													foreach ($userList as $userValue) {
+														echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+													}
+
+										      	echo '</select>';
+										    echo '</div>';
+
+										    /*
+											echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+												echo '<option value="0"></option>';
+												
+												foreach ($userList as $userValue) {
+													echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+												}
+											echo '</select>';
+											*/
+										echo '</td>';
+									echo '</tr>';
+									echo '<tr>';
+										echo '<td><button class="btn btn-block btn-primary">Legg til</button></td>';
+									echo '</tr>';
+								echo '</table>';
+							echo '</form>';
 	                	echo '</div><!-- /.box-body -->';
 	            	echo '</div><!-- /.box -->';
 	            echo '</div><!-- ./col -->';
