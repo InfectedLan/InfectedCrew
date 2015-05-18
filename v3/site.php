@@ -81,6 +81,10 @@ class Site {
 					echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>';
 					echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
 				echo '<![endif]-->';
+
+				//<!-- jQuery 2.1.4 -->
+				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
 					echo '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
@@ -336,7 +340,7 @@ class Site {
 												$avatarFile = $user->getDefaultAvatar();
 											}
 
-											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+											echo '<a href="" class="dropdown-toggle" data-toggle="dropdown">';
 											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="User Image" />';
 											  	echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
 											echo '</a>';
@@ -371,7 +375,7 @@ class Site {
 												  		echo '<a href="?page=my-profile" class="btn btn-default btn-flat">Min profil</a>';
 													echo '</div>';
 													echo '<div class="pull-right">';
-												  		echo '<a href="#" onClick="logout()" class="btn btn-default btn-flat">Logg ut</a>';
+												  		echo '<a href="" onClick="logout()" class="btn btn-default btn-flat">Logg ut</a>';
 													echo '</div>';
 											  	echo '</li>';
 											echo '</ul>';
@@ -1390,7 +1394,9 @@ class Site {
 					echo '</div><!-- ./wrapper -->';
 
 					//<!-- jQuery 2.1.4 -->
+					/*
 					echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+					*/
 					//<!-- jQuery UI 1.11.2 -->
 					echo '<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>';
 					//<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
