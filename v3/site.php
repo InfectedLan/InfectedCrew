@@ -216,31 +216,41 @@ class Site {
 										echo '<li class="dropdown notifications-menu">';
 											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
 										  		echo '<i class="fa fa-bell-o"></i>';
-										  		echo '<span class="label label-warning">' . $notificationsCount . '</span>';
+
+										  		if ($notificationsCount > 0) {
+										  			echo '<span class="label label-warning">' . $notificationsCount . '</span>';
+										  		}
+										  		
 											echo '</a>';
 											echo '<ul class="dropdown-menu">';
-										  		echo '<li class="header">You have ' . $notificationsCount . ' notifications</li>';
-										  		echo '<li>';
-													//<!-- inner menu: contains the actual data -->';
-													echo '<ul class="menu">';
+										  		
+										  		if ($notificationsCount > 0) {
+													echo '<li class="header">Du har ' . $notificationsCount . ' varsler.</li>';
+													echo '<li>';
+														//<!-- inner menu: contains the actual data -->';
+														echo '<ul class="menu">';
 														
-														if (!empty($pendingApplicationList)) {
-															foreach ($pendingApplicationList as $pendingApplication) {
-																echo '<li><a href="?page=application&id=' . $pendingApplication->getId() . '"><i class="fa fa-users text-aqua"></i>Søknaden til ' . $pendingApplication->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+															if (!empty($pendingApplicationList)) {
+																foreach ($pendingApplicationList as $pendingApplication) {
+																	echo '<li><a href="?page=application&id=' . $pendingApplication->getId() . '"><i class="fa fa-users text-aqua"></i>Søknaden til ' . $pendingApplication->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+																}
 															}
-														}
 
-														if (!empty($pendingAvatarList)) {
-															foreach ($pendingAvatarList as $pendingAvatar) {
-																echo '<li><a href="?page=chief-avatars"><i class="fa fa-users text-aqua"></i>Profilbilde til ' . $pendingAvatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+															if (!empty($pendingAvatarList)) {
+																foreach ($pendingAvatarList as $pendingAvatar) {
+																	echo '<li><a href="?page=chief-avatars"><i class="fa fa-users text-aqua"></i>Profilbilde til ' . $pendingAvatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+																}
 															}
-														}
 
-													echo '</ul>';
-										  		echo '</li>';
-										  		/*
-										  		echo '<li class="footer"><a href="#">View all</a></li>';
-										  		*/
+														echo '</ul>';
+										  			echo '</li>';
+											  		/*
+											  		echo '<li class="footer"><a href="#">View all</a></li>';
+											  		*/
+										  		} else {
+										  			echo '<li class="header">Du har for øyeblikket ingen varsler.</li>';
+										  		}
+										  		
 											echo '</ul>';
 									  	echo '</li>';
 
