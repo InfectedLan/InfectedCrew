@@ -41,13 +41,13 @@ class EventAgendaPage extends EventPage implements IPage {
 
 					echo '<div class="row">';
 						echo '<div class="col-md-6">';
-			              	echo '<div class="box box-warning">';
-			                	echo '<div class="box-header">';
-			                  		echo '<h3 class="box-title">Agenda liste</h3>';
-			                	echo '</div><!-- /.box-header -->';
-			                	echo '<div class="box-body">';
-			                  		
-			                		$agendaList = AgendaHandler::getAgendas();
+						  	echo '<div class="box box-warning">';
+								echo '<div class="box-header">';
+							  		echo '<h3 class="box-title">Agenda liste</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
+							  		
+									$agendaList = AgendaHandler::getAgendas();
 					
 									if (!empty($agendaList)) {
 										echo '<table>';
@@ -87,56 +87,56 @@ class EventAgendaPage extends EventPage implements IPage {
 										echo '<p>Det er ikke opprettet noen agenda\'er enda.';
 									}
 
-			                	echo '</div><!-- /.box-body -->';
-			              	echo '</div><!-- /.box -->';
-			            echo '</div><!--/.col (right) -->';
+								echo '</div><!-- /.box-body -->';
+						  	echo '</div><!-- /.box -->';
+						echo '</div><!--/.col (right) -->';
 						echo '<div class="col-md-6">';
-			              	//<!-- general form elements disabled -->
-			              	echo '<div class="box box-warning">';
-			                	echo '<div class="box-header">';
-			                  		echo '<h3 class="box-title">Legg til ny agenda</h3>';
-			                	echo '</div><!-- /.box-header -->';
-			                	echo '<div class="box-body">';
-			                  		echo '<form class="agenda-add" method="post">';
-			                    		echo '<div class="form-group">';
-			                      			echo '<label>Navn</label>';
-			                      			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
-			                    		echo '</div>';
-					                    echo '<div class="form-group">';
-					                      	echo '<label>Beskrivelse</label>';
-					                      	echo '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required></textarea>';
-					                    echo '</div>';
-					                    echo '<div class="form-group">';
-					                    	echo '<label>Tid og dato:</label>';
-					                    	echo '<div class="input-group">';
-					                      		echo '<div class="input-group-addon">';
-					                        		echo '<i class="fa fa-clock-o"></i>';
-					                      		echo '</div>';
-					                      		echo '<input type="text" class="form-control pull-right" id="datetime" required>';
-					                    	echo '</div><!-- /.input group -->';
-					                  	echo '</div><!-- /.form group -->';
-					                  	echo '<button type="submit" class="btn btn-primary">Legg til</button>';
-			                  		echo '</form>';
-			                	echo '</div><!-- /.box-body -->';
-			              	echo '</div><!-- /.box -->';
-			            echo '</div><!--/.col (right) -->';
-			        echo '</div>   <!-- /.row -->';
+						  	//<!-- general form elements disabled -->
+						  	echo '<div class="box box-warning">';
+								echo '<div class="box-header">';
+							  		echo '<h3 class="box-title">Legg til ny agenda</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
+							  		echo '<form class="agenda-add" method="post">';
+										echo '<div class="form-group">';
+								  			echo '<label>Navn</label>';
+								  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
+										echo '</div>';
+										echo '<div class="form-group">';
+										  	echo '<label>Beskrivelse</label>';
+										  	echo '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required></textarea>';
+										echo '</div>';
+										echo '<div class="form-group">';
+											echo '<label>Tid og dato:</label>';
+											echo '<div class="input-group">';
+										  		echo '<div class="input-group-addon">';
+													echo '<i class="fa fa-clock-o"></i>';
+										  		echo '</div>';
+										  		echo '<input type="text" class="form-control pull-right" id="datetime" required>';
+											echo '</div><!-- /.input group -->';
+									  	echo '</div><!-- /.form group -->';
+									  	echo '<button type="submit" class="btn btn-primary">Legg til</button>';
+							  		echo '</form>';
+								echo '</div><!-- /.box-body -->';
+						  	echo '</div><!-- /.box -->';
+						echo '</div><!--/.col (right) -->';
+					echo '</div>   <!-- /.row -->';
 
-			        //<!-- jQuery 2.1.4 -->
-				    echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+					//<!-- jQuery 2.1.4 -->
+					echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
 					//<!-- date-range-picker -->
-		    		echo '<script src="plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>';
-		    		//<!-- Page script -->
-		    		echo '<script type="text/javascript">';
-		      			echo '$(function() {';
-		        			//Date range picker with time picker
-		        			echo '$(\'#datetime\').daterangepicker({';
-		        				echo 'timePicker: true,';
-		        				echo 'timePickerSeconds: true,';
-		        				echo 'format: \'YYYY-MM-DD HH:mm:ss\'';
-		        			echo '});';
-		      			echo '});';
-		    		echo '</script>';
+					echo '<script src="plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>';
+					//<!-- Page script -->
+					echo '<script type="text/javascript">';
+			  			echo '$(function() {';
+							//Date range picker with time picker
+							echo '$(\'#datetime\').daterangepicker({';
+								echo 'timePicker: true,';
+								echo 'timePickerSeconds: true,';
+								echo 'format: \'YYYY-MM-DD HH:mm:ss\'';
+							echo '});';
+			  			echo '});';
+					echo '</script>';
 				} else {
 					echo '<p>Du har ikke rettigheter til dette!</p>';
 				}

@@ -53,18 +53,18 @@ class EventCheckInPage extends EventPage implements IPage {
 									echo '<div class="form-group">';
 										echo '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
 										echo '<div class="input-group input-group-sm">';
-					                    	echo '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
-					                    	echo '<span class="input-group-btn">';
-					                      		echo '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
-					                    	echo '</span>';
-					                  	echo '</div>';
-					                echo '</div>';
-					            echo '</form>';
+											echo '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
+											echo '<span class="input-group-btn">';
+										  		echo '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
+											echo '</span>';
+									  	echo '</div>';
+									echo '</div>';
+								echo '</form>';
 								echo '<div id="ticketDetails"></div>';
 							echo '</div><!-- /.box-body -->';
 						echo '</div><!-- /.box -->';
 					echo '</div><!--/.col (left) -->';
-		        echo '</div><!-- /.row -->';
+				echo '</div><!-- /.row -->';
 			} else {
 				echo '<p>Du har ikke rettigheter til dette!</p>';
 			}

@@ -41,14 +41,14 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 					echo '<script src="scripts/chief-teams.js"></script>';
 
 					echo '<div class="row">';
-		            	echo '<div class="col-md-12">';
-		              		echo '<div class="box box-solid">';
-		                		echo '<div class="box-header with-border">';
-		                  			echo '<h3 class="box-title">Lag</h3>';
-		                		echo '</div><!-- /.box-header -->';
-		                		echo '<div class="box-body">';
-		                  
-				                	if (!empty($teamList)) {
+						echo '<div class="col-md-12">';
+					  		echo '<div class="box box-solid">';
+								echo '<div class="box-header with-border">';
+						  			echo '<h3 class="box-title">Lag</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
+						  
+									if (!empty($teamList)) {
 										echo '<table class="table table-bordered">';
 											echo '<tr>';
 												echo '<th>Navn</th>';
@@ -89,20 +89,20 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 										echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
 									}
 
-		                		echo '</div><!-- /.box-body -->';
-		              		echo '</div><!-- /.box -->';
-		            	echo '</div><!-- ./col -->';
-		          	echo '</div><!-- /.row -->';
+								echo '</div><!-- /.box-body -->';
+					  		echo '</div><!-- /.box -->';
+						echo '</div><!-- ./col -->';
+				  	echo '</div><!-- /.row -->';
 
-		          	echo '<div class="row">';
-		            	echo '<div class="col-md-6">';
-		              		echo '<div class="box box-solid">';
-		                		echo '<div class="box-header with-border">';
-			                  		echo '<h3 class="box-title">Medlemmer</h3>';
-			                	echo '</div><!-- /.box-header -->';
-			                	echo '<div class="box-body">';
+				  	echo '<div class="row">';
+						echo '<div class="col-md-6">';
+					  		echo '<div class="box box-solid">';
+								echo '<div class="box-header with-border">';
+							  		echo '<h3 class="box-title">Medlemmer</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
 									
-			                		if (!empty($teamList)) {
+									if (!empty($teamList)) {
 										$freeUserList = getFreeUsers($group);
 
 										if (!empty($freeUserList)) {
@@ -158,15 +158,15 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 										echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
 									}
 
-			                	echo '</div><!-- /.box-body -->';
-			            	echo '</div><!-- /.box -->';
-			            echo '</div><!-- ./col -->';
-			            echo '<div class="col-md-4">';
-			              	echo '<div class="box box-solid">';
-			                	echo '<div class="box-header with-border">';
-			                  		echo '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-			                	echo '</div><!-- /.box-header -->';
-			                	echo '<div class="box-body">';
+								echo '</div><!-- /.box-body -->';
+							echo '</div><!-- /.box -->';
+						echo '</div><!-- ./col -->';
+						echo '<div class="col-md-4">';
+						  	echo '<div class="box box-solid">';
+								echo '<div class="box-header with-border">';
+							  		echo '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
 									echo '<form class="chief-teams-add" method="post">';
 										echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 										echo '<table>';
@@ -188,18 +188,18 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 											echo '<tr>';
 												echo '<td>';
 													echo '<div class="form-group">';
-												      	echo '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
-													     	
-													     	echo '<option value="0"></option>';
+													  	echo '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
+														 	
+														 	echo '<option value="0"></option>';
 														
 															foreach ($userList as $userValue) {
 																echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 															}
 
-												      	echo '</select>';
-												    echo '</div>';
+													  	echo '</select>';
+													echo '</div>';
 
-												    /*
+													/*
 													echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 														echo '<option value="0"></option>';
 														
@@ -215,10 +215,10 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 											echo '</tr>';
 										echo '</table>';
 									echo '</form>';
-			                	echo '</div><!-- /.box-body -->';
-			            	echo '</div><!-- /.box -->';
-			            echo '</div><!-- ./col -->';
-		          	echo '</div><!-- /.row -->';
+								echo '</div><!-- /.box-body -->';
+							echo '</div><!-- /.box -->';
+						echo '</div><!-- ./col -->';
+				  	echo '</div><!-- /.row -->';
 				} else {
 					echo '<p>Du har ikke rettigheter til dette!</p>';
 				}

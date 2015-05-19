@@ -53,7 +53,7 @@ class AllCrewPage implements IPage {
 								echo '</div><!-- /.box-body -->';	
 							echo '</div><!-- /.box -->';
 
-					        echo CrewUtils::displayTeam($team);
+							echo CrewUtils::displayTeam($team);
 						}
 					} else {
 						$group = GroupHandler::getGroup($_GET['id']);

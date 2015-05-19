@@ -54,8 +54,8 @@ class AdminSeatmapPage extends AdminPage implements IPage {
 					//Fille uploader widget
 					echo '<form id="uploadBgForm" action="../api/json/seatmapUploadBg.php" method="post" enctype="multipart/form-data">';
 						echo '<input type="file" id="uploadBgImage" name="bgImageFile" />';
-		     			echo '<input type="submit" value="Last opp nytt bakgrunnsbilde" />';
-		     			echo '<input type="hidden" name="seatmapId" value="' . $seatmap->getId() . '" />';
+			 			echo '<input type="submit" value="Last opp nytt bakgrunnsbilde" />';
+			 			echo '<input type="hidden" name="seatmapId" value="' . $seatmap->getId() . '" />';
 					echo '</form>';
 					echo '<br />';
 					echo '<br />';

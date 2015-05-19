@@ -45,18 +45,18 @@ class CrewUtils {
 				}
 
 				$content .= '<div class="col-md-3">';
-			    	$content .= '<div class="thumbnail">';
-			      		$content .= '<a href="?page=my-profile&id=' . $user->getId() . '">';
-			      			$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profile">';
-			      		$content .= '</a>';
-			      		$content .= '<div class="caption">';
-			      			$content .= '<p class="text-center">';
-				        		$content .= '<small>' . $user->getDisplayName() . '</small><br>';
-				        		$content .= '<small>' . $user->getRole() . '</small><br>';
-				        		$content .= '<small>Telefon: ' . $user->getPhoneAsString() . '</small><br>';
+					$content .= '<div class="thumbnail">';
+				  		$content .= '<a href="?page=my-profile&id=' . $user->getId() . '">';
+				  			$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profile">';
+				  		$content .= '</a>';
+				  		$content .= '<div class="caption">';
+				  			$content .= '<p class="text-center">';
+								$content .= '<small>' . $user->getDisplayName() . '</small><br>';
+								$content .= '<small>' . $user->getRole() . '</small><br>';
+								$content .= '<small>Telefon: ' . $user->getPhoneAsString() . '</small><br>';
 								$content .= '<small>E-post: ' . $user->getEmail() . '</small><br>';
 							$content .= '</p>';
-			      		$content .= '</div>';
+				  		$content .= '</div>';
 			   		$content .= '</div>';
 			  	$content .= '</div>';
 			}
