@@ -20,7 +20,7 @@
 
 require_once 'session.php';
 require_once 'handlers/restrictedpagehandler.php'; 
-require_once 'pages/crew.php';
+require_once 'utils/crewutils.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -28,11 +28,21 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		if (isset($_GET['teamId'])) {
 			$team = TeamHandler::getTeam($_GET['teamId']);
-			
+
 			if ($team != null) {
-				displayTeamWithInfo($team);
-			} else {
-				echo '<p>Dette laget finnes ikke!</p>';
+				echo '<div class="box">';
+					echo '<div class="box-header with-border">';
+						echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+					echo '</div>';
+					echo '<div class="box-body">';
+
+						echo $team->getDescription();
+
+					echo '</div><!-- /.box-body -->';	
+					echo '<div class="box-footer">';
+		            	CrewUtils::displayTeam($team);
+		            echo '</div><!-- /.box-footer-->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
 			$group = $user->getGroup();
@@ -53,12 +63,9 @@ if (Session::isAuthenticated()) {
 						echo  $group->getDescription();
 
 					echo '</div><!-- /.box-body -->';
-					echo '<div class="box-footer">';
-		            	
-		            echo '</div><!-- /.box-footer-->';
 				echo '</div><!-- /.box -->';
 
-				displayGroup($group);
+				CrewUtils::displayGroup($group);
 			} else {
 				echo '<p>Dette crewet finnes ikke!</p>';
 			}

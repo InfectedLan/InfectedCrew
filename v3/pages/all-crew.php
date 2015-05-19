@@ -21,7 +21,7 @@
 require_once 'session.php';
 require_once 'handlers/teamhandler.php';
 require_once 'handlers/grouphandler.php';
-require_once 'pages/crew.php';
+require_once 'utils/crewutils.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -42,9 +42,11 @@ if (Session::isAuthenticated()) {
 
 						echo '</div><!-- /.box-body -->';	
 						echo '<div class="box-footer">';
-			            	displayTeam($team);
+			            	CrewUtils::displayTeam($team);
 			            echo '</div><!-- /.box-footer-->';
 					echo '</div><!-- /.box -->';
+				} else {
+
 				}
 			} else {
 				$group = GroupHandler::getGroup($_GET['id']);
@@ -59,14 +61,13 @@ if (Session::isAuthenticated()) {
 							echo $group->getDescription();
 
 						echo '</div><!-- /.box-body -->';
-						echo '<div class="box-footer">';
-			            	displayGroup($group);
-			            echo '</div><!-- /.box-footer-->';
 					echo '</div><!-- /.box -->';
+
+					CrewUtils::displayGroup($group);
 				}
 			}
 		} else {
-			echo 'Du er ikke i crew.';
+			echo '<p>Du er ikke i crew.</p>';
 		}
 	} else {
 		$groupList = GroupHandler::getGroups();
@@ -82,7 +83,7 @@ if (Session::isAuthenticated()) {
 
 				echo '</div><!-- /.box-body -->';
 				echo '<div class="box-footer">';
-	            	displayGroup($group);
+	            	CrewUtils::displayGroup($group);
 	            echo '</div><!-- /.box-footer-->';
 			echo '</div><!-- /.box -->';
 		}
