@@ -84,6 +84,8 @@ class Site {
 
 				//<!-- jQuery 2.1.4 -->
 				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				//<!-- iCheck -->
+				echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
 				
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
@@ -521,17 +523,12 @@ class Site {
 												}
 												
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.compos')) {
-													echo '<li' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . '><a href="?page=event-compos"><i class="fa fa-circle-o"></i>Compo</a></li>';
-												}
-												
-												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.memberlist')) {
 													echo '<li' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>Medlemsliste</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.table-labels')) {
+													$user->hasPermission('event.table.labels')) {
 													echo '<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-circle-o"></i>Print bordlapper</a></li>';
 												}
 
@@ -570,7 +567,7 @@ class Site {
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.my-crew')) {
-													echo '<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>My crew</a></li>';
+													echo '<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=chief-my-crew"><i class="fa fa-circle-o"></i>My crew</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
@@ -982,9 +979,7 @@ class Site {
 					echo '</div><!-- ./wrapper -->';
 
 					//<!-- jQuery 2.1.4 -->
-					/*
-					echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-					*/
+					//echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
 					//<!-- jQuery UI 1.11.2 -->
 					echo '<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>';
 					//<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -1046,7 +1041,7 @@ class Site {
 					            	echo '<div class="col-xs-8">';
 					              		echo '<div class="checkbox icheck">';
 					                		echo '<label><input type="checkbox"> Husk meg</label>';
-					              		echo '</div>';        
+					              		echo '</div>';
 					            	echo '</div><!-- /.col -->';
 					           		echo '<div class="col-xs-4">';
 					              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
@@ -1059,17 +1054,17 @@ class Site {
 					echo '</div><!-- /.login-box -->';
 
 				    //<!-- jQuery 2.1.4 -->
-				    echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
 				    //<!-- Bootstrap 3.3.2 JS -->
 				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
 				    //<!-- iCheck -->
-				    echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
+				    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
 				    echo '<script>';
 				    	echo '$(function () {';
 				        	echo '$(\'input\').iCheck({';
 				          		echo 'checkboxClass: \'icheckbox_square-blue\',';
 				          		echo 'radioClass: \'iradio_square-blue\',';
-				          		echo 'increaseArea: \'20%\''; // optional';
+				          		echo 'increaseArea: \'20%\''; // optional
 				        	echo '});';
 				      	echo '});';
 				    echo '</script>';

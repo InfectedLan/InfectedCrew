@@ -26,37 +26,40 @@ require_once 'interfaces/page.php';
 
 class EventSeatmapPage extends EventPage implements IPage {
 	public function getTitle() {
-		return 'Setekart';
+		return 'Setekart for årets arrangement';
 	}
 
 	public function getContent() {
-		$seatmapId = isset($_GET['id']) ? $_GET['id'] : EventHandler::getCurrentEvent()->getSeatmap()->getId();
+		$id = isset($_GET['id']) ? $_GET['id'] : EventHandler::getCurrentEvent()->getSeatmap()->getId();
 
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('event.seatmap')) {
+		echo '<div class="box">';
+			echo '<div class="box-body">';
 
-				echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-			
-				echo '<h1>Seatmap for årets arrangement</h1>';
+				if (Session::isAuthenticated()) {
+					$user = Session::getCurrentUser();
 
-				echo '<div id="seatmapCanvas"></div>';
-				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+					if ($user->hasPermission('*') ||
+						$user->hasPermission('event.seatmap')) {
+						echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 
-				echo '<script>';
-					echo 'var seatmapId = ' . $seatmapId . ';';
-					echo '$(document).ready(function() {';
-						echo 'downloadAndRenderSeatmap("#seatmapCanvas");';
-					echo '});';
-				echo '</script>';
-			} else {
-				echo '<p>Du har ikke rettigheter til dette!</p>';
-			}
-		} else {
-			echo '<p>Du er ikke logget inn!</p>';
-		}
+						echo '<div id="seatmapCanvas"></div>';
+
+						echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+						echo '<script>';
+							echo 'var seatmapId = ' . $id . ';';
+							echo '$(document).ready(function() {';
+								echo 'downloadAndRenderSeatmap("#seatmapCanvas");';
+							echo '});';
+						echo '</script>';
+					} else {
+						echo '<p>Du har ikke rettigheter til dette!</p>';
+					}
+				} else {
+					echo '<p>Du er ikke logget inn!</p>';
+				}
+
+			echo '</div><!-- /.box-body -->';
+		echo '</div><!-- /.box -->';
 	}
 }
 ?>

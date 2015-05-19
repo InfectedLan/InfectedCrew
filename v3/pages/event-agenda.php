@@ -41,58 +41,57 @@ class EventAgendaPage extends EventPage implements IPage {
 
 					echo '<div class="row">';
 						echo '<div class="col-md-6">';
-						  	echo '<div class="box box-warning">';
-								echo '<div class="box-header">';
-							  		echo '<h3 class="box-title">Agenda liste</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
-							  		
-									$agendaList = AgendaHandler::getAgendas();
-					
-									if (!empty($agendaList)) {
-										echo '<table>';
-											echo '<tr>';
-												echo '<th>Navn:</th>';
-												echo '<th>Informasjon:</th>';
-												echo '<th>Tid:</th>';
-											echo '</tr>';
-											
-											// TODO: Fix forms for this thing.
+							
+							$agendaList = AgendaHandler::getAgendas();
+							
+							if (!empty($agendaList)) {
+								foreach ($agendaList as $agenda) {
+								  	echo '<div class="box">';
+										echo '<div class="box-header">';
+									  		echo '<h3 class="box-title">' . $agenda->getTitle() . '</h3>';
+										echo '</div><!-- /.box-header -->';
+										echo '<div class="box-body">';
+								  		
+											echo '<form class="agenda-edit" method="post">';
+												echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
+												echo '<div class="form-group">';
+										  			echo '<label>Navn</label>';
+										  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." value="' . $agenda->getTitle() . '" required>';
+												echo '</div>';
+												echo '<div class="form-group">';
+												  	echo '<label>Beskrivelse</label>';
+												  	echo '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required>';
 
-											foreach ($agendaList as $agenda) {
-												echo '<tr>';
-													echo '<form class="agenda-edit" method="post">';
-														echo '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
-														echo '<td><input type="text" name="title" value="' . $agenda->getTitle() . '"></td>';
-														echo '<td><textarea name="description">' . $agenda->getDescription() . '</textarea></td>';
-														echo '<td>';
-															echo '<input type="time" name="startTime" value="' . date('H:i', $agenda->getStartTime()) . '">';
-															echo '<br>';
-															echo '<input type="date" name="startDate" value="' . date('Y-m-d', $agenda->getStartTime()) . '">';
-														echo '</td>';
-														
-														if ($agenda->isPublished()) {
-															echo '<td><input type="checkbox" name="published" value="1" checked></td>';
-														} else {
-															echo '<td><input type="checkbox" name="published" value="1"></td>';
-														}
-														
-														echo '<td><input type="submit" value="Endre"></td>';
-													echo '</form>';
-													echo '<td><input type="button" value="Fjern" onClick="removeAgenda(' . $agenda->getId() . ')"></td>';
-												echo '</tr>';
-											}
-										echo '</table>';
-									} else {
-										echo '<p>Det er ikke opprettet noen agenda\'er enda.';
-									}
+												  		echo $agenda->getDescription();
 
-								echo '</div><!-- /.box-body -->';
-						  	echo '</div><!-- /.box -->';
-						echo '</div><!--/.col (right) -->';
+												  	echo '</textarea>';
+												echo '</div>';
+												echo '<div class="form-group">';
+													echo '<label>Tid og dato:</label>';
+													echo '<div class="input-group">';
+												  		echo '<div class="input-group-addon">';
+															echo '<i class="fa fa-clock-o"></i>';
+												  		echo '</div>';
+												  		echo '<input type="text" class="form-control pull-right" name="datetime" id="datetime" value="' . date('Y-m-d H:i:s', $agenda->getStartTime()) . '" required>';
+													echo '</div><!-- /.input group -->';
+											  	echo '</div><!-- /.form group -->';
+											  	echo '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
+								  			echo '</form>';
+											echo '<button type="button" class="pull-right btn btn-primary" onClick="removeAgenda(' . $agenda->getId() . ')">Fjern</button>';
+										echo '</div><!-- /.box-body -->';
+									echo '</div><!-- /.box -->';
+								}
+							} else {
+								echo '<div class="box box-warning">';
+									echo '<div class="box-body">';
+										echo '<p>Det har ikke blitt opprettet noen agenda\'er enda.</p>';
+									echo '</div><!-- /.box-body -->';
+								echo '</div><!-- /.box -->';
+							}
+
+						echo '</div><!--/.col (left) -->';
 						echo '<div class="col-md-6">';
-						  	//<!-- general form elements disabled -->
-						  	echo '<div class="box box-warning">';
+						  	echo '<div class="box">';
 								echo '<div class="box-header">';
 							  		echo '<h3 class="box-title">Legg til ny agenda</h3>';
 								echo '</div><!-- /.box-header -->';
@@ -120,7 +119,7 @@ class EventAgendaPage extends EventPage implements IPage {
 								echo '</div><!-- /.box-body -->';
 						  	echo '</div><!-- /.box -->';
 						echo '</div><!--/.col (right) -->';
-					echo '</div>   <!-- /.row -->';
+					echo '</div><!-- /.row -->';
 
 					//<!-- jQuery 2.1.4 -->
 					echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
@@ -138,13 +137,25 @@ class EventAgendaPage extends EventPage implements IPage {
 			  			echo '});';
 					echo '</script>';
 				} else {
-					echo '<p>Du har ikke rettigheter til dette!</p>';
+					echo '<div class="box">';
+						echo '<div class="box-body">';
+							echo '<p>Du har ikke rettigheter til dette!</p>';
+						echo '</div><!-- /.box-body -->';
+					echo '</div><!-- /.box -->';
 				}
 			} else {
-				echo '<p>Du er ikke medlem av en gruppe.</p>';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo '<p>Du er ikke medlem av en gruppe.</p>';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }
