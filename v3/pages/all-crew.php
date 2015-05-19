@@ -22,7 +22,7 @@ require_once 'session.php';
 require_once 'interfaces/page.php';
 require_once 'handlers/teamhandler.php';
 require_once 'handlers/grouphandler.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 require_once 'utils/crewutils.php';
 
 class AllCrewPage implements IPage {
@@ -51,12 +51,9 @@ class AllCrewPage implements IPage {
 									echo $team->getDescription();
 
 								echo '</div><!-- /.box-body -->';	
-								echo '<div class="box-footer">';
-					            	CrewUtils::displayTeam($team);
-					            echo '</div><!-- /.box-footer-->';
 							echo '</div><!-- /.box -->';
-						} else {
 
+					        echo CrewUtils::displayTeam($team);
 						}
 					} else {
 						$group = GroupHandler::getGroup($_GET['id']);
@@ -73,7 +70,7 @@ class AllCrewPage implements IPage {
 								echo '</div><!-- /.box-body -->';
 							echo '</div><!-- /.box -->';
 
-							CrewUtils::displayGroup($group);
+							echo CrewUtils::displayGroup($group);
 						}
 					}
 				} else {
@@ -92,10 +89,9 @@ class AllCrewPage implements IPage {
 							echo $group->getDescription();
 
 						echo '</div><!-- /.box-body -->';
-						echo '<div class="box-footer">';
-			            	CrewUtils::displayGroup($group);
-			            echo '</div><!-- /.box-footer-->';
 					echo '</div><!-- /.box -->';
+
+					echo CrewUtils::displayGroup($group);
 				}
 			}
 		} else {

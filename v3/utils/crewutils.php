@@ -24,83 +24,47 @@ require_once 'objects/team.php';
 
 class CrewUtils {
 	public static function displayGroup(Group $group) {
-		$user = Session::getCurrentUser();
-		
-		if ($user->isGroupMember()) {
-			$memberList = $group->getMembers();
-			
-			if (!empty($memberList)) {
-				echo '<div class="row">';
-
-					foreach ($memberList as $member) {
-						if ($member->hasValidAvatar()) {
-							$avatarFile = $member->getAvatar()->getThumbnail();
-						} else {
-							$avatarFile = AvatarHandler::getDefaultAvatar($member);
-						}
-
-						echo '<div class="col-md-3">';
-					    	echo '<div class="thumbnail">';
-					      		echo '<a href="?page=my-profile&id=' . $member->getId() . '">';
-					      			echo '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $member->getDisplayName() . '\'s profile">';
-					      		echo '</a>';
-					      		echo '<div class="caption">';
-					      			echo '<p class="text-center">';
-						        		echo '<small>' . $member->getDisplayName() . '</small><br>';
-						        		echo '<small>' . $member->getRole() . '</small><br>';
-						        		echo '<small>Telefon: ' . $member->getPhoneAsString() . '</small><br>';
-										echo '<small>E-post: ' . $member->getEmail() . '</small><br>';
-									echo '</p>';
-					      		echo '</div>';
-					   		echo '</div>';
-					  	echo '</div>';
-					}
-
-				echo '</div>';
-			} else {
-				echo '<p>Det er ingen medlemmer i dette crewet.</p>';
-			}
-		}
+		return self::displayUsers($group->getMembers());
 	}
 
 	public static function displayTeam(Team $team) {
-		$user = Session::getCurrentUser();
-		
-		if ($user->isGroupMember()) {
-			$memberList = $team->getMembers();
-			
-			if (!empty($memberList)) {
-				echo '<div class="row">';
-				
-					foreach ($memberList as $member) {
-						if ($member->hasValidAvatar()) {
-							$avatarFile = $member->getAvatar()->getThumbnail();
-						} else {
-							$avatarFile = AvatarHandler::getDefaultAvatar($member);
-						}
+		return self::displayUsers($team->getMembers());
+	}
 
-						echo '<div class="col-md-3">';
-					    	echo '<div class="thumbnail">';
-					      		echo '<a href="?page=my-profile&id=' . $member->getId() . '">';
-					      			echo '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $member->getDisplayName() . '\'s profile">';
-					      		echo '</a>';
-					      		echo '<div class="caption">';
-					      			echo '<p class="text-center">';
-						        		echo '<small>' . $member->getDisplayName() . '</small><br>';
-						        		echo '<small>' . $member->getRole() . '</small><br>';
-						        		echo '<small>Telefon: ' . $member->getPhoneAsString() . '</small><br>';
-										echo '<small>E-post: ' . $member->getEmail() . '</small><br>';
-									echo '</p>';
-					      		echo '</div>';
-					   		echo '</div>';
-					  	echo '</div>';
-					}
+	public static function displayUsers(array $userList) {
+		$content = null;
 
-				echo '</div>';
-			} else {
-				echo '<p>Det er ingen medlemmer i dette laget.</p>';
+		if (!empty($userList)) {
+			$content = '<div class="row">';
+
+			foreach ($userList as $user) {
+				if ($user->hasValidAvatar()) {
+					$avatarFile = $user->getAvatar()->getThumbnail();
+				} else {
+					$avatarFile = $user->getDefaultAvatar();
+				}
+
+				$content .= '<div class="col-md-3">';
+			    	$content .= '<div class="thumbnail">';
+			      		$content .= '<a href="?page=my-profile&id=' . $user->getId() . '">';
+			      			$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profile">';
+			      		$content .= '</a>';
+			      		$content .= '<div class="caption">';
+			      			$content .= '<p class="text-center">';
+				        		$content .= '<small>' . $user->getDisplayName() . '</small><br>';
+				        		$content .= '<small>' . $user->getRole() . '</small><br>';
+				        		$content .= '<small>Telefon: ' . $user->getPhoneAsString() . '</small><br>';
+								$content .= '<small>E-post: ' . $user->getEmail() . '</small><br>';
+							$content .= '</p>';
+			      		$content .= '</div>';
+			   		$content .= '</div>';
+			  	$content .= '</div>';
 			}
+
+			$content .= '</div>';
 		}
+		
+		return $content;
 	}
 }
 ?>
