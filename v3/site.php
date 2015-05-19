@@ -1169,16 +1169,19 @@ class Site {
 			}
 			
 			if (!$found) {
-				echo '<div class="error-page">';
-		            echo '<h2 class="headline text-yellow"> 404</h2>';
-		            echo '<div class="error-content">';
-		              	echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
-		              	echo '<p>';
-		                	echo 'We could not find the page you were looking for.';
-		                	echo 'Meanwhile, you may <a href="../../index.html"">return to dashboard</a> or try using the search form.';
-		             	echo '</p>';
-		            echo '</div><!-- /.error-content -->';
-		        echo '</div><!-- /.error-page -->';
+		        //<!-- Main content -->
+		        echo '<section class="content">';
+					echo '<div class="error-page">';
+			            echo '<h2 class="headline text-yellow"> 404</h2>';
+			            echo '<div class="error-content">';
+			              	echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
+			              	echo '<p>';
+			                	echo 'We could not find the page you were looking for.';
+			                	echo 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
+			              	echo '</p>';
+			            echo '</div><!-- /.error-content -->';
+			       echo '</div><!-- /.error-page -->';
+			    echo '</section><!-- /.content -->';
 			}
 		}
 	}
