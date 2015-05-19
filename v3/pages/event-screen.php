@@ -38,94 +38,120 @@ class EventScreenPage extends EventPage implements IPage {
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.screen')) {
 					echo '<script src="scripts/event-screen.js"></script>';
-					echo '<h3>Slides</h3>';
 					
-					$slideList = SlideHandler::getSlides();
-					
-					if (!empty($slideList)) {
-						echo '<table>';
-							echo '<tr>';
-								echo '<th>Navn</th>';
-								echo '<th>Informasjon</th>';
-								echo '<th>Start</th>';
-								echo '<th>Slutt<th>';
-								echo '<th>Publisert?</th>';
-							echo '</tr>';
-							
-							foreach ($slideList as $slide) {
-								echo '<tr>';
-									echo '<form class="slide-edit" method="post">';
-										echo '<input type="hidden" name="id" value="' . $slide->getId() . '">';
-										echo '<td><input type="text" name="title" value="' . $slide->getTitle() . '"></td>';
-										echo '<td><textarea name="content">' . $slide->getContent() . '</textarea></td>';
-										echo '<td>';
-											echo '<input type="time" name="startTime" value="' . date('H:i', $slide->getStartTime()) . '">';
-											echo '<input type="date" name="startDate" value="' . date('Y-m-d', $slide->getStartTime()) . '"><br>';
-										echo '</td>';
-										echo '<td>';
-											echo '<input type="time" name="endTime" value="' . date('H:i', $slide->getEndTime()) . '">';
-											echo '<input type="date" name="endDate" value="' . date('Y-m-d', $slide->getEndTime()) . '"><br>';
-										echo '</td>';
-										
-										if ($slide->isPublished()) {
-											echo '<td><input type="checkbox" name="published" value="1" checked></td>';
-										} else {
-											echo '<td><input type="checkbox" name="published" value="1"></td>';
-										}
-										
-										echo '<td><input type="submit" value="Endre"></td>';
-									echo '</form>';
-									
-									echo '<td><input type="button" value="Fjern" onClick="removeSlide(' . $slide->getId() . ')"></td>';
-								echo '</tr>';
+					echo '<div class="row">';
+						echo '<div class="col-md-6">';
+
+							$slideList = SlideHandler::getSlides();
+						
+							if (!empty($slideList)) {
+								foreach ($slideList as $slide) {
+									echo '<div class="box">';
+										echo '<div class="box-header">';
+									  		echo '<h3 class="box-title">' . $slide->getTitle() . '</h3>';
+										echo '</div><!-- /.box-header -->';
+										echo '<div class="box-body">';
+								  		
+											echo '<form class="slide-edit" method="post">';
+												echo '<input type="hidden" name="id" value="' . $slide->getId() . '">';
+												echo '<div class="form-group">';
+										  			echo '<label>Navn</label>';
+										  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." value="' . $slide->getTitle() . '" required>';
+												echo '</div>';
+												echo '<div class="form-group">';
+												  	echo '<label>Beskrivelse</label>';
+												  	echo '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required>';
+
+												  		echo $slide->getContent();
+
+												  	echo '</textarea>';
+												echo '</div>';
+												echo '<div class="form-group">';
+													echo '<label>Tid og dato:</label>';
+													echo '<div class="input-group">';
+												  		echo '<div class="input-group-addon">';
+															echo '<i class="fa fa-clock-o"></i>';
+												  		echo '</div>';
+												  		echo '<input type="text" class="form-control pull-right" name="datetime" id="datetime" value="' . date('Y-m-d H:i:s', $slide->getStartTime()) . '" required>';
+													echo '</div><!-- /.input group -->';
+											  	echo '</div><!-- /.form group -->';
+											  	echo '<div class="form-group">';
+							                    	echo '<label><input type="checkbox" class="minimal" checked> Publisert?</label>';
+							                  	echo '</div>';
+											  	echo '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
+								  			echo '</form>';
+											echo '<button type="button" class="pull-right btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
+										echo '</div><!-- /.box-body -->';
+									echo '</div><!-- /.box -->';
+								}
+							} else {
+								echo '<div class="box box-warning">';
+									echo '<div class="box-body">';
+										echo '<p>Det har ikke blitt opprettet noen slides enda.</p>';
+									echo '</div><!-- /.box-body -->';
+								echo '</div><!-- /.box -->';
 							}
-						echo '</table>';
-					} else {
-						echo '<p>Det er ikke opprettet noen slide\'er enda.';
-					}
-					
-					echo '<h3>Legg til ny slide:</h3>';
-					echo '<p>Fyll ut feltene under for å legge til en ny slide.</p>';
-					
-					echo '<table>';
-						echo '<form class="slide-add" method="post">';
-							echo '<tr>';
-								echo '<td>Tittel:</td>';
-								echo '<td><input type="text" name="title"></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Innhold:</td>';
-								echo '<td><textarea class="editor" name="content" rows="10" cols="80"></textarea></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Start tidspunkt:</td>';
-								echo '<td><input type="time" name="startTime" value="' . date('H:i:s') . '"></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td></td>';
-								echo '<td><input type="date" name="startDate" value="' . date('Y-m-d') . '"></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Slutt tidspunkt:</td>';
-								echo '<td><input type="time" name="endTime" value="' . date('H:i:s') . '"></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td></td>';
-								echo '<td><input type="date" name="endDate" value="' . date('Y-m-d') . '"></td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td><input type="submit" value="Legg til"></td>';
-							echo '</tr>';
-						echo '</form>';
-					echo '</table>';
+						
+						echo '</div><!--/.col (left) -->';
+						echo '<div class="col-md-6">';
+						  	echo '<div class="box">';
+								echo '<div class="box-header">';
+							  		echo '<h3 class="box-title">Legg til ny slide</h3>';
+								echo '</div><!-- /.box-header -->';
+								echo '<div class="box-body">';
+							  		echo '<form class="slide-add" method="post">';
+										echo '<div class="form-group">';
+								  			echo '<label>Navn</label>';
+								  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
+										echo '</div>';
+										echo '<div class="form-group">';
+										  	echo '<label>Tekst</label>';
+										  	echo '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required></textarea>';
+										echo '</div>';
+										echo '<div class="form-group">';
+											echo '<label>Tid og dato:</label>';
+											echo '<div class="input-group">';
+										  		echo '<div class="input-group-addon">';
+													echo '<i class="fa fa-clock-o"></i>';
+										  		echo '</div>';
+										  		echo '<input type="text" class="form-control pull-right" id="datetime" required>';
+											echo '</div><!-- /.input group -->';
+									  	echo '</div><!-- /.form group -->';
+									  	echo '<button type="submit" class="btn btn-primary">Legg til</button>';
+							  		echo '</form>';
+								echo '</div><!-- /.box-body -->';
+						  	echo '</div><!-- /.box -->';
+						echo '</div><!--/.col (right) -->';
+					echo '</div><!-- /.row -->';
+
+					echo '<script>';
+				    	echo '$(function () {';
+				        	// iCheck for checkbox and radio inputs
+					        echo '$(\'input[type="checkbox"].minimal, input[type="radio"].minimal\').iCheck({';
+					        	echo 'checkboxClass: \'icheckbox_minimal-blue\'';
+					        echo '});';
+				      	echo '});';
+				    echo '</script>';
 				} else {
-					echo '<p>Du har ikke rettigheter til dette!</p>';
+					echo '<div class="box">';
+						echo '<div class="box-body">';
+							echo '<p>Du har ikke rettigheter til dette!</p>';
+						echo '</div><!-- /.box-body -->';
+					echo '</div><!-- /.box -->';
 				}
 			} else {
-				echo '<p>Du er ikke medlem av en gruppe.</p>';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo '<p>Du er ikke medlem av en gruppe.</p>';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }

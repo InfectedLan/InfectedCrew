@@ -32,7 +32,7 @@ class EventCheckInPage extends EventPage implements IPage {
 	public function getContent() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('event.checkin')) {
 				echo '<script src="scripts/event-checkin.js"></script>';
@@ -41,7 +41,7 @@ class EventCheckInPage extends EventPage implements IPage {
 					echo '<div class="col-md-4">';
 						echo '<div class="box">';
 							echo '<div class="box-header with-border">';
-								echo '<h3 class="box-title">Sjekk inn billett</h3>';
+								echo '<h3 class="box-title">Sjekk inn en billett</h3>';
 							echo '</div>';
 							echo '<div class="box-body">';
 
@@ -66,10 +66,18 @@ class EventCheckInPage extends EventPage implements IPage {
 					echo '</div><!--/.col (left) -->';
 				echo '</div><!-- /.row -->';
 			} else {
-				echo '<p>Du har ikke rettigheter til dette!</p>';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo '<p>Du har ikke rettigheter til dette!</p>';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }
