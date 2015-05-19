@@ -18,20 +18,29 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
+require_once 'interfaces/page.php';
+require_once 'pages/page.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief')) {
-		echo '<h3>Chief</h3>';
-		
-		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
-	} else {
-		echo 'Du har ikke rettigheter til dette!';
+class ChiefPage implements IPage {
+	use Page;
+
+	public function getTitle() {
+		return 'Chief';
 	}
-} else {
-	echo 'Du er ikke logget inn!';
+
+	public function getContent() {
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
+			
+			if ($user->hasPermission('*') ||
+				$user->hasPermission('chief')) {
+				echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
+			} else {
+				echo 'Du har ikke rettigheter til dette!';
+			}
+		} else {
+			echo 'Du er ikke logget inn!';
+		}
+	}
 }
 ?>
