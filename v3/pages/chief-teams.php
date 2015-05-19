@@ -38,7 +38,6 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 					$user->hasPermission('chief.teams')) {
 					$teamList = $user->getGroup()->getTeams();
 					$userList = $group->getMembers();
-
 					echo '<script src="scripts/chief-teams.js"></script>';
 
 					echo '<div class="row">';
@@ -229,18 +228,18 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 		} else {
 			echo '<p>Du er ikke logget inn!</p>';
 		}
+	}
 
-		function getFreeUsers($group) {
-			$freeUserList = $group->getMembers();
-			
-			foreach ($freeUserList as $key => $freeUser) {
-				if ($freeUser->isTeamMember()) {
-					unset($freeUserList[$key]);
-				}
+	public function getFreeUsers($group) {
+		$freeUserList = $group->getMembers();
+		
+		foreach ($freeUserList as $key => $freeUser) {
+			if ($freeUser->isTeamMember()) {
+				unset($freeUserList[$key]);
 			}
-
-			return $freeUserList;
 		}
+
+		return $freeUserList;
 	}
 }
 ?>

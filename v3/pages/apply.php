@@ -22,13 +22,13 @@ require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/grouphandler.php';
 require_once 'interfaces/page.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 
 class ApplyPage implements IPage {
 	use Page;
 
 	public function getTitle() {
-		return 'Apply';
+		return 'Søk';
 	}
 
 	public function getContent() {

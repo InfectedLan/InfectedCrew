@@ -20,7 +20,7 @@
 
 require_once 'session.php';
 require_once 'interfaces/page.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 
 class EventPage implements IPage {
 	use Page;

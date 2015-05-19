@@ -20,7 +20,7 @@
 
 require_once 'session.php';
 require_once 'interfaces/page.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 
 class AdminPage implements IPage {
 	use Page;
@@ -35,7 +35,6 @@ class AdminPage implements IPage {
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('admin')) {
-				echo '<h3>Admin</h3>';
 				echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
 			} else {
 				echo '<p>Du har ikke tilgang til dette.</p>';

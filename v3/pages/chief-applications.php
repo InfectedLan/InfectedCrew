@@ -43,7 +43,8 @@ class ChiefApplicationsPage extends ChiefPage implements IPage {
 					$pendingApplicationList = ApplicationHandler::getPendingApplications();
 					$queuedApplicationList = ApplicationHandler::getQueuedApplications();
 					$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
-				} else if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
+				} else if ($user->hasPermission('chief.applications') && 
+						   $user->isGroupMember()) {
 					$group = $user->getGroup();
 					$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
 					$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($group);
@@ -51,7 +52,6 @@ class ChiefApplicationsPage extends ChiefPage implements IPage {
 				}
 				
 				echo '<script src="scripts/chief-applications.js"></script>';
-				echo '<h3>Søknader</h3>';
 				
 				echo '<h3>Åpne søknader:</h3>';
 				

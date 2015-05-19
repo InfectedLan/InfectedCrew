@@ -579,6 +579,24 @@ class Site {
 									}
 
 									if ($user->hasPermission('*') ||
+										$user->hasPermission('developer')) {
+
+										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'developer') ? ' active' : null) . '">';
+										  	echo '<a href="?page=developer">';
+												echo '<i class="fa fa-wrench"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i>';
+										  	echo '</a>';
+										  	echo '<ul class="treeview-menu">';
+
+												if ($user->hasPermission('*') ||
+													$user->hasPermission('developer.switch.user')) {
+													echo '<li' . ($this->pageName == 'developer-switch-user' ? ' class="active"' : null) . '><a href="?page=developer-switch-user"><i class="fa fa-circle-o"></i>Bytt bruker</a></li>';
+												}
+												
+											echo '</ul>';
+										echo '</li>';
+									}
+
+									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin')) {
 
 										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';

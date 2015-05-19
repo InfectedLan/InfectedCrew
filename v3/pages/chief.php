@@ -19,7 +19,7 @@
  */
 
 require_once 'interfaces/page.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 
 class ChiefPage implements IPage {
 	use Page;

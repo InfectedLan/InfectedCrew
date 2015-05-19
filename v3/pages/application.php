@@ -21,13 +21,13 @@
 require_once 'session.php';
 require_once 'handlers/applicationhandler.php';
 require_once 'interfaces/page.php';
-require_once 'pages/page.php';
+require_once 'traits/page.php';
 
 class ApplicationPage implements IPage {
 	use Page;
 
 	public function getTitle() {
-		return 'Application';
+		return 'Søknad';
 	}
 
 	public function getContent() {
@@ -43,9 +43,7 @@ class ApplicationPage implements IPage {
 					
 					if ($application != null) {
 						$applicationUser = $application->getUser();
-
 						echo '<script src="scripts/application.js"></script>';
-						echo '<h3>Søknad</h3>';
 
 						$applicationList = ApplicationHandler::getUserApplications($applicationUser);
 
