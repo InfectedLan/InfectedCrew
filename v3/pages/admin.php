@@ -19,16 +19,28 @@
  */
 
 require_once 'session.php';
+require_once 'interfaces/page.php';
+require_once 'pages/page.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin')) {
-		echo '<h3>Admin</h3>';
-		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
-	} else {
-		echo '<p>Du har ikke tilgang til dette.</p>';
+class AdminPage implements IPage {
+	use Page;
+
+	public function getTitle() {
+		return 'Admin';
+	}
+
+	public function getContent() {
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
+			
+			if ($user->hasPermission('*') ||
+				$user->hasPermission('admin')) {
+				echo '<h3>Admin</h3>';
+				echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
+			} else {
+				echo '<p>Du har ikke tilgang til dette.</p>';
+			}
+		}
 	}
 }
 ?>

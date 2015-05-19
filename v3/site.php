@@ -751,473 +751,39 @@ class Site {
 
 					  	echo '<!-- Content Wrapper. Contains page content -->';
 					  	echo '<div class="content-wrapper">';
-							echo '<!-- Content Header (Page header) -->';
-							echo '<section class="content-header">';
-						  		echo '<h1>';
-									echo 'Dashboard';
-									echo '<small>Control panel</small>';
-						  		echo '</h1>';
-						  		echo '<ol class="breadcrumb">';
-									echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-									echo '<li class="active">Dashboard</li>';
-						  		echo '</ol>';
-							echo '</section>';
-							
-							echo '<!-- Main content -->';
-							echo '<section class="content">';
 
-								if ($user->hasPermission('*') ||
-									$user->isGroupMember()) {
-									// View the page specified by "pageName" variable.
+							if ($user->hasPermission('*') ||
+								$user->isGroupMember()) {
+								// View the page specified by "pageName" variable.
+								$this->getPage($this->pageName);
+							} else {
+								$publicPages = array('apply', 
+													 'all-crew', 
+													 'my-profile', 
+													 'edit-profile', 
+													 'edit-password', 
+													 'edit-avatar');
+								
+								if (in_array($this->pageName, $publicPages)) {
+									$this->getPage($this->pageName);
+								} else {
+									$this->getPage('all-crew');
+								}
+							}
+							/*
+							} else {
+								$publicPages = array('register',
+													 'activation',
+													 'reset-password');
+								
+								if (in_array($this->pageName, $publicPages)) {
 									$this->viewPage($this->pageName);
 								} else {
-									$publicPages = array('apply', 
-														 'all-crew', 
-														 'my-profile', 
-														 'edit-profile', 
-														 'edit-password', 
-														 'edit-avatar');
-									
-									if (in_array($this->pageName, $publicPages)) {
-										$this->viewPage($this->pageName);
-									} else {
-										$this->viewPage('all-crew');
-									}
+									$this->viewLogin();
 								}
-								/*
-								} else {
-									$publicPages = array('register',
-														 'activation',
-														 'reset-password');
-									
-									if (in_array($this->pageName, $publicPages)) {
-										$this->viewPage($this->pageName);
-									} else {
-										$this->viewLogin();
-									}
-								}
-								*/
-
-								/*
-							  	echo '<!-- Small boxes (Stat box) -->';
-							  	echo '<div class="row">';
-									echo '<div class="col-lg-3 col-xs-6">';
-								  		echo '<!-- small box -->';
-								  		echo '<div class="small-box bg-aqua">';
-											echo '<div class="inner">';
-										  		echo '<h3>150</h3>';
-										 		echo '<p>New Orders</p>';
-											echo '</div>';
-											echo '<div class="icon">';
-										  		echo '<i class="ion ion-bag"></i>';
-											echo '</div>';
-											echo '<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>';
-									  	echo '</div>';
-									echo '</div><!-- ./col -->';
-									echo '<div class="col-lg-3 col-xs-6">';
-									  	echo '<!-- small box -->';
-									  	echo '<div class="small-box bg-green">';
-											echo '<div class="inner">';
-										 		echo '<h3>53<sup style="font-size: 20px">%</sup></h3>';
-										  		echo '<p>Bounce Rate</p>';
-											echo '</div>';
-											echo '<div class="icon">';
-										  		echo '<i class="ion ion-stats-bars"></i>';
-											echo '</div>';
-											echo '<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>';
-									  	echo '</div>';
-									echo '</div><!-- ./col -->';
-									echo '<div class="col-lg-3 col-xs-6">';
-									  	echo '<!-- small box -->';
-									  	echo '<div class="small-box bg-yellow">';
-											echo '<div class="inner">';
-											  	echo '<h3>44</h3>';
-											  	echo '<p>User Registrations</p>';
-											echo '</div>';
-											echo '<div class="icon">';
-											  	echo '<i class="ion ion-person-add"></i>';
-											echo '</div>';
-											echo '<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>';
-										echo '</div>';
-									echo '</div><!-- ./col -->';
-									echo '<div class="col-lg-3 col-xs-6">';
-										echo '<!-- small box -->';
-										echo '<div class="small-box bg-red">';
-											echo '<div class="inner">';
-												echo '<h3>65</h3>';
-												echo '<p>Unique Visitors</p>';
-											echo '</div>';
-											echo '<div class="icon">';
-												echo '<i class="ion ion-pie-graph"></i>';
-											echo '</div>';
-											echo '<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>';
-										echo '</div>';
-									echo '</div><!-- ./col -->';
-								echo '</div><!-- /.row -->';
-							 	//<!-- Main row -->
-							  	echo '<div class="row">';
-									echo '<!-- Left col -->';
-									echo '<section class="col-lg-7 connectedSortable">';
-								  		echo '<!-- Custom tabs (Charts with tabs)-->';
-								  		echo '<div class="nav-tabs-custom">';
-											echo '<!-- Tabs within a box -->';
-											echo '<ul class="nav nav-tabs pull-right">';
-									  			echo '<li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>';
-									  			echo '<li><a href="#sales-chart" data-toggle="tab">Donut</a></li>';
-									  			echo '<li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>';
-											echo '</ul>';
-											echo '<div class="tab-content no-padding">';
-									  			echo '<!-- Morris chart - Sales -->';
-									  			echo '<div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>';
-									  			echo '<div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>';
-											echo '</div>';
-								  		echo '</div><!-- /.nav-tabs-custom -->';
-
-								  		echo '<!-- Chat box -->';
-								  		echo '<div class="box box-success">';
-											echo '<div class="box-header">';
-									  			echo '<i class="fa fa-comments-o"></i>';
-									  			echo '<h3 class="box-title">Chat</h3>';
-									  			echo '<div class="box-tools pull-right" data-toggle="tooltip" title="Status">';
-													echo '<div class="btn-group" data-toggle="btn-toggle" >';
-													  	echo '<button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>';
-													  	echo '<button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>';
-													echo '</div>';
-									  			echo '</div>';
-											echo '</div>';
-											echo '<div class="box-body chat" id="chat-box">';
-										  		echo '<!-- chat item -->';
-										  		echo '<div class="item">';
-													echo '<img src="dist/img/user4-128x128.jpg" alt="user image" class="online"/>';
-													echo '<p class="message">';
-												  		echo '<a href="#" class="name">';
-															echo '<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>';
-															echo 'Mike Doe';
-												  		echo '</a>';
-												  		echo 'I would like to meet you to discuss the latest news about';
-												  		echo 'the arrival of the new theme. They say it is going to be one the';
-											  			echo 'best themes on the market';
-													echo '</p>';
-													echo '<div class="attachment">';
-											  			echo '<h4>Attachments:</h4>';
-											  			echo '<p class="filename">';
-															echo 'Theme-thumbnail-image.jpg';
-											  			echo '</p>';
-											  			echo '<div class="pull-right">';
-															echo '<button class="btn btn-primary btn-sm btn-flat">Open</button>';
-											  			echo '</div>';
-													echo '</div><!-- /.attachment -->';
-										  		echo '</div><!-- /.item -->';
-									  			echo '<!-- chat item -->';
-											  	echo '<div class="item">';
-													echo '<img src="dist/img/user3-128x128.jpg" alt="user image" class="offline"/>';
-													echo '<p class="message">';
-													 	echo '<a href="#" class="name">';
-															echo '<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>';
-															echo 'Alexander Pierce';
-													  	echo '</a>';
-													  	echo 'I would like to meet you to discuss the latest news about';
-													  	echo 'the arrival of the new theme. They say it is going to be one the';
-													  	echo 'best themes on the market';
-													echo '</p>';
-											  	echo '</div><!-- /.item -->';
-									  			echo '<!-- chat item -->';
-											  	echo '<div class="item">';
-													echo '<img src="dist/img/user2-160x160.jpg" alt="user image" class="offline"/>';
-													echo '<p class="message">';
-												  		echo '<a href="#" class="name">';
-															echo '<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>';
-															echo 'Susan Doe';
-												  		echo '</a>';
-														echo 'I would like to meet you to discuss the latest news about';
-														echo 'the arrival of the new theme. They say it is going to be one the';
-														echo 'best themes on the market';
-													echo '</p>';
-											  	echo '</div><!-- /.item -->';
-											echo '</div><!-- /.chat -->';
-											echo '<div class="box-footer">';
-									 			echo '<div class="input-group">';
-													echo '<input class="form-control" placeholder="Type message..."/>';
-													echo '<div class="input-group-btn">';
-										 				echo '<button class="btn btn-success"><i class="fa fa-plus"></i></button>';
-													echo '</div>';
-									  			echo '</div>';
-											echo '</div>';
-								  		echo '</div><!-- /.box (chat box) -->';
-
-									  	echo '<!-- TO DO List -->';
-									  	echo '<div class="box box-primary">';
-											echo '<div class="box-header">';
-										  		echo '<i class="ion ion-clipboard"></i>';
-										  		echo '<h3 class="box-title">To Do List</h3>';
-										  		echo '<div class="box-tools pull-right">';
-													echo '<ul class="pagination pagination-sm inline">';
-											  			echo '<li><a href="#">&laquo;</a></li>';
-											  			echo '<li><a href="#">1</a></li>';
-											  			echo '<li><a href="#">2</a></li>';
-											  			echo '<li><a href="#">3</a></li>';
-											  			echo '<li><a href="#">&raquo;</a></li>';
-													echo '</ul>';
-										  		echo '</div>';
-											echo '</div><!-- /.box-header -->';
-											echo '<div class="box-body">';
-									  			echo '<ul class="todo-list">';
-													echo '<li>';
-										  				echo '<!-- drag handle -->';
-										  				echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-										  				echo '</span>';
-										  				echo '<!-- checkbox -->';
-										  				echo '<input type="checkbox" value="" name=""/>';
-													  	echo '<!-- todo text -->';
-													  	echo '<span class="text">Design a nice theme</span>';
-										  				echo '<!-- Emphasis label -->';
-										  				echo '<small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>';
-										  				echo '<!-- General tools such as edit or delete-->';
-										  				echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-										  				echo '</div>';
-													echo '</li>';
-													echo '<li>';
-										  				echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-										  				echo '</span>';
-										  				echo '<input type="checkbox" value="" name=""/>';
-										  				echo '<span class="text">Make the theme responsive</span>';
-										  				echo '<small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>';
-										  				echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-										  				echo '</div>';
-													echo '</li>';
-													echo '<li>';
-												  		echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-												  		echo '</span>';
-												  		echo '<input type="checkbox" value="" name=""/>';
-												  		echo '<span class="text">Let theme shine like a star</span>';
-												  		echo '<small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>';
-												  		echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-												  		echo '</div>';
-													echo '</li>';
-													echo '<li>';
-												  		echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-												 		echo '</span>';
-												  		echo '<input type="checkbox" value="" name=""/>';
-												  		echo '<span class="text">Let theme shine like a star</span>';
-												  		echo '<small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>';
-												  		echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-												  		echo '</div>';
-													echo '</li>';
-													echo '<li>';
-												  		echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-												  		echo '</span>';
-												  		echo '<input type="checkbox" value="" name=""/>';
-												  		echo '<span class="text">Check your messages and notifications</span>';
-												  		echo '<small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>';
-												 		echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-												  		echo '</div>';
-													echo '</li>';
-													echo '<li>';
-													  	echo '<span class="handle">';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-															echo '<i class="fa fa-ellipsis-v"></i>';
-													  	echo '</span>';
-													  	echo '<input type="checkbox" value="" name=""/>';
-													  	echo '<span class="text">Let theme shine like a star</span>';
-													  	echo '<small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>';
-													  	echo '<div class="tools">';
-															echo '<i class="fa fa-edit"></i>';
-															echo '<i class="fa fa-trash-o"></i>';
-													  	echo '</div>';
-													echo '</li>';
-												echo '</ul>';
-											echo '</div><!-- /.box-body -->';
-											echo '<div class="box-footer clearfix no-border">';
-									  			echo '<button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>';
-											echo '</div>';
-								  		echo '</div><!-- /.box -->';
-
-								  		echo '<!-- quick email widget -->';
-								  		echo '<div class="box box-info">';
-											echo '<div class="box-header">';
-												echo '<i class="fa fa-envelope"></i>';
-											  	echo '<h3 class="box-title">Quick Email</h3>';
-									 			//<!-- tools box -->';
-									  			echo '<div class="pull-right box-tools">';
-													echo '<button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>';
-									  			echo '</div><!-- /. tools -->';
-											echo '</div>';
-											echo '<div class="box-body">';
-									  			echo '<form action="#" method="post">';
-													echo '<div class="form-group">';
-										  				echo '<input type="email" class="form-control" name="emailto" placeholder="Email to:"/>';
-													echo '</div>';
-													echo '<div class="form-group">';
-										  				echo '<input type="text" class="form-control" name="subject" placeholder="Subject"/>';
-													echo '</div>';
-													echo '<div>';
-										  				echo '<textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>';
-													echo '</div>';
-									  			echo '</form>';
-											echo '</div>';
-											echo '<div class="box-footer clearfix">';
-									  			echo '<button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>';
-											echo '</div>';
-								  		echo '</div>';
-									echo '</section><!-- /.Left col -->';
-
-									echo '<!-- right col (We are only adding the ID to make the widgets sortable)-->';
-									echo '<section class="col-lg-5 connectedSortable">';
-									  	echo '<!-- Map box -->';
-									  	echo '<div class="box box-solid bg-light-blue-gradient">';
-											echo '<div class="box-header">';
-										  		echo '<!-- tools box -->';
-										  		echo '<div class="pull-right box-tools">';
-													echo '<button class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range"><i class="fa fa-calendar"></i></button>';
-													echo '<button class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;"><i class="fa fa-minus"></i></button>';
-										  		echo '</div><!-- /. tools -->';
-
-										 		echo '<i class="fa fa-map-marker"></i>';
-										  		echo '<h3 class="box-title">';
-													echo 'Visitors';
-										  		echo '</h3>';
-											echo '</div>';
-											echo '<div class="box-body">';
-										  		echo '<div id="world-map" style="height: 250px; width: 100%;"></div>';
-											echo '</div><!-- /.box-body-->';
-											echo '<div class="box-footer no-border">';
-										  		echo '<div class="row">';
-													echo '<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">';
-											  			echo '<div id="sparkline-1"></div>';
-											  			echo '<div class="knob-label">Visitors</div>';
-													echo '</div><!-- ./col -->';
-													echo '<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">';
-											  			echo '<div id="sparkline-2"></div>';
-											  			echo '<div class="knob-label">Online</div>';
-													echo '</div><!-- ./col -->';
-													echo '<div class="col-xs-4 text-center">';
-											  			echo '<div id="sparkline-3"></div>';
-											  			echo '<div class="knob-label">Exists</div>';
-													echo '</div><!-- ./col -->';
-										  		echo '</div><!-- /.row -->';
-											echo '</div>';
-									  	echo '</div>';
-									  	echo '<!-- /.box -->';
-
-									  	echo '<!-- solid sales graph -->';
-									  	echo '<div class="box box-solid bg-teal-gradient">';
-											echo '<div class="box-header">';
-												echo '<i class="fa fa-th"></i>';
-										  		echo '<h3 class="box-title">Sales Graph</h3>';
-										  		echo '<div class="box-tools pull-right">';
-													echo '<button class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>';
-													echo '<button class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>';
-										  		echo '</div>';
-											echo '</div>';
-											echo '<div class="box-body border-radius-none">';
-										  		echo '<div class="chart" id="line-chart" style="height: 250px;"></div>';
-											echo '</div><!-- /.box-body -->';
-											echo '<div class="box-footer no-border">';
-										  		echo '<div class="row">';
-													echo '<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">';
-											  			echo '<input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC"/>';
-											  			echo '<div class="knob-label">Mail-Orders</div>';
-													echo '</div><!-- ./col -->';
-													echo '<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">';
-											  			echo '<input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC"/>';
-											  			echo '<div class="knob-label">Online</div>';
-													echo '</div><!-- ./col -->';
-													echo '<div class="col-xs-4 text-center">';
-											  			echo '<input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC"/>';
-											  			echo '<div class="knob-label">In-Store</div>';
-													echo '</div><!-- ./col -->';
-										  		echo '</div><!-- /.row -->';
-											echo '</div><!-- /.box-footer -->';
-									  	echo '</div><!-- /.box -->';
-
-									  	echo '<!-- Calendar -->';
-									  	echo '<div class="box box-solid bg-green-gradient">';
-											echo '<div class="box-header">';
-										  		echo '<i class="fa fa-calendar"></i>';
-										  		echo '<h3 class="box-title">Calendar</h3>';
-										  		echo '<!-- tools box -->';
-										  		echo '<div class="pull-right box-tools">';
-													echo '<!-- button with a dropdown -->';
-													echo '<div class="btn-group">';
-											  			echo '<button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></button>';
-											  			echo '<ul class="dropdown-menu pull-right" role="menu">';
-															echo '<li><a href="#">Add new event</a></li>';
-															echo '<li><a href="#">Clear events</a></li>';
-															echo '<li class="divider"></li>';
-															echo '<li><a href="#">View calendar</a></li>';
-											  			echo '</ul>';
-													echo '</div>';
-													echo '<button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>';
-													echo '<button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>';
-										  		echo '</div><!-- /. tools -->';
-											echo '</div><!-- /.box-header -->';
-											echo '<div class="box-body no-padding">';
-										  		echo '<!--The calendar -->';
-										  		echo '<div id="calendar" style="width: 100%"></div>';
-											echo '</div><!-- /.box-body -->';
-											echo '<div class="box-footer text-black">';
-										  		echo '<div class="row">';
-													echo '<div class="col-sm-6">';
-													  	echo '<!-- Progress bars -->';
-													  	echo '<div class="clearfix">';
-															echo '<span class="pull-left">Task #1</span>';
-															echo '<small class="pull-right">90%</small>';
-													 	echo '</div>';
-													  	echo '<div class="progress xs">';
-															echo '<div class="progress-bar progress-bar-green" style="width: 90%;"></div>';
-													  	echo '</div>';
-													  	echo '<div class="clearfix">';
-															echo '<span class="pull-left">Task #2</span>';
-															echo '<small class="pull-right">70%</small>';
-														echo '</div>';
-													  	echo '<div class="progress xs">';
-															echo '<div class="progress-bar progress-bar-green" style="width: 70%;"></div>';
-													  	echo '</div>';
-													echo '</div><!-- /.col -->';
-													echo '<div class="col-sm-6">';
-													  	echo '<div class="clearfix">';
-															echo '<span class="pull-left">Task #3</span>';
-															echo '<small class="pull-right">60%</small>';
-													  	echo '</div>';
-													  	echo '<div class="progress xs">';
-															echo '<div class="progress-bar progress-bar-green" style="width: 60%;"></div>';
-													  	echo '</div>';
-
-													  	echo '<div class="clearfix">';
-															echo '<span class="pull-left">Task #4</span>';
-															echo '<small class="pull-right">40%</small>';
-													  	echo '</div>';
-													  	echo '<div class="progress xs">';
-															echo '<div class="progress-bar progress-bar-green" style="width: 40%;"></div>';
-													  	echo '</div>';
-													echo '</div><!-- /.col -->';
-										  		echo '</div><!-- /.row -->';
-											echo '</div>';
-									  	echo '</div><!-- /.box -->';
-									echo '</section><!-- right col -->';
-								echo '</div><!-- /.row (main row) -->';
+							}
 							*/
-							echo '</section><!-- /.content -->';
+
 					 	echo '</div><!-- /.content-wrapper -->';
 					  	echo '<footer class="main-footer">';
 					  		/*
@@ -1494,49 +1060,103 @@ class Site {
 		echo '</html>';
 	}
 	
-	private function viewPage($pageName) {
+	private function getPage($pageName) {
 		// Fetch the page object from the database and display it.
 		$page = RestrictedPageHandler::getPageByName($pageName);
 		
 		if ($page != null) {
 			if (Session::isAuthenticated()) {
 				$user = Session::getCurrentUser();
-			
-				if ($user->hasPermission('*') || 
-					$user->hasPermission('chief.my-crew')) {
-					echo '<h3>' . $page->getTitle() . '<input type="button" value="Endre" onClick="editRestrictedPage(' . $page->getId() . ')"></h3>';
-				} else {
-					echo '<h3>' . $page->getTitle() . '</h3>';
-				}
 				
-				echo $page->getContent();
+				//<!-- Content Header (Page header) -->';
+				echo '<section class="content-header">';
+			  		echo '<h1>';
+						echo $page->getTitle();
+						echo '<small>' . $page->getTitle() . '</small>';
+			  		echo '</h1>';
+			  		/*
+			  		echo '<ol class="breadcrumb">';
+						echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+						echo '<li class="active">Dashboard</li>';
+			  		echo '</ol>';
+			  		*/
+				echo '</section>';
+				//<!-- Main content -->';
+				echo '<section class="content">';
+
+					echo $page->getContent();
+
+				echo '</section><!-- /.content -->';
+
 			} else {
 				echo 'Du har ikke tilgang til dette.';
 			}
 		} else {
 			$directoryList = array(Settings::api_path . 'pages',
 								   'pages');
-			$includedPages = array();
 			$found = false;
 			
 			foreach ($directoryList as $directory) {
 				$filePath = $directory . '/' . $pageName . '.php';
 			
-				if (!in_array($pageName, $includedPages) &&
-					in_array($filePath, glob($directory . '/*.php'))) {
+				if (in_array($filePath, glob($directory . '/*.php'))) {
 					// Make sure we don't include pages with same name twice, 
 					// and set the found varialbe so that we don't have to display the not found message.
-					array_push($includedPages, $pageName);
-					$found = true;
-				
-					include_once $filePath;
+					require_once $filePath;
+
+					// Get the last declared class.
+					$class = end(get_declared_classes());
+
+					if (class_exists($class)) {
+						// Create a new instance of this class.
+						$page = new $class();
+	 					
+	 					// Print the page.
+						//<!-- Content Header (Page header) -->';
+						echo '<section class="content-header">';
+					  		echo '<h1>';
+
+					  			// TODO: Find a way to check if the class has a parent, this is due to avoid null pointer exceptions.
+					  			//if ($page->get_parent_class()) {
+								//	echo $page->getParentClass()->getTitle();
+								//	echo '<small>' . $page->getTitle() . '</small>';
+					  			//} else {
+									echo $page->getTitle();
+					  			//}
+
+					  		echo '</h1>';
+					  		/*
+					  		echo '<ol class="breadcrumb">';
+								echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+								echo '<li class="active">Dashboard</li>';
+					  		echo '</ol>';
+					  		*/
+						echo '</section>';
+						//<!-- Main content -->';
+						echo '<section class="content">';
+
+							echo $page->getContent();
+
+						echo '</section><!-- /.content -->';
+
+						// The page is valid and should not be included twice.
+						$found = true;
+						break;
+					}
 				}
 			}
 			
 			if (!$found) {
-				echo '<article>';
-					echo '<h1>Siden ble ikke funnet!</h1>';
-				echo '</article>';
+				echo '<div class="error-page">';
+		            echo '<h2 class="headline text-yellow"> 404</h2>';
+		            echo '<div class="error-content">';
+		              	echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
+		              	echo '<p>';
+		                	echo 'We could not find the page you were looking for.';
+		                	echo 'Meanwhile, you may <a href="../../index.html"">return to dashboard</a> or try using the search form.';
+		             	echo '</p>';
+		            echo '</div><!-- /.error-content -->';
+		        echo '</div><!-- /.error-page -->';
 			}
 		}
 	}

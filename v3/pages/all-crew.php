@@ -19,39 +19,70 @@
  */
 
 require_once 'session.php';
+require_once 'interfaces/page.php';
 require_once 'handlers/teamhandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'pages/page.php';
 require_once 'utils/crewutils.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
+class AllCrewPage implements IPage {
+	use Page;
 
-	if (isset($_GET['id'])) {
-		if ($user->isGroupMember()) {
-			if (isset($_GET['teamId'])) {
-				$team = TeamHandler::getTeam($_GET['teamId']);
+	public function getTitle() {
+		return 'Crew';
+	}
 
-				if ($team != null) {
-					echo '<div class="box">';
-						echo '<div class="box-header with-border">';
-							echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
-						echo '</div>';
-						echo '<div class="box-body">';
+	public function getContent() {
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
 
-							echo $team->getDescription();
+			if (isset($_GET['id'])) {
+				if ($user->isGroupMember()) {
+					if (isset($_GET['teamId'])) {
+						$team = TeamHandler::getTeam($_GET['teamId']);
 
-						echo '</div><!-- /.box-body -->';	
-						echo '<div class="box-footer">';
-			            	CrewUtils::displayTeam($team);
-			            echo '</div><!-- /.box-footer-->';
-					echo '</div><!-- /.box -->';
+						if ($team != null) {
+							echo '<div class="box">';
+								echo '<div class="box-header with-border">';
+									echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+								echo '</div>';
+								echo '<div class="box-body">';
+
+									echo $team->getDescription();
+
+								echo '</div><!-- /.box-body -->';	
+								echo '<div class="box-footer">';
+					            	CrewUtils::displayTeam($team);
+					            echo '</div><!-- /.box-footer-->';
+							echo '</div><!-- /.box -->';
+						} else {
+
+						}
+					} else {
+						$group = GroupHandler::getGroup($_GET['id']);
+
+						if ($group != null) {
+							echo '<div class="box">';
+								echo '<div class="box-header with-border">';
+									echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+								echo '</div>';
+								echo '<div class="box-body">';
+
+									echo $group->getDescription();
+
+								echo '</div><!-- /.box-body -->';
+							echo '</div><!-- /.box -->';
+
+							CrewUtils::displayGroup($group);
+						}
+					}
 				} else {
-
+					echo '<p>Du er ikke i crew.</p>';
 				}
 			} else {
-				$group = GroupHandler::getGroup($_GET['id']);
-
-				if ($group != null) {
+				$groupList = GroupHandler::getGroups();
+				
+				foreach ($groupList as $group) {
 					echo '<div class="box">';
 						echo '<div class="box-header with-border">';
 							echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
@@ -61,34 +92,15 @@ if (Session::isAuthenticated()) {
 							echo $group->getDescription();
 
 						echo '</div><!-- /.box-body -->';
+						echo '<div class="box-footer">';
+			            	CrewUtils::displayGroup($group);
+			            echo '</div><!-- /.box-footer-->';
 					echo '</div><!-- /.box -->';
-
-					CrewUtils::displayGroup($group);
 				}
 			}
 		} else {
-			echo '<p>Du er ikke i crew.</p>';
-		}
-	} else {
-		$groupList = GroupHandler::getGroups();
-		
-		foreach ($groupList as $group) {
-			echo '<div class="box">';
-				echo '<div class="box-header with-border">';
-					echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
-				echo '</div>';
-				echo '<div class="box-body">';
-
-					echo $group->getDescription();
-
-				echo '</div><!-- /.box-body -->';
-				echo '<div class="box-footer">';
-	            	CrewUtils::displayGroup($group);
-	            echo '</div><!-- /.box-footer-->';
-			echo '</div><!-- /.box -->';
+			echo '<p>Du er ikke logget inn!</p>';
 		}
 	}
-} else {
-	echo '<p>Du er ikke logget inn!</p>';
 }
 ?>
