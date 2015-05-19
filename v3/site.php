@@ -417,52 +417,56 @@ class Site {
 					  			echo '<ul class="sidebar-menu">';
 					   				echo '<li class="header">MAIN NAVIGATION</li>';
 
-					   				echo '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
-									  	echo '<a href="?page=all-crew">';
-											echo '<i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i>';
-									  	echo '</a>';
-									  	echo '<ul class="treeview-menu">';
+					   				$groupList = GroupHandler::getGroups();
 
-											foreach (GroupHandler::getGroups() as $group) {
-												echo '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
-											}
-
-									  	echo '</ul>';
-									echo '</li>';
-
-					   				if ($user->isGroupMember()) {
-										$group = $user->getGroup();
-										
-										echo '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
-										  	echo '<a href="?page=my-crew">';
-												echo '<i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i>';
+					   				if (!empty($groupList)) {
+						   				echo '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
+										  	echo '<a href="?page=all-crew">';
+												echo '<i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i>';
 										  	echo '</a>';
 										  	echo '<ul class="treeview-menu">';
 
-												// If the user is member of a team, also fetch team only pages.
-												if ($user->isTeamMember()) {
-													$pageList = RestrictedPageHandler::getPagesForGroupAndTeam($group, $user->getTeam());
-												} else {
-													$pageList = RestrictedPageHandler::getPagesForGroup($group);
+												foreach ($groupList as $group) {
+													echo '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
 												}
-												
-												$pageNameList = array();
-											
-												foreach ($pageList as $page) {
-													array_push($pageNameList, strtolower($page->getName()));
-												}
-												
-												
-												$teamList = $group->getTeams();
-												$teamNameList = array();
-												
-												foreach ($teamList as $team) {
-													array_push($teamNameList, strtolower($team->getName()));
-												}
-											
-												// Only show pages for that group.
-												if (!empty($pageList) ||
-													!empty($teamList)) {
+
+										  	echo '</ul>';
+										echo '</li>';
+					   				}
+
+					   				if ($user->isGroupMember()) {
+										$group = $user->getGroup();
+
+										// If the user is member of a team, also fetch team only pages.
+										if ($user->isTeamMember()) {
+											$pageList = RestrictedPageHandler::getPagesForGroupAndTeam($group, $user->getTeam());
+										} else {
+											$pageList = RestrictedPageHandler::getPagesForGroup($group);
+										}
+										
+										$pageNameList = array();
+									
+										foreach ($pageList as $page) {
+											array_push($pageNameList, strtolower($page->getName()));
+										}
+										
+										$teamList = $group->getTeams();
+										$teamNameList = array();
+										
+										foreach ($teamList as $team) {
+											array_push($teamNameList, strtolower($team->getName()));
+										}
+
+										// Only show pages for that group.
+										if (empty($pageList) &&
+											empty($teamList)) {
+											echo '<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
+										} else {
+											echo '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
+											  	echo '<a href="?page=my-crew">';
+													echo '<i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i>';
+											  	echo '</a>';
+											  	echo '<ul class="treeview-menu">';
 													echo '<li><a href="?page=my-crew"><i class="fa fa-circle-o"></i>' . $group->getTitle() . '</a></li>';
 
 													// Only create link for groups that actually contain teams.
@@ -481,10 +485,10 @@ class Site {
 															}
 														}
 													}
-												}
 
-											echo '</ul>';
-										echo '</li>';
+												echo '</ul>';
+											echo '</li>';
+										}
 									}
 
 									if ($user->hasPermission('*') ||
