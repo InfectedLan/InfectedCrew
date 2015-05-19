@@ -20,60 +20,69 @@
 
 require_once 'session.php';
 require_once 'handlers/restrictedpagehandler.php'; 
+require_once 'interfaces/page.php';
+require_once 'traits/page.php';
 require_once 'utils/crewutils.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
-	
-	if ($user->isGroupMember()) {
-		if (isset($_GET['teamId'])) {
-			$team = TeamHandler::getTeam($_GET['teamId']);
+class MyCrewPage implements IPage {
+	use Page;
 
-			if ($team != null) {
-				echo '<div class="box">';
-					echo '<div class="box-header with-border">';
-						echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
-					echo '</div>';
-					echo '<div class="box-body">';
+	public function getTitle() {
+		return 'Mitt crew';
+	}
 
-						echo $team->getDescription();
+	public function getContent() {
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
+			
+			if ($user->isGroupMember()) {
+				if (isset($_GET['teamId'])) {
+					$team = TeamHandler::getTeam($_GET['teamId']);
 
-					echo '</div><!-- /.box-body -->';	
-					echo '<div class="box-footer">';
-		            	CrewUtils::displayTeam($team);
-		            echo '</div><!-- /.box-footer-->';
-				echo '</div><!-- /.box -->';
+					if ($team != null) {
+						echo '<div class="box">';
+							echo '<div class="box-header with-border">';
+								echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+							echo '</div>';
+							echo '<div class="box-body">';
+
+								echo $team->getDescription();
+
+							echo '</div><!-- /.box-body -->';	
+						echo '</div><!-- /.box -->';
+
+						echo CrewUtils::displayTeam($team);
+					}
+				} else {
+					$group = $user->getGroup();
+					
+					if ($group != null) {
+						echo '<div class="box">';
+							echo '<div class="box-header with-border">';
+								echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+							echo '</div>';
+							echo '<div class="box-body">';
+
+								$page = RestrictedPageHandler::getPageByName($group->getName());
+						
+								if ($page != null) {
+									echo $page->getContent();
+								}
+								
+								echo  $group->getDescription();
+
+							echo '</div><!-- /.box-body -->';
+						echo '</div><!-- /.box -->';
+
+						echo CrewUtils::displayGroup($group);
+					}
+				}
+			} else {
+				echo '<p>Du er ikke i noe crew!</p>';
 			}
 		} else {
-			$group = $user->getGroup();
-			
-			if ($group != null) {
-				echo '<div class="box">';
-					echo '<div class="box-header with-border">';
-						echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
-					echo '</div>';
-					echo '<div class="box-body">';
-
-						$page = RestrictedPageHandler::getPageByName($group->getName());
-				
-						if ($page != null) {
-							echo $page->getContent();
-						}
-						
-						echo  $group->getDescription();
-
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
-
-				CrewUtils::displayGroup($group);
-			} else {
-				echo '<p>Dette crewet finnes ikke!</p>';
-			}
+			echo '<p>Du er ikke logget inn!</p>';
 		}
-	} else {
-		echo '<p>Du er ikke i noe crew!</p>';
 	}
-} else {
-	echo '<p>Du er ikke logget inn!</p>';
 }
 ?>
