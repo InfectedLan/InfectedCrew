@@ -36,7 +36,6 @@ class ChiefGroupsPage extends ChiefPage implements IPage {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.groups')) {
 				$groupList = GroupHandler::getGroups();
-			
 				echo '<script src="scripts/chief-groups.js"></script>';
 				
 				if (!empty($groupList)) {

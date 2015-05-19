@@ -18,7 +18,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once 'admin.php';
 require_once 'session.php';
 require_once 'handlers/eventhandler.php';
@@ -37,7 +36,7 @@ class AdminEventsPage extends AdminPage implements IPage {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('admin.events')) {
 				echo '<script src="scripts/admin-events.js"></script>';
-				echo '<h3>Arrangementer:</h3>';
+				
 				echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
 				
 				echo '<table>';

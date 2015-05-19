@@ -21,39 +21,51 @@
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/userhistoryhandler.php';
+require_once 'interfaces/page.php';
+require_once 'traits/page.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
-	$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+class UserHistoryPage implements IPage {
+	use Page;
 
-	if ($user->hasPermission('*') ||
-		$user->equals($historyUser)) {
-		$eventList = UserHistoryHandler::getEventsByUser($historyUser);
-		echo '<script src="scripts/userhistory.js"></script>';
-		echo '<h3>Bruker historie</h3>';
-
-		if (!empty($eventList)) {
-			echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
-			echo '<table>';
-				echo '<tr>';
-					echo '<th>Arrangement:</th>';
-					echo '<th>Rolle:</th>';
-				echo '</tr>';
-
-				foreach ($eventList as $event) {
-					echo '<tr>';
-						echo '<td>' . $event->getTitle() . '</td>';
-						echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
-					echo '</tr>';
-				}
-			echo '</table>';
-		} else {
-			echo '<p>Denne brukeren har ikke noe historie enda.</p>';
-		}
-	} else {
-		echo 'Du har ikke rettigheter til dette.';
+	public function getTitle() {
+		return 'Bruker historie';
 	}
-} else {
-	echo 'Du er ikke logget inn!';
+
+	public function getContent() {
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
+			$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+
+			if ($user->hasPermission('*') ||
+				$user->equals($historyUser)) {
+				$eventList = UserHistoryHandler::getEventsByUser($historyUser);
+				echo '<script src="scripts/userhistory.js"></script>';
+				echo '<h3>Bruker historie</h3>';
+
+				if (!empty($eventList)) {
+					echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
+					echo '<table>';
+						echo '<tr>';
+							echo '<th>Arrangement:</th>';
+							echo '<th>Rolle:</th>';
+						echo '</tr>';
+
+						foreach ($eventList as $event) {
+							echo '<tr>';
+								echo '<td>' . $event->getTitle() . '</td>';
+								echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+							echo '</tr>';
+						}
+					echo '</table>';
+				} else {
+					echo '<p>Denne brukeren har ikke noe historie enda.</p>';
+				}
+			} else {
+				echo 'Du har ikke rettigheter til dette.';
+			}
+		} else {
+			echo 'Du er ikke logget inn!';
+		}
+	}
 }
 ?>
