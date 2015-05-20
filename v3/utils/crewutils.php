@@ -53,8 +53,6 @@ class CrewUtils {
 				  			$content .= '<p class="text-center">';
 								$content .= '<small>' . $user->getDisplayName() . '</small><br>';
 								$content .= '<small>' . $user->getRole() . '</small><br>';
-								$content .= '<small>Telefon: ' . $user->getPhoneAsString() . '</small><br>';
-								$content .= '<small>E-post: ' . $user->getEmail() . '</small><br>';
 							$content .= '</p>';
 				  		$content .= '</div>';
 			   		$content .= '</div>';
