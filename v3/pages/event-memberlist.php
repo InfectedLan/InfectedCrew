@@ -37,8 +37,6 @@ class EventMemberListPage extends EventPage implements IPage {
 				
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.memberlist')) {
-					echo '<script src="scripts/event-memberlist.js"></script>';
-					
 					echo '<div class="row">';
 						echo '<div class="col-md-6">';
 						  	echo '<div class="box">';
@@ -92,6 +90,8 @@ class EventMemberListPage extends EventPage implements IPage {
 						  	echo '</div><!-- /.box -->';
 						echo '</div><!--/.col (left) -->';
 					echo '</div><!-- /.row -->';
+
+					echo '<script src="scripts/event-memberlist.js"></script>';
 				} else {
 					echo '<div class="box">';
 						echo '<div class="box-body">';

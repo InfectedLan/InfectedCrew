@@ -37,8 +37,6 @@ class EventScreenPage extends EventPage implements IPage {
 				
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.screen')) {
-					echo '<script src="scripts/event-screen.js"></script>';
-					
 					echo '<div class="row">';
 						echo '<div class="col-md-6">';
 
@@ -83,6 +81,8 @@ class EventScreenPage extends EventPage implements IPage {
 											echo '<button type="button" class="pull-right btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
 										echo '</div><!-- /.box-body -->';
 									echo '</div><!-- /.box -->';
+
+									echo '<script src="scripts/event-screen.js"></script>';
 								}
 							} else {
 								echo '<div class="box box-warning">';

@@ -78,10 +78,18 @@ class MyCrewPage implements IPage {
 					}
 				}
 			} else {
-				echo '<p>Du er ikke i noe crew!</p>';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo '<p>Du er ikke i noe crew!</p>';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }

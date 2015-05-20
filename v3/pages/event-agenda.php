@@ -37,8 +37,6 @@ class EventAgendaPage extends EventPage implements IPage {
 				
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.agenda')) {
-					echo '<script src="scripts/event-agenda.js"></script>';
-
 					echo '<div class="row">';
 						echo '<div class="col-md-6">';
 							
@@ -136,6 +134,7 @@ class EventAgendaPage extends EventPage implements IPage {
 							echo '});';
 			  			echo '});';
 					echo '</script>';
+					echo '<script src="scripts/event-agenda.js"></script>';
 				} else {
 					echo '<div class="box">';
 						echo '<div class="box-body">';
