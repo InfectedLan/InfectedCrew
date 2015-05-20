@@ -343,14 +343,14 @@ class Site {
 											}
 
 											echo '<a href="" class="dropdown-toggle" data-toggle="dropdown">';
-											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="User Image" />';
+											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="' . $user->getFullName . '\'s profilbilde">';
 											  	echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
 											echo '</a>';
 
 											echo '<ul class="dropdown-menu">';
 												// <!-- User image -->
 										 		echo '<li class="user-header">';
-													echo '<img src="' . $avatarFile . '" class="img-circle" alt="User Image" />';
+													echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName . '\'s profilbilde">';
 													echo '<p>';
 											  			echo $user->getFullName();
 											  			echo '<small>' . $user->getRole() . '</small>';
@@ -397,10 +397,17 @@ class Site {
 					  			echo '<!-- Sidebar user panel -->';
 					  			echo '<div class="user-panel">';
 									echo '<div class="pull-left image">';
-						  				echo '<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />';
+
+										if ($user->hasValidAvatar()) {
+											$avatarFile = $user->getAvatar()->getThumbnail();
+										} else {
+											$avatarFile = $user->getDefaultAvatar();
+										}
+
+										echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName . '\'s profilbilde">';
 									echo '</div>';
 									echo '<div class="pull-left info">';
-						  				echo '<p>Alexander Pierce</p>';
+						  				echo '<p>' . $user->getFullName() . '</p>';
 
 						  				echo '<a href="#"><i class="fa fa-circle text-success"></i> Online</a>';
 									echo '</div>';
@@ -1018,7 +1025,7 @@ class Site {
 						echo '</section>';
 						//<!-- Main content -->';
 						echo '<section class="content">';
-							
+
 							echo $page->getContent();
 
 						echo '</section><!-- /.content -->';
