@@ -504,32 +504,32 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.checkin')) {
-													echo '<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-circle-o"></i>Innsjekk</a></li>';
+													echo '<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-check"></i>Innsjekk</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.seatmap')) {
-													echo '<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-circle-o"></i>Setekart</a></li>';
+													echo '<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-map-marker"></i>Setekart</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.screen')) {
-													echo '<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-circle-o"></i>Skjerm</a></li>';
+													echo '<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-desktop"></i>Skjerm</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.agenda')) {
-													echo '<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-circle-o"></i>Agenda</a></li>';
+													echo '<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-clock-o"></i>Agenda</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.memberlist')) {
-													echo '<li' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-circle-o"></i>Medlemsliste</a></li>';
+													echo '<li' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-file-text-o"></i>Medlemsliste</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('event.table.labels')) {
-													echo '<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-circle-o"></i>Print bordlapper</a></li>';
+													echo '<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-external-link"></i>Print bordlapper</a></li>';
 												}
 
 											echo '</ul>';
@@ -572,7 +572,7 @@ class Site {
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('chief.email')) {
-													echo '<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-circle-o"></i>Send e-post</a></li>';
+													echo '<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-send"></i>Send e-post</a></li>';
 												}
 
 											echo '</ul>';
@@ -590,7 +590,7 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('developer.switch.user')) {
-													echo '<li' . ($this->pageName == 'developer-switch-user' ? ' class="active"' : null) . '><a href="?page=developer-switch-user"><i class="fa fa-circle-o"></i>Bytt bruker</a></li>';
+													echo '<li' . ($this->pageName == 'developer-switch-user' ? ' class="active"' : null) . '><a href="?page=developer-switch-user"><i class="fa fa-rocket"></i>Bytt bruker</a></li>';
 												}
 												
 											echo '</ul>';
@@ -608,22 +608,22 @@ class Site {
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.events')) {
-													echo '<li' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . '><a href="?page=admin-events"><i class="fa fa-circle-o"></i>Arrangementer</a></li>';
+													echo '<li' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . '><a href="?page=admin-events"><i class="fa fa-calendar"></i>Arrangementer</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.permissions')) {
-													echo '<li' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . '><a href="?page=admin-permissions"><i class="fa fa-circle-o"></i>Rettigheter</a></li>';
+													echo '<li' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . '><a href="?page=admin-permissions"><i class="fa fa-check-square-o"></i>Rettigheter</a></li>';
 												}
 
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.seatmap')) {
-													echo '<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-circle-o"></i>Endre setekart</a></li>';
+													echo '<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-map-marker"></i>Endre setekart</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
 													$user->hasPermission('admin.website')) {
-													echo '<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-circle-o"></i>Endre hovedsiden</a></li>';
+													echo '<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-edit"></i>Endre hovedsiden</a></li>';
 												}
 
 											echo '</ul>';
