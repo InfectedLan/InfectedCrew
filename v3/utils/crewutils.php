@@ -47,7 +47,7 @@ class CrewUtils {
 				$content .= '<div class="col-md-3">';
 					$content .= '<div class="thumbnail">';
 				  		$content .= '<a href="?page=my-profile&id=' . $user->getId() . '">';
-				  			$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profile">';
+				  			$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profilbilde">';
 				  		$content .= '</a>';
 				  		$content .= '<div class="caption">';
 				  			$content .= '<p class="text-center">';

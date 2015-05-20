@@ -35,8 +35,6 @@ class EventCheckInPage extends EventPage implements IPage {
 
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('event.checkin')) {
-				echo '<script src="scripts/event-checkin.js"></script>';
-
 				echo '<div class="row">';
 					echo '<div class="col-md-4">';
 						echo '<div class="box">';
@@ -65,6 +63,8 @@ class EventCheckInPage extends EventPage implements IPage {
 						echo '</div><!-- /.box -->';
 					echo '</div><!--/.col (left) -->';
 				echo '</div><!-- /.row -->';
+
+				echo '<script src="scripts/event-checkin.js"></script>';
 			} else {
 				echo '<div class="box">';
 					echo '<div class="box-body">';
