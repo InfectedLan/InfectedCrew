@@ -645,20 +645,6 @@ class Site {
 									$this->getPage('all-crew');
 								}
 							}
-							/*
-							} else {
-								$publicPages = array('register',
-													 'activation',
-													 'reset-password');
-								
-								if (in_array($this->pageName, $publicPages)) {
-									$this->viewPage($this->pageName);
-								} else {
-									$this->viewLogin();
-								}
-							}
-							*/
-
 					 	echo '</div><!-- /.content-wrapper -->';
 					  	echo '<footer class="main-footer">';
 					  		/*
@@ -877,57 +863,66 @@ class Site {
 					echo '<script src="../api/scripts/logout.js"></script>';
 				echo '</body>';
 			} else {
-				echo '<body class="login-page">';
-    				echo '<div class="login-box">';
-				      	echo '<div class="login-logo">';
-				        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-				      	echo '</div><!-- /.login-logo -->';
-				      	echo '<div class="login-box-body">';
-				        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
-					        echo '<form class="login" method="post">';
-					          	echo '<div class="form-group has-feedback">';
-					            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
-					            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-					          	echo '</div>';
-					          	echo '<div class="form-group has-feedback">';
-					            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
-					            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-					          	echo '</div>';
-					          	echo '<div class="row">';
-					            	echo '<div class="col-xs-8">';
-					              		echo '<div class="checkbox icheck">';
-					                		echo '<label><input type="checkbox"> Husk meg</label>';
-					              		echo '</div>';
-					            	echo '</div><!-- /.col -->';
-					           		echo '<div class="col-xs-4">';
-					              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-					            	echo '</div><!-- /.col -->';
-					          	echo '</div>';
-					        echo '</form>';
-					        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
-					        echo '<a href="?page=register">Register deg</a>';
-					    echo '</div><!-- /.login-box-body -->';
-					echo '</div><!-- /.login-box -->';
+				$publicPageList = array('register',
+									   'activation',
+									   'reset-password');
+				
+				// Show page if it is whitelisted.
+				if (in_array($this->pageName, $publicPageList)) {
+					$this->getPage($this->pageName);
+				} else {
+					echo '<body class="login-page">';
+	    				echo '<div class="login-box">';
+					      	echo '<div class="login-logo">';
+					        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+					      	echo '</div><!-- /.login-logo -->';
+					      	echo '<div class="login-box-body">';
+					        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
+						        echo '<form class="login" method="post">';
+						          	echo '<div class="form-group has-feedback">';
+						            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
+						            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+						          	echo '</div>';
+						          	echo '<div class="form-group has-feedback">';
+						            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
+						            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+						          	echo '</div>';
+						          	echo '<div class="row">';
+						            	echo '<div class="col-xs-8">';
+						              		echo '<div class="checkbox icheck">';
+						                		echo '<label><input type="checkbox"> Husk meg</label>';
+						              		echo '</div>';
+						            	echo '</div><!-- /.col -->';
+						           		echo '<div class="col-xs-4">';
+						              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
+						            	echo '</div><!-- /.col -->';
+						          	echo '</div>';
+						        echo '</form>';
+						        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
+						        echo '<a href="?page=register">Register deg</a>';
+						    echo '</div><!-- /.login-box-body -->';
+						echo '</div><!-- /.login-box -->';
 
-				    //<!-- jQuery 2.1.4 -->
-				    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-				    //<!-- Bootstrap 3.3.2 JS -->
-				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-				    //<!-- iCheck -->
-				    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-				    echo '<script>';
-				    	echo '$(function () {';
-				        	echo '$(\'input\').iCheck({';
-				          		echo 'checkboxClass: \'icheckbox_square-blue\',';
-				          		echo 'radioClass: \'iradio_square-blue\',';
-				          		echo 'increaseArea: \'20%\''; // optional
-				        	echo '});';
-				      	echo '});';
-				    echo '</script>';
+					    //<!-- jQuery 2.1.4 -->
+					    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+					    //<!-- Bootstrap 3.3.2 JS -->
+					    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
+					    //<!-- iCheck -->
+					    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
+					    echo '<script>';
+					    	echo '$(function () {';
+					        	echo '$(\'input\').iCheck({';
+					          		echo 'checkboxClass: \'icheckbox_square-blue\',';
+					          		echo 'radioClass: \'iradio_square-blue\',';
+					          		echo 'increaseArea: \'20%\''; // optional
+					        	echo '});';
+					      	echo '});';
+					    echo '</script>';
 
-				    // Other
-				    echo '<script src="../api/scripts/login.js"></script>';
-				echo '</body>';
+					    // Other
+					    echo '<script src="../api/scripts/login.js"></script>';
+					echo '</body>';
+				}
 			}
 
 		echo '</html>';
@@ -962,13 +957,13 @@ class Site {
 				echo '</section><!-- /.content -->';
 
 			} else {
-				echo 'Du har ikke tilgang til dette.';
+				echo 'Du har ikke tilgang til dette.'; // TODO: Improve this with a nice error box.
 			}
 		} else {
-			$directoryList = array(Settings::api_path . 'pages',
-								   'pages');
+			$directoryList = array('pages',
+								   Settings::api_path . 'pages');
 			$found = false;
-			
+
 			foreach ($directoryList as $directory) {
 				$filePath = $directory . '/' . $pageName . '.php';
 			
@@ -984,33 +979,37 @@ class Site {
 						// Create a new instance of this class.
 						$page = new $class();
 	 					
-	 					// Print the page.
-						//<!-- Content Header (Page header) -->';
-						echo '<section class="content-header">';
-					  		echo '<h1>';
+						if (Session::isAuthenticated()) {
+		 					// Print the page.
+							//<!-- Content Header (Page header) -->';
+							echo '<section class="content-header">';
+						  		echo '<h1>';
 
-					  			// Check if this page as a parent or not, and decide what to show.
-					  			if ($page->hasParent()) {
-									echo $page->getParent()->getTitle();
-									echo '<small>' . $page->getTitle() . '</small>';
-					  			} else {
-									echo $page->getTitle();
-					  			}
+						  			// Check if this page as a parent or not, and decide what to show.
+						  			if ($page->hasParent()) {
+										echo $page->getParent()->getTitle();
+										echo '<small>' . $page->getTitle() . '</small>';
+						  			} else {
+										echo $page->getTitle();
+						  			}
 
-					  		echo '</h1>';
-					  		/*
-					  		echo '<ol class="breadcrumb">';
-								echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-								echo '<li class="active">Dashboard</li>';
-					  		echo '</ol>';
-					  		*/
-						echo '</section>';
-						//<!-- Main content -->';
-						echo '<section class="content">';
+						  		echo '</h1>';
+						  		/*
+						  		echo '<ol class="breadcrumb">';
+									echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+									echo '<li class="active">Dashboard</li>';
+						  		echo '</ol>';
+						  		*/
+							echo '</section>';
+							//<!-- Main content -->';
+							echo '<section class="content">';
 
+								echo $page->getContent();
+
+							echo '</section><!-- /.content -->';
+						} else {
 							echo $page->getContent();
-
-						echo '</section><!-- /.content -->';
+						}
 
 						// The page is valid and should not be included twice.
 						$found = true;
