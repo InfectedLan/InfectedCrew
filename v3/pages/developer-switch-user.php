@@ -34,35 +34,49 @@ class DeveloperSwitchUserPage extends DeveloperPage implements IPage {
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('developer.switch.user')) {
+				echo '<div class="row">';
+					echo '<div class="col-md-4">';
+						echo '<div class="box">';
+							echo '<div class="box-header with-border">';
+								echo '<h3 class="box-title">Bytt til en annen bruker</h3>';
+							echo '</div>';
+							echo '<div class="box-body">';
+								echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker.</p>';
+								echo '<p>Dette er en funksjon som <b>ikke</b> skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
+
+								echo '<form class="developer-switch-user" method="post">';
+									echo '<div class="input-group">';
+										echo '<select class="form-control" name="userId" autofocus>';
+											$userList = UserHandler::getUsers();
+											
+											foreach ($userList as $user) {
+												echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
+											}
+										echo '</select>';
+				                    	echo '<span class="input-group-btn">';
+				                      		echo '<button class="btn btn-info btn-flat" type="button">Bytt</button>';
+				                    	echo '</span>';
+				                 	echo '</div><!-- /input-group -->';
+				                echo '</form>';
+							echo '</div><!-- /.box-body -->';
+						echo '</div><!-- /.box -->';
+					echo '</div><!--/.col (left) -->';
+				echo '</div><!-- /.row -->';
+
 				echo '<script src="scripts/developer-switch-user.js"></script>';
-			
-				echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
-				echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
-				
-				echo '<form class="developer-switch-user" name="input" method="post">';
-					echo '<table>';
-						echo '<tr>';
-							echo '<td>Bruker:</td>';
-							echo '<td>';
-								echo '<select class="chosen-select" name="userId" autofocus>';
-									$userList = UserHandler::getUsers();
-									
-									foreach ($userList as $user) {
-										echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
-									}
-								echo '</select>';
-							echo '</td>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td><input type="submit" value="Bytt bruker"></td>';
-						echo '</tr>';
-					echo '</table>';
-				echo '</form>';
 			} else {
-				echo 'Du har ikke rettigheter til dette.';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo 'Du har ikke rettigheter til dette!';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo 'Du er ikke logget inn.';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }

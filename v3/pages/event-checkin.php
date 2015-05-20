@@ -50,7 +50,7 @@ class EventCheckInPage extends EventPage implements IPage {
 								echo '<form class="navbar-form navbar-left">';
 									echo '<div class="form-group">';
 										echo '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
-										echo '<div class="input-group input-group-sm">';
+										echo '<div class="input-group">';
 											echo '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
 											echo '<span class="input-group-btn">';
 										  		echo '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
