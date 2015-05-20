@@ -28,7 +28,18 @@ class UserHistoryPage implements IPage {
 	use Page;
 
 	public function getTitle() {
-		return 'Bruker historie';
+		if (Session::isAuthenticated()) {
+			$user = Session::getCurrentUser();
+			$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+
+			if ($user->equals($historyUser)) {
+				return 'Min bruker historikk';
+			} else if ($user->hasPermission('*')) {
+				return $historyUser->getDisplayName() . '\'s historikk';
+			}
+		}
+
+		return 'Bruker historikk';
 	}
 
 	public function getContent() {
@@ -39,32 +50,51 @@ class UserHistoryPage implements IPage {
 			if ($user->hasPermission('*') ||
 				$user->equals($historyUser)) {
 				$eventList = UserHistoryHandler::getEventsByUser($historyUser);
-				echo '<script src="scripts/userhistory.js"></script>';
-				echo '<h3>Bruker historie</h3>';
 
 				if (!empty($eventList)) {
-					echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
-					echo '<table>';
-						echo '<tr>';
-							echo '<th>Arrangement:</th>';
-							echo '<th>Rolle:</th>';
-						echo '</tr>';
+					echo '<div class="row">';
+						echo '<div class="col-md-6">';
+						  	echo '<div class="box">';
+								echo '<div class="box-body">';
+									echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
+									echo '<table class="table table-bordered">';
+										echo '<tr>';
+											echo '<th>Arrangement</th>';
+											echo '<th>Rolle</th>';
+										echo '</tr>';
 
-						foreach ($eventList as $event) {
-							echo '<tr>';
-								echo '<td>' . $event->getTitle() . '</td>';
-								echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
-							echo '</tr>';
-						}
-					echo '</table>';
+										foreach ($eventList as $event) {
+											echo '<tr>';
+												echo '<td>' . $event->getTitle() . '</td>';
+												echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+											echo '</tr>';
+										}
+
+									echo '</table>';
+								echo '</div><!-- /.box-body -->';
+						  	echo '</div><!-- /.box -->';
+						echo '</div><!--/.col (left) -->';
+					echo '</div><!-- /.row -->';
 				} else {
-					echo '<p>Denne brukeren har ikke noe historie enda.</p>';
+					echo '<div class="box">';
+						echo '<div class="box-body">';
+							echo '<p>Denne brukeren har ikke noe historie enda.</p>';
+						echo '</div><!-- /.box-body -->';
+					echo '</div><!-- /.box -->';
 				}
 			} else {
-				echo 'Du har ikke rettigheter til dette.';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo 'Du har ikke rettigheter til dette.';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo 'Du er ikke logget inn!';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }
