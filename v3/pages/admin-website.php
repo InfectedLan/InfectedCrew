@@ -29,6 +29,7 @@ class AdminWebsitePage extends AdminPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
 		$site = 'https://infected.no/v7/';
 
 		if (Session::isAuthenticated()) {
@@ -37,80 +38,82 @@ class AdminWebsitePage extends AdminPage implements IPage {
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('admin.website')) {
 				$pageList = PageHandler::getPages();
-				echo '<script src="scripts/admin-website.js"></script>';
-				echo '<h3>Sider:</h3>';
+				$content .= '<script src="scripts/admin-website.js"></script>';
+				$content .= '<h3>Sider:</h3>';
 				
-				echo '<table>';	
+				$content .= '<table>';	
 					// Loop through the pages.
 					foreach ($pageList as $page) {
 						// Add the current page to the page view.
-						echo '<tr>';
-							echo '<td>' . $page->getTitle() . '</td>';
-							echo '<td><a href="' . $site . 'pages/' . $page->getName() . '.html">Vis</a></td>';
-							echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
+						$content .= '<tr>';
+							$content .= '<td>' . $page->getTitle() . '</td>';
+							$content .= '<td><a href="' . $site . 'pages/' . $page->getName() . '.html">Vis</a></td>';
+							$content .= '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
 							
 							if ($user->hasPermission('*')) {
-								echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
+								$content .= '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 							}
-						echo '</tr>';
+						$content .= '</tr>';
 					}
-				echo '</table>';
+				$content .= '</table>';
 				
-				echo '<h3>Legg til ny side:</h3>';
-				echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
-				echo '<p>For å få innholdet i bokser, kan du bruke HTML-kode.<br>';
-				echo 'Du putter hvilken type boks du vil inn i feltet "class", du finner alle tyoer bokser i tabellen under: <br>';
-				echo '&lt;article class="Putt type boks inn her!"&gtInnhold her&lt;/article&gt</pre></p><br>';
+				$content .= '<h3>Legg til ny side:</h3>';
+				$content .= '<p>Fyll ut feltene under for å legge til en ny side.</p>';
+				$content .= '<p>For å få innholdet i bokser, kan du bruke HTML-kode.<br>';
+				$content .= 'Du putter hvilken type boks du vil inn i feltet "class", du finner alle tyoer bokser i tabellen under: <br>';
+				$content .= '&lt;article class="Putt type boks inn her!"&gtInnhold her&lt;/article&gt</pre></p><br>';
 				
-				echo '<table>';
-					echo '<tr>';
-						echo '<th>Type boks:</th>';
-						echo '<th>Kode:</th>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Tekst</td>';
-						echo '<td>contentBox</td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Venstre-stillt tekst</td>';
-						echo '<td>contentLeftBox</td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Høyre-stillt tekst</td>';
-						echo '<td>contentRightBox</td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Venstre-stillt bilde</td>';
-						echo '<td>contentLeftImageBox</td>';
-					echo '</tr>';
-					echo '<tr>';
-						echo '<td>Høyre-stillt bilde</td>';
-						echo '<td>contentRightImageBox</td>';
-					echo '</tr>';
-				echo '</table>';
+				$content .= '<table>';
+					$content .= '<tr>';
+						$content .= '<th>Type boks:</th>';
+						$content .= '<th>Kode:</th>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Tekst</td>';
+						$content .= '<td>contentBox</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Venstre-stillt tekst</td>';
+						$content .= '<td>contentLeftBox</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Høyre-stillt tekst</td>';
+						$content .= '<td>contentRightBox</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Venstre-stillt bilde</td>';
+						$content .= '<td>contentLeftImageBox</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Høyre-stillt bilde</td>';
+						$content .= '<td>contentRightImageBox</td>';
+					$content .= '</tr>';
+				$content .= '</table>';
 				
-				echo '<form class="fadmin-website-add" method="post">';
-					echo '<table>';
-						echo '<tr>';
-							echo '<td>Tittel:</td>';
-							echo '<td><input type="text" name="title"></td>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td>Tekst:</td>';
-							echo '<td><textarea name="content" rows="10" cols="80"></textarea></td>';
-						echo '</tr>';
-						echo '<tr>';
-							echo '<td></td>';
-							echo '<td><input type="submit" value="Publiser"></td>';
-						echo '</tr>';
-					echo '</table>';
-				echo '</form>';
+				$content .= '<form class="fadmin-website-add" method="post">';
+					$content .= '<table>';
+						$content .= '<tr>';
+							$content .= '<td>Tittel:</td>';
+							$content .= '<td><input type="text" name="title"></td>';
+						$content .= '</tr>';
+						$content .= '<tr>';
+							$content .= '<td>Tekst:</td>';
+							$content .= '<td><textarea name="content" rows="10" cols="80"></textarea></td>';
+						$content .= '</tr>';
+						$content .= '<tr>';
+							$content .= '<td></td>';
+							$content .= '<td><input type="submit" value="Publiser"></td>';
+						$content .= '</tr>';
+					$content .= '</table>';
+				$content .= '</form>';
 			} else {
-				echo 'Du har ikke rettigheter til dette!';
+				$content .= 'Du har ikke rettigheter til dette!';
 			}
 		} else {
-			echo 'Du er ikke logget inn!';
+			$content .= 'Du er ikke logget inn!';
 		}
+
+		return $content;
 	}
 }
 ?>

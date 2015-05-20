@@ -29,55 +29,59 @@ class DeveloperSwitchUserPage extends DeveloperPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('developer.switch.user')) {
-				echo '<div class="row">';
-					echo '<div class="col-md-4">';
-						echo '<div class="box">';
-							echo '<div class="box-header with-border">';
-								echo '<h3 class="box-title">Bytt til en annen bruker</h3>';
-							echo '</div>';
-							echo '<div class="box-body">';
-								echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker.</p>';
-								echo '<p>Dette er en funksjon som <b>ikke</b> skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-4">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-header with-border">';
+								$content .= '<h3 class="box-title">Bytt til en annen bruker</h3>';
+							$content .= '</div>';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker.</p>';
+								$content .= '<p>Dette er en funksjon som <b>ikke</b> skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
 
-								echo '<form class="developer-switch-user" method="post">';
-									echo '<div class="input-group">';
-										echo '<select class="form-control" name="userId" autofocus>';
+								$content .= '<form class="developer-switch-user" method="post">';
+									$content .= '<div class="input-group">';
+										$content .= '<select class="form-control" name="userId" autofocus>';
 											$userList = UserHandler::getUsers();
 											
 											foreach ($userList as $user) {
-												echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
+												$content .= '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
 											}
-										echo '</select>';
-				                    	echo '<span class="input-group-btn">';
-				                      		echo '<button class="btn btn-info btn-flat" type="button">Bytt</button>';
-				                    	echo '</span>';
-				                 	echo '</div><!-- /input-group -->';
-				                echo '</form>';
-							echo '</div><!-- /.box-body -->';
-						echo '</div><!-- /.box -->';
-					echo '</div><!--/.col (left) -->';
-				echo '</div><!-- /.row -->';
+										$content .= '</select>';
+				                    	$content .= '<span class="input-group-btn">';
+				                      		$content .= '<button class="btn btn-info btn-flat" type="button">Bytt</button>';
+				                    	$content .= '</span>';
+				                 	$content .= '</div><!-- /input-group -->';
+				                $content .= '</form>';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (left) -->';
+				$content .= '</div><!-- /.row -->';
 
-				echo '<script src="scripts/developer-switch-user.js"></script>';
+				$content .= '<script src="scripts/developer-switch-user.js"></script>';
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo 'Du har ikke rettigheter til dette!';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= 'Du har ikke rettigheter til dette!';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

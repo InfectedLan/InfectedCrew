@@ -30,16 +30,20 @@ class AdminPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('admin')) {
-				echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
+				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
 			} else {
-				echo '<p>Du har ikke tilgang til dette.</p>';
+				$content .= '<p>Du har ikke tilgang til dette.</p>';
 			}
 		}
+
+		return $content;
 	}
 }
 ?>

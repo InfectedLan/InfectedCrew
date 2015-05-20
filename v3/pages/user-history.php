@@ -43,6 +43,8 @@ class UserHistoryPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
@@ -52,50 +54,52 @@ class UserHistoryPage implements IPage {
 				$eventList = UserHistoryHandler::getEventsByUser($historyUser);
 
 				if (!empty($eventList)) {
-					echo '<div class="row">';
-						echo '<div class="col-md-6">';
-						  	echo '<div class="box">';
-								echo '<div class="box-body">';
-									echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
-									echo '<table class="table table-bordered">';
-										echo '<tr>';
-											echo '<th>Arrangement</th>';
-											echo '<th>Rolle</th>';
-										echo '</tr>';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
+						  	$content .= '<div class="box">';
+								$content .= '<div class="box-body">';
+									$content .= '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
+									$content .= '<table class="table table-bordered">';
+										$content .= '<tr>';
+											$content .= '<th>Arrangement</th>';
+											$content .= '<th>Rolle</th>';
+										$content .= '</tr>';
 
 										foreach ($eventList as $event) {
-											echo '<tr>';
-												echo '<td>' . $event->getTitle() . '</td>';
-												echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
-											echo '</tr>';
+											$content .= '<tr>';
+												$content .= '<td>' . $event->getTitle() . '</td>';
+												$content .= '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+											$content .= '</tr>';
 										}
 
-									echo '</table>';
-								echo '</div><!-- /.box-body -->';
-						  	echo '</div><!-- /.box -->';
-						echo '</div><!--/.col (left) -->';
-					echo '</div><!-- /.row -->';
+									$content .= '</table>';
+								$content .= '</div><!-- /.box-body -->';
+						  	$content .= '</div><!-- /.box -->';
+						$content .= '</div><!--/.col (left) -->';
+					$content .= '</div><!-- /.row -->';
 				} else {
-					echo '<div class="box">';
-						echo '<div class="box-body">';
-							echo '<p>Denne brukeren har ikke noe historie enda.</p>';
-						echo '</div><!-- /.box-body -->';
-					echo '</div><!-- /.box -->';
+					$content .= '<div class="box">';
+						$content .= '<div class="box-body">';
+							$content .= '<p>Denne brukeren har ikke noe historie enda.</p>';
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				}
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo 'Du har ikke rettigheter til dette.';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= 'Du har ikke rettigheter til dette.';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

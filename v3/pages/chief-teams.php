@@ -28,6 +28,8 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -38,199 +40,201 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 					$user->hasPermission('chief.teams')) {
 					$teamList = $user->getGroup()->getTeams();
 					$userList = $group->getMembers();
-					echo '<script src="scripts/chief-teams.js"></script>';
+					$content .= '<script src="scripts/chief-teams.js"></script>';
 
-					echo '<div class="row">';
-						echo '<div class="col-md-12">';
-					  		echo '<div class="box box-solid">';
-								echo '<div class="box-header with-border">';
-						  			echo '<h3 class="box-title">Lag</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-12">';
+					  		$content .= '<div class="box box-solid">';
+								$content .= '<div class="box-header with-border">';
+						  			$content .= '<h3 class="box-title">Lag</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
 						  
 									if (!empty($teamList)) {
-										echo '<table class="table table-bordered">';
-											echo '<tr>';
-												echo '<th>Navn</th>';
-												echo '<th>Medlemmer</th>';
-												echo '<th>Beskrivelse</th>';
-												echo '<th>Shift-leder</th>';
-											echo '</tr>';
+										$content .= '<table class="table table-bordered">';
+											$content .= '<tr>';
+												$content .= '<th>Navn</th>';
+												$content .= '<th>Medlemmer</th>';
+												$content .= '<th>Beskrivelse</th>';
+												$content .= '<th>Shift-leder</th>';
+											$content .= '</tr>';
 											
 											foreach ($teamList as $team) {
-												echo '<tr>';
-													echo '<form class="chief-teams-edit" method="post">';
-														echo '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
-														echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-														echo '<td>' . $group->getTitle() . ':<input type="text" name="title" value="' . $team->getTitle() . '"></td>';
-														echo '<td>' . count($team->getMembers()) . '</td>';
-														echo '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
-														echo '<td>';
-															echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-																echo '<option value="0"></option>';
+												$content .= '<tr>';
+													$content .= '<form class="chief-teams-edit" method="post">';
+														$content .= '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
+														$content .= '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
+														$content .= '<td>' . $group->getTitle() . ':<input type="text" name="title" value="' . $team->getTitle() . '"></td>';
+														$content .= '<td>' . count($team->getMembers()) . '</td>';
+														$content .= '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
+														$content .= '<td>';
+															$content .= '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+																$content .= '<option value="0"></option>';
 
 																foreach ($userList as $userValue) {
 																	if ($userValue->equals($team->getLeader())) {
-																		echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+																		$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 																	} else {
-																		echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+																		$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 																	}
 																}
-															echo '</select>';
-														echo '</td>';
-														echo '<td><button class="btn btn-block btn-primary">Endre</button></td>';
-													echo '</form>';
-													echo '<td><button class="btn btn-block btn-primary" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')">Slett</button></td>';
-												echo '</tr>';
+															$content .= '</select>';
+														$content .= '</td>';
+														$content .= '<td><button class="btn btn-block btn-primary">Endre</button></td>';
+													$content .= '</form>';
+													$content .= '<td><button class="btn btn-block btn-primary" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')">Slett</button></td>';
+												$content .= '</tr>';
 											}
 
-										echo '</table>';
+										$content .= '</table>';
 									} else {
-										echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
+										$content .= '<p>Det finnes ikke noen lag i denne gruppen.</p>';
 									}
 
-								echo '</div><!-- /.box-body -->';
-					  		echo '</div><!-- /.box -->';
-						echo '</div><!-- ./col -->';
-				  	echo '</div><!-- /.row -->';
+								$content .= '</div><!-- /.box-body -->';
+					  		$content .= '</div><!-- /.box -->';
+						$content .= '</div><!-- ./col -->';
+				  	$content .= '</div><!-- /.row -->';
 
-				  	echo '<div class="row">';
-						echo '<div class="col-md-6">';
-					  		echo '<div class="box box-solid">';
-								echo '<div class="box-header with-border">';
-							  		echo '<h3 class="box-title">Medlemmer</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
+				  	$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
+					  		$content .= '<div class="box box-solid">';
+								$content .= '<div class="box-header with-border">';
+							  		$content .= '<h3 class="box-title">Medlemmer</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
 									
 									if (!empty($teamList)) {
 										$freeUserList = getFreeUsers($group);
 
 										if (!empty($freeUserList)) {
-											echo '<table>';
-												echo '<tr>';
-													echo '<form class="chief-teams-adduser" method="post">';
-														echo '<td>';
-															echo '<select class="chosen-select" name="userId">';
+											$content .= '<table>';
+												$content .= '<tr>';
+													$content .= '<form class="chief-teams-adduser" method="post">';
+														$content .= '<td>';
+															$content .= '<select class="chosen-select" name="userId">';
 																foreach ($freeUserList as $userValue) {
-																	echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+																	$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 																}
-															echo '</select>';
-														echo '</td>';
-														echo '<td>';
-															echo '<select class="chosen-select" name="teamId">';
+															$content .= '</select>';
+														$content .= '</td>';
+														$content .= '<td>';
+															$content .= '<select class="chosen-select" name="teamId">';
 																foreach ($teamList as $team) {
-																	echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+																	$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 																}
-															echo '</select>';
-														echo '</td>';
-														echo '<td><input type="submit" value="Legg til"></td>';
-													echo '</form>';
-												echo '</tr>';
-											echo '</table>';
+															$content .= '</select>';
+														$content .= '</td>';
+														$content .= '<td><input type="submit" value="Legg til"></td>';
+													$content .= '</form>';
+												$content .= '</tr>';
+											$content .= '</table>';
 										} else {
-											echo '<p>Alle medlemmer av "' . $group->getTitle() . '" crew er allerede med i et lag.</p>';
+											$content .= '<p>Alle medlemmer av "' . $group->getTitle() . '" crew er allerede med i et lag.</p>';
 										}
 										
 										foreach ($teamList as $team) {
 											$memberList = $team->getMembers();
 											
-											echo '<h4>' . $group->getTitle() . ':' . $team->getTitle() . '</h4>';
-											echo '<table>';
+											$content .= '<h4>' . $group->getTitle() . ':' . $team->getTitle() . '</h4>';
+											$content .= '<table>';
 												if (!empty($memberList)) {
 													foreach ($memberList as $userValue) {
-														echo '<tr>';
-															echo '<td>' . $userValue->getDisplayName() . '</td>';
-															echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
-														echo '</tr>';
+														$content .= '<tr>';
+															$content .= '<td>' . $userValue->getDisplayName() . '</td>';
+															$content .= '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
+														$content .= '</tr>';
 													}
 													
 													if (count($teamList) > 1) {
-														echo '<tr>';
-															echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
-														echo '</tr>';
+														$content .= '<tr>';
+															$content .= '<td><input type="button" value="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
+														$content .= '</tr>';
 													}
 												} else {
-													echo '<i>Det er ingen medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '.</i>';
+													$content .= '<i>Det er ingen medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '.</i>';
 												}
-											echo '</table>';
+											$content .= '</table>';
 										}
 									} else {
-										echo '<p>Det finnes ikke noen lag i denne gruppen.</p>';
+										$content .= '<p>Det finnes ikke noen lag i denne gruppen.</p>';
 									}
 
-								echo '</div><!-- /.box-body -->';
-							echo '</div><!-- /.box -->';
-						echo '</div><!-- ./col -->';
-						echo '<div class="col-md-4">';
-						  	echo '<div class="box box-solid">';
-								echo '<div class="box-header with-border">';
-							  		echo '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
-									echo '<form class="chief-teams-add" method="post">';
-										echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-										echo '<table>';
-											echo '<tr>';
-												echo '<td>';
-													echo '<div class="form-group has-feedback">';
-														echo '<input type="text" class="form-control" name="title" placeholder="Navn" required>';
-													echo '</div>';
-												echo '</td>';
-											echo '<tr>';
-											echo '</tr>';
-											echo '<tr>';
-												echo '<td>';
-													echo '<div class="form-group has-feedback">';
-														echo '<input type="text" class="form-control" name="description" placeholder="Beskrivelse" required>';
-													echo '</div>';
-												echo '</td>';
-											echo '</tr>';
-											echo '<tr>';
-												echo '<td>';
-													echo '<div class="form-group">';
-													  	echo '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								$content .= '</div><!-- /.box-body -->';
+							$content .= '</div><!-- /.box -->';
+						$content .= '</div><!-- ./col -->';
+						$content .= '<div class="col-md-4">';
+						  	$content .= '<div class="box box-solid">';
+								$content .= '<div class="box-header with-border">';
+							  		$content .= '<h3 class="box-title">Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
+									$content .= '<form class="chief-teams-add" method="post">';
+										$content .= '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
+										$content .= '<table>';
+											$content .= '<tr>';
+												$content .= '<td>';
+													$content .= '<div class="form-group has-feedback">';
+														$content .= '<input type="text" class="form-control" name="title" placeholder="Navn" required>';
+													$content .= '</div>';
+												$content .= '</td>';
+											$content .= '<tr>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td>';
+													$content .= '<div class="form-group has-feedback">';
+														$content .= '<input type="text" class="form-control" name="description" placeholder="Beskrivelse" required>';
+													$content .= '</div>';
+												$content .= '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td>';
+													$content .= '<div class="form-group">';
+													  	$content .= '<select class="form-control chosen-select" name="leader" data-placeholder="Velg en chief...">';
 														 	
-														 	echo '<option value="0"></option>';
+														 	$content .= '<option value="0"></option>';
 														
 															foreach ($userList as $userValue) {
-																echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 															}
 
-													  	echo '</select>';
-													echo '</div>';
+													  	$content .= '</select>';
+													$content .= '</div>';
 
 													/*
-													echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-														echo '<option value="0"></option>';
+													$content .= '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+														$content .= '<option value="0"></option>';
 														
 														foreach ($userList as $userValue) {
-															echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+															$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 														}
-													echo '</select>';
+													$content .= '</select>';
 													*/
-												echo '</td>';
-											echo '</tr>';
-											echo '<tr>';
-												echo '<td><button class="btn btn-block btn-primary">Legg til</button></td>';
-											echo '</tr>';
-										echo '</table>';
-									echo '</form>';
-								echo '</div><!-- /.box-body -->';
-							echo '</div><!-- /.box -->';
-						echo '</div><!-- ./col -->';
-				  	echo '</div><!-- /.row -->';
+												$content .= '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><button class="btn btn-block btn-primary">Legg til</button></td>';
+											$content .= '</tr>';
+										$content .= '</table>';
+									$content .= '</form>';
+								$content .= '</div><!-- /.box-body -->';
+							$content .= '</div><!-- /.box -->';
+						$content .= '</div><!-- ./col -->';
+				  	$content .= '</div><!-- /.row -->';
 				} else {
-					echo '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '<p>Du har ikke rettigheter til dette!</p>';
 				}
 			} else {
-				echo 'Du er ikke i noen gruppe!';
+				$content .= 'Du er ikke i noen gruppe!';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			$content .= '<p>Du er ikke logget inn!</p>';
 		}
+
+		return $content;
 	}
 
-	public function getFreeUsers($group) {
+	private function getFreeUsers($group) {
 		$freeUserList = $group->getMembers();
 		
 		foreach ($freeUserList as $key => $freeUser) {
