@@ -47,6 +47,8 @@ class TicketPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -57,64 +59,66 @@ class TicketPage implements IPage {
 					$ticket = TicketHandler::getTicket($_GET['id']);
 					
 					if ($ticket != null) {
-						echo '<h3>' . $ticket->getString() . '</h3>';
+						$content .= '<h3>' . $ticket->getString() . '</h3>';
 						
-						echo '<table>';
-							echo '<tr>';
-								echo '<td>Billettnummer:</td>';
-								echo '<td>' . $ticket->getId() . '</td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Type:</td>';
-								echo '<td>' . $ticket->getType()->getTitle() . '</td>';
-							echo '</tr>';
-							echo '<tr>';
+						$content .= '<table>';
+							$content .= '<tr>';
+								$content .= '<td>Billettnummer:</td>';
+								$content .= '<td>' . $ticket->getId() . '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>Type:</td>';
+								$content .= '<td>' . $ticket->getType()->getTitle() . '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
 								$buyerUser = $ticket->getBuyer();
 
-								echo '<td>Kjøpt av:</td>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
-							echo '</tr>';
-							echo '<tr>';
+								$content .= '<td>Kjøpt av:</td>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
 								$ticketUser = $ticket->getUser();
 
-								echo '<td>Brukes av:</td>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
-							echo '</tr>';
-							echo '<tr>';
+								$content .= '<td>Brukes av:</td>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
 								$seaterUser = $ticket->getSeater();
 
-								echo '<td>Plasseres av:</td>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
-							echo '</tr>';
+								$content .= '<td>Plasseres av:</td>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
+							$content .= '</tr>';
 
 							if ($ticket->isSeated()) {
-								echo '<tr>';
-									echo '<td>Plass:</td>';
-									echo '<td>' . $ticket->getSeat()->getString() . '</td>';
-								echo '</tr>';
+								$content .= '<tr>';
+									$content .= '<td>Plass:</td>';
+									$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
+								$content .= '</tr>';
 							}
 
-							echo '<tr>';
-								echo '<td>Kan returneres?</td>';
-								echo '<td>' . ($ticket->isRefundable() ? 'Ja' : 'Nei') . '</td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Sjekket inn?</td>';
-								echo '<td>' . ($ticket->isCheckedIn() ? 'Ja' : 'Nei') . '</td>';
-							echo '</tr>';
-						echo '</table>';
+							$content .= '<tr>';
+								$content .= '<td>Kan returneres?</td>';
+								$content .= '<td>' . ($ticket->isRefundable() ? 'Ja' : 'Nei') . '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>Sjekket inn?</td>';
+								$content .= '<td>' . ($ticket->isCheckedIn() ? 'Ja' : 'Nei') . '</td>';
+							$content .= '</tr>';
+						$content .= '</table>';
 					} else {
-						echo '<p>Billetten finnes ikke.</p>';
+						$content .= '<p>Billetten finnes ikke.</p>';
 					}
 				} else {
-					echo '<p>Ingen billett spesifisert.</p>';
+					$content .= '<p>Ingen billett spesifisert.</p>';
 				}
 			} else {
-				echo 'Du har ikke rettigheter til dette.';
+				$content .= 'Du har ikke rettigheter til dette.';
 			}
 		} else {
-			echo 'Du er ikke logget inn.';
+			$content .= 'Du er ikke logget inn.';
 		}
+
+		return $content;
 	}
 }
 ?>

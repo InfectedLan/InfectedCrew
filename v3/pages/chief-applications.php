@@ -30,6 +30,8 @@ class ChiefApplicationsPage extends ChiefPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -51,102 +53,104 @@ class ChiefApplicationsPage extends ChiefPage implements IPage {
 					$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsForGroup($group);
 				}
 				
-				echo '<script src="scripts/chief-applications.js"></script>';
+				$content .= '<script src="scripts/chief-applications.js"></script>';
 				
-				echo '<h3>Åpne søknader:</h3>';
+				$content .= '<h3>Åpne søknader:</h3>';
 				
 				if (!empty($pendingApplicationList)) {
-					echo '<table>';
-						echo '<tr>';
-							echo '<th>Søker\'s navn</th>';
-							echo '<th>Crew</th>';
-							echo '<th>Dato søkt</th>';
-							echo '<th>Status</th>';
-						echo '</tr>';
+					$content .= '<table>';
+						$content .= '<tr>';
+							$content .= '<th>Søker\'s navn</th>';
+							$content .= '<th>Crew</th>';
+							$content .= '<th>Dato søkt</th>';
+							$content .= '<th>Status</th>';
+						$content .= '</tr>';
 						
 						foreach ($pendingApplicationList as $application) {
 							$applicationUser = $application->getUser();
 							
-							echo '<tr>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
-								echo '<td>' . $application->getGroup()->getTitle() . '</td>';
-								echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
-								echo '<td>' . $application->getStateAsString() . '</td>';
-								echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
-								echo '<td><input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')"></td>';
-							echo '</tr>';
+							$content .= '<tr>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+								$content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
+								$content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+								$content .= '<td>' . $application->getStateAsString() . '</td>';
+								$content .= '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
+								$content .= '<td><input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')"></td>';
+							$content .= '</tr>';
 						}
-					echo '</table>';
+					$content .= '</table>';
 				} else {
-					echo '<p>Det er ingen søknader som venter på godkjenning.</p>';
+					$content .= '<p>Det er ingen søknader som venter på godkjenning.</p>';
 				}
 				
-				echo '<h3>Søknader i kø:</h3>';
+				$content .= '<h3>Søknader i kø:</h3>';
 				
 				if (!empty($queuedApplicationList)) {
-					echo '<table>';
-						echo '<tr>';
-							echo '<th>Plass</th>';
-							echo '<th>Søker\'s navn</th>';
-							echo '<th>Crew</th>';
-							echo '<th>Dato søkt</th>';
-							echo '<th>Status</th>';
-						echo '</tr>';
+					$content .= '<table>';
+						$content .= '<tr>';
+							$content .= '<th>Plass</th>';
+							$content .= '<th>Søker\'s navn</th>';
+							$content .= '<th>Crew</th>';
+							$content .= '<th>Dato søkt</th>';
+							$content .= '<th>Status</th>';
+						$content .= '</tr>';
 						
 						$index = 1;
 						
 						foreach ($queuedApplicationList as $application) {
 							$applicationUser = $application->getUser();
 						
-							echo '<tr>';
-								echo '<td>' . $index . '</td>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
-								echo '<td>' . $application->getGroup()->getTitle() . '</td>';
-								echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
-								echo '<td>' . $application->getStateAsString() . '</td>';
-								echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
-								echo '<td><input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')"></td>';
-							echo '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>' . $index . '</td>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+								$content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
+								$content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+								$content .= '<td>' . $application->getStateAsString() . '</td>';
+								$content .= '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
+								$content .= '<td><input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')"></td>';
+							$content .= '</tr>';
 							
 							$index++;
 						}
-					echo '</table>';
+					$content .= '</table>';
 				} else {
-					echo '<p>Det er ingen søknader i køen.</p>';
+					$content .= '<p>Det er ingen søknader i køen.</p>';
 				}
 				
-				echo '<h3>Tidligere søknader:</h3>';
+				$content .= '<h3>Tidligere søknader:</h3>';
 				
 				if (!empty($acceptedApplicationList)) {
-					echo '<table>';
-						echo '<tr>';
-							echo '<th>Arrangement</th>';
-							echo '<th>Søker\'s navn</th>';
-							echo '<th>Crew</th>';
-							echo '<th>Dato søkt</th>';
-						echo '</tr>';
+					$content .= '<table>';
+						$content .= '<tr>';
+							$content .= '<th>Arrangement</th>';
+							$content .= '<th>Søker\'s navn</th>';
+							$content .= '<th>Crew</th>';
+							$content .= '<th>Dato søkt</th>';
+						$content .= '</tr>';
 						
 						foreach ($acceptedApplicationList as $application) {
 							$applicationUser = $application->getUser();
 							
-							echo '<tr>';
-								echo '<td>' . $application->getEvent()->getTitle() . '</td>';
-								echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
-								echo '<td>' . $application->getGroup()->getTitle() . '</td>';
-								echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
-								echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
-							echo '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>' . $application->getEvent()->getTitle() . '</td>';
+								$content .= '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+								$content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
+								$content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+								$content .= '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
+							$content .= '</tr>';
 						}
-					echo '</table>';
+					$content .= '</table>';
 				} else {
-					echo '<p>Det er ingen godkjente søknader i arkivet.</p>';
+					$content .= '<p>Det er ingen godkjente søknader i arkivet.</p>';
 				}
 			} else {
-				echo 'Bare crew ledere kan se søknader.';
+				$content .= 'Bare crew ledere kan se søknader.';
 			}
 		} else {
-			echo 'Du er ikke logget inn!';
+			$content .= 'Du er ikke logget inn!';
 		}
+
+		return $content;
 	}
 }
 ?>

@@ -30,36 +30,39 @@ class EventSeatmapPage extends EventPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
 		$id = isset($_GET['id']) ? $_GET['id'] : EventHandler::getCurrentEvent()->getSeatmap()->getId();
 
-		echo '<div class="box">';
-			echo '<div class="box-body">';
+		$content .= '<div class="box">';
+			$content .= '<div class="box-body">';
 
 				if (Session::isAuthenticated()) {
 					$user = Session::getCurrentUser();
 
 					if ($user->hasPermission('*') ||
 						$user->hasPermission('event.seatmap')) {
-						echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
+						$content .= '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 
-						echo '<div id="seatmapCanvas"></div>';
+						$content .= '<div id="seatmapCanvas"></div>';
 
-						echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
-						echo '<script>';
-							echo 'var seatmapId = ' . $id . ';';
-							echo '$(document).ready(function() {';
-								echo 'downloadAndRenderSeatmap("#seatmapCanvas");';
-							echo '});';
-						echo '</script>';
+						$content .= '<script src="../api/scripts/seatmapRenderer.js"></script>';
+						$content .= '<script>';
+							$content .= 'var seatmapId = ' . $id . ';';
+							$content .= '$(document).ready(function() {';
+								$content .= 'downloadAndRenderSeatmap("#seatmapCanvas");';
+							$content .= '});';
+						$content .= '</script>';
 					} else {
-						echo '<p>Du har ikke rettigheter til dette!</p>';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
 					}
 				} else {
-					echo '<p>Du er ikke logget inn!</p>';
+					$content .= '<p>Du er ikke logget inn!</p>';
 				}
 
-			echo '</div><!-- /.box-body -->';
-		echo '</div><!-- /.box -->';
+			$content .= '</div><!-- /.box-body -->';
+		$content .= '</div><!-- /.box -->';
+
+		return $content;
 	}
 }
 ?>

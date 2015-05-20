@@ -31,6 +31,8 @@ class EditPagePage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -41,26 +43,28 @@ class EditPagePage implements IPage {
 					$page = PageHandler::getPage($_GET['id']);
 						
 					if ($page != null) {
-						echo '<script src="scripts/edit-page.js"></script>';
-						echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
+						$content .= '<script src="scripts/edit-page.js"></script>';
+						$content .= '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 						
-						echo '<form class="edit-page" method="post">';
-							echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
-							echo '<table>';
-								echo '<tr>';
-									echo '<td>Tittel:</td>';
-									echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
-								echo '</tr>';
-							echo '</table>';
-							echo '<textarea name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
-							echo '<input type="submit" value="Endre">';
-						echo '</form>';
+						$content .= '<form class="edit-page" method="post">';
+							$content .= '<input type="hidden" name="id" value="' . $page->getId() . '">';
+							$content .= '<table>';
+								$content .= '<tr>';
+									$content .= '<td>Tittel:</td>';
+									$content .= '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir også navnet på linken til siden).</td>';
+								$content .= '</tr>';
+							$content .= '</table>';
+							$content .= '<textarea name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
+							$content .= '<input type="submit" value="Endre">';
+						$content .= '</form>';
 					} else {
-						echo '<p>Siden finnes ikke.</p>';
+						$content .= '<p>Siden finnes ikke.</p>';
 					}
 				}
 			}
 		}
+
+		return $content;
 	}
 }
 ?>

@@ -29,18 +29,22 @@ class ChiefPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief')) {
-				echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
+				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
 			} else {
-				echo 'Du har ikke rettigheter til dette!';
+				$content .= 'Du har ikke rettigheter til dette!';
 			}
 		} else {
-			echo 'Du er ikke logget inn!';
+			$content .= 'Du er ikke logget inn!';
 		}
+
+		return $content;
 	}
 }
 ?>

@@ -29,14 +29,16 @@ class ChiefAvatarsPage extends ChiefPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.avatars')) {
-				echo '<script src="scripts/chief-avatars.js"></script>';
+				$content .= '<script src="scripts/chief-avatars.js"></script>';
 			
-				echo '<h3>Godkjenn profilbilder</h3>';
+				$content .= '<h3>Godkjenn profilbilder</h3>';
 				
 				$pendingAvatarList = AvatarHandler::getPendingAvatars();
 				
@@ -46,34 +48,36 @@ class ChiefAvatarsPage extends ChiefPage implements IPage {
 					foreach ($pendingAvatarList as $avatar) {
 						$avatarUser = $avatar->getUser();
 					
-						echo '<div class="';
+						$content .= '<div class="';
 							if ($index % 2 == 0) {
-								echo 'avatarLeft';
+								$content .= 'avatarLeft';
 							} else {
-								echo 'avatarRight';
+								$content .= 'avatarRight';
 							}
-						echo '">';
-							echo '<p>' . $avatarUser->getDisplayName() . '</p>';
-							echo '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" width="300" height="200">';
-							echo '<table>';
-								echo '<tr>';
-									echo '<td><input type="button" value="Godta" onClick="acceptAvatar(' . $avatar->getId() . ')"></td>';
-									echo '<td><input type="button" value="Avslå" onClick="rejectAvatar(' . $avatar->getId() . ')"></td>';
-								echo '</tr>';
-							echo '</table>';
-						echo '</div>';
+						$content .= '">';
+							$content .= '<p>' . $avatarUser->getDisplayName() . '</p>';
+							$content .= '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" width="300" height="200">';
+							$content .= '<table>';
+								$content .= '<tr>';
+									$content .= '<td><input type="button" value="Godta" onClick="acceptAvatar(' . $avatar->getId() . ')"></td>';
+									$content .= '<td><input type="button" value="Avslå" onClick="rejectAvatar(' . $avatar->getId() . ')"></td>';
+								$content .= '</tr>';
+							$content .= '</table>';
+						$content .= '</div>';
 							
 						$index++;
 					}
 				} else {
-					echo '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
+					$content .= '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
 				}
 			} else {
-				echo '<p>Du har ikke rettigheter til dette!</p>';
+				$content .= '<p>Du har ikke rettigheter til dette!</p>';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			$content .= '<p>Du er ikke logget inn!</p>';
 		}
+
+		return $content;
 	}
 }
 ?>

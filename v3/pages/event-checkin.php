@@ -30,55 +30,59 @@ class EventCheckInPage extends EventPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('event.checkin')) {
-				echo '<div class="row">';
-					echo '<div class="col-md-4">';
-						echo '<div class="box">';
-							echo '<div class="box-header with-border">';
-								echo '<h3 class="box-title">Sjekk inn en billett</h3>';
-							echo '</div>';
-							echo '<div class="box-body">';
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-4">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-header with-border">';
+								$content .= '<h3 class="box-title">Sjekk inn en billett</h3>';
+							$content .= '</div>';
+							$content .= '<div class="box-body">';
 
 								$event = EventHandler::getCurrentEvent();
 								$season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
 								$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . '_' . date('Y', $event->getStartTime());
 								
-								echo '<form class="navbar-form navbar-left">';
-									echo '<div class="form-group">';
-										echo '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
-										echo '<div class="input-group">';
-											echo '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
-											echo '<span class="input-group-btn">';
-										  		echo '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
-											echo '</span>';
-									  	echo '</div>';
-									echo '</div>';
-								echo '</form>';
-								echo '<div id="ticketDetails"></div>';
-							echo '</div><!-- /.box-body -->';
-						echo '</div><!-- /.box -->';
-					echo '</div><!--/.col (left) -->';
-				echo '</div><!-- /.row -->';
+								$content .= '<form class="navbar-form navbar-left">';
+									$content .= '<div class="form-group">';
+										$content .= '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
+										$content .= '<div class="input-group">';
+											$content .= '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
+											$content .= '<span class="input-group-btn">';
+										  		$content .= '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
+											$content .= '</span>';
+									  	$content .= '</div>';
+									$content .= '</div>';
+								$content .= '</form>';
+								$content .= '<div id="ticketDetails"></div>';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (left) -->';
+				$content .= '</div><!-- /.row -->';
 
-				echo '<script src="scripts/event-checkin.js"></script>';
+				$content .= '<script src="scripts/event-checkin.js"></script>';
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo '<p>Du har ikke rettigheter til dette!</p>';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

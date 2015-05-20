@@ -29,6 +29,8 @@ class EventMemberListPage extends EventPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -37,82 +39,84 @@ class EventMemberListPage extends EventPage implements IPage {
 				
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.memberlist')) {
-					echo '<div class="row">';
-						echo '<div class="col-md-6">';
-						  	echo '<div class="box">';
-								echo '<div class="box-header">';
-							  		echo '<h3 class="box-title">Hent ut medlemsliste</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
-									echo '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
+						  	$content .= '<div class="box">';
+								$content .= '<div class="box-header">';
+							  		$content .= '<h3 class="box-title">Hent ut medlemsliste</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
+									$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
 
-							  		echo '<form class="memberlist" method="post">';
-										echo '<div class="form-group">';
-								  			echo '<label>År</label>';
-								  			echo '<select class="form-control" name="year">';
+							  		$content .= '<form class="memberlist" method="post">';
+										$content .= '<div class="form-group">';
+								  			$content .= '<label>År</label>';
+								  			$content .= '<select class="form-control" name="year">';
 												
 												$eventList = EventHandler::getEvents();
 												
 												for ($year = date('Y', reset($eventList)->getStartTime()); $year <= date('Y'); $year++) {
 													if ($year == date('Y')) {
-														echo '<option value="' . $year . '" selected>' . $year . '</option>';
+														$content .= '<option value="' . $year . '" selected>' . $year . '</option>';
 													} else {
-														echo '<option value="' . $year . '">' . $year . '</option>';
+														$content .= '<option value="' . $year . '">' . $year . '</option>';
 													}
 												}
 
-											echo '</select>';
-										echo '</div>';
-										echo '<div class="form-group">';
-										  	echo '<label>Aldersgrense</label>';
-										  	echo '<select class="form-control" name="ageLimit">';
+											$content .= '</select>';
+										$content .= '</div>';
+										$content .= '<div class="form-group">';
+										  	$content .= '<label>Aldersgrense</label>';
+										  	$content .= '<select class="form-control" name="ageLimit">';
 												
 												for ($age = 1; $age <= 100; $age++) {
 													if ($age == 20) {
-														echo '<option value="' . $age . '" selected>' . $age . ' År</option>';
+														$content .= '<option value="' . $age . '" selected>' . $age . ' År</option>';
 													} else {
-														echo '<option value="' . $age . '">' . $age . ' År</option>';
+														$content .= '<option value="' . $age . '">' . $age . ' År</option>';
 													}
 												}
 
-											echo '</select>';
-										echo '</div>';
-										echo '<div class="form-group">';
-											echo '<label>Format</label>';
-											echo '<select class="form-control" name="format">';
-												echo '<option value="html" selected>Tekst (.html)</option>';
-												echo '<option value="csv">Regneark (.csv)</option>';
-											echo '</select>';
-									  	echo '</div><!-- /.form group -->';
-									  	echo '<button type="submit" class="btn btn-primary">Hent</button>';
-							  		echo '</form>';
-								echo '</div><!-- /.box-body -->';
-						  	echo '</div><!-- /.box -->';
-						echo '</div><!--/.col (left) -->';
-					echo '</div><!-- /.row -->';
+											$content .= '</select>';
+										$content .= '</div>';
+										$content .= '<div class="form-group">';
+											$content .= '<label>Format</label>';
+											$content .= '<select class="form-control" name="format">';
+												$content .= '<option value="html" selected>Tekst (.html)</option>';
+												$content .= '<option value="csv">Regneark (.csv)</option>';
+											$content .= '</select>';
+									  	$content .= '</div><!-- /.form group -->';
+									  	$content .= '<button type="submit" class="btn btn-primary">Hent</button>';
+							  		$content .= '</form>';
+								$content .= '</div><!-- /.box-body -->';
+						  	$content .= '</div><!-- /.box -->';
+						$content .= '</div><!--/.col (left) -->';
+					$content .= '</div><!-- /.row -->';
 
-					echo '<script src="scripts/event-memberlist.js"></script>';
+					$content .= '<script src="scripts/event-memberlist.js"></script>';
 				} else {
-					echo '<div class="box">';
-						echo '<div class="box-body">';
-							echo '<p>Du har ikke rettigheter til dette!</p>';
-						echo '</div><!-- /.box-body -->';
-					echo '</div><!-- /.box -->';
+					$content .= '<div class="box">';
+						$content .= '<div class="box-body">';
+							$content .= '<p>Du har ikke rettigheter til dette!</p>';
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				}
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo '<p>Du er ikke medlem av en gruppe.</p>';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du er ikke medlem av en gruppe.</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

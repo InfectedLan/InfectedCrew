@@ -30,34 +30,38 @@ class DeveloperPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') || 
 				$user->hasPermission('developer')) {
-				echo '<div class="row">';
-					echo '<div class="col-md-4">';
-						echo '<div class="box">';
-							echo '<div class="box-body">';
-								echo '<p>Du finner alle utviklerfunksjonene øverst i menyen til høyre for Infected logoen.';
-							echo '</div><!-- /.box-body -->';
-						echo '</div><!-- /.box -->';
-					echo '</div><!--/.col (left) -->';
-				echo '</div><!-- /.row -->';
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-4">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Du finner alle utviklerfunksjonene øverst i menyen til høyre for Infected logoen.';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (left) -->';
+				$content .= '</div><!-- /.row -->';
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo 'Du har ikke rettigheter til dette!';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= 'Du har ikke rettigheter til dette!';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

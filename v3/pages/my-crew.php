@@ -32,6 +32,8 @@ class MyCrewPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -40,57 +42,59 @@ class MyCrewPage implements IPage {
 					$team = TeamHandler::getTeam($_GET['teamId']);
 
 					if ($team != null) {
-						echo '<div class="box">';
-							echo '<div class="box-header with-border">';
-								echo '<h3 class="box-title">' . $team->getTitle() . '</h3>';
-							echo '</div>';
-							echo '<div class="box-body">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-header with-border">';
+								$content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+							$content .= '</div>';
+							$content .= '<div class="box-body">';
 
-								echo $team->getDescription();
+								$content .= $team->getDescription();
 
-							echo '</div><!-- /.box-body -->';	
-						echo '</div><!-- /.box -->';
+							$content .= '</div><!-- /.box-body -->';	
+						$content .= '</div><!-- /.box -->';
 
-						echo CrewUtils::displayTeam($team);
+						$content .= CrewUtils::displayTeam($team);
 					}
 				} else {
 					$group = $user->getGroup();
 					
 					if ($group != null) {
-						echo '<div class="box">';
-							echo '<div class="box-header with-border">';
-								echo '<h3 class="box-title">' . $group->getTitle() . '</h3>';
-							echo '</div>';
-							echo '<div class="box-body">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-header with-border">';
+								$content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+							$content .= '</div>';
+							$content .= '<div class="box-body">';
 
 								$page = RestrictedPageHandler::getPageByName($group->getName());
 						
 								if ($page != null) {
-									echo $page->getContent();
+									$content .= $page->getContent();
 								}
 								
-								echo  $group->getDescription();
+								$content .=  $group->getDescription();
 
-							echo '</div><!-- /.box-body -->';
-						echo '</div><!-- /.box -->';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
 
-						echo CrewUtils::displayGroup($group);
+						$content .= CrewUtils::displayGroup($group);
 					}
 				}
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo '<p>Du er ikke i noe crew!</p>';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du er ikke i noe crew!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

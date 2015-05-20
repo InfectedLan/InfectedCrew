@@ -30,22 +30,26 @@ class SearchUsersPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('search.users')) {
-				echo '<script src="scripts/search-users.js"></script>';
-				echo '<h3>Søk etter bruker</h3>';
+				$content .= '<script src="scripts/search-users.js"></script>';
+				$content .= '<h3>Søk etter bruker</h3>';
 				
-				echo '<input class="search" type="text" placeholder="Søk etter bruker..." autocomplete="off" autofocus>';
-				echo '<ul class="search-results"></ul>';
+				$content .= '<input class="search" type="text" placeholder="Søk etter bruker..." autocomplete="off" autofocus>';
+				$content .= '<ul class="search-results"></ul>';
 			} else {
-				echo '<p>Du har ikke rettigheter til dette!</p>';
+				$content .= '<p>Du har ikke rettigheter til dette!</p>';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			$content .= '<p>Du er ikke logget inn!</p>';
 		}
+
+		return $content;
 	}
 }
 ?>

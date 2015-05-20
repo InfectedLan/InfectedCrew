@@ -31,6 +31,8 @@ class EditRestrictedPagePage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -44,56 +46,58 @@ class EditRestrictedPagePage implements IPage {
 						if ($user->hasPermission('*') ||
 							$user->hasPermission('chief.my-crew') &&
 							$user->getGroup()->equals($page->getGroup())) {
-							echo '<script src="scripts/edit-restricted-page.js"></script>';
-							echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
+							$content .= '<script src="scripts/edit-restricted-page.js"></script>';
+							$content .= '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
 						
-							echo '<form class="edit-restricted-page-edit" method="post">';
-								echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
-								echo '<table>';
-									echo '<tr>';
-										echo '<td>Navn:</td>';
-										echo '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir navnet på siden).</td>';
-									echo '</tr>';
+							$content .= '<form class="edit-restricted-page-edit" method="post">';
+								$content .= '<input type="hidden" name="id" value="' . $page->getId() . '">';
+								$content .= '<table>';
+									$content .= '<tr>';
+										$content .= '<td>Navn:</td>';
+										$content .= '<td><input type="text" name="title" value="' . $page->getTitle() . '"> (Dette blir navnet på siden).</td>';
+									$content .= '</tr>';
 									
 									if ($user->getGroup()->equals($page->getGroup())) {
 										$group = $user->getGroup();
 										
-										echo '<tr>';
-											echo '<td>Tilgang:</td>';
-											echo '<td>';
-												echo '<select class="chosen-select select" name="teamId">';	
-													echo '<option value="0">Alle</option>';
+										$content .= '<tr>';
+											$content .= '<td>Tilgang:</td>';
+											$content .= '<td>';
+												$content .= '<select class="chosen-select select" name="teamId">';	
+													$content .= '<option value="0">Alle</option>';
 													
 													foreach ($group->getTeams() as $team) {
 														if ($team->equals($page->getTeam())) {
-															echo '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
+															$content .= '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
 														} else {
-															echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+															$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 														}
 													}
-												echo '</select>';
-											echo '</td>';
-										echo '</tr>';
+												$content .= '</select>';
+											$content .= '</td>';
+										$content .= '</tr>';
 									}
 									
-									echo '<tr>';
-										echo '<td>Innhold:</td>';
-										echo '<td>';
-											echo '<textarea class="editor" name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
-										echo '</td>';
-									echo '</tr>';
-								echo '</table>';
-								echo '<input type="submit" value="Endre">';
-							echo '</form>';
+									$content .= '<tr>';
+										$content .= '<td>Innhold:</td>';
+										$content .= '<td>';
+											$content .= '<textarea class="editor" name="content" rows="10" cols="80">' . $page->getContent() . '</textarea>';
+										$content .= '</td>';
+									$content .= '</tr>';
+								$content .= '</table>';
+								$content .= '<input type="submit" value="Endre">';
+							$content .= '</form>';
 						} else {
-							echo 'Du har ikke rettighet er til dette.';
+							$content .= 'Du har ikke rettighet er til dette.';
 						}
 					} else {
-						echo '<p>Siden finnes ikke.</p>';
+						$content .= '<p>Siden finnes ikke.</p>';
 					}
 				}
 			}
 		}
+
+		return $content;
 	}
 }
 ?>

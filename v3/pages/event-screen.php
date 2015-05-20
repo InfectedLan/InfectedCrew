@@ -29,6 +29,8 @@ class EventScreenPage extends EventPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
@@ -37,122 +39,124 @@ class EventScreenPage extends EventPage implements IPage {
 				
 				if ($user->hasPermission('*') || 
 					$user->hasPermission('event.screen')) {
-					echo '<div class="row">';
-						echo '<div class="col-md-6">';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
 
 							$slideList = SlideHandler::getSlides();
 						
 							if (!empty($slideList)) {
 								foreach ($slideList as $slide) {
-									echo '<div class="box">';
-										echo '<div class="box-header">';
-									  		echo '<h3 class="box-title">' . $slide->getTitle() . '</h3>';
-										echo '</div><!-- /.box-header -->';
-										echo '<div class="box-body">';
+									$content .= '<div class="box">';
+										$content .= '<div class="box-header">';
+									  		$content .= '<h3 class="box-title">' . $slide->getTitle() . '</h3>';
+										$content .= '</div><!-- /.box-header -->';
+										$content .= '<div class="box-body">';
 								  		
-											echo '<form class="slide-edit" method="post">';
-												echo '<input type="hidden" name="id" value="' . $slide->getId() . '">';
-												echo '<div class="form-group">';
-										  			echo '<label>Navn</label>';
-										  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." value="' . $slide->getTitle() . '" required>';
-												echo '</div>';
-												echo '<div class="form-group">';
-												  	echo '<label>Beskrivelse</label>';
-												  	echo '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required>';
+											$content .= '<form class="slide-edit" method="post">';
+												$content .= '<input type="hidden" name="id" value="' . $slide->getId() . '">';
+												$content .= '<div class="form-group">';
+										  			$content .= '<label>Navn</label>';
+										  			$content .= '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." value="' . $slide->getTitle() . '" required>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+												  	$content .= '<label>Beskrivelse</label>';
+												  	$content .= '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." required>';
 
-												  		echo $slide->getContent();
+												  		$content .= $slide->getContent();
 
-												  	echo '</textarea>';
-												echo '</div>';
-												echo '<div class="form-group">';
-													echo '<label>Tid og dato:</label>';
-													echo '<div class="input-group">';
-												  		echo '<div class="input-group-addon">';
-															echo '<i class="fa fa-clock-o"></i>';
-												  		echo '</div>';
-												  		echo '<input type="text" class="form-control pull-right" name="datetime" id="datetime" value="' . date('Y-m-d H:i:s', $slide->getStartTime()) . '" required>';
-													echo '</div><!-- /.input group -->';
-											  	echo '</div><!-- /.form group -->';
-											  	echo '<div class="form-group">';
-							                    	echo '<label><input type="checkbox" class="minimal" checked> Publisert?</label>';
-							                  	echo '</div>';
-											  	echo '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
-								  			echo '</form>';
-											echo '<button type="button" class="pull-right btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
-										echo '</div><!-- /.box-body -->';
-									echo '</div><!-- /.box -->';
+												  	$content .= '</textarea>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+													$content .= '<label>Tid og dato:</label>';
+													$content .= '<div class="input-group">';
+												  		$content .= '<div class="input-group-addon">';
+															$content .= '<i class="fa fa-clock-o"></i>';
+												  		$content .= '</div>';
+												  		$content .= '<input type="text" class="form-control pull-right" name="datetime" id="datetime" value="' . date('Y-m-d H:i:s', $slide->getStartTime()) . '" required>';
+													$content .= '</div><!-- /.input group -->';
+											  	$content .= '</div><!-- /.form group -->';
+											  	$content .= '<div class="form-group">';
+							                    	$content .= '<label><input type="checkbox" class="minimal" checked> Publisert?</label>';
+							                  	$content .= '</div>';
+											  	$content .= '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
+								  			$content .= '</form>';
+											$content .= '<button type="button" class="pull-right btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
+										$content .= '</div><!-- /.box-body -->';
+									$content .= '</div><!-- /.box -->';
 
-									echo '<script src="scripts/event-screen.js"></script>';
+									$content .= '<script src="scripts/event-screen.js"></script>';
 								}
 							} else {
-								echo '<div class="box box-warning">';
-									echo '<div class="box-body">';
-										echo '<p>Det har ikke blitt opprettet noen slides enda.</p>';
-									echo '</div><!-- /.box-body -->';
-								echo '</div><!-- /.box -->';
+								$content .= '<div class="box box-warning">';
+									$content .= '<div class="box-body">';
+										$content .= '<p>Det har ikke blitt opprettet noen slides enda.</p>';
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
 							}
 						
-						echo '</div><!--/.col (left) -->';
-						echo '<div class="col-md-6">';
-						  	echo '<div class="box">';
-								echo '<div class="box-header">';
-							  		echo '<h3 class="box-title">Legg til ny slide</h3>';
-								echo '</div><!-- /.box-header -->';
-								echo '<div class="box-body">';
-							  		echo '<form class="slide-add" method="post">';
-										echo '<div class="form-group">';
-								  			echo '<label>Navn</label>';
-								  			echo '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
-										echo '</div>';
-										echo '<div class="form-group">';
-										  	echo '<label>Tekst</label>';
-										  	echo '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required></textarea>';
-										echo '</div>';
-										echo '<div class="form-group">';
-											echo '<label>Tid og dato:</label>';
-											echo '<div class="input-group">';
-										  		echo '<div class="input-group-addon">';
-													echo '<i class="fa fa-clock-o"></i>';
-										  		echo '</div>';
-										  		echo '<input type="text" class="form-control pull-right" id="datetime" required>';
-											echo '</div><!-- /.input group -->';
-									  	echo '</div><!-- /.form group -->';
-									  	echo '<button type="submit" class="btn btn-primary">Legg til</button>';
-							  		echo '</form>';
-								echo '</div><!-- /.box-body -->';
-						  	echo '</div><!-- /.box -->';
-						echo '</div><!--/.col (right) -->';
-					echo '</div><!-- /.row -->';
+						$content .= '</div><!--/.col (left) -->';
+						$content .= '<div class="col-md-6">';
+						  	$content .= '<div class="box">';
+								$content .= '<div class="box-header">';
+							  		$content .= '<h3 class="box-title">Legg til ny slide</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
+							  		$content .= '<form class="slide-add" method="post">';
+										$content .= '<div class="form-group">';
+								  			$content .= '<label>Navn</label>';
+								  			$content .= '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
+										$content .= '</div>';
+										$content .= '<div class="form-group">';
+										  	$content .= '<label>Tekst</label>';
+										  	$content .= '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required></textarea>';
+										$content .= '</div>';
+										$content .= '<div class="form-group">';
+											$content .= '<label>Tid og dato:</label>';
+											$content .= '<div class="input-group">';
+										  		$content .= '<div class="input-group-addon">';
+													$content .= '<i class="fa fa-clock-o"></i>';
+										  		$content .= '</div>';
+										  		$content .= '<input type="text" class="form-control pull-right" id="datetime" required>';
+											$content .= '</div><!-- /.input group -->';
+									  	$content .= '</div><!-- /.form group -->';
+									  	$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+							  		$content .= '</form>';
+								$content .= '</div><!-- /.box-body -->';
+						  	$content .= '</div><!-- /.box -->';
+						$content .= '</div><!--/.col (right) -->';
+					$content .= '</div><!-- /.row -->';
 
-					echo '<script>';
-				    	echo '$(function () {';
+					$content .= '<script>';
+				    	$content .= '$(function () {';
 				        	// iCheck for checkbox and radio inputs
-					        echo '$(\'input[type="checkbox"].minimal, input[type="radio"].minimal\').iCheck({';
-					        	echo 'checkboxClass: \'icheckbox_minimal-blue\'';
-					        echo '});';
-				      	echo '});';
-				    echo '</script>';
+					        $content .= '$(\'input[type="checkbox"].minimal, input[type="radio"].minimal\').iCheck({';
+					        	$content .= 'checkboxClass: \'icheckbox_minimal-blue\'';
+					        $content .= '});';
+				      	$content .= '});';
+				    $content .= '</script>';
 				} else {
-					echo '<div class="box">';
-						echo '<div class="box-body">';
-							echo '<p>Du har ikke rettigheter til dette!</p>';
-						echo '</div><!-- /.box-body -->';
-					echo '</div><!-- /.box -->';
+					$content .= '<div class="box">';
+						$content .= '<div class="box-body">';
+							$content .= '<p>Du har ikke rettigheter til dette!</p>';
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				}
 			} else {
-				echo '<div class="box">';
-					echo '<div class="box-body">';
-						echo '<p>Du er ikke medlem av en gruppe.</p>';
-					echo '</div><!-- /.box-body -->';
-				echo '</div><!-- /.box -->';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du er ikke medlem av en gruppe.</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			echo '<div class="box">';
-				echo '<div class="box-body">';
-					echo '<p>Du er ikke logget inn!</p>';
-				echo '</div><!-- /.box-body -->';
-			echo '</div><!-- /.box -->';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
+
+		return $content;
 	}
 }
 ?>

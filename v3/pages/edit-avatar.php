@@ -30,47 +30,49 @@ class EditAvatarPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
 			// TODO: Sjekk om det er noen som har et uncropped bilde.
-			echo '<script>';
-				echo 'function deleteAvatar() {';
-					echo '$.getJSON(\'../api/json/avatar/deleteAvatar.php\', function(data) {';
-						echo 'if (data.result) {';
-							echo 'location.reload()';
-						echo '} else { ';
-							echo 'error(data.message);';
-						echo '}';
-					echo '});';
-				echo '}';
-			echo '</script>';
+			$content .= '<script>';
+				$content .= 'function deleteAvatar() {';
+					$content .= '$.getJSON(\'../api/json/avatar/deleteAvatar.php\', function(data) {';
+						$content .= 'if (data.result) {';
+							$content .= 'location.reload()';
+						$content .= '} else { ';
+							$content .= 'error(data.message);';
+						$content .= '}';
+					$content .= '});';
+				$content .= '}';
+			$content .= '</script>';
 			
 			if ($user->hasAvatar()) {
 				$avatar = $user->getAvatar();
 				
 				switch ($avatar->getState()) {
 					case 0:
-						echo '<script>';
-							echo '$(document).ready(function() {';
-								echo 'var options = {';
-									echo 'success: function(responseText, statusText, xhr, $form) {';
-										echo 'var data = jQuery.parseJSON(responseText);';
-										echo 'if (data.result) {';
-											echo 'location.reload();';
-										echo '} else {';
-											echo 'error(data.message);';
-										echo '}';
-									echo '}';
-								echo '};';
-								echo '$("#cropform").ajaxForm(options);';
-							echo '});';
-						echo '</script>';
-						echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
-						echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
-						echo '<script>';
-							echo '$(function() {';
-								echo '$(\'#cropbox\').Jcrop({';
+						$content .= '<script>';
+							$content .= '$(document).ready(function() {';
+								$content .= 'var options = {';
+									$content .= 'success: function(responseText, statusText, xhr, $form) {';
+										$content .= 'var data = jQuery.parseJSON(responseText);';
+										$content .= 'if (data.result) {';
+											$content .= 'location.reload();';
+										$content .= '} else {';
+											$content .= 'error(data.message);';
+										$content .= '}';
+									$content .= '}';
+								$content .= '};';
+								$content .= '$("#cropform").ajaxForm(options);';
+							$content .= '});';
+						$content .= '</script>';
+						$content .= '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
+						$content .= '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
+						$content .= '<script>';
+							$content .= '$(function() {';
+								$content .= '$(\'#cropbox\').Jcrop({';
 									//Calculate size factor. The crop pane is 800 wide.
 									$temp = explode('.', $avatar->getTemp());
 									$extension = strtolower(end($temp));
@@ -84,85 +86,87 @@ class EditAvatarPage implements IPage {
 									}
 
 									$scaleFactor = 800 / imagesx($image);
-									echo 'aspectRatio: 400/300,';
-									echo 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
-									echo 'onSelect: updateCoords';
-								echo '});';
-							echo '});';
+									$content .= 'aspectRatio: 400/300,';
+									$content .= 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
+									$content .= 'onSelect: updateCoords';
+								$content .= '});';
+							$content .= '});';
 
-							echo 'function updateCoords(c) {';
-								echo '$(\'#x\').val(c.x);';
-								echo '$(\'#y\').val(c.y);';
-								echo '$(\'#w\').val(c.w);';
-								echo '$(\'#h\').val(c.h);';
-							echo '};';
+							$content .= 'function updateCoords(c) {';
+								$content .= '$(\'#x\').val(c.x);';
+								$content .= '$(\'#y\').val(c.y);';
+								$content .= '$(\'#w\').val(c.w);';
+								$content .= '$(\'#h\').val(c.h);';
+							$content .= '};';
 
-							echo 'function checkCoords() {';
-								echo 'if (parseInt($(\'#w\').val())) return true;';
-								echo 'alert(\'Please select a crop region then press submit.\');';
-								echo 'return false;';
-							echo '};';
-						echo '</script>';
+							$content .= 'function checkCoords() {';
+								$content .= 'if (parseInt($(\'#w\').val())) return true;';
+								$content .= 'alert(\'Please select a crop region then press submit.\');';
+								$content .= 'return false;';
+							$content .= '};';
+						$content .= '</script>';
 
-					echo '<h1>Beskjær bilde</h1>';
-					echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="800">';
-					echo '<form action="../api/json/avatar/cropAvatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
-						echo '<input type="hidden" id="x" name="x">';
-						echo '<input type="hidden" id="y" name="y">';
-						echo '<input type="hidden" id="w" name="w">';
-						echo '<input type="hidden" id="h" name="h">';
-						echo '<input type="submit" value="Lagre">';
-					echo '</form><br>';
-					echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+					$content .= '<h1>Beskjær bilde</h1>';
+					$content .= '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="800">';
+					$content .= '<form action="../api/json/avatar/cropAvatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
+						$content .= '<input type="hidden" id="x" name="x">';
+						$content .= '<input type="hidden" id="y" name="y">';
+						$content .= '<input type="hidden" id="w" name="w">';
+						$content .= '<input type="hidden" id="h" name="h">';
+						$content .= '<input type="submit" value="Lagre">';
+					$content .= '</form><br>';
+					$content .= '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
 					
 					case 1:
-						echo '<h1>Ditt bilde venter på godkjenning</h1>';
-						echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
-						echo '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+						$content .= '<h1>Ditt bilde venter på godkjenning</h1>';
+						$content .= '<img src="../api/' . $avatar->getHd() . '" width="800">';
+						$content .= '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
 						
 					case 2:
-						echo '<h1>Nåværende avatar:</h1>';
-						echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
-						echo '<br>';
-						echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
+						$content .= '<h1>Nåværende avatar:</h1>';
+						$content .= '<img src="../api/' . $avatar->getHd() . '" width="800">';
+						$content .= '<br>';
+						$content .= 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
 						
 					default:
-						echo '<b>Avataren din er ikke godkjent!</b>';
-						echo '<br>';
-						echo '<input type="button" value="Slett og start på nytt" onClick="deleteAvatar()">';
+						$content .= '<b>Avataren din er ikke godkjent!</b>';
+						$content .= '<br>';
+						$content .= '<input type="button" value="Slett og start på nytt" onClick="deleteAvatar()">';
 						break;
 				}
 			} else {
-				echo '<script>';
-					echo '$(document).ready(function() {';
-						echo 'var options = {';
-							echo 'success: function(responseText, statusText, xhr, $form) {';
-								echo 'var data = jQuery.parseJSON(responseText);';
-								echo 'if (data.result) {';
-									echo 'location.reload();';
-								echo '} else {';
-									echo 'error(data.message);';
-								echo '}';
-							echo '}';
-						echo '};';
-						echo '$("#uploadForm").ajaxForm(options);';
-					echo '});';
-				echo '</script>';
-				echo '<b>Last opp profilbilde: </b>';
-				echo '<form action="../api/json/avatar/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
-					echo '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
-					echo '<label for="file">Filnavn:</label>';
-					echo '<input type="file" name="file" id="file">';
-					echo '<br>';
-					echo '<input type="submit" name="submit" value="Last opp!">';
-				echo '</form>';
+				$content .= '<script>';
+					$content .= '$(document).ready(function() {';
+						$content .= 'var options = {';
+							$content .= 'success: function(responseText, statusText, xhr, $form) {';
+								$content .= 'var data = jQuery.parseJSON(responseText);';
+								$content .= 'if (data.result) {';
+									$content .= 'location.reload();';
+								$content .= '} else {';
+									$content .= 'error(data.message);';
+								$content .= '}';
+							$content .= '}';
+						$content .= '};';
+						$content .= '$("#uploadForm").ajaxForm(options);';
+					$content .= '});';
+				$content .= '</script>';
+				$content .= '<b>Last opp profilbilde: </b>';
+				$content .= '<form action="../api/json/avatar/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
+					$content .= '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
+					$content .= '<label for="file">Filnavn:</label>';
+					$content .= '<input type="file" name="file" id="file">';
+					$content .= '<br>';
+					$content .= '<input type="submit" name="submit" value="Last opp!">';
+				$content .= '</form>';
 			}
 		} else {
-			echo '<p>Du er ikke logget inn!</p>';
+			$content .= '<p>Du er ikke logget inn!</p>';
 		}
+
+		return $content;
 	}
 }
 ?>

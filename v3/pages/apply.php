@@ -32,55 +32,59 @@ class ApplyPage implements IPage {
 	}
 
 	public function getContent() {
+		$content = null;
+
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			
-			echo '<h1>Søk deg inn i crew</h1>';
+			$content .= '<h1>Søk deg inn i crew</h1>';
 			
 			if (!$user->isGroupMember()) {
 				if ($user->hasCroppedAvatar()) {
 					$groupList = GroupHandler::getGroups();
 
-					echo '<script src="scripts/apply.js"></script>';
+					$content .= '<script src="scripts/apply.js"></script>';
 
-					echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>';
-					echo 'og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
-					echo 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count($groupList) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>';
-					echo '<p>Klar til å søke? Fyll ut skjemaet under:</p>';
-					echo '<table>';
-						echo '<form class="application" method="post">';
-							echo '<tr>';
-								echo '<td>Crew:</td>';
-								echo '<td>';
-									echo '<select name="groupId">';
+					$content .= '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>';
+					$content .= 'og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
+					$content .= 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count($groupList) . ' forksjellige crew. Disse finner du <a href="index.php?page=crewene">her</a>.</p>';
+					$content .= '<p>Klar til å søke? Fyll ut skjemaet under:</p>';
+					$content .= '<table>';
+						$content .= '<form class="application" method="post">';
+							$content .= '<tr>';
+								$content .= '<td>Crew:</td>';
+								$content .= '<td>';
+									$content .= '<select name="groupId">';
 										foreach ($groupList as $group) {
-											echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
+											$content .= '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 										}
-									echo '</select>';
-								echo '</td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td>Tekst:</td>';
-								echo '<td>';
-									echo '<textarea name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
-								echo '</td>';
-							echo '</tr>';
-							echo '<tr>';
-								echo '<td><input type="submit" value="Send søknad"></td>';
-							echo '</tr>';
-						echo '</form>';
-					echo '</table>';
+									$content .= '</select>';
+								$content .= '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>Tekst:</td>';
+								$content .= '<td>';
+									$content .= '<textarea name="content" rows="10" cols="80" placeholder="Skriv en kort oppsummering av hvorfor du vil søke her."></textarea>';
+								$content .= '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
+								$content .= '<td><input type="submit" value="Send søknad"></td>';
+							$content .= '</tr>';
+						$content .= '</form>';
+					$content .= '</table>';
 				} else {
-					echo '<p>Du er nødt til å laste opp et profilbilde for å søke. Dette gjør du <a href="index.php?page=edit-avatar">her.</a></p>';
+					$content .= '<p>Du er nødt til å laste opp et profilbilde for å søke. Dette gjør du <a href="index.php?page=edit-avatar">her.</a></p>';
 				}
 			} else {
 				$group = $user->getGroup();
 				
-				echo '<p>Du er allerede med i <a href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a>!<br>';
+				$content .= '<p>Du er allerede med i <a href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a>!<br>';
 			}
 		} else {
-			echo '<p>Du må være logget inn for å søke!<br>';
+			$content .= '<p>Du må være logget inn for å søke!<br>';
 		}
+
+		return $content;
 	}
 }
 ?>
