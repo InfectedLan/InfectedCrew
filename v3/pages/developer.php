@@ -26,7 +26,7 @@ class DeveloperPage implements IPage {
 	use Page;
 
 	public function getTitle() {
-		return 'Developer';
+		return 'Utvikler';
 	}
 
 	public function getContent() {
@@ -35,14 +35,28 @@ class DeveloperPage implements IPage {
 			
 			if ($user->hasPermission('*') || 
 				$user->hasPermission('developer')) {
-				echo '<h3>Utvikler</h3>';
-				
-				echo '<p>Du finner alle utviklerfunksjonene øverst i menyen til høyre for Infected logoen.';
+				echo '<div class="row">';
+					echo '<div class="col-md-4">';
+						echo '<div class="box">';
+							echo '<div class="box-body">';
+								echo '<p>Du finner alle utviklerfunksjonene øverst i menyen til høyre for Infected logoen.';
+							echo '</div><!-- /.box-body -->';
+						echo '</div><!-- /.box -->';
+					echo '</div><!--/.col (left) -->';
+				echo '</div><!-- /.row -->';
 			} else {
-				echo 'Du har ikke rettigheter til dette!';
+				echo '<div class="box">';
+					echo '<div class="box-body">';
+						echo 'Du har ikke rettigheter til dette!';
+					echo '</div><!-- /.box-body -->';
+				echo '</div><!-- /.box -->';
 			}
 		} else {
-			echo 'Du er ikke logget inn!';
+			echo '<div class="box">';
+				echo '<div class="box-body">';
+					echo '<p>Du er ikke logget inn!</p>';
+				echo '</div><!-- /.box-body -->';
+			echo '</div><!-- /.box -->';
 		}
 	}
 }
