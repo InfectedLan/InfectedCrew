@@ -394,24 +394,6 @@ class Site {
 				  		echo '<aside class="main-sidebar">';
 							echo '<!-- sidebar: style can be found in sidebar.less -->';
 							echo '<section class="sidebar">';
-					  			echo '<!-- Sidebar user panel -->';
-					  			echo '<div class="user-panel">';
-									echo '<div class="pull-left image">';
-
-										if ($user->hasValidAvatar()) {
-											$avatarFile = $user->getAvatar()->getThumbnail();
-										} else {
-											$avatarFile = $user->getDefaultAvatar();
-										}
-
-										echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName . '\'s profilbilde">';
-									echo '</div>';
-									echo '<div class="pull-left info">';
-						  				echo '<p>' . $user->getFullName() . '</p>';
-
-						  				echo '<a href="#"><i class="fa fa-circle text-success"></i> Online</a>';
-									echo '</div>';
-					  			echo '</div>';
 					  			echo '<!-- search form -->';
 					  			echo '<form action="#" method="get" class="sidebar-form">';
 					   				echo '<div class="input-group">';
@@ -424,7 +406,7 @@ class Site {
 								echo '<!-- /.search form -->';
 								echo '<!-- sidebar menu: : style can be found in sidebar.less -->';
 					  			echo '<ul class="sidebar-menu">';
-					   				echo '<li class="header">MAIN NAVIGATION</li>';
+					   				echo '<li class="header">Hovedmeny</li>';
 
 					   				$groupList = GroupHandler::getGroups();
 
