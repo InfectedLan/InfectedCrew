@@ -1000,13 +1000,13 @@ class Site {
 						echo '<section class="content-header">';
 					  		echo '<h1>';
 
-					  			// TODO: Find a way to check if the class has a parent, this is due to avoid null pointer exceptions.
-					  			//if ($page->get_parent_class()) {
-								//	echo $page->getParentClass()->getTitle();
-								//	echo '<small>' . $page->getTitle() . '</small>';
-					  			//} else {
+					  			// Check if this page as a parent or not, and decide what to show.
+					  			if ($page->hasParent()) {
+									echo $page->getParent()->getTitle();
+									echo '<small>' . $page->getTitle() . '</small>';
+					  			} else {
 									echo $page->getTitle();
-					  			//}
+					  			}
 
 					  		echo '</h1>';
 					  		/*
@@ -1018,7 +1018,7 @@ class Site {
 						echo '</section>';
 						//<!-- Main content -->';
 						echo '<section class="content">';
-
+							
 							echo $page->getContent();
 
 						echo '</section><!-- /.content -->';
