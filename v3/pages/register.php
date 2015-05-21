@@ -113,13 +113,15 @@ class RegisterPage implements IPage {
     						$content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
     							$content .= '<input type="text" class="form-control" name="address" placeholder="Adresse" required>';
-    							$content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
+    							$content .= '<span class="glyphicon glyphicon-map-marker form-control-feedback"></span>';
     						$content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
-    							$content .= '<label>Postnummer</label>';
     							$content .= '<div class="form-inline">';
-    								$content .= '<input type="number" class="postalcode" name="postalcode" min="1" max="10000" required>';
-    								$content .= '<span class="city">Hvalstad</span>';
+                                    $content .= '<div class="form-group has-feedback">';
+        								$content .= '<input type="number" class="form-control postalcode" name="postalcode" min="1" max="10000" placeholder="Postnummer" required>';
+                                        $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
+                                    $content .= '</div>';
+    								$content .= '<labal class="city">Hvalstad</label>';
     							$content .= '</div>';
     						$content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
@@ -133,15 +135,15 @@ class RegisterPage implements IPage {
     						$content .= '<div class="row">';
     							$content .= '<div class="col-xs-8">';
     								$content .= '<div class="checkbox icheck">';
-    									$content .= '<label><input type="checkbox"> I agree to the <a href="#">terms</a></label>';
+    									$content .= '<label><input type="checkbox"> Jeg godtar <a href="#">vilkårene</a></label>';
     								$content .= '</div>';
     							$content .= '</div><!-- /.col -->';
     							$content .= '<div class="col-xs-4">';
-    								$content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>';
+    								$content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">Register deg</button>';
     							$content .= '</div><!-- /.col -->';
     						$content .= '</div>';
     					$content .= '</form>';
-    					$content .= '<a href="login.html" class="text-center">I already have a membership</a>';
+    					$content .= '<a href="." class="text-center">Tilbake til innlogging</a>';
     				$content .= '</div><!-- /.form-box -->';
     			$content .= '</div><!-- /.register-box -->';
 
