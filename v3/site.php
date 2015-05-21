@@ -343,14 +343,14 @@ class Site {
 											}
 
 											echo '<a href="" class="dropdown-toggle" data-toggle="dropdown">';
-											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="' . $user->getFullName . '\'s profilbilde">';
+											  	echo '<img src="' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
 											  	echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
 											echo '</a>';
 
 											echo '<ul class="dropdown-menu">';
 												// <!-- User image -->
 										 		echo '<li class="user-header">';
-													echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName . '\'s profilbilde">';
+													echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
 													echo '<p>';
 											  			echo $user->getFullName();
 											  			echo '<small>' . $user->getRole() . '</small>';
