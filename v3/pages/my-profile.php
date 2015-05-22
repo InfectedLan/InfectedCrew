@@ -200,33 +200,6 @@ class MyProfilePage implements IPage {
 												$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
 											$content .= '</tr>';
 										}
-										
-										if ($user->hasPermission('*') ||
-											$user->equals($profileUser)) {
-											$content .= '<tr>';
-												$content .= '<td></td>';
-												$content .= '<td><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></td>';
-											$content .= '</tr>';
-										}
-										
-										if ($user->equals($profileUser)) {
-											$content .= '<tr>';
-												$content .= '<td></td>';
-												$content .= '<td><a href="index.php?page=edit-avatar">Endre avatar</a></td>';
-											$content .= '</tr>';
-										}
-											
-										if ($user->hasPermission('*') ||
-											$user->hasPermission('admin.permissions')) {
-											$content .= '<tr>';
-												$content .= '<td></td>';
-												$content .= '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
-											$content .= '</tr>';
-											$content .= '<tr>';
-												$content .= '<td></td>';
-												$content .= '<td><a href="index.php?page=user-history">Vis historie</a></td>';
-											$content .= '</tr>';
-										}
 
 										if ($user->hasPermission('*') ||
 											$user->hasPermission('admin.permissions')) {
@@ -253,6 +226,7 @@ class MyProfilePage implements IPage {
 								$content .= '</div><!-- /.box-body -->';
 						  	$content .= '</div><!-- /.box -->';
 						$content .= '</div><!--/.col (left) -->';
+						
 						$content .= '<div class="col-md-6">';
 						  	$content .= '<div class="box">';
 						  		$content .= '<div class="box-header">';
@@ -273,6 +247,37 @@ class MyProfilePage implements IPage {
 								$content .= '</div><!-- /.box-body -->';
 						  	$content .= '</div><!-- /.box -->';
 						$content .= '</div><!--/.col (right) -->';
+					$content .= '</div><!-- /.row -->';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
+							$content .= '<div class="box">';
+								$content .= '<div class="box-body">';
+
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('admin.permissions') ||
+										$user->equals($profileUser)) {
+
+										$content .= '<ul class="nav nav-pills">';
+											if ($user->hasPermission('*') ||
+												$user->equals($profileUser)) {
+												$content .= '<li role="presentation"><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></li>';
+											}
+											
+											if ($user->equals($profileUser)) {
+												$content .= '<li role="presentation"><a href="index.php?page=edit-avatar">Endre avatar</a></li>';
+											}
+												
+											if ($user->hasPermission('*') ||
+												$user->hasPermission('admin.permissions')) {
+												$content .= '<li role="presentation"><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></li>';
+												$content .= '<li role="presentation"><a href="index.php?page=user-history">Vis historie</a></li>';
+											}
+										$content .= '</ul>';
+									}
+
+								$content .= '</div><!-- /.box-body -->';
+						  	$content .= '</div><!-- /.box -->';
+						$content .= '</div><!--/.col (left) -->';
 					$content .= '</div><!-- /.row -->';
 
 					/*
