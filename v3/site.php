@@ -652,7 +652,7 @@ class Site {
 						  		echo '<b>Version</b> 2.0';
 							echo '</div>';
 							*/
-							echo '<strong>Copyright &copy; 2015 <a href="https://infected.no/">Infected</a>.</strong> All rights reserved.';
+							echo '<strong>Copyright &copy; 2015' . (date('Y') > 2015 ? '-' . date('Y') : null) . ' <a href="https://infected.no/">' . Settings::name . '</a>.</strong> All rights reserved.';
 					  	echo '</footer>';
 					  
 					  	//<!-- Control Sidebar -->  
