@@ -37,110 +37,193 @@ class AdminEventsPage extends AdminPage implements IPage {
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('admin.events')) {
-				$content .= '<script src="scripts/admin-events.js"></script>';
-				
-				$content .= '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
-				
-				$content .= '<table>';
-					$content .= '<tr>';
-						$content .= '<th>Navn:</th>';
-						$content .= '<th>Sted/Deltakere:</th>';
-						$content .= '<th>Booking:</th>';
-						$content .= '<th>Start:</th>';
-						$content .= '<th>Slutt:</th>';
-					$content .= '</tr>';
-					
-					foreach (EventHandler::getEvents() as $event) {
-						$content .= '<tr>';
-							$content .= '<form class="admin-events-edit" name="input" method="post">';
-								$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
-								$content .= '<td>' . $event->getTitle() . '</td>';
-								$content .= '<td>';
-									$content .= '<select class="chosen-select" name="location" required>';
-										$content .= '<option value="' . $event->getLocation()->getId() . '">' . $event->getLocation()->getTitle() . '</option>';
-									$content .= '</select>';
-									$content .= '<input type="number" name="participants" value="' . $event->getParticipants() . '" required>';
-								$content .= '</td>';
-								$content .= '<td>';
-									$content .= '<input type="date" name="bookingDate" value="' . date('Y-m-d', $event->getBookingTime()) . '" required>';
-									$content .= '<input type="time" name="bookingTime" value="' . date('H:i', $event->getBookingTime()) . '" required>';
-								$content .= '</td>';
-								$content .= '<td>';
-									$content .= '<input type="date" name="startDate" value="' . date('Y-m-d', $event->getStartTime()) . '" required>';
-									$content .= '<input type="time" name="startTime" value="' . date('H:i', $event->getStartTime()) . '" required>';
-								$content .= '</td>';
-								$content .= '<td>';
-									$content .= '<input type="date" name="endDate" value="' . date('Y-m-d', $event->getEndTime()) . '" required>';
-									$content .= '<input type="time" name="endTime" value="' . date('H:i', $event->getEndTime()) . '" required>';
-								$content .= '</td>';
-								$content .= '<td>';
-									$content .= '<input type="submit" value="Endre">';
-									$content .= '<input type="button" value="Vis setekart" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">';
-								$content .= '</td>';
-							$content .= '</form>';
+
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-6">';
 							
-							$content .= '<td></td>';
+						$eventList = EventHandler::getEvents();
 
-							if ($user->hasPermission('*')) {
-								$currentEvent = EventHandler::getCurrentEvent();
+						// Sort this array so that we show newest events first.
+						rsort($eventList);
 
-								// Allow user to transfer members from previus event if this event is the current one.
-								if ($event->equals($currentEvent)) {
-									$content .= '<td><input type="button" value="Kopier medlemmer" onClick="copyMembers(' . EventHandler::getPreviousEvent()->getId() . ')"></td>';
-								}
+						if (!empty($eventList)) {
+							foreach ($eventList as $event) {
+							  	$content .= '<div class="box">';
+									$content .= '<div class="box-header">';
+								  		$content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
+									$content .= '</div><!-- /.box-header -->';
+									$content .= '<div class="box-body">';
+							  		
+										$content .= '<form class="admin-events-edit" method="post">';
+											$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
+											$content .= '<div class="form-group">';
+									  			$content .= '<label>Sted</label>';
+									  			$content .= '<select class="form-control" name="location" required>';
 
-								// Prevent users from removing events that have already started, we don't want to delete old tickets etc.
-								if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
-									$content .= '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
-								}
+									  				foreach (LocationHandler::getLocations() as $location) {
+									  					if ($location->equals($event->getLocation())) {
+									  						$content .= '<option value="' . $location->getId() . '" selected>' . $location->getTitle() . '</option>';
+									  					} else {
+															$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
+														}
+													}
+													
+												$content .= '</select>';
+											$content .= '</div>';
+									  		$content .= '<div class="form-group">';
+									  			$content .= '<label>Anstall deltakere</label>';
+												$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
+											$content .= '</div>';
+											$content .= '<div class="form-group">';
+												$content .= '<label>Billetsalgsdato og tid</label>';
+												$content .= '<div class="input-group">';
+											  		$content .= '<div class="input-group-addon">';
+														$content .= '<i class="fa fa-clock-o"></i>';
+											  		$content .= '</div>';
+											  		$content .= '<input type="text" class="form-control pull-right" name="bookingTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
+												$content .= '</div><!-- /.input group -->';
+										  	$content .= '</div><!-- /.form group -->';
+											$content .= '<div class="form-group">';
+												$content .= '<label>Startdato og tid</label>';
+												$content .= '<div class="input-group">';
+											  		$content .= '<div class="input-group-addon">';
+														$content .= '<i class="fa fa-clock-o"></i>';
+											  		$content .= '</div>';
+											  		$content .= '<input type="text" class="form-control pull-right" name="startTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getStartTime()) . '" required>';
+												$content .= '</div><!-- /.input group -->';
+										  	$content .= '</div><!-- /.form group -->';
+										  	$content .= '<div class="form-group">';
+												$content .= '<label>Startdato og tid</label>';
+												$content .= '<div class="input-group">';
+											  		$content .= '<div class="input-group-addon">';
+														$content .= '<i class="fa fa-clock-o"></i>';
+											  		$content .= '</div>';
+											  		$content .= '<input type="text" class="form-control pull-right" name="endTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getEndTime()) . '" required>';
+												$content .= '</div><!-- /.input group -->';
+										  	$content .= '</div><!-- /.form group -->';
+										  	$content .= '<div class="btn-group" role="group" aria-label="...">';
+										  		$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+
+												if ($user->hasPermission('*')) {
+													$currentEvent = EventHandler::getCurrentEvent();
+
+													// Prevent users from removing events that have already started, we don't want to delete old tickets etc.
+													if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
+														$content .= '<button type="button" class="btn btn-primary" onClick="removeEvent(' . $event->getId() . ')">Fjern</button>';
+													}
+
+													// Allow user to transfer members from previus event if this event is the current one.
+													if ($event->equals($currentEvent)) {
+														$previousEvent = EventHandler::getPreviousEvent();
+
+														$content .= '<button type="button" class="btn btn-primary" onClick="copyMembers(' . $previousEvent->getId() . ')">Kopier medlemmer fra "' . $previousEvent->getTitle() . '"</button>';
+													}
+												}
+
+												$content .= '<button type="button" class="btn btn-primary" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">Vis setekart</button>';
+
+											$content .= '</div>';
+							  			$content .= '</form>';
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
 							}
-						$content .= '</tr>';
-					}
-				$content .= '</table>';
-				
-				$content .= '<h3>Legg til nytt arrangement:</h3>';
-				$content .= '<p>Fyll ut feltene under for å legge til en ny side.</p>';
-				$content .= '<form class="admin-events-add" method="post">';
-					$content .= '<table>';
-						$content .= '<tr>';
-							$content .= '<td>Sted:</td>';
-							$content .= '<td>';
-								$content .= '<select class="chosen-select" name="location">';
-									foreach (LocationHandler::getLocations() as $location) {
-										$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
-									}
-								$content .= '</select>';
-							$content .= '</td>';
-						$content .= '</tr>';
-						$content .= '<tr>';
-							$content .= '<td>Deltakere:</td>';
-							$content .= '<td><input type="number" name="participants" required></td>';
-						$content .= '</tr>';
-						$content .= '<tr>';
-							$content .= '<td>Booking:</td>';
-							$content .= '<td><input type="date" name="bookingDate" placeholder="' . date('Y-m-d') . '" required></td>';
-							$content .= '<td><input type="time" name="bookingTime" placeholder="' . date('H:i:s') . '" required></td>';
-						$content .= '</tr>';
-						$content .= '<tr>';
-							$content .= '<td>Start:</td>';
-							$content .= '<td><input type="date" name="startDate" placeholder="' . date('Y-m-d') . '" required></td>';
-							$content .= '<td><input type="time" name="startTime" placeholder="' . date('H:i:s') . '" required></td>';
-						$content .= '</tr>';
-						$content .= '<tr>';
-							$content .= '<td>Slutt:</td>';
-							$content .= '<td><input type="date" name="endDate" placeholder="' . date('Y-m-d') . '" required></td>';
-							$content .= '<td><input type="time" name="endTime" placeholder="' . date('H:i:s') . '" required></td>';
-						$content .= '</tr>';
-						$content .= '<tr>';
-							$content .= '<td><input type="submit" value="Legg til"></td>';
-						$content .= '</tr>';
-					$content .= '</table>';
-				$content .= '</form>';
+						} else {
+							$content .= '<div class="box">';
+								$content .= '<div class="box-body">';
+									$content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
+								$content .= '</div><!-- /.box-body -->';
+							$content .= '</div><!-- /.box -->';
+						}
+
+					$content .= '</div><!--/.col (left) -->';
+					$content .= '<div class="col-md-6">';
+					  	$content .= '<div class="box">';
+							$content .= '<div class="box-header">';
+						  		$content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
+							$content .= '</div><!-- /.box-header -->';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Fyll ut feltene under for å legge til en ny side.</p>';
+
+								$content .= '<form class="admin-events-add" method="post">';
+									$content .= '<div class="form-group">';
+							  			$content .= '<label>Sted</label>';
+							  			$content .= '<select class="form-control" name="location" required>';
+
+							  				foreach (LocationHandler::getLocations() as $location) {
+												$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
+											}
+
+										$content .= '</select>';
+									$content .= '</div>';
+									$content .= '<div class="form-group">';
+							  			$content .= '<label>Anstall deltakere</label>';
+										$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
+									$content .= '</div>';
+									$content .= '<div class="form-group">';
+										$content .= '<label>Billetsalgsdato og tid</label>';
+										$content .= '<div class="input-group">';
+									  		$content .= '<div class="input-group-addon">';
+												$content .= '<i class="fa fa-clock-o"></i>';
+									  		$content .= '</div>';
+									  		$content .= '<input type="text" class="form-control pull-right" name="bookingTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
+										$content .= '</div><!-- /.input group -->';
+								  	$content .= '</div><!-- /.form group -->';
+									$content .= '<div class="form-group">';
+										$content .= '<label>Startdato og tid</label>';
+										$content .= '<div class="input-group">';
+									  		$content .= '<div class="input-group-addon">';
+												$content .= '<i class="fa fa-clock-o"></i>';
+									  		$content .= '</div>';
+									  		$content .= '<input type="text" class="form-control pull-right" name="startTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getStartTime()) . '" required>';
+										$content .= '</div><!-- /.input group -->';
+								  	$content .= '</div><!-- /.form group -->';
+								  	$content .= '<div class="form-group">';
+										$content .= '<label>Startdato og tid</label>';
+										$content .= '<div class="input-group">';
+									  		$content .= '<div class="input-group-addon">';
+												$content .= '<i class="fa fa-clock-o"></i>';
+									  		$content .= '</div>';
+									  		$content .= '<input type="text" class="form-control pull-right" name="endTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getEndTime()) . '" required>';
+										$content .= '</div><!-- /.input group -->';
+								  	$content .= '</div><!-- /.form group -->';
+								  	$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+								$content .= '</form>';
+							$content .= '</div><!-- /.box-body -->';
+					  	$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (right) -->';
+				$content .= '</div><!-- /.row -->';
+
+				$content .= '<script src="scripts/admin-events.js"></script>';
+
+				//<!-- jQuery 2.1.4 -->
+				$content .= '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				//<!-- date-range-picker -->
+				$content .= '<script src="plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>';
+				//<!-- Page script -->
+				$content .= '<script type="text/javascript">';
+		  			$content .= '$(function() {';
+						//Date range picker with time picker
+						$content .= '$(\'#datetime\').daterangepicker({';
+							$content .= 'timePicker: true,';
+							$content .= 'timePickerSeconds: true,';
+							$content .= 'format: \'YYYY-MM-DD HH:mm:ss\'';
+						$content .= '});';
+		  			$content .= '});';
+				$content .= '</script>';
+				$content .= '<script src="scripts/event-agenda.js"></script>';
 			} else {
-				$content .= 'Du har ikke rettigheter til dette!';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			$content .= 'Du er ikke logget inn!';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;
