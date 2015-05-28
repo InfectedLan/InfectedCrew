@@ -99,15 +99,18 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 						$content .= '</div><!-- /.box-body -->';
 					$content .= '</div><!-- /.box -->';
 
-					$permissionUserList = UserHandler::getPermissionUsers();
-	
-					if (!empty($permissionUserList)) {
-						foreach ($permissionUserList as $permissionUser) {
-							if ($permissionUser != null) {
-								$permissionCount = count($permissionUser->getPermissions());
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-4">';
 
-								$content .= '<div class="row">';
-									$content .= '<div class="col-md-4">';
+						$permissionUserList = UserHandler::getPermissionUsers();
+		
+							if (!empty($permissionUserList)) {
+								
+
+								foreach ($permissionUserList as $permissionUser) {
+									if ($permissionUser != null) {
+										$permissionCount = count($permissionUser->getPermissions());
+
 										$content .= '<div class="box">';
 											$content .= '<div class="box-header with-border">';
 												$content .= '<h3 class="box-title"><a href="?page=my-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
@@ -120,21 +123,22 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 												$content .= '</div>';
 											$content .= '</div><!-- /.box-body -->';
 										$content .= '</div><!-- /.box -->';
+									}
+								}
+							} else {
+								$content .= '<div class="row">';
+									$content .= '<div class="col-md-4">';
+										$content .= '<div class="box">';
+											$content .= '<div class="box-body">';
+												$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
+											$content .= '</div><!-- /.box-body -->';
+										$content .= '</div><!-- /.box -->';
 									$content .= '</div><!--/.col (left) -->';
 								$content .= '</div><!-- /.row -->';
 							}
-						}
-					} else {
-						$content .= '<div class="row">';
-							$content .= '<div class="col-md-4">';
-								$content .= '<div class="box">';
-									$content .= '<div class="box-body">';
-										$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
-									$content .= '</div><!-- /.box-body -->';
-								$content .= '</div><!-- /.box -->';
-							$content .= '</div><!--/.col (left) -->';
-						$content .= '</div><!-- /.row -->';
-					}
+
+						$content .= '</div><!--/.col (left) -->';
+					$content .= '</div><!-- /.row -->';
 				}
 
 				$content .= '<script src="scripts/admin-permissions.js"></script>';
