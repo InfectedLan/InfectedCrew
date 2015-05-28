@@ -45,7 +45,7 @@ function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah
 }
 function newSeatmap()
 {
-	$.getJSON('../api/json/seatma/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
+	$.getJSON('../api/json/seatmap/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
 		if(data.result)
 		{
 			window.location = "index.php?page=admin-seatmap&id=" + data.id;
@@ -197,7 +197,7 @@ function moveRow(rowId)
 }
 function renderSeatmap()
 {
-	$.getJSON('../api/json/seatmap.php?id=' + seatmapId, function(data){
+	$.getJSON('../api/json/seatmap/getSeatmap.php?id=' + seatmapId, function(data){
 		if(data.result)
 		{
 			seatmapData = data;
