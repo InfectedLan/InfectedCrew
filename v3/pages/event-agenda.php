@@ -82,7 +82,7 @@ class EventAgendaPage extends EventPage implements IPage {
 									$content .= '</div><!-- /.box -->';
 								}
 							} else {
-								$content .= '<div class="box box-warning">';
+								$content .= '<div class="box">';
 									$content .= '<div class="box-body">';
 										$content .= '<p>Det har ikke blitt opprettet noen agenda\'er enda.</p>';
 									$content .= '</div><!-- /.box-body -->';
