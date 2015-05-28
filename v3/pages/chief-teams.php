@@ -80,7 +80,7 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 																}
 															$content .= '</select>';
 														$content .= '</td>';
-														$content .= '<td><button class="btn btn-block btn-primary">Endre</button></td>';
+														$content .= '<td><button type="submit" class="btn btn-primary">Endre</button></td>';
 													$content .= '</form>';
 													$content .= '<td><button class="btn btn-block btn-primary" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')">Slett</button></td>';
 												$content .= '</tr>';

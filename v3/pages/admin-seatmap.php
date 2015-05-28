@@ -78,6 +78,7 @@ class AdminSeatmapPage extends AdminPage implements IPage {
 				$content .= '<div id="seatmapEditorCanvas">';
 					$content .= '<i>Laster inn data...</i>';
 				$content .= '</div>';
+			}
 		} else {
 			$content .= '<center>';
 				$content .= '<h1>Seatmap-editor</h1>';

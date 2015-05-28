@@ -26,7 +26,7 @@ class AdminPage implements IPage {
 	use Page;
 
 	public function getTitle() {
-		return 'Admin';
+		return 'Administrator';
 	}
 
 	public function getContent() {
