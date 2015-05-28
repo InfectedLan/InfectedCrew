@@ -78,9 +78,11 @@ class EventScreenPage extends EventPage implements IPage {
 											  	$content .= '<div class="form-group">';
 							                    	$content .= '<label><input type="checkbox" class="minimal" checked> Publisert?</label>';
 							                  	$content .= '</div>';
-											  	$content .= '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
+							                  	$content .= '<div class="btn-group" role="group" aria-label="...">';
+													$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+													$content .= '<button type="button" class="btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
+												$content .= '</div>';
 								  			$content .= '</form>';
-											$content .= '<button type="button" class="pull-right btn btn-primary" onClick="removeSlide(' . $slide->getId() . ')">Fjern</button>';
 										$content .= '</div><!-- /.box-body -->';
 									$content .= '</div><!-- /.box -->';
 

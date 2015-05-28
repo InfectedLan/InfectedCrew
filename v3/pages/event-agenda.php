@@ -75,9 +75,11 @@ class EventAgendaPage extends EventPage implements IPage {
 												  		$content .= '<input type="text" class="form-control pull-right" name="datetime" id="datetime" value="' . date('Y-m-d H:i:s', $agenda->getStartTime()) . '" required>';
 													$content .= '</div><!-- /.input group -->';
 											  	$content .= '</div><!-- /.form group -->';
-											  	$content .= '<button type="submit" class="pull-left btn btn-primary">Endre</button>';
+											  	$content .= '<div class="btn-group" role="group" aria-label="...">';
+													$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+													$content .= '<button type="button" class="btn btn-primary" onClick="removeAgenda(' . $agenda->getId() . ')">Fjern</button>';
+												$content .= '</div>';
 								  			$content .= '</form>';
-											$content .= '<button type="button" class="pull-right btn btn-primary" onClick="removeAgenda(' . $agenda->getId() . ')">Fjern</button>';
 										$content .= '</div><!-- /.box-body -->';
 									$content .= '</div><!-- /.box -->';
 								}
