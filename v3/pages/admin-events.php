@@ -142,7 +142,7 @@ class AdminEventsPage extends AdminPage implements IPage {
 						  		$content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
 							$content .= '</div><!-- /.box-header -->';
 							$content .= '<div class="box-body">';
-								$content .= '<p>Fyll ut feltene under for å legge til en ny side.</p>';
+								$content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
 
 								$content .= '<form class="admin-events-add" method="post">';
 									$content .= '<div class="form-group">';

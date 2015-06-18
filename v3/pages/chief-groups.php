@@ -37,104 +37,11 @@ class ChiefGroupsPage extends ChiefPage implements IPage {
 			
 			if ($user->hasPermission('*') ||
 				$user->hasPermission('chief.groups')) {
-				$groupList = GroupHandler::getGroups();
-				$content .= '<script src="scripts/chief-groups.js"></script>';
 				
-				if (!empty($groupList)) {
-					$content .= '<table>';
-						$content .= '<tr>';
-							$content .= '<th>Navn</th>';
-							$content .= '<th>Medlemmer</th>';
-							$content .= '<th>Beskrivelse</th>';
-							$content .= '<th>Chief/Co-chief</th>';
-						$content .= '</tr>';
-						
-						$userList = UserHandler::getMemberUsers();
-						
-						foreach ($groupList as $group) {
-							$content .= '<tr>';
-								$content .= '<form class="chief-groups-edit" method="post">';
-									$content .= '<input type="hidden" name="id" value="' . $group->getId() . '">';
-									$content .= '<td><input type="text" name="title" value="' . $group->getTitle() . '" required></td>';
-									$content .= '<td>' . count($group->getMembers()) . '</td>';
-									$content .= '<td><input type="text" name="description" value="' . $group->getDescription() . '" required></td>';
-									$content .= '<td>';
-										$content .= '<select class="chosen-select select" name="leader" data-placeholder="Velg en chief...">';
-											$content .= '<option value="0"></option>';
-											
-											foreach ($userList as $userValue) {
-												if ($userValue->equals($group->getLeader())) {
-													$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
-												} else {
-													$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-												}
-											}
-										$content .= '</select>';
-										$content .= '<br>';
-										$content .= '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
-											$content .= '<option value="0"></option>';
-											
-											foreach ($userList as $userValue) {
-												if ($userValue->equals($group->getCoLeader())) {
-													$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
-												} else {
-													$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-												}
-											}
-										$content .= '</select>';
-									$content .= '</td>';
-									$content .= '<td><input type="submit" value="Endre"></td>';
-								$content .= '</form>';
-							$content .= '</tr>';
-						}
-						
-						$content .= '<tr>';
-							$content .= '<td>Totalt:</td>';
-							$content .= '<td>' . count($userList) . '</td>';
-						$content .= '</tr>';
-					$content .= '</table>';
-					
-					$content .= '<h3>Legg til et nytt crew</h3>';
-					$content .= '<form class="chief-groups-add" method="post">';
-						$content .= '<table>';
-							$content .= '<tr>';
-								$content .= '<td>Navn:</td>';
-								$content .= '<td><input type="text" name="title" required></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td>Beskrivelse:</td>';
-								$content .= '<td><input type="text" name="description" required></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td>Chief:</td>';
-								$content .= '<td>';
-									$content .= '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-										$content .= '<option value="0"></option>';
-										
-										foreach ($userList as $userValue) {
-											$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-										}
-									$content .= '</select>';
-								$content .= '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td>Co-chief:</td>';
-								$content .= '<td>';
-									$content .= '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
-										$content .= '<option value="0"></option>';
-										
-										foreach ($userList as $userValue) {
-											$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-										}
-									$content .= '</select>';
-								$content .= '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><input type="submit" value="Legg til"></td>';
-							$content .= '</tr>';
-						$content .= '</table>';
-					$content .= '</form>';
-					
+				if (isset($_GET['groupId'])) {
+					$group = GroupHandler::getGroup($_GET['groupId']);
+
+					/*
 					$content .= '<h3>Medlemmer</h3>';
 					
 					$freeUserList = UserHandler::getNonMemberUsers();
@@ -164,38 +71,177 @@ class ChiefGroupsPage extends ChiefPage implements IPage {
 					} else {
 						$content .= '<p>Alle registrerte medlemmer er allerede med i et crew.</p>';
 					}
-					
-					foreach ($groupList as $group) {
-						$memberList = $group->getMembers();
+					*/
 						
-						$content .= '<h4>' . $group->getTitle() . '</h4>';
-						$content .= '<table>';
+
+					$content .= '<div class="box">';
+						$content .= '<div class="box-header">';
+					  		$content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+						$content .= '</div><!-- /.box-header -->';
+						$content .= '<div class="box-body">';
+				  		
 							if (!empty($memberList)) {
 								foreach ($memberList as $userValue) {
-									$content .= '<tr>';
-										$content .= '<td>' . $userValue->getDisplayName(). '</td>';
-										$content .= '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $userValue->getId() . ')"></td>';
-									$content .= '</tr>';
+									$content .= $userValue->getDisplayName();
+									$content .= '<button type="button" class="btn btn-primary" onClick="removeUserFromGroup(' . $userValue->getId() . ')">Fjern</button>';
 								}
 								
 								if (count($groupList) > 1) {
-									$content .= '<tr>';
-										$content .= '<td><input type="button" value="Fjern alle" onClick="removeUsersFromGroup(' . $group->getId() . ')"></td>';
-									$content .= '</tr>';
+									$content .= '<button type="button" class="btn btn-primary" onClick="removeUsersFromGroup(' . $group->getId() . ')">Fjern alle</button>';
 								}
 							} else {
 								$content .= '<i>Det er ingen medlemmer i ' . $group->getTitle() . '.</i>';
 							}
-						$content .= '</table>';
-					}
+
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				} else {
-					$content .= '<p>Det finnes ingen grupper enda!</p>';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
+							$groupList = GroupHandler::getGroups();
+						
+							if (!empty($groupList)) {
+								$userList = UserHandler::getMemberUsers();
+
+								foreach ($groupList as $group) {
+								  	$content .= '<div class="box">';
+										$content .= '<div class="box-header">';
+									  		$content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+										$content .= '</div><!-- /.box-header -->';
+										$content .= '<div class="box-body">';
+								  		
+											$content .= '<form class="chief-groups-edit" method="post">';
+												$content .= '<input type="hidden" name="id" value="' . $group->getId() . '">';
+												$content .= '<div class="form-group">';
+										  			$content .= '<label>Navn</label>';
+													$content .= '<input type="text" class="form-control" name="title" value="' . $group->getTitle() . '" required>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+										  			$content .= '<label>Antall medlemmer</label>';
+													$content .= '<b>' . count($group->getMembers()) . '</b>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+												  	$content .= '<label>Beskrivelse</label>';
+												  	$content .= '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required>';
+												  		$content .= $group->getDescription();
+												  	$content .='</textarea>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+										  			$content .= '<label>Chief</label>';
+										  			$content .= '<select class="form-control" name="leader" required>';
+										  				$content .= '<option value="0"></option>';
+												
+														foreach ($userList as $userValue) {
+															if ($userValue->equals($group->getLeader())) {
+																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+															} else {
+																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+															}
+														}
+														
+													$content .= '</select>';
+												$content .= '</div>';
+												$content .= '<div class="form-group">';
+										  			$content .= '<label>Co-chief</label>';
+										  			$content .= '<select class="form-control" name="leader" required>';
+										  				$content .= '<option value="0"></option>';
+												
+														foreach ($userList as $userValue) {
+															if ($userValue->equals($group->getCoLeader())) {
+																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+															} else {
+																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+															}
+														}
+														
+													$content .= '</select>';
+												$content .= '</div>';
+												$content .= '<div class="btn-group" role="group" aria-label="...">';
+										  			$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+													$content .= '<button type="button" class="btn btn-primary" onClick="viewGroup(' . $group->getId() . ')">Vis</button>';
+												$content .= '</div>';
+								  			$content .= '</form>';
+										$content .= '</div><!-- /.box-body -->';
+									$content .= '</div><!-- /.box -->';
+								}
+							} else {
+								$content .= '<div class="box">';
+									$content .= '<div class="box-body">';
+										$content .= '<p>Det har ikke blitt opprettet noen grupper enda.</p>';
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
+							}
+
+						$content .= '</div><!--/.col (left) -->';
+						$content .= '<div class="col-md-6">';
+						  	$content .= '<div class="box">';
+								$content .= '<div class="box-header">';
+							  		$content .= '<h3 class="box-title">Legg til et nytt crew</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
+									$content .= '<p>Fyll ut feltene under for å legge til en ny gruppe.</p>';
+
+									$content .= '<form class="chief-groups-add" method="post">';
+										$content .= '<div class="form-group">';
+											$content .= '<label>Navn</label>';
+											$content .= '<input type="text" class="form-control" name="title" required>';
+									  	$content .= '</div><!-- /.form group -->';
+									  	$content .= '<div class="form-group">';
+										  	$content .= '<label>Beskrivelse</label>';
+										  	$content .= '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required></textarea>';
+										$content .= '</div><!-- /.form group -->';
+										$content .= '<div class="form-group">';
+								  			$content .= '<label>Chief</label>';
+								  			$content .= '<select class="form-control" name="leader" required>';
+								  				$content .= '<option value="0"></option>';
+										
+												foreach ($userList as $userValue) {
+													if ($userValue->equals($group->getLeader())) {
+														$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+													} else {
+														$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+													}
+												}
+												
+											$content .= '</select>';
+										$content .= '</div>';
+										$content .= '<div class="form-group">';
+								  			$content .= '<label>Co-chief</label>';
+								  			$content .= '<select class="form-control" name="leader" required>';
+								  				$content .= '<option value="0"></option>';
+										
+												foreach ($userList as $userValue) {
+													if ($userValue->equals($group->getCoLeader())) {
+														$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
+													} else {
+														$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+													}
+												}
+												
+											$content .= '</select>';
+										$content .= '</div>';
+									  	$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+									$content .= '</form>';
+								$content .= '</div><!-- /.box-body -->';
+						  	$content .= '</div><!-- /.box -->';
+						$content .= '</div><!--/.col (right) -->';
+					$content .= '</div><!-- /.row -->';
 				}
+
+				$content .= '<script src="scripts/chief-groups.js"></script>';
 			} else {
-				$content .= '<p>Du har ikke rettigheter til dette!</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			$content .= '<p>Du er ikke logget inn!</p>';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;

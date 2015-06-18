@@ -34,6 +34,10 @@ $(document).ready(function() {
 	});
 });
 
+function viewGroup(id) {
+	$(location).attr('href', '?page=chief-groups&groupId=' + id);
+}
+
 function addGroup(form) {
 	$.getJSON('../api/json/group/addGroup.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
