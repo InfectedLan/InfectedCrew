@@ -24,28 +24,28 @@ $(document).ready(function() {
 	});
 
 	var callback = function() {
-	for (var i = 0; i < seatmapData.rows.length; i++) {
-		for(var s = 0; s < seatmapData.rows[i].seats.length; s++) {
-			if (!seatmapData.rows[i].seats[s].occupied) {
-				$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
-					updateSeat(e.data.seatId);
-				});
+		for (var i = 0; i < seatmapData.rows.length; i++) {
+			for (var s = 0; s < seatmapData.rows[i].seats.length; s++) {
+				if (!seatmapData.rows[i].seats[s].occupied) {
+					$("#seat" + seatmapData.rows[i].seats[s].id).click({seatId: seatmapData.rows[i].seats[s].id}, function(e) {
+						updateSeat(e.data.seatId);
+					});
+				}
 			}
 		}
 	}
-}
 
-var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
-	if (!taken) {
-		return "free";
+	var seatHandlerFunction = function(identifyer, seatDivId, taken, takenData) {
+		if (!taken) {
+			return "free";
+		}
+
+		if (takenData.id == ticketId) {
+			return "current";
+		}
+
+		return "taken";
 	}
-
-	if (takenData.id == ticketId) {
-		return "current";
-	}
-
-	return "taken";
-}
 });
 
 function addUserToGroup(form) {
