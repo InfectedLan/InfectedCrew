@@ -38,7 +38,7 @@ class ChiefTeamsPage extends ChiefPage implements IPage {
 			
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('chief.teams')) {
-					$teamList = $user->getGroup()->getTeams();
+					$teamList = $group->getTeams();
 					$userList = $group->getMembers();
 					$content .= '<script src="scripts/chief-teams.js"></script>';
 
