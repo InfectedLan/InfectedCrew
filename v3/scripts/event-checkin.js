@@ -65,7 +65,7 @@ function loadData() {
 										   '</tr>' +
 
 									   '</table>' +
-									   '<input type="button" value="Godkjenn" onClick="acceptTicket(' + ticketId + ')">');
+									   '<button type="button" onClick="acceptTicket(' + ticketId + ')">Godkjenn</button>');
 		} else {
 			error(data.message);
 		}

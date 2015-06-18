@@ -24,7 +24,7 @@ var selectedRow = 0;
 function editSeatmap()
 {
 	var seatmapId = $("#seatmapSelect").val();
-	window.location = "index.php?page=admin-seatmap&id=" + seatmapId;
+	window.location = "?page=admin-seatmap&id=" + seatmapId;
 }
 function copySeatmap()
 {
@@ -48,7 +48,7 @@ function newSeatmap()
 	$.getJSON('../api/json/seatmap/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
 		if(data.result)
 		{
-			window.location = "index.php?page=admin-seatmap&id=" + data.id;
+			window.location = "?page=admin-seatmap&id=" + data.id;
 		}
 		else
 		{
@@ -58,7 +58,7 @@ function newSeatmap()
 }
 function redirectToSplash()
 {
-	window.location = "index.php?page=admin-seatmap";
+	window.location = "?page=admin-seatmap";
 }
 function addRow()
 {

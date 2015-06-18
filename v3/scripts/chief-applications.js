@@ -18,7 +18,7 @@
  */
  
 function viewApplication(id) {
-	$(location).attr('href', 'index.php?page=application&id=' + id);
+	$(location).attr('href', '?page=application&id=' + id);
 }
 
 function queueApplication(id) {
