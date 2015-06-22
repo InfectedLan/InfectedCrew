@@ -37,99 +37,133 @@ class ApplicationPage implements IPage {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.applications') ||
-				$user->isGroupLeader()) {
+				$user->hasPermission('chief.application') ||
+				$user->isGroupLeader() ||
+				$user->isGroupCoLeader()) {
 				
-				if (isset($_GET['id'])) {
-					$application = ApplicationHandler::getApplication($_GET['id']);
+				if (isset($_GET['applicationId'])) {
+					$application = ApplicationHandler::getApplication($_GET['applicationId']);
 					
-					if ($application != null) {
-						$applicationUser = $application->getUser();
-						$content .= '<script src="scripts/application.js"></script>';
+					$content .= '<div class="row">';
+						$content .= '<div class="col-md-6">';
 
-						$applicationList = ApplicationHandler::getUserApplications($applicationUser);
+							if ($application != null) {
+								$applicationUser = $application->getUser();
 
-						if (!empty($applicationList)) {
-							$content .= '<p>Denne brukeren har også levert søknad til følgende crew:</p>';
-							$content .= '<ul>';
-								foreach ($applicationList as $applicationValue) {
-									if (!$application->equals($applicationValue)) {
-										$group = $applicationValue->getGroup();
+								$content .= '<div class="box">';
+									$content .= '<div class="box-header">';
+								  		$content .= '<h3 class="box-title">Søknad fra ' . $applicationUser->getDisplayName() . '</h3>';
+									$content .= '</div><!-- /.box-header -->';
+									$content .= '<div class="box-body">';
+							  			
+										/*
+										$applicationList = ApplicationHandler::getUserApplications($applicationUser);
+
+										if (!empty($applicationList)) {
+											$content .= '<p>Denne brukeren har også levert søknad til følgende crew:</p>';
+											$content .= '<ul>';
+												foreach ($applicationList as $applicationValue) {
+													if (!$application->equals($applicationValue)) {
+														$group = $applicationValue->getGroup();
+														
+														$content .= '<li><a href="index.php?page=application&id=' . $applicationValue->getId() . '">' . $group->getTitle() . '</a></li>';
+													}
+												}
+											$content .= '</ul>';
+										}
+										*/
+
+							  			$content .= '<table class="table table-bordered">';
+											$content .= '<tr>';
+												$content .= '<td><b>Status</b></td>';
+												$content .= '<td>' . $application->getStateAsString() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Søkers navn</b></td>';
+												$content .= '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Dato søkt</b></td>';
+												$content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Crew</b></td>';
+												$content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>E-post</b></td>';
+												$content .= '<td><a href="mailto:' . $applicationUser->getEmail() . '">' . $applicationUser->getEmail() . '</a></td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Telefon</b></td>';
+												$content .= '<td>' . $applicationUser->getPhone() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Alder</b></td>';
+												$content .= '<td>' . $applicationUser->getAge() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td><b>Søknad</b></td>';
+												$content .= '<td>' . $application->getContent() . '</td>';
+											$content .= '</tr>';
+										$content .= '</table>';
 										
-										$content .= '<li><a href="index.php?page=application&id=' . $applicationValue->getId() . '">' . $group->getTitle() . '</a></li>';
-									}
-								}
-							$content .= '</ul>';
-						}
+										switch ($application->getState()) {
+											case 1:
+												$content .= '<form class="chief-applications-reject" method="post">';
+													$content .= '<input type="hidden" name="applicationId" value="' . $application->getId() . '">';
+													$content .= '<div class="form-group">';
+													  	$content .= '<label>Begrunnelse for avslag</label>';
+													  	$content .= '<textarea class="form-control" rows="3" name="content" placeholder="Skriv hvorfor du vil avslå her..."></textarea>';
+													$content .= '</div><!-- /.form group -->';
+													$content .= '<div class="btn-group" role="group" aria-label="...">';
+														$content .= '<button type="button" class="btn btn-primary" onClick="acceptApplication(' . $application->getId() . ')">Godta</button>';
+														$content .= '<button type="submit" class="btn btn-primary">Avslå</button>';
 
-						$content .= '<table>';
-							$content .= '<tr>';
-								$content .= '<td><b>Status:</b></td>';
-								$content .= '<td>' . $application->getStateAsString() . '</td>';
-							$content .= '</tr>';
-						
-							$content .= '<tr>';
-								$content .= '<td><b>Søkers navn:</b></td>';
-								$content .= '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>Dato søkt:</b></td>';
-								$content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>Crew:</b></td>';
-								$content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>E-post:</b></td>';
-								$content .= '<td><a href="mailto:' . $applicationUser->getEmail() . '">' . $applicationUser->getEmail() . '</a></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>Telefon:</b></td>';
-								$content .= '<td>' . $applicationUser->getPhone() . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>Alder:</b></td>';
-								$content .= '<td>' . $applicationUser->getAge() . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td><b>Søknad:</b></td>';
-								$content .= '<td>' . wordwrap($application->getContent(), 64, '<br>') . '</td>';
-							$content .= '</tr>';
-						$content .= '</table>';
-						
-						switch ($application->getState()) {
-							case 1:
-								$content .= '<form class="chief-applications-reject" method="post">';
-									$content .= '<input type="hidden" name="id" value="' . $application->getId() . '">';
-									$content .= '<textarea class="editor" name="comment" rows="10" cols="80" placeholder="Skriv hvorfor du vil avslå her."></textarea>';
-									$content .= '<input type="submit" value="Avslå">';
-								$content .= '</form>';
-								$content .= '<input type="button" value="Godkjenn" onClick="acceptApplication(' . $application->getId() . ')">';
-								
-								if (!$application->isQueued()) {
-									$content .= '<input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')">';
-								} else {
-									$content .= '<input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')">';
-								}
-								
-								break;
-								
-							case 3:
-								$content .= 'Begrunnelse for avslåelse: <i>' . $application->getComment() . '</i>';
-								break;
-						}
-					} else {
-						$content .= 'Den angitte søknaden finnes ikke.';
-					}
+														if (!$application->isQueued()) {
+															$content .= '<button type="button" class="btn btn-primary" onClick="queueApplication(' . $application->getId() . ')">Sett i kø</button>';
+														} else {
+															$content .= '<button type="button" class="btn btn-primary" onClick="unqueueApplication(' . $application->getId() . ')">Fjern fra kø</button>';
+														}
+											  			
+													$content .= '</div>';
+												$content .= '</form>';
+												
+												break;
+												
+											case 3:
+												$content .= 'Begrunnelse for avslåelse: <i>' . $application->getComment() . '</i>';
+												break;
+										}
+									
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
+							}
+
+						$content .= '</div><!--/.col (left) -->';
+					$content .= '</div><!-- /.row -->';
 				} else {
-					$content .= 'Ingen søknad spesifisert.';
+					$content .= '<div class="box">';
+						$content .= '<div class="box-body">';
+							$content .= '<p>Søknaden som ble spesifisert finnes ikke.</p>';
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				}
+
+				$content .= '<script src="scripts/application.js"></script>';
 			} else {
-				$content .= 'Bare crew ledere kan se søknader.';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			$content .= 'Du er ikke logget inn!';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;

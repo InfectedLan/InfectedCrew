@@ -183,38 +183,6 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 						                    $content .= '</tr>';
 										}
 
-					                    /*
-					                    <tr>
-					                      <td>2.</td>
-					                      <td>Clean database</td>
-					                      <td>
-					                        <div class="progress progress-xs">
-					                          <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-					                        </div>
-					                      </td>
-					                      <td><span class="badge bg-yellow">70%</span></td>
-					                    </tr>
-					                    <tr>
-					                      <td>3.</td>
-					                      <td>Cron job running</td>
-					                      <td>
-					                        <div class="progress progress-xs progress-striped active">
-					                          <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-					                        </div>
-					                      </td>
-					                      <td><span class="badge bg-light-blue">30%</span></td>
-					                    </tr>
-					                    <tr>
-					                      <td>4.</td>
-					                      <td>Fix and squish bugs</td>
-					                      <td>
-					                        <div class="progress progress-xs progress-striped active">
-					                          <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-					                        </div>
-					                      </td>
-					                      <td><span class="badge bg-green">90%</span></td>
-					                    </tr>
-					                    */
 				                  	$content .= '</table>';
 				                $content .= '</div><!-- /.box-body -->';
 				            $content .= '</div><!-- /.box -->';
@@ -364,63 +332,4 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 		return $content;
 	}
 }
-
-/*
-$teamList = $group->getTeams();
-					$userList = $group->getMembers();
-
-					$content .= '<div class="row">';
-						$content .= '<div class="col-md-12">';
-					  		$content .= '<div class="box box-solid">';
-								$content .= '<div class="box-header with-border">';
-						  			$content .= '<h3 class="box-title">Lag</h3>';
-								$content .= '</div><!-- /.box-header -->';
-								$content .= '<div class="box-body">';
-						  
-									if (!empty($teamList)) {
-										$content .= '<table class="table table-bordered">';
-											$content .= '<tr>';
-												$content .= '<th>Navn</th>';
-												$content .= '<th>Medlemmer</th>';
-												$content .= '<th>Beskrivelse</th>';
-												$content .= '<th>Shift-leder</th>';
-											$content .= '</tr>';
-											
-											foreach ($teamList as $team) {
-												$content .= '<tr>';
-													$content .= '<form class="chief-teams-edit" method="post">';
-														$content .= '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
-														$content .= '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-														$content .= '<td>' . $group->getTitle() . ':<input type="text" name="title" value="' . $team->getTitle() . '"></td>';
-														$content .= '<td>' . count($team->getMembers()) . '</td>';
-														$content .= '<td><input type="text" name="description" value="' . $team->getDescription() . '"></td>';
-														$content .= '<td>';
-															$content .= '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
-																$content .= '<option value="0"></option>';
-
-																foreach ($userList as $userValue) {
-																	if ($userValue->equals($team->getLeader())) {
-																		$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
-																	} else {
-																		$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-																	}
-																}
-															$content .= '</select>';
-														$content .= '</td>';
-														$content .= '<td><button type="submit" class="btn btn-primary">Endre</button></td>';
-													$content .= '</form>';
-													$content .= '<td><button class="btn btn-block btn-primary" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')">Slett</button></td>';
-												$content .= '</tr>';
-											}
-
-										$content .= '</table>';
-									} else {
-										$content .= '<p>Det finnes ikke noen lag i denne gruppen.</p>';
-									}
-
-								$content .= '</div><!-- /.box-body -->';
-					  		$content .= '</div><!-- /.box -->';
-						$content .= '</div><!-- ./col -->';
-				  	$content .= '</div><!-- /.row -->';
-*/
 ?>

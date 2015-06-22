@@ -17,12 +17,12 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-function viewApplication(id) {
-	$(location).attr('href', '?page=application&id=' + id);
+function viewApplication(applicationId) {
+	$(location).attr('href', '?page=application&applicationId=' + applicationId);
 }
 
-function queueApplication(id) {
-	$.getJSON('../api/json/application/queueApplication.php?id=' + id, function(data) {
+function queueApplication(applicationId) {
+	$.getJSON('../api/json/application/queueApplication.php?applicationId=' + applicationId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -31,8 +31,8 @@ function queueApplication(id) {
 	});
 }
 
-function unqueueApplication(id) {
-	$.getJSON('../api/json/application/unqueueApplication.php?id=' + id, function(data) {
+function unqueueApplication(applicationId) {
+	$.getJSON('../api/json/application/unqueueApplication.php?applicationId=' + applicationId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
