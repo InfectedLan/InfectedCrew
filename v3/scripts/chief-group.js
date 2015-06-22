@@ -18,24 +18,24 @@
  */
 
 $(document).ready(function() {
-	$('.chief-groups-add').submit(function(e) {
+	$('.chief-group-add').submit(function(e) {
 		e.preventDefault();
 		addGroup(this);
 	});
 	
-	$('.chief-groups-edit').submit(function(e) {
+	$('.chief-group-edit').submit(function(e) {
 		e.preventDefault();
 	    editGroup(this);
 	});
 	
-	$('.chief-groups-adduser').submit(function(e) {
+	$('.chief-group-adduser').submit(function(e) {
 		e.preventDefault();
 		addUserToGroup(this);
 	});
 });
 
-function viewGroup(id) {
-	$(location).attr('href', '?page=chief-group&groupId=' + id);
+function viewGroup(groupId) {
+	$(location).attr('href', '?page=chief-group&groupId=' + groupId);
 }
 
 function addGroup(form) {
@@ -58,8 +58,8 @@ function editGroup(form) {
 	});
 }
 
-function removeGroup(id) {
-	$.getJSON('../api/json/group/removeGroup.php?id=' + id, function(data) {
+function removeGroup(groupId) {
+	$.getJSON('../api/json/group/removeGroup.php?id=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -78,8 +78,8 @@ function addUserToGroup(form) {
 	});
 }
 
-function removeUserFromGroup(id) {
-	$.getJSON('../api/json/group/removeUserFromGroup.php?id=' + id, function(data) {
+function removeUserFromGroup(userId) {
+	$.getJSON('../api/json/group/removeUserFromGroup.php?id=' + userId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -88,12 +88,16 @@ function removeUserFromGroup(id) {
 	});
 }
 
-function removeUsersFromGroup(id) {
-	$.getJSON('../api/json/group/removeUsersFromGroup.php?id=' + id, function(data) {
+function removeUsersFromGroup(groupId) {
+	$.getJSON('../api/json/group/removeUsersFromGroup.php?id=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
 			error(data.message);
 		}
 	});
+}
+
+function viewTeam(groupId) {
+	$(location).attr('href', '?page=chief-team&groupId=' + groupId);
 }
