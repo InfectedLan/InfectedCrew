@@ -23,9 +23,9 @@ require_once 'session.php';
 require_once 'handlers/avatarhandler.php';
 require_once 'interfaces/page.php';
 
-class ChiefAvatarsPage extends ChiefPage implements IPage {
+class ChiefAvatarPage extends ChiefPage implements IPage {
 	public function getTitle() {
-		return 'Avatarer';
+		return 'Profilbilder';
 	}
 
 	public function getContent() {
@@ -35,9 +35,7 @@ class ChiefAvatarsPage extends ChiefPage implements IPage {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.avatars')) {
-				$content .= '<script src="scripts/chief-avatars.js"></script>';
-			
+				$user->hasPermission('chief.avatar')) {
 				$content .= '<h3>Godkjenn profilbilder</h3>';
 				
 				$pendingAvatarList = AvatarHandler::getPendingAvatars();
@@ -67,6 +65,8 @@ class ChiefAvatarsPage extends ChiefPage implements IPage {
 							
 						$index++;
 					}
+
+					$content .= '<script src="scripts/chief-avatar.js"></script>';
 				} else {
 					$content .= '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
 				}
