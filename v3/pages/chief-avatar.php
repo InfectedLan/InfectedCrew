@@ -35,46 +35,71 @@ class ChiefAvatarPage extends ChiefPage implements IPage {
 			$user = Session::getCurrentUser();
 			
 			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.avatar')) {
-				$content .= '<h3>Godkjenn profilbilder</h3>';
-				
-				$pendingAvatarList = AvatarHandler::getPendingAvatars();
-				
-				if (!empty($pendingAvatarList)) {
-					$index = 0;
-				
-					foreach ($pendingAvatarList as $avatar) {
-						$avatarUser = $avatar->getUser();
-					
-						$content .= '<div class="';
-							if ($index % 2 == 0) {
-								$content .= 'avatarLeft';
-							} else {
-								$content .= 'avatarRight';
-							}
-						$content .= '">';
-							$content .= '<p>' . $avatarUser->getDisplayName() . '</p>';
-							$content .= '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" width="300" height="200">';
-							$content .= '<table>';
-								$content .= '<tr>';
-									$content .= '<td><input type="button" value="Godta" onClick="acceptAvatar(' . $avatar->getId() . ')"></td>';
-									$content .= '<td><input type="button" value="Avslå" onClick="rejectAvatar(' . $avatar->getId() . ')"></td>';
-								$content .= '</tr>';
-							$content .= '</table>';
-						$content .= '</div>';
-							
-						$index++;
-					}
+				$user->hasPermission('chief.avatar') ||
+				$user->isGroupLeader() ||
+				$user->isGroupCoLeader()) {
 
-					$content .= '<script src="scripts/chief-avatar.js"></script>';
-				} else {
-					$content .= '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
-				}
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-6">';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-header">';
+						  		$content .= '<h3 class="box-title">Godkjenn profilbilder</h3>';
+							$content .= '</div><!-- /.box-header -->';
+							$content .= '<div class="box-body">';
+					  			
+						  		$pendingAvatarList = AvatarHandler::getPendingAvatars();
+					
+								if (!empty($pendingAvatarList)) {
+									$index = 0;
+									
+									$content = '<div class="row">';
+
+										foreach ($pendingAvatarList as $avatar) {
+											$avatarUser = $avatar->getUser();
+
+											$content .= '<div class="col-md-3">';
+												$content .= '<div class="thumbnail">';
+											  		$content .= '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profilbilde">';
+											  		$content .= '<div class="caption">';
+											  			$content .= '<p class="text-center">';
+															$content .= '<small>' . $user->getDisplayName() . '</small><br>';
+														$content .= '</p>';
+											  		$content .= '</div>';
+											  		$content .= '<div class="btn-group" role="group" aria-label="...">';
+												   		$content .= '<button type="button" class="btn btn-primary" onClick="acceptAvatar(' . $avatar->getId() . ')">Godta</button>';
+												   		$content .= '<button type="button" class="btn btn-primary" onClick="rejectAvatar(' . $avatar->getId() . ')">Avslå</button>';
+											  		$content .= '</div>';
+										   		$content .= '</div>';
+										  	$content .= '</div>';
+
+											$index++;
+										}
+
+										$content .= '</div><!-- /.row -->';
+									
+								} else {
+									$content .= '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
+								}
+
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (left) -->';
+				$content .= '</div><!-- /.row -->';
+
+				$content .= '<script src="scripts/chief-avatar.js"></script>';
 			} else {
-				$content .= '<p>Du har ikke rettigheter til dette!</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			$content .= '<p>Du er ikke logget inn!</p>';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;
