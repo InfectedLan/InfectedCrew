@@ -463,7 +463,7 @@ class Site {
 													// Only create link for groups that actually contain teams.
 													if (!empty($teamList)) {
 														foreach ($teamList as $team) {
-															echo '<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i> ' . $team->getTitle() . '</a></li>';
+															echo '<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i>' . $team->getTitle() . '</a></li>';
 														}
 													}
 													
@@ -471,7 +471,7 @@ class Site {
 														foreach ($pageList as $page) {
 															if (strtolower($page->getName()) != strtolower($group->getName())) {
 																if (!in_array(strtolower($page->getName()), $teamNameList)) {
-																	echo '<li><a href="?page=' . $page->getName() . '"><i class="fa fa-circle-o"></i> ' . $page->getTitle() . '</a></li>';
+																	echo '<li><a href="?page=' . $page->getName() . '"><i class="fa fa-circle-o"></i>' . $page->getTitle() . '</a></li>';
 																}
 															}
 														}
@@ -535,23 +535,23 @@ class Site {
 										  	echo '<ul class="treeview-menu">';
 
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.groups')) {
-													echo '<li' . ($this->pageName == 'chief-groups' ? ' class="active"' : null) . '><a href="?page=chief-groups"><i class="fa fa-circle-o"></i>Crew</a></li>';
+													$user->hasPermission('chief.group')) {
+													echo '<li' . ($this->pageName == 'chief-group' ? ' class="active"' : null) . '><a href="?page=chief-group"><i class="fa fa-circle-o"></i>Crew</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.teams')) {
-													echo '<li' . ($this->pageName == 'chief-teams' ? ' class="active"' : null) . '><a href="?page=chief-teams"><i class="fa fa-circle-o"></i>Lag</a></li>';
+													$user->hasPermission('chief.team')) {
+													echo '<li' . ($this->pageName == 'chief-team' ? ' class="active"' : null) . '><a href="?page=chief-team"><i class="fa fa-circle-o"></i>Lag</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.avatars')) {
-													echo '<li' . ($this->pageName == 'chief-avatars' ? ' class="active"' : null) . '><a href="?page=chief-avatars"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
+													$user->hasPermission('chief.avatar')) {
+													echo '<li' . ($this->pageName == 'chief-avatar' ? ' class="active"' : null) . '><a href="?page=chief-avatar"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.applications')) {
-													echo '<li' . ($this->pageName == 'chief-applications' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-applications"><i class="fa fa-circle-o"></i>Søknader</a></li>';
+													$user->hasPermission('chief.application')) {
+													echo '<li' . ($this->pageName == 'chief-application' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-application"><i class="fa fa-circle-o"></i>Søknader</a></li>';
 												}
 												
 												if ($user->hasPermission('*') ||
@@ -889,9 +889,11 @@ class Site {
 						          	echo '</div>';
 						          	echo '<div class="row">';
 						            	echo '<div class="col-xs-8">';
+						            		/*
 						              		echo '<div class="checkbox icheck">';
 						                		echo '<label><input type="checkbox"> Husk meg</label>';
 						              		echo '</div>';
+						              		*/
 						            	echo '</div><!-- /.col -->';
 						           		echo '<div class="col-xs-4">';
 						              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';

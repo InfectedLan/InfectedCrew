@@ -55,7 +55,7 @@ class EventCheckInPage extends EventPage implements IPage {
 										$content .= '<div class="input-group">';
 											$content .= '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
 											$content .= '<span class="input-group-btn">';
-										  		$content .= '<button type="submit" class="btn btn-info btn-flat" onClick="loadData()">Sjekk inn</button>';
+										  		$content .= '<button type="submit" class="btn btn-primary btn-flat" onClick="loadData()">Sjekk inn</button>';
 											$content .= '</span>';
 									  	$content .= '</div>';
 									$content .= '</div>';

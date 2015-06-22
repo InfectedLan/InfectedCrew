@@ -33,78 +33,68 @@ class EventMemberListPage extends EventPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->isGroupMember()) {
-				$group = $user->getGroup();
 				
-				if ($user->hasPermission('*') || 
-					$user->hasPermission('event.memberlist')) {
-					$content .= '<div class="row">';
-						$content .= '<div class="col-md-6">';
-						  	$content .= '<div class="box">';
-								$content .= '<div class="box-header">';
-							  		$content .= '<h3 class="box-title">Hent ut medlemsliste</h3>';
-								$content .= '</div><!-- /.box-header -->';
-								$content .= '<div class="box-body">';
-									$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
+			if ($user->hasPermission('*') || 
+				$user->hasPermission('event.memberlist')) {
+				$content .= '<div class="row">';
+					$content .= '<div class="col-md-6">';
+					  	$content .= '<div class="box">';
+							$content .= '<div class="box-header">';
+						  		$content .= '<h3 class="box-title">Hent ut medlemsliste</h3>';
+							$content .= '</div><!-- /.box-header -->';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
 
-							  		$content .= '<form class="memberlist" method="post">';
-										$content .= '<div class="form-group">';
-								  			$content .= '<label>År</label>';
-								  			$content .= '<select class="form-control" name="year">';
-												
-												$eventList = EventHandler::getEvents();
-												
-												for ($year = date('Y', reset($eventList)->getStartTime()); $year <= date('Y'); $year++) {
-													if ($year == date('Y')) {
-														$content .= '<option value="' . $year . '" selected>' . $year . '</option>';
-													} else {
-														$content .= '<option value="' . $year . '">' . $year . '</option>';
-													}
+						  		$content .= '<form class="memberlist" method="post">';
+									$content .= '<div class="form-group">';
+							  			$content .= '<label>År</label>';
+							  			$content .= '<select class="form-control" name="year">';
+											
+											$eventList = EventHandler::getEvents();
+											
+											for ($year = date('Y', reset($eventList)->getStartTime()); $year <= date('Y'); $year++) {
+												if ($year == date('Y')) {
+													$content .= '<option value="' . $year . '" selected>' . $year . '</option>';
+												} else {
+													$content .= '<option value="' . $year . '">' . $year . '</option>';
 												}
+											}
 
-											$content .= '</select>';
-										$content .= '</div>';
-										$content .= '<div class="form-group">';
-										  	$content .= '<label>Aldersgrense</label>';
-										  	$content .= '<select class="form-control" name="ageLimit">';
-												
-												for ($age = 1; $age <= 100; $age++) {
-													if ($age == 20) {
-														$content .= '<option value="' . $age . '" selected>' . $age . ' År</option>';
-													} else {
-														$content .= '<option value="' . $age . '">' . $age . ' År</option>';
-													}
+										$content .= '</select>';
+									$content .= '</div>';
+									$content .= '<div class="form-group">';
+									  	$content .= '<label>Aldersgrense</label>';
+									  	$content .= '<select class="form-control" name="ageLimit">';
+											
+											for ($age = 1; $age <= 100; $age++) {
+												if ($age == 20) {
+													$content .= '<option value="' . $age . '" selected>' . $age . ' År</option>';
+												} else {
+													$content .= '<option value="' . $age . '">' . $age . ' År</option>';
 												}
+											}
 
-											$content .= '</select>';
-										$content .= '</div>';
-										$content .= '<div class="form-group">';
-											$content .= '<label>Format</label>';
-											$content .= '<select class="form-control" name="format">';
-												$content .= '<option value="html" selected>Tekst (.html)</option>';
-												$content .= '<option value="csv">Regneark (.csv)</option>';
-											$content .= '</select>';
-									  	$content .= '</div><!-- /.form group -->';
-									  	$content .= '<button type="submit" class="btn btn-primary">Hent</button>';
-							  		$content .= '</form>';
-								$content .= '</div><!-- /.box-body -->';
-						  	$content .= '</div><!-- /.box -->';
-						$content .= '</div><!--/.col (left) -->';
-					$content .= '</div><!-- /.row -->';
+										$content .= '</select>';
+									$content .= '</div>';
+									$content .= '<div class="form-group">';
+										$content .= '<label>Format</label>';
+										$content .= '<select class="form-control" name="format">';
+											$content .= '<option value="html" selected>Tekst (.html)</option>';
+											$content .= '<option value="csv">Regneark (.csv)</option>';
+										$content .= '</select>';
+								  	$content .= '</div><!-- /.form group -->';
+								  	$content .= '<button type="submit" class="btn btn-primary">Hent</button>';
+						  		$content .= '</form>';
+							$content .= '</div><!-- /.box-body -->';
+					  	$content .= '</div><!-- /.box -->';
+					$content .= '</div><!--/.col (left) -->';
+				$content .= '</div><!-- /.row -->';
 
-					$content .= '<script src="scripts/event-memberlist.js"></script>';
-				} else {
-					$content .= '<div class="box">';
-						$content .= '<div class="box-body">';
-							$content .= '<p>Du har ikke rettigheter til dette!</p>';
-						$content .= '</div><!-- /.box-body -->';
-					$content .= '</div><!-- /.box -->';
-				}
+				$content .= '<script src="scripts/event-memberlist.js"></script>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
-						$content .= '<p>Du er ikke medlem av en gruppe.</p>';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
 					$content .= '</div><!-- /.box-body -->';
 				$content .= '</div><!-- /.box -->';
 			}
