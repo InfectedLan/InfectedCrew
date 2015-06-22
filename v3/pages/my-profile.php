@@ -26,7 +26,7 @@ require_once 'interfaces/page.php';
 require_once 'traits/page.php';
 
 class MyProfilePage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		$id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();

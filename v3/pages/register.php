@@ -25,7 +25,7 @@ require_once 'traits/page.php';
 require_once 'utils/dateutils.php';
 
 class RegisterPage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		return null;

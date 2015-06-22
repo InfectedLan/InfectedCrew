@@ -23,7 +23,7 @@ require_once 'interfaces/page.php';
 require_once 'traits/page.php';
 
 class EditAvatarPage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		return 'Endre avatar';
