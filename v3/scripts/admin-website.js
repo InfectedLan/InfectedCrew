@@ -35,7 +35,7 @@ function addPage(form) {
 }
 
 function editPage(id) {
-	$(location).attr('href', 'index.php?page=edit-page&id=' + id);
+	$(location).attr('href', '?page=edit-page&id=' + id);
 }
 
 function removePage(id) {

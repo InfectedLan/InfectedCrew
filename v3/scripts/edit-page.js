@@ -27,7 +27,7 @@ $(document).ready(function() {
 function editPage(form) {
 	$.getJSON('../api/json/page/editPage.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
-			$(location).attr('href', 'index.php?page=admin-website');
+			$(location).attr('href', '?page=admin-website');
 		} else {
 			error(data.message); 
 		}

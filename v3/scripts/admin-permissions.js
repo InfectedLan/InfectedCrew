@@ -22,7 +22,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		$.getJSON('../api/json/permissions/editUserPermissions.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
-				$(location).attr('href', 'index.php?page=admin-permissions');
+				$(location).attr('href', '?page=admin-permissions');
 			} else {
 				error(data.message); 
 			}
@@ -31,7 +31,7 @@ $(document).ready(function() {
 });
 
 function editUserPermissions(id) {
-	$(location).attr('href', 'index.php?page=admin-permissions&id=' + id);
+	$(location).attr('href', '?page=admin-permissions&id=' + id);
 }
 
 function removeUserPermissions(id) {

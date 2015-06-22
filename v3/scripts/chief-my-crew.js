@@ -35,7 +35,7 @@ function addPage(form) {
 }
 
 function editPage(id) {
-	$(location).attr('href', 'index.php?page=edit-restricted-page&id=' + id);
+	$(location).attr('href', '?page=edit-restricted-page&id=' + id);
 }
 
 function removePage(id) {

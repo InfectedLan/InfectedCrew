@@ -42,7 +42,7 @@ $(document).ready(function() {
 });
 
 function viewSeatmap(id) {
-	$(location).attr('href', 'index.php?page=event-seatmap&id=' + id);
+	$(location).attr('href', '?page=event-seatmap&id=' + id);
 }
 
 function copyMembers(id) {
