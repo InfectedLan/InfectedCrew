@@ -25,7 +25,7 @@ require_once 'interfaces/page.php';
 require_once 'traits/page.php';
 
 class ResetPasswordPage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		return null;

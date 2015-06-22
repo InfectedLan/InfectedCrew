@@ -24,7 +24,7 @@ require_once 'interfaces/page.php';
 require_once 'traits/page.php';
 
 class TicketPage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		if (Session::isAuthenticated()) {

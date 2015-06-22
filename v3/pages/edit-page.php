@@ -24,7 +24,7 @@ require_once 'interfaces/page.php';
 require_once 'traits/page.php';
 
 class EditPagePage implements IPage {
-	use Page;
+	use TPage;
 
 	public function getTitle() {
 		return 'Endre side';
