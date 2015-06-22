@@ -35,7 +35,7 @@ $(document).ready(function() {
 });
 
 function viewGroup(id) {
-	$(location).attr('href', '?page=chief-groups&groupId=' + id);
+	$(location).attr('href', '?page=chief-group&groupId=' + id);
 }
 
 function addGroup(form) {

@@ -51,7 +51,7 @@ function renderMatchList() {
 
 function renderPendingMatches(pendingData) {
 	var appendArray = [];
-	appendArray.push("<h1>Ventende matcher</h1>");
+	appendArray.push('<h1>Ventende matcher</h1>');
 	
 	appendArray.push('<hr />');
 	for(var i = 0; i < pendingData.length; i++) {
