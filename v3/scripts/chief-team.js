@@ -18,7 +18,7 @@
  */
 
 $(document).ready(function() {
-	$('.chief-teams-add').submit(function(e) {
+	$('.chief-team-add').submit(function(e) {
 		e.preventDefault();
 		$.getJSON('../api/json/team/addTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
@@ -29,7 +29,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	$('.chief-teams-edit').submit(function(e) {
+	$('.chief-team-edit').submit(function(e) {
 		e.preventDefault();
 	    $.getJSON('../api/json/team/editTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
@@ -40,7 +40,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	$('.chief-teams-adduser').submit(function(e) {
+	$('.chief-team-adduser').submit(function(e) {
 		e.preventDefault();
 		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
@@ -52,6 +52,10 @@ $(document).ready(function() {
 	});
 });
 
+function viewTeam(teamId) {
+	$(location).attr('href', '?page=chief-team&teamId=' + teamId);
+}
+
 function removeTeam(groupId, teamId) {
 	$.getJSON('../api/json/team/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
 		if (data.result) {
@@ -62,8 +66,8 @@ function removeTeam(groupId, teamId) {
 	});
 }
 
-function removeUserFromTeam(id) {
-	$.getJSON('../api/json/team/removeUserFromTeam.php?id=' + id, function(data){
+function removeUserFromTeam(userId) {
+	$.getJSON('../api/json/team/removeUserFromTeam.php?userId=' + userId, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -72,12 +76,16 @@ function removeUserFromTeam(id) {
 	});
 }
 
-function removeUsersFromTeam(id) {
-	$.getJSON('../api/json/team/removeUsersFromTeam.php?id=' + id, function(data) {
+function removeUsersFromTeam(teamId) {
+	$.getJSON('../api/json/team/removeUsersFromTeam.php?teamId=' + teamId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
 			error(data.message);
 		}
 	});
+}
+
+function viewGroup(groupId) {
+	$(location).attr('href', '?page=chief-group&groupId=' + groupId);
 }
