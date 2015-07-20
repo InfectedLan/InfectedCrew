@@ -20,40 +20,40 @@
 
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
+require_once 'handlers/userhistoryhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+	$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('developer.change-user')) {
-		echo '<script src="scripts/developer-change-user.js"></script>';
-		echo '<h1>Bytt bruker</h1>';
-		echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
-		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
-		
-		echo '<form class="developer-changeuser" name="input" method="post">';
+		$user->equals($historyUser)) {
+		$eventList = UserHistoryHandler::getEventsByUser($historyUser);
+		echo '<script src="scripts/userhistory.js"></script>';
+		echo '<h3>Bruker historie</h3>';
+
+		if (!empty($eventList)) {
+			echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
 			echo '<table>';
 				echo '<tr>';
-					echo '<td>Bruker:</td>';
-					echo '<td>';
-						echo '<select class="chosen-select" name="userId" autofocus>';
-							$userList = UserHandler::getUsers();
-							
-							foreach ($userList as $user) {
-								echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
-							}
-						echo '</select>';
-					echo '</td>';
+					echo '<th>Arrangement:</th>';
+					echo '<th>Rolle:</th>';
 				echo '</tr>';
-				echo '<tr>';
-					echo '<td><input type="submit" value="Bytt bruker"></td>';
-				echo '</tr>';
+
+				foreach ($eventList as $event) {
+					echo '<tr>';
+						echo '<td>' . $event->getTitle() . '</td>';
+						echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+					echo '</tr>';
+				}
 			echo '</table>';
-		echo '</form>';
+		} else {
+			echo '<p>Denne brukeren har ikke noe historie enda.</p>';
+		}
 	} else {
 		echo 'Du har ikke rettigheter til dette.';
 	}
 } else {
-	echo 'Du er ikke logget inn.';
+	echo 'Du er ikke logget inn!';
 }
 ?>

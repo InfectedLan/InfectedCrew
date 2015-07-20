@@ -4,18 +4,18 @@
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3.0 of the License, or (at your option) any later version.
  * 
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once 'session.php';
@@ -23,6 +23,7 @@ require_once 'handlers/userhandler.php';
 require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
+require_once 'handlers/grouphandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -35,6 +36,7 @@ if (Session::isAuthenticated()) {
 			$user->hasPermission('search.users') ||
 			$user->equals($profileUser)) {
 			echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
+			echo '<script src="scripts/my-profile.js"></script>';
 
 			echo '<h3>' . $profileUser->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
@@ -189,6 +191,31 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
 					echo '</tr>';
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="index.php?page=user-history">Vis historie</a></td>';
+					echo '</tr>';
+				}
+
+				if ($user->hasPermission('*') ||
+					$user->hasPermission('admin.permissions')) {
+
+					if (!$profileUser->isGroupMember()) {
+						echo '<tr>';
+							echo '<td></td>';
+							echo '<td>';
+								echo '<form class="my-profile-group-add-user" method="post">';
+									echo '<input type="hidden" name="userId" value="' . $profileUser->getId() . '">';
+									echo '<select class="chosen-select" name="groupId">';
+										foreach (GroupHandler::getGroups() as $group) {
+											echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
+										}
+									echo '</select> ';
+									echo '<input type="submit" value="Legg til i crew">';
+								echo '</form>';
+							echo '</td>';
+						echo '</tr>';
+					}
 				}
 			echo '</table>';
 			
@@ -200,7 +227,7 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profileUser);
 			}
 		
-			echo '<img src="../api/' . $avatarFile . '" width="550px" style="float: right;">';
+			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
 
 			if (($user->hasPermission('*') ||
 				$user->hasPermission('search.users') ||
@@ -208,7 +235,6 @@ if (Session::isAuthenticated()) {
 				$profileUser->hasTicket()) {
 				$ticket = $profileUser->getTicket();
 				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
-				echo '<script src="scripts/my-profile.js"></script>';
 
 				echo '<h3>Omplasser bruker</h3>';
 				echo '<div id="seatmapCanvas"></div>';

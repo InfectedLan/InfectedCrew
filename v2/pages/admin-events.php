@@ -4,18 +4,18 @@
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3.0 of the License, or (at your option) any later version.
  * 
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once 'session.php';
@@ -34,11 +34,8 @@ if (Session::isAuthenticated()) {
 		echo '<table>';
 			echo '<tr>';
 				echo '<th>Navn:</th>';
-				echo '<th>Tema:</th>';
-				echo '<th>Sted:</th>';
-				echo '<th>Deltakere:</th>';
+				echo '<th>Sted/Deltakere:</th>';
 				echo '<th>Booking:</th>';
-				echo '<th>Seatmap:</th>';
 				echo '<th>Start:</th>';
 				echo '<th>Slutt:</th>';
 			echo '</tr>';
@@ -48,18 +45,16 @@ if (Session::isAuthenticated()) {
 					echo '<form class="admin-events-edit" name="input" method="post">';
 						echo '<input type="hidden" name="id" value="' . $event->getId() . '">';
 						echo '<td>' . $event->getTitle() . '</td>';
-						echo '<td><input type="text" name="theme" value="' . $event->getTheme() . '"></td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="location" required>';
 								echo '<option value="' . $event->getLocation()->getId() . '">' . $event->getLocation()->getTitle() . '</option>';
 							echo '</select>';
+							echo '<input type="number" name="participants" value="' . $event->getParticipants() . '" required>';
 						echo '</td>';
-						echo '<td><input type="number" name="participants" value="' . $event->getParticipants() . '" required></td>';
 						echo '<td>';
 							echo '<input type="date" name="bookingDate" value="' . date('Y-m-d', $event->getBookingTime()) . '" required>';
 							echo '<input type="time" name="bookingTime" value="' . date('H:i', $event->getBookingTime()) . '" required>';
 						echo '</td>';
-						echo '<td><input type="button" value="Vis" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')"></td>';
 						echo '<td>';
 							echo '<input type="date" name="startDate" value="' . date('Y-m-d', $event->getStartTime()) . '" required>';
 							echo '<input type="time" name="startTime" value="' . date('H:i', $event->getStartTime()) . '" required>';
@@ -68,11 +63,26 @@ if (Session::isAuthenticated()) {
 							echo '<input type="date" name="endDate" value="' . date('Y-m-d', $event->getEndTime()) . '" required>';
 							echo '<input type="time" name="endTime" value="' . date('H:i', $event->getEndTime()) . '" required>';
 						echo '</td>';
-						echo '<td><input type="submit" value="Endre"></td>';
+						echo '<td>';
+							echo '<input type="submit" value="Endre">';
+							echo '<input type="button" value="Vis setekart" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">';
+						echo '</td>';
 					echo '</form>';
 					
+					echo '<td></td>';
+
 					if ($user->hasPermission('*')) {
-						echo '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
+						$currentEvent = EventHandler::getCurrentEvent();
+
+						// Allow user to transfer members from previus event if this event is the current one.
+						if ($event->equals($currentEvent)) {
+							echo '<td><input type="button" value="Kopier medlemmer" onClick="copyMembers(' . EventHandler::getPreviousEvent()->getId() . ')"></td>';
+						}
+
+						// Prevent users from removing events that have already started, we don't want to delete old tickets etc.
+						if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
+							echo '<td><input type="button" value="Slett" onClick="removeEvent(' . $event->getId() . ')"></td>';
+						}
 					}
 				echo '</tr>';
 			}
@@ -82,10 +92,6 @@ if (Session::isAuthenticated()) {
 		echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 		echo '<form class="admin-events-add" method="post">';
 			echo '<table>';
-				echo '<tr>';
-					echo '<td>Tema:</td>';
-					echo '<td><input type="text" name="theme"></td>';
-				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Sted:</td>';
 					echo '<td>';

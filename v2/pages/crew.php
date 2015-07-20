@@ -4,53 +4,151 @@
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3.0 of the License, or (at your option) any later version.
  * 
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once 'session.php';
-require_once 'handlers/grouphandler.php';
-require_once 'handlers/teamhandler.php';
+require_once 'handlers/avatarhandler.php';
+require_once 'objects/group.php';
+require_once 'objects/team.php';
 
-if (Session::isAuthenticated()) {
+function displayGroupWithInfo(Group $group) {
+	echo '<div class="crewParagraph">';
+		echo '<h3>' . $group->getTitle() . '</h3>';
+		echo $group->getDescription();
+	echo '</div>';
+	
+	if (Session::isAuthenticated()) {
+		displayGroup($group);
+	}
+}
+	
+function displayGroup(Group $group) {
 	$user = Session::getCurrentUser();
+	
+	if ($user->isGroupMember()) {
+		$memberList = $group->getMembers();
+		
+		if (!empty($memberList)) {
+			$index = 0;
+			
+			foreach ($memberList as $member) {
+				echo '<div class="';
+					
+					if ($index % 2 == 0) {
+						echo 'crewEntryLeft';
+					} else {
+						echo 'crewEntryRight';
+					}
+				echo '">';
+					$avatarFile = null;
+			
+					if ($member->hasValidAvatar()) {
+						$avatarFile = $member->getAvatar()->getThumbnail();
+					} else {
+						$avatarFile = AvatarHandler::getDefaultAvatar($member);
+					}
+				
+					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
+					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
 
-	if (isset($_GET['id'])) {
-		if ($user->isGroupMember()) {	
-			if (isset($_GET['teamId'])) {
-				$team = TeamHandler::getTeam($_GET['teamId']);
+					if ($member->isGroupLeader()) {
+						echo 'Stilling: Chief<br>';
+					} else if ($member->isGroupCoLeader()) {
+						echo 'Stilling: Co-chief<br>';
+					} else if ($member->isTeamMember() && $member->isTeamLeader()) {
+						echo 'Stilling: Shift-leder<br>';
+					}
 
-				if ($team != null) {
-					$team->displayWithInfo();
-				}
-			} else {
-				$group = GroupHandler::getGroup($_GET['id']);
-
-				if ($group != null) {
-					$group->displayWithInfo();
-				}
+					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
+					echo 'E-post: ' . $member->getEmail() . '</p>';
+				echo '</div>';
+					
+				$index++;
 			}
 		} else {
-			echo 'Du er ikke i crew.';
-		}
-	} else {
-		$groupList = GroupHandler::getGroups();
-		
-		foreach ($groupList as $group) {	
-			$group->displayWithInfo();
+			echo '<p>Det er ingen medlemmer av dette laget.</p>';
 		}
 	}
-} else {
-	echo '<p>Du er ikke logget inn!</p>';
+}
+
+function displayTeamWithInfo(Team $team) {
+	echo '<div class="crewParagraph">';
+		echo '<h3>' . $team->getTitle() . '</h3>';
+		echo $team->getDescription();
+	echo '</div>';
+		
+	if (Session::isAuthenticated()) {
+		$team->displayTeam();
+	}
+}
+
+function displayTeam(Team $team) {
+	$user = Session::getCurrentUser();
+	
+	if ($user->isGroupMember()) {
+		$memberList = $team->getMembers();
+		
+		if (!empty($memberList)) {
+			$index = 0;
+			
+			foreach ($memberList as $member) {
+				echo '<div class="';
+					
+					if ($index % 2 == 0) {
+						echo 'crewEntryLeft';
+					} else {
+						echo 'crewEntryRight';
+					}
+				echo '">';
+					$avatarFile = null;
+			
+					if ($member->hasValidAvatar()) {
+						$avatarFile = $member->getAvatar()->getThumbnail();
+					} else {
+						$avatarFile = AvatarHandler::getDefaultAvatar($member);
+					}
+				
+					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
+					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
+					echo 'Stilling: ';
+					
+					if ($member->isGroupLeader()) {
+						echo 'Chief';
+					} else if ($member->isGroupCoLeader()) {
+						echo 'Co-chief';
+					} else if ($member->isTeamMember()) {
+						if ($member->isTeamLeader()) {
+							echo 'Shift-leder i ' . $member->getTeam()->getTitle();
+						} else {
+							echo $member->getTeam()->getTitle();
+						}
+					} else {
+						echo 'Medlem';
+					}
+					
+					echo '<br>';
+					
+					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
+					echo 'E-post: ' . $member->getEmail() . '</p>';
+				echo '</div>';
+					
+				$index++;
+			}
+		} else {
+			echo '<p>Det er ingen medlemmer av dette crewet.</p>';
+		}
+	}
 }
 ?>

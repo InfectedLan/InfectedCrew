@@ -4,18 +4,18 @@
  *
  * Copyright (C) 2015 Infected <http://infected.no/>.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3.0 of the License, or (at your option) any later version.
  * 
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once 'session.php';
@@ -134,11 +134,11 @@ class Site {
 									}
 								}
 									
-								if ($this->pageName == 'crew') {
+								if ($this->pageName == 'all-crew') {
 									$groupList = GroupHandler::getGroups();
 									
 									foreach ($groupList as $group) {
-										echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
+										echo '<li><a' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) . ' href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></li>';
 									}
 								} else if ($this->pageName == 'event' || 
 										   $this->pageName == 'event-checkin' ||
@@ -329,7 +329,7 @@ class Site {
 									echo '<li' . ($this->pageName == 'apply' ? ' class="active"' : null) . '><a href="index.php?page=apply"><img src="images/apply.png"></a></li>';
 								}
 								
-								echo '<li' . ($this->pageName == 'crew' ? ' class="active"' : null) . '><a href="index.php?page=crew"><img src="images/crew.png"></a></li>';
+								echo '<li' . ($this->pageName == 'all-crew' ? ' class="active"' : null) . '><a href="index.php?page=all-crew"><img src="images/all-crew.png"></a></li>';
 								
 								if ($user->hasPermission('*') ||
 									$user->hasPermission('event')) {
@@ -438,7 +438,7 @@ class Site {
 			} else if ($user->hasPermission('chief.applications') && 
 					   $user->isGroupMember()) {
 				$group = $user->getGroup();
-				$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
+				$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
 				
 				if (!empty($pendingApplicationList)) {
 					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ', de venter på svar fra deg.</div>';

@@ -1,3 +1,4 @@
+<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -17,16 +18,40 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready(function() {
-	$('.chief-email-send').submit(function(e) {
-		e.preventDefault();
-		$.getJSON('../api/json/email/sendEmail.php' + '?' + $(this).serialize(), function(data) {
-			if (data.result) {
-				info(data.message);
-				location.reload();
+require_once 'session.php';
+require_once 'handlers/teamhandler.php';
+require_once 'handlers/grouphandler.php';
+require_once 'pages/crew.php';
+
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
+
+	if (isset($_GET['id'])) {
+		if ($user->isGroupMember()) {	
+			if (isset($_GET['teamId'])) {
+				$team = TeamHandler::getTeam($_GET['teamId']);
+
+				if ($team != null) {
+					displayTeamWithInfo($team);
+				}
 			} else {
-				error(data.message); 
+				$group = GroupHandler::getGroup($_GET['id']);
+
+				if ($group != null) {
+					displayGroupWithInfo($group);
+				}
 			}
-		});
-	});
-});
+		} else {
+			echo 'Du er ikke i crew.';
+		}
+	} else {
+		$groupList = GroupHandler::getGroups();
+		
+		foreach ($groupList as $group) {	
+			displayGroupWithInfo($group);
+		}
+	}
+} else {
+	echo '<p>Du er ikke logget inn!</p>';
+}
+?>
