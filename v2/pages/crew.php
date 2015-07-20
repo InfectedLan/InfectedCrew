@@ -62,15 +62,7 @@ function displayGroup(Group $group) {
 				
 					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
-
-					if ($member->isGroupLeader()) {
-						echo 'Stilling: Chief<br>';
-					} else if ($member->isGroupCoLeader()) {
-						echo 'Stilling: Co-chief<br>';
-					} else if ($member->isTeamMember() && $member->isTeamLeader()) {
-						echo 'Stilling: Shift-leder<br>';
-					}
-
+					echo 'Stilling: ' . $member->getRole() . '<br>';
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
@@ -122,24 +114,7 @@ function displayTeam(Team $team) {
 				
 					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
-					echo 'Stilling: ';
-					
-					if ($member->isGroupLeader()) {
-						echo 'Chief';
-					} else if ($member->isGroupCoLeader()) {
-						echo 'Co-chief';
-					} else if ($member->isTeamMember()) {
-						if ($member->isTeamLeader()) {
-							echo 'Shift-leder i ' . $member->getTeam()->getTitle();
-						} else {
-							echo $member->getTeam()->getTitle();
-						}
-					} else {
-						echo 'Medlem';
-					}
-					
-					echo '<br>';
-					
+					echo 'Stilling: ' . $member->getRole() . '<br>';
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
