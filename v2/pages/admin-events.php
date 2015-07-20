@@ -33,6 +33,7 @@ if (Session::isAuthenticated()) {
 		
 		echo '<table>';
 			echo '<tr>';
+				echo '<th>Id:</th>';
 				echo '<th>Navn:</th>';
 				echo '<th>Sted/Deltakere:</th>';
 				echo '<th>Booking:</th>';
@@ -44,6 +45,7 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<form class="admin-events-edit" name="input" method="post">';
 						echo '<input type="hidden" name="id" value="' . $event->getId() . '">';
+						echo '<td>' . $event->getId() . '</td>';
 						echo '<td>' . $event->getTitle() . '</td>';
 						echo '<td>';
 							echo '<select class="chosen-select" name="location" required>';
