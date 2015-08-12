@@ -62,7 +62,11 @@ function displayGroup(Group $group) {
 
 					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
-					echo 'Stilling: ' . $member->getRole() . '<br>';
+
+					if ($member->hasRole()) {
+						echo 'Stilling: ' . $member->getRole() . '<br>';
+					}
+					
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
@@ -114,7 +118,11 @@ function displayTeam(Team $team) {
 
 					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
-					echo 'Stilling: ' . $member->getRole() . '<br>';
+
+					if ($member->hasRole()) {
+						echo 'Stilling: ' . $member->getRole() . '<br>';
+					}
+
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';
