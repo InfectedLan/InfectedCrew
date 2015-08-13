@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,7 +30,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	$profileUser = UserHandler::getUser($id);
-	
+
 	if ($profileUser != null) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('search.users') ||
@@ -78,28 +78,28 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Adresse:</td>';
 						$address = $profileUser->getAddress();
-						
+
 						if (!empty($address)) {
 							echo '<td>' . $address . '</td>';
 						} else {
 							echo '<td><i>Ikke oppgitt</i></td>';
 						}
 				echo '</tr>';
-			
+
 				$postalCode = $profileUser->getPostalCode();
-				
+
 				if ($postalCode != 0) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td>' . $postalCode . ' ' . $profileUser->getCity() . '</td>';
 					echo '</tr>';
 				}
-				
+
 				echo '<tr>';
 					echo '<td>Kallenavn:</td>';
 					echo '<td>' . $profileUser->getNickname() . '</td>';
 				echo '</tr>';
-				
+
 				if ($profileUser->hasEmergencyContact()) {
 					echo '<tr>';
 						echo '<td>Foresatte\'s telefon:</td>';
@@ -121,7 +121,14 @@ if (Session::isAuthenticated()) {
 						echo '<td>' . ($profileUser->isActivated() ? 'Ja' : 'Nei') . '</td>';
 					echo '</tr>';
 				}
-				
+
+				if ($profileUser->hasTicketsByAllEvents()) {
+					echo '<tr>';
+						echo '<td>Deltatt tidligere:</td>';
+						echo '<td>' . count($profileUser->getTicketsByAllEvents()) . ' ganger</td>';
+					echo '</tr>';
+				}
+
 				if ($profileUser->isGroupMember()) {
 					echo '<tr>';
 						echo '<td>Crew:</td>';
@@ -133,13 +140,13 @@ if (Session::isAuthenticated()) {
 							}
 						echo '</td>';
 					echo '</tr>';
-					
+
 					if ($profileUser->isTeamMember()) {
 						echo '<tr>';
 							echo '<td>Lag:</td>';
 							echo '<td>' . $profileUser->getTeam()->getTitle() . '</td>';
 						echo '</tr>';
-					}	
+					}
 				}
 
 				if ($profileUser->hasTicket()) {
@@ -163,13 +170,13 @@ if (Session::isAuthenticated()) {
 				if ($profileUser->hasTicket() &&
 					$profileUser->hasSeat()) {
 					$ticket = $profileUser->getTicket();
-					
+
 					echo '<tr>';
 						echo '<td>Plass:</td>';
 						echo '<td>' . $ticket->getSeat()->getString() . '</td>';
 					echo '</tr>';
 				}
-				
+
 				if ($user->hasPermission('*') ||
 					$user->equals($profileUser)) {
 					echo '<tr>';
@@ -177,14 +184,14 @@ if (Session::isAuthenticated()) {
 						echo '<td><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></td>';
 					echo '</tr>';
 				}
-				
+
 				if ($user->equals($profileUser)) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-avatar">Endre avatar</a></td>';
 					echo '</tr>';
 				}
-					
+
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('admin.permissions')) {
 					echo '<tr>';
@@ -218,20 +225,20 @@ if (Session::isAuthenticated()) {
 					}
 				}
 			echo '</table>';
-			
+
 			$avatarFile = null;
-			
+
 			if ($profileUser->hasValidAvatar()) {
 				$avatarFile = $profileUser->getAvatar()->getHd();
 			} else {
 				$avatarFile = AvatarHandler::getDefaultAvatar($profileUser);
 			}
-		
+
 			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
 
 			if (($user->hasPermission('*') ||
 				$user->hasPermission('search.users') ||
-				$user->hasPermission('chief.tickets')) && // TODO: Verify this permission. 
+				$user->hasPermission('chief.tickets')) && // TODO: Verify this permission.
 				$profileUser->hasTicket()) {
 				$ticket = $profileUser->getTicket();
 				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
