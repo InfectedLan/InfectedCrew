@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,12 +56,9 @@ function showSplash() {
 }
 
 function showEditor() {
-	$seatmap = SeatmapHandler::getSeatmap($_GET["id"]);
-	
+	$seatmap = SeatmapHandler::getSeatmap($_GET['id']);
+
 	if ($seatmap != null) {
-		echo '<h1>Seatmappet eksisterer ikke!</h1>';
-		echo '<input type="button" onclick="redirectToSplash()" value="Tilbake" />';
-	} else {
 		echo '<script>var seatmapId = ' . $seatmap->getId() . '; </script>';
 
 		echo '<script>';
@@ -76,7 +73,7 @@ function showEditor() {
 		echo '<div id="seatmapEditorPanel">';
 			echo '<h1>Endrer på seatmappet "' . $seatmap->getHumanName() . '"</h1>';
 			//Fille uploader widget
-			echo '<form id="uploadBgForm" action="../api/json/seatmapUploadBg.php" method="post" enctype="multipart/form-data">';
+			echo '<form id="uploadBgForm" action="../api/json/seatmap/uploadSeatmapBackground.php" method="post" enctype="multipart/form-data">';
 				echo '<input type="file" id="uploadBgImage" name="bgImageFile" />';
      			echo '<input type="submit" value="Last opp nytt bakgrunnsbilde" />';
      			echo '<input type="hidden" name="seatmapId" value="' . $seatmap->getId() . '" />';
@@ -101,6 +98,9 @@ function showEditor() {
 		echo '<div id="seatmapEditorCanvas">';
 			echo '<i>Laster inn data...</i>';
 		echo '</div>';
+	} else {
+		echo '<h1>Seatmappet eksisterer ikke!</h1>';
+		echo '<input type="button" onclick="redirectToSplash()" value="Tilbake" />';
 	}
 }
 ?>
