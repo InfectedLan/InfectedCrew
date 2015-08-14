@@ -40,7 +40,7 @@ if (Session::isAuthenticated()) {
       echo '<h3>Endrer plasseringen til ' . $relocateUser->getDisplayName() . '</h3>';
       echo '<div id="seatmapCanvas"></div>';
       echo '<script>';
-        echo 'var seatmapId = ' . EventHandler::getCurrentEvent()->getSeatmap()->getId() /*$ticket->getEvent()->getSeatmap()->getId()*/ . ';';
+        echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';'; // TODO: Fix this, somehow event here is null...
         echo 'var ticketId = ' . $ticket->getId() . ';';
         echo '$(document).ready(function() {';
           echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
