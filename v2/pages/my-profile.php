@@ -35,7 +35,6 @@ if (Session::isAuthenticated()) {
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('search.users') ||
 			$user->equals($profileUser)) {
-			echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
 			echo '<script src="scripts/my-profile.js"></script>';
 
 			echo '<h3>' . $profileUser->getDisplayName(). '</h3>';
@@ -185,6 +184,17 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
+				if ($user->hasPermission('*') ||
+					$user->equals($profileUser)) {
+
+					if ($profileUser->hasTicket()) {
+						echo '<tr>';
+							echo '<td></td>';
+							echo '<td><a href="index.php?page=edit-user-location&id=' . $profileUser->getId() . '">Endre plassering</a></td>';
+						echo '</tr>';
+					}
+				}
+
 				if ($user->equals($profileUser)) {
 					echo '<tr>';
 						echo '<td></td>';
@@ -235,24 +245,6 @@ if (Session::isAuthenticated()) {
 			}
 
 			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
-
-			if (($user->hasPermission('*') ||
-				$user->hasPermission('search.users') ||
-				$user->hasPermission('chief.tickets')) && // TODO: Verify this permission.
-				$profileUser->hasTicket()) {
-				$ticket = $profileUser->getTicket();
-				echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
-
-				echo '<h3>Omplasser bruker</h3>';
-				echo '<div id="seatmapCanvas"></div>';
-				echo '<script>';
-					echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';';
-					echo 'var ticketId = ' . $ticket->getId() . ';';
-					echo '$(document).ready(function() {';
-						echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
-					echo '});';
-				echo '</script>';
-			}
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}

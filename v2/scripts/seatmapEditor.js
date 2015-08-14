@@ -21,12 +21,13 @@ var xPos = 0;
 var yPos = 0;
 var seatmapData = null;
 var selectedRow = 0;
-function editSeatmap(){
+
+function editSeatmap() {
 	var seatmapId = $("#seatmapSelect").val();
 	window.location = "index.php?page=admin-seatmap&id=" + seatmapId;
 }
 
-function copySeatmap(){
+function copySeatmap() {
 	var seatmapId = $("#seatmapSelect").val();
 	alert("Copying seatmap " + seatmapId);
 }
@@ -37,13 +38,13 @@ function newSeatmapName() {
 	});
 }
 
-function backToMenuFromNewSeatmap() //Urr... long name, perhaps? naaah{
+function backToMenuFromNewSeatmap() { //Urr... long name, perhaps? naaah
 	$("#newSeatmapDiv").fadeOut(200, function() {
 		$("#seatmapIntro").fadeIn(200);
 	});
 }
 
-function newSeatmap(){
+function newSeatmap() {
 	$.getJSON('../api/json/seatmap/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
 		if (data.result) {
 			window.location = "index.php?page=admin-seatmap&id=" + data.id;
@@ -58,8 +59,7 @@ function redirectToSplash() {
 }
 
 function addRow() {
-	//TODO
-	//seatmapId
+	// TODO: seatmapId
 	$.getJSON('../api/json/row/addRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data){
 		if (data.result) {
 			renderSeatmap();
@@ -216,7 +216,7 @@ function updatePlacementButtons() {
 }
 
 $( document ).ready(function() {
-	$("#seatmapEditorCanvas").mousemove(function( e ) {
+	$("#seatmapEditorCanvas").mousemove(function(e) {
 		//Mouse move handler
 		var parentOffset = $(this).offset();
 		//or $(this).offset(); if you really just want the current element's offset
@@ -225,7 +225,7 @@ $( document ).ready(function() {
 	 	$("#mousePos").html("<i>Mus-posisjon: [" + tempXPos + "," + tempYPos + "]. Klikk for å velge.</i>");
 	});
 
-	$("#seatmapEditorCanvas").click(function( e ) {
+	$("#seatmapEditorCanvas").click(function(e) {
 		if (e.target != this) {
 			return;
 		}
