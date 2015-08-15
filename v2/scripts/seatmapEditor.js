@@ -177,9 +177,9 @@ function renderSeatmap() {
 				var returnData = [];
 				returnData.push('<div class="editorRow" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
 
-				for (var j = 0; j < data.rows[i].seats.length; s++) {
+				for (var s = 0; s < data.rows[i].seats.length; s++) {
 					returnData.push('<div class="editorSeat" id="seat' + data.rows[i].seats[s].id + '">');
-					returnData.push(data.rows[i].seats[j].humanName);
+					returnData.push(data.rows[i].seats[s].humanName);
 					returnData.push('</div>');
 				}
 
@@ -191,8 +191,6 @@ function renderSeatmap() {
 				$("#row" + data.rows[i].id).click({row: rowId}, function(e) {
 					selectRow(e.data.row);
 				});
-			} else {
-				error("trololololol");
 			}
 		} else {
 			$("#seatmapEditorCanvas").html('<i>En feil oppstod under håndteringen av seatmappet...</i>');
