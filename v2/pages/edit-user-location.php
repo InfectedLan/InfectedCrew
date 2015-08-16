@@ -26,27 +26,38 @@ $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
 if (Session::isAuthenticated()) {
   $user = Session::getCurrentUser();
-	$relocateUser = UserHandler::getUser($id);
 
-	if ($relocateUser != null) {
-    if (($user->hasPermission('*') ||
-      $user->hasPermission('search.users') ||
-      $user->hasPermission('chief.tickets')) && // TODO: Verify this permission.
-      $relocateUser->hasTicket()) {
-      $ticket = $relocateUser->getTicket();
-      echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-      echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+  if ($user->hasPermission('*') ||
+    $user->hasPermission('search.users') ||
+    $user->hasPermission('chief.tickets')) {
+    $relocateUser = UserHandler::getUser($id);
 
-      echo '<h3>Endrer plasseringen til ' . $relocateUser->getDisplayName() . '</h3>';
-      echo '<div id="seatmapCanvas"></div>';
-      echo '<script>';
-        echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';'; // TODO: Fix this, somehow event here is null...
-        echo 'var ticketId = ' . $ticket->getId() . ';';
-        echo '$(document).ready(function() {';
-          echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
-        echo '});';
-      echo '</script>';
+    if ($relocateUser != null) {
+      if ($relocateUser->hasTicket()) {
+        $ticket = $relocateUser->getTicket();
+
+        echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
+        //echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+
+        echo '<h3>Endrer plasseringen til ' . $relocateUser->getDisplayName() . '</h3>';
+        echo '<div id="seatmapCanvas"></div>';
+        echo '<script>';
+          echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';'; // TODO: Fix this, somehow event here is null...
+          echo 'var ticketId = ' . $ticket->getId() . ';';
+          echo '$(document).ready(function() {';
+            echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
+          echo '});';
+        echo '</script>';
+      } else {
+        echo '<p>Brukeren du prøver å flytte har ingen gyldig billett for dette arrangementet.</p>';
+      }
+    } else {
+      echo '<p>Den angitte brukeren finnes ikke.</p>';
     }
+  } else {
+    echo '<p>Du har ikke rettigheter til dette.</p>';
   }
+} else {
+  echo '<p>Du er ikke logget inn.</p>';
 }
 ?>

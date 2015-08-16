@@ -24,6 +24,7 @@ var selectedRow = 0;
 
 function editSeatmap() {
 	var seatmapId = $("#seatmapSelect").val();
+
 	window.location = "index.php?page=admin-seatmap&id=" + seatmapId;
 }
 
@@ -45,7 +46,7 @@ function backToMenuFromNewSeatmap() { //Urr... long name, perhaps? naaah
 }
 
 function newSeatmap() {
-	$.getJSON('../api/json/seatmap/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data){
+	$.getJSON('../api/json/seatmap/addSeatmap.php?name=' + encodeURIComponent($("#newSeatmapName").val()), function(data) {
 		if (data.result) {
 			window.location = "index.php?page=admin-seatmap&id=" + data.id;
 		} else {
@@ -60,7 +61,7 @@ function redirectToSplash() {
 
 function addRow() {
 	// TODO: seatmapId
-	$.getJSON('../api/json/row/addRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data){
+	$.getJSON('../api/json/row/addRow.php?seatmap=' + seatmapId + "&x=" + xPos + "&y=" + yPos, function(data) {
 		if (data.result) {
 			renderSeatmap();
 		} else {
@@ -70,7 +71,7 @@ function addRow() {
 }
 
 function getRowFromId(rowId) {
-	for(var i = 0; i < seatmapData.rows.length; i++) {
+	for (var i = 0; i < seatmapData.rows.length; i++) {
 		if (seatmapData.rows[i].id == rowId) {
 			return seatmapData.rows[i].number;
 		}
@@ -78,8 +79,8 @@ function getRowFromId(rowId) {
 }
 
 function getRow(rowId) {
-	for(var i = 0; i < seatmapData.rows.length; i++) {
-		if(seatmapData.rows[i].id == rowId) {
+	for (var i = 0; i < seatmapData.rows.length; i++) {
+		if (seatmapData.rows[i].id == rowId) {
 			return seatmapData.rows[i];
 		}
 	}
@@ -112,7 +113,7 @@ function selectRow(rowId) {
 }
 
 function deleteRow(rowId) {
-	$.getJSON('../api/json/row/removeRow.php?row=' + rowId, function(data){
+	$.getJSON('../api/json/row/removeRow.php?row=' + rowId, function(data) {
 		if (data.result) {
 			renderSeatmap();
 		} else {
@@ -121,13 +122,13 @@ function deleteRow(rowId) {
 	});
 }
 
-function isNumber(obj) { return !isNaN(parseFloat(obj)) }
+function isNumber(obj) { return !isNaN(parseFloat(obj)); }
 
 function addSeats(rowId) {
 	var amount = window.prompt("Hvor mange seter vil du legge til?", "1");
 
 	if (isNumber(amount)) {
-		$.getJSON('../api/json/row/addSeatsToRow.php?row=' + rowId + "&numSeats=" + amount, function(data){
+		$.getJSON('../api/json/row/addSeatsToRow.php?row=' + rowId + "&numSeats=" + amount, function(data) {
 			if(data.result) {
 				renderSeatmap();
 			} else {
@@ -143,7 +144,7 @@ function removeSeats(rowId) {
 	var amount = window.prompt("Hvor mange seter vil du fjerne?", "1");
 
 	if (isNumber(amount)) {
-		$.getJSON('../api/json/row/removeSeatsFromRow.php?row=' + rowId + "&numSeats=" + amount, function(data){
+		$.getJSON('../api/json/row/removeSeatsFromRow.php?row=' + rowId + "&numSeats=" + amount, function(data) {
 			if(data.result) {
 				renderSeatmap();
 			} else {
@@ -156,7 +157,7 @@ function removeSeats(rowId) {
 }
 
 function moveRow(rowId) {
-	$.getJSON('../api/json/row/moveRow.php?row=' + rowId + '&x=' + xPos + '&y=' + yPos, function(data){
+	$.getJSON('../api/json/row/moveRow.php?row=' + rowId + '&x=' + xPos + '&y=' + yPos, function(data) {
 		if(data.result) {
 			renderSeatmap();
 		} else {
