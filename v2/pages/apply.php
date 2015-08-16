@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,17 +21,48 @@
 require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/applicationhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	echo '<h1>Søk deg inn i crew</h1>';
-	
+
 	if (!$user->isGroupMember()) {
 		if ($user->hasCroppedAvatar()) {
-			$groupList = GroupHandler::getGroups();
+			$applicationList = ApplicationHandler::getUserApplications($user);
 
 			echo '<script src="scripts/apply.js"></script>';
+
+			if (!empty($applicationList)) {
+				echo '<h3>Dine åpne søknader</h3>';
+
+				echo '<table>';
+					echo '<tr>';
+						echo '<th>Crew</th>';
+						echo '<th>Dato søkt</th>';
+						echo '<th>Status</th>';
+					echo '</tr>';
+
+					foreach ($applicationList as $application) {
+						echo '<tr>';
+							echo '<td>' . $application->getGroup()->getTitle() . '</td>';
+							echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+							echo '<td>' . $application->getStateAsString() . '</td>';
+
+							// If the application is not modified by personel yet, we'll allow the user to remove it.
+							if ($application->getState() == 1) {
+								echo '<td><input type="button" value="Fjern" onClick="removeApplication(' . $application->getId() . ')"></td>';
+							}
+
+						echo '</tr>';
+					}
+				echo '</table>';
+			} else {
+				echo '<p>Det er ingen søknader som venter på godkjenning.</p>';
+			}
+
+			echo '<h3>Send inn en ny søknad til et crew</h3>';
+
+			$groupList = GroupHandler::getGroups();
 
 			echo '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke sette på din CV-en, <br>';
 			echo 'og møte mange nye og spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
@@ -43,9 +74,11 @@ if (Session::isAuthenticated()) {
 						echo '<td>Crew:</td>';
 						echo '<td>';
 							echo '<select name="groupId">';
+
 								foreach ($groupList as $group) {
 									echo '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 								}
+
 							echo '</select>';
 						echo '</td>';
 					echo '</tr>';
@@ -65,7 +98,7 @@ if (Session::isAuthenticated()) {
 		}
 	} else {
 		$group = $user->getGroup();
-		
+
 		echo '<p>Du er allerede med i <a href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a>!<br>';
 	}
 } else {
