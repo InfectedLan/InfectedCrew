@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,18 +21,21 @@
 require_once 'session.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/compohandler.php';
+require_once 'handlers/clanhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('functions.compoadmin')) {
 
 		if(isset($_GET['id'])) {
 			$compo = CompoHandler::getCompo($_GET['id']);
+
 			echo '<script src="scripts/event-compo.js"></script>';
 			echo '<script>var compoId = ' . $compo->getId() . ';</script>';
-			if(CompoHandler::hasGeneratedMatches($compo)) {
+
+			if (CompoHandler::hasGeneratedMatches($compo)) {
 				echo '<script>initMatchList();</script>';
 
 				echo '<div id="teamListArea"></div>';
@@ -61,13 +64,13 @@ if (Session::isAuthenticated()) {
 						echo '</td>';
 					echo '</tr>';
 				echo '</table>';
-				
+
 
 				// Show list of teams
-				$teams = CompoHandler::getClans($compo);
+				$teams = ClanHandler::getClansByCompo($compo);
 				// Count stats
 				$numQualified = 0;
-				
+
 				foreach ($teams as $clan) {
 					if ($clan->isQualified($compo)) {
 						$numQualified++;
