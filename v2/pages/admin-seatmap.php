@@ -19,6 +19,7 @@
  */
 
 require_once 'session.php';
+require_once 'handlers/eventhandler.php';
 require_once 'handlers/seatmaphandler.php';
 
 echo '<script src="scripts/seatmapEditor.js"></script>';
@@ -36,8 +37,14 @@ function showSplash() {
 			echo 'For å starte, må du velge et seatmap du vil redigere, eller lage et nytt.<br>';
 
 			echo '<select id="seatmapSelect">';
+				$event = EventHandler::getCurrentEvent();
+
 				foreach (SeatmapHandler::getSeatmaps() as $seatmap) {
-					echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
+					if ($seatmap->equals($event->getSeatmap())) {
+						echo '<option value="' . $seatmap->getId() . '" selected>' . $seatmap->getHumanName() . '</option>';
+					} else {
+						echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
+					}
 				}
 			echo '</select>';
 			echo '<input type="button" value="Edit" onclick="editSeatmap()" />';
