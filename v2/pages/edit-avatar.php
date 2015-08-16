@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,7 +22,7 @@ require_once 'session.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	// TODO: Sjekk om det er noen som har et uncropped bilde.
 	echo '<script>';
 		echo 'function deleteAvatar() {';
@@ -35,12 +35,14 @@ if (Session::isAuthenticated()) {
 			echo '});';
 		echo '}';
 	echo '</script>';
-	
+
 	if ($user->hasAvatar()) {
 		$avatar = $user->getAvatar();
-		
+
 		switch ($avatar->getState()) {
 			case 0:
+				echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
+				echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
 				echo '<script>';
 					echo '$(document).ready(function() {';
 						echo 'var options = {';
@@ -56,8 +58,8 @@ if (Session::isAuthenticated()) {
 						echo '$("#cropform").ajaxForm(options);';
 					echo '});';
 				echo '</script>';
-				echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
-				echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
+
+
 				echo '<script>';
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
@@ -65,15 +67,18 @@ if (Session::isAuthenticated()) {
 							$temp = explode('.', $avatar->getTemp());
 							$extension = strtolower(end($temp));
 							$image = 0;
-							
+
 							if ($extension == 'png') {
 								$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
-							} else if ($extension == 'jpeg' || 
-									   $extension == 'jpg') {
+							} else if ($extension == 'jpeg' ||
+								$extension == 'jpg') {
 								$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
+							} else {
+								// TODO: Handle if the format is not supported here...
 							}
 
 							$scaleFactor = 800 / imagesx($image);
+
 							echo 'aspectRatio: 400/300,';
 							echo 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
 							echo 'onSelect: updateCoords';
@@ -105,20 +110,20 @@ if (Session::isAuthenticated()) {
 			echo '</form><br>';
 			echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-			
+
 			case 1:
 				echo '<h1>Ditt bilde venter på godkjenning</h1>';
 				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
 				echo '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-				
+
 			case 2:
 				echo '<h1>Nåværende avatar:</h1>';
 				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
 				echo '<br>';
 				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-				
+
 			default:
 				echo '<b>Avataren din er ikke godkjent!</b>';
 				echo '<br>';
