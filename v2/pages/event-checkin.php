@@ -30,11 +30,11 @@ if (Session::isAuthenticated()) {
 		echo '<script src="scripts/event-checkin.js"></script>';
 		echo '<h3>Sjekk inn billett</h3>';
 
-		$event = EventHandler::getCurrentEvent();
+		$event = $this->getEvent();
 		$season = date('m', $event->getStartTime()) == 2 ? 'VINTER' : 'HØST';
-		$eventName = $season . '_' . date('Y', $event->getStartTime());
+		$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season;
 
-		echo strtoupper(Settings::name . '_' . $eventName . '_') . '<input id="ticketId" type="text" autofocus>';
+		echo strtoupper(Settings::name . '_' . $eventName . '_' . date('Y', $event->getStartTime()) . '_') . '<input id="ticketId" type="text" autofocus>';
 		echo '<br>';
 		echo '<input type="button" value="Sjekk inn" onClick="loadData()"/>';
 		echo '<br>';
