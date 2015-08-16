@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,10 +22,10 @@ require_once 'session.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
-	
+
 		if ($user->hasPermission('*') ||
 			$user->hasPermission('chief.teams')) {
 			$teamList = $user->getGroup()->getTeams();
@@ -33,7 +33,7 @@ if (Session::isAuthenticated()) {
 
 			echo '<script src="scripts/chief-teams.js"></script>';
 			echo '<h3>Lag</h3>';
-			
+
 			if (!empty($teamList)) {
 				echo '<table>';
 					echo '<tr>';
@@ -42,7 +42,7 @@ if (Session::isAuthenticated()) {
 						echo '<th>Beskrivelse</th>';
 						echo '<th>Shift-leder</th>';
 					echo '</tr>';
-					
+
 					foreach ($teamList as $team) {
 						echo '<tr>';
 							echo '<form class="chief-teams-edit" method="post">';
@@ -56,7 +56,7 @@ if (Session::isAuthenticated()) {
 										echo '<option value="0"></option>';
 
 										foreach ($userList as $userValue) {
-											if ($userValue->equals($team->getLeader())) {
+											if ($team->hasLeader() && $userValue->equals($team->getLeader())) {
 												echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 											} else {
 												echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -71,7 +71,7 @@ if (Session::isAuthenticated()) {
 					}
 				echo '</table>';
 			}
-				
+
 			echo '<h3>Legg til et nytt lag i "' . $group->getTitle() . '"</h3>';
 			echo '<form class="chief-teams-add" method="post">';
 				echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
@@ -90,7 +90,7 @@ if (Session::isAuthenticated()) {
 						echo '<td>';
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 								echo '<option value="0"></option>';
-								
+
 								foreach ($userList as $userValue) {
 									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
@@ -102,10 +102,10 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				echo '</table>';
 			echo '</form>';
-				
+
 			if (!empty($teamList)) {
 				echo '<h3>Medlemmer</h3>';
-				
+
 				$freeUserList = getFreeUsers($group);
 
 				if (!empty($freeUserList)) {
@@ -133,10 +133,10 @@ if (Session::isAuthenticated()) {
 				} else {
 					echo '<p>Alle medlemmer av "' . $group->getTitle() . '" crew er allerede med i et lag.</p>';
 				}
-				
+
 				foreach ($teamList as $team) {
 					$memberList = $team->getMembers();
-					
+
 					echo '<h4>' . $group->getTitle() . ':' . $team->getTitle() . '</h4>';
 					echo '<table>';
 						if (!empty($memberList)) {
@@ -146,7 +146,7 @@ if (Session::isAuthenticated()) {
 									echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
 								echo '</tr>';
 							}
-							
+
 							if (count($teamList) > 1) {
 								echo '<tr>';
 									echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromTeam(' . $team->getId() . ')"></td>';
@@ -172,7 +172,7 @@ if (Session::isAuthenticated()) {
 
 function getFreeUsers($group) {
 	$freeUserList = $group->getMembers();
-	
+
 	foreach ($freeUserList as $key => $freeUser) {
 		if ($freeUser->isTeamMember()) {
 			unset($freeUserList[$key]);
