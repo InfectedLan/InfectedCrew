@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,14 +25,14 @@ $site = 'http://infected.no/v7/';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('admin.website')) {
 		$pageList = PageHandler::getPages();
 		echo '<script src="scripts/admin-website.js"></script>';
+
 		echo '<h3>Sider:</h3>';
-		
-		echo '<table>';	
+		echo '<table>';
 			// Loop through the pages.
 			foreach ($pageList as $page) {
 				// Add the current page to the page view.
@@ -40,20 +40,20 @@ if (Session::isAuthenticated()) {
 					echo '<td>' . $page->getTitle() . '</td>';
 					echo '<td><a href="' . $site . 'pages/' . $page->getName() . '.html">Vis</a></td>';
 					echo '<td><input type="button" value="Endre" onClick="editPage(' . $page->getId() . ')"></td>';
-					
+
 					if ($user->hasPermission('*')) {
 						echo '<td><input type="button" value="Slett" onClick="removePage(' . $page->getId() . ')"></td>';
 					}
 				echo '</tr>';
 			}
 		echo '</table>';
-		
+
 		echo '<h3>Legg til ny side:</h3>';
 		echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 		echo '<p>For å få innholdet i bokser, kan du bruke HTML-kode.<br>';
 		echo 'Du putter hvilken type boks du vil inn i feltet "class", du finner alle tyoer bokser i tabellen under: <br>';
 		echo '&lt;article class="Putt type boks inn her!"&gtInnhold her&lt;/article&gt</pre></p><br>';
-		
+
 		echo '<table>';
 			echo '<tr>';
 				echo '<th>Type boks:</th>';
@@ -80,8 +80,8 @@ if (Session::isAuthenticated()) {
 				echo '<td>contentRightImageBox</td>';
 			echo '</tr>';
 		echo '</table>';
-		
-		echo '<form class="fadmin-website-add" method="post">';
+
+		echo '<form class="admin-website-add" method="post">';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>Tittel:</td>';
