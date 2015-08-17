@@ -213,3 +213,68 @@ ul.search-results li:hover {
 ul.search-results li:first-child {
 	border-top: none;
 }
+
+.wizard-current {
+    background-color: #d3ebf5;
+    background-image: url("../images/arrow-active.png");
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 98px;
+    width: 33%;
+    text-align: center;
+    border-collapse: collapse;
+    text-indent: -25px;
+}
+
+.wizard-other {
+    background-color: #FFFFFF;
+    background-image: url("../images/arrow-blank.png");
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 98px;
+    width: 33%;
+    text-align: center;
+    border-collapse: collapse;
+    text-indent: -25px;
+}
+
+.wizard-next {
+    background-color: #FFFFFF;
+    background-image: url("../images/arrow-next.png");
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 98px;
+    width: 33%;
+    text-align: center;
+    border-collapse: collapse;
+    text-indent: -25px;
+}
+
+.wizard-nostyle {
+    height: 98px;
+    width: 33%;
+    text-align: center;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    text-indent: -25px;
+}
+
+.wizard-fill {
+    height: 98px;
+    width: 33%;
+    text-align: center;
+    border-collapse: collapse;
+    background-color: #d3ebf5;
+    text-indent: -25px;
+}
+
+.wizard-table {
+    width: 100%;
+    border: 2px solid #4bb7d9;
+    box-shadow: 0px 0px 0px 1px rgba(106, 189, 223, 0.3);
+    border-collapse: collapse;
+}
+tr {
+    margin: 0px;
+    padding: 0px;
+}
