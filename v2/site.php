@@ -233,7 +233,7 @@ class Site {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('admin.permissions')) {
-										echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Tilganger</a></li>';
+										echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Rettigheter</a></li>';
 									}
 
 									if ($user->hasPermission('*') ||
