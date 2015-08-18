@@ -27,11 +27,12 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('*') ||
 		$user->hasPermission('event.compo')) {
 		echo '<script src="scripts/event-compo.js"></script>';
-		echo '<h3>Compo\'er</h3>';
 
 		$compoList = CompoHandler::getCompos();
 
 		if (!empty($compoList)) {
+			echo '<h3>Compoer</h3>';
+
 			echo '<table>';
 				echo '<tr>';
 					echo '<th>Navn:</th>';
@@ -48,22 +49,22 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<form class="compo-edit" method="post">';
 							echo '<input type="hidden" name="id" value="' . $compo->getId() . '">';
-							echo '<td><input type="text" name="title" value="' . $compo->getTitle() . '"></td>';
-							echo '<td><input type="text" name="tag" value="' . $compo->getTag() . '"></td>';
+							echo '<td><input type="text" name="title" value="' . $compo->getTitle() . '" required></td>';
+							echo '<td><input type="text" name="tag" value="' . $compo->getTag() . '" required></td>';
 							echo '<td><textarea name="description">' . $compo->getDescription() . '</textarea></td>';
 							echo '<td><input type="text" name="mode" value="' . $compo->getMode() . '"></td>';
-							echo '<td><input type="number" name="price"></td>';
+							echo '<td><input type="number" name="price" value="' . $compo->getPrice() . '"></td>';
 							echo '<td>';
-								echo '<input type="time" name="startTime" value="' . date('H:i', $compo->getStartTime()) . '">';
+								echo '<input type="time" name="startTime" value="' . date('H:i', $compo->getStartTime()) . '" required>';
 								echo '<br>';
-								echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '">';
+								echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '" required>';
 							echo '</td>';
 							echo '<td>';
-								echo '<input type="time" name="registrationEndTime" value="' . date('H:i', $compo->getRegistrationEndTime()) . '">';
+								echo '<input type="time" name="registrationEndTime" value="' . date('H:i', $compo->getRegistrationEndTime()) . '" required>';
 								echo '<br>';
-								echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d', $compo->getRegistrationEndTime()) . '">';
+								echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d', $compo->getRegistrationEndTime()) . '" required>';
 							echo '</td>';
-							echo '<td><input type="number" name="teamSize" min="1"></td>';
+							echo '<td><input type="number" name="teamSize" min="1" value="' . $compo->getTeamSize() . '" required></td>';
 							echo '<td><input type="submit" value="Endre"></td>';
 						echo '</form>';
 					echo '</tr>';
@@ -80,11 +81,11 @@ if (Session::isAuthenticated()) {
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>Navn:</td>';
-					echo '<td><input type="text" name="title"></td>';
+					echo '<td><input type="text" name="title" required></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Tag:</td>';
-					echo '<td><input type="text" name="tag"></td>';
+					echo '<td><input type="text" name="tag" required></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Beskrivelse:</td>';
@@ -102,22 +103,22 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Start-tidspunkt:</td>';
 					echo '<td>';
-						echo '<input type="time" name="startTime" value="' . date('H:i:s', $compo->getStartTime()) . '">';
+						echo '<input type="time" name="startTime" value="' . date('H:i:s', $compo->getStartTime()) . '" required>';
 						echo '<br>';
-						echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '">';
+						echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '" required>';
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Påmeldingsfrist:</td>';
 					echo '<td>';
-						echo '<input type="time" name="registrationEndTime" value="' . date('H:i:s') . '">';
+						echo '<input type="time" name="registrationEndTime" value="' . date('H:i:s') . '" required>';
 						echo '<br>';
-						echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d') . '">';
+						echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d') . '" required>';
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Lag-størrelse:</td>';
-					echo '<td><input type="number" name="teamSize" min="1"></td>';
+					echo '<td><input type="number" name="teamSize" min="1" required></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td><input type="submit" value="Legg til"></td>';
