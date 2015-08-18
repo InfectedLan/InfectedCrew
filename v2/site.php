@@ -145,7 +145,7 @@ class Site {
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
-										   $this->pageName == 'event-compos' ||
+										   $this->pageName == 'event-compo' ||
 										   $this->pageName == 'event-memberlist') {
 
 									if ($user->hasPermission('*') ||
@@ -169,8 +169,8 @@ class Site {
 									}
 
 									if ($user->hasPermission('*') ||
-										$user->hasPermission('event.compos')) {
-										echo '<li><a' . ($this->pageName == 'event-compos' ? ' class="active"' : null) . ' href="index.php?page=event-compos">Compo</a></li>';
+										$user->hasPermission('event.compo')) {
+										echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
 									}
 
 									if ($user->hasPermission('*') ||
@@ -338,7 +338,7 @@ class Site {
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
 										$this->pageName == 'event-agenda' ||
-										$this->pageName == 'event-compos' ||
+										$this->pageName == 'event-compo' ||
 										$this->pageName == 'event-memberlist') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {
@@ -385,7 +385,7 @@ class Site {
 										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									}
 								}
-								
+
 								if ($this->pageName == 'my-profile' ||
 									$this->pageName == 'edit-user-location') {
 									echo '<li class="active"><a href="index.php?page=my-profile"><img src="images/my-profile.png"></a></li>';

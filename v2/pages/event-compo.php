@@ -19,98 +19,112 @@
  */
 
 require_once 'session.php';
-require_once 'handlers/eventhandler.php';
 require_once 'handlers/compohandler.php';
-require_once 'handlers/clanhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('*') ||
-		$user->hasPermission('functions.compoadmin')) {
+		$user->hasPermission('event.compo')) {
+		echo '<script src="scripts/event-compo.js"></script>';
 
-		if(isset($_GET['id'])) {
-			$compo = CompoHandler::getCompo($_GET['id']);
+		$compoList = CompoHandler::getCompos();
 
-			echo '<script src="scripts/event-compo.js"></script>';
-			echo '<script>var compoId = ' . $compo->getId() . ';</script>';
+		if (!empty($compoList)) {
+			echo '<h3>Compoer</h3>';
 
-			if (CompoHandler::hasGeneratedMatches($compo)) {
-				echo '<script>initMatchList();</script>';
+			echo '<table>';
+				echo '<tr>';
+					echo '<th>Navn:</th>';
+					echo '<th>Tag:</th>';
+					echo '<th>Beskrivelse:</th>';
+					echo '<th>Spill-modus:</th>';
+					echo '<th>Premiepris:</th>';
+					echo '<th>Start-tidspunkt:</th>';
+					echo '<th>Påmeldingsfrist:</th>';
+					echo '<th>Lag-størrelse:</th>';
+				echo '</tr>';
 
-				echo '<div id="teamListArea"></div>';
-			} else {
-				echo '<h1>' . $compo->getName() .'</h1>';
-				echo '<i>Matcher har ikke blitt generert enda</i><br>';
-				echo '<table>';
+				foreach ($compoList as $compo) {
 					echo '<tr>';
-						echo '<td>';
-							echo 'Starttid';
-						echo '</td>';
-						echo '<td>';
-							echo 'Match-mellomrom';
-						echo '</td>';
-						echo '<td></td>';
+						echo '<form class="compo-edit" method="post">';
+							echo '<input type="hidden" name="id" value="' . $compo->getId() . '">';
+							echo '<td><input type="text" name="title" placeholder="Skriv inn et navn her..." value="' . $compo->getTitle() . '" required></td>';
+							echo '<td><input type="text" name="tag" placeholder="Skriv inn en tag her..." value="' . $compo->getTag() . '" required></td>';
+							echo '<td><textarea name="description">' . $compo->getDescription() . '</textarea></td>';
+							echo '<td><input type="text" name="mode" placeholder="Skriv inn et spill-modus her..." value="' . $compo->getMode() . '"></td>';
+							echo '<td><input type="number" name="price" min="0" value="' . $compo->getPrice() . '"></td>';
+							echo '<td>';
+								echo '<input type="time" name="startTime" value="' . date('H:i', $compo->getStartTime()) . '" required>';
+								echo '<br>';
+								echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '" required>';
+							echo '</td>';
+							echo '<td>';
+								echo '<input type="time" name="registrationEndTime" value="' . date('H:i', $compo->getRegistrationEndTime()) . '" required>';
+								echo '<br>';
+								echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d', $compo->getRegistrationEndTime()) . '" required>';
+							echo '</td>';
+							echo '<td><input type="number" name="teamSize" min="1" value="' . $compo->getTeamSize() . '" required></td>';
+							echo '<td><input type="submit" value="Endre"></td>';
+						echo '</form>';
 					echo '</tr>';
-					echo '<tr>';
-						echo '<td>';
-							echo '<input type="text" id="startTime" value="' . time() . '">';
-						echo '</td>';
-						echo '<td>';
-							echo '<input type="text" id="compoSpacing" value="3600">';
-						echo '</td>';
-						echo '<td>';
-							echo '<input type="button" value="Generer matcher(stenger registrering)" onClick="generateMatches()">';
-						echo '</td>';
-					echo '</tr>';
-				echo '</table>';
-
-
-				// Show list of teams
-				$teams = ClanHandler::getClansByCompo($compo);
-				// Count stats
-				$numQualified = 0;
-
-				foreach ($teams as $clan) {
-					if ($clan->isQualified($compo)) {
-						$numQualified++;
-					}
 				}
-				echo '<h3>Fullstendige lag:</h3>';
-				echo '<br>';
-				echo '<br>';
-
-				if ($numQualified==0) {
-					echo '<i>Ingen lag er fullstendige enda!</i>';
-				}
-
-				echo '<ul>';
-					foreach ($teams as $clan) {
-						if ($clan->isQualified($compo)) {
-							echo '<li class="teamEntry" id="teamButtonId' . $clan->getId() . '">' . $clan->getName() . '</li>';
-						}
-					}
-				echo '</ul>';
-
-				if (count($teams) != $numQualified) {
-					echo '<br>';
-					echo '<h3>Ufullstendige lag:</h3>';
-					echo '<br>';
-					echo '<ul>';
-						foreach($teams as $clan) {
-							if(!$clan->isQualified($compo)) {
-								echo '<li class="teamEntry" id="teamButtonId' . $clan->getId() . '">' . $clan->getName() . '</li>';
-							}
-						}
-					echo '</ul>';
-					echo '<br>';
-					echo '<i>Disse lagene mangler spillere og vil ikke kunne delta med mindre de klarer å fylle laget</i>';
-				}
-			}
+			echo '</table>';
 		} else {
-			echo '<p>Mangler felt!</p>';
+			echo '<p>Det er ikke opprettet noen compo\'er enda.';
 		}
 
+		echo '<h3>Legg til ny compo:</h3>';
+		echo '<p>Fyll ut feltene under for å legge til en ny compo.</p>';
+
+		echo '<form class="compo-add" method="post">';
+			echo '<table>';
+				echo '<tr>';
+					echo '<td>Navn:</td>';
+					echo '<td><input type="text" name="title" placeholder="Skriv inn et navn her..." required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Tag:</td>';
+					echo '<td><input type="text" name="tag" placeholder="Skriv inn en tag her..." required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Beskrivelse:</td>';
+					echo '<td><textarea class="editor" name="description"></textarea></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Spill-modus:</td>';
+					echo '<td><input type="text" name="mode" placeholder="Skriv inn et spill-modus her..."></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Premiepris:</td>';
+					echo '<td><input type="number" name="price" min="0" value="0"></td>';
+				echo '</tr>';
+
+				echo '<tr>';
+					echo '<td>Start-tidspunkt:</td>';
+					echo '<td>';
+						echo '<input type="time" name="startTime" value="' . date('H:i', $compo->getStartTime()) . '" required>';
+						echo '<br>';
+						echo '<input type="date" name="startDate" value="' . date('Y-m-d', $compo->getStartTime()) . '" required>';
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Påmeldingsfrist:</td>';
+					echo '<td>';
+						echo '<input type="time" name="registrationEndTime" value="' . date('H:i') . '" required>';
+						echo '<br>';
+						echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d') . '" required>';
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Lag-størrelse:</td>';
+					echo '<td><input type="number" name="teamSize" min="1" value="1" required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td><input type="submit" value="Legg til"></td>';
+				echo '</tr>';
+			echo '</table>';
+		echo '</form>';
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}
