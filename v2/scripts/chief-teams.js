@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,36 +24,36 @@ $(document).ready(function() {
 			if (data.result) {
 				location.reload();
 			} else {
-				error(data.message); 
+				error(data.message);
 			}
 		});
 	});
-	
+
 	$('.chief-teams-edit').submit(function(e) {
 		e.preventDefault();
 	    $.getJSON('../api/json/team/editTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
-				error(data.message); 
+				error(data.message);
 			}
 		});
 	});
-	
+
 	$('.chief-teams-adduser').submit(function(e) {
 		e.preventDefault();
 		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
 			} else {
-				error(data.message); 
+				error(data.message);
 			}
 		});
 	});
 });
 
-function removeTeam(groupId, teamId) {
-	$.getJSON('../api/json/team/removeTeam.php?groupId=' + groupId + '&teamId=' + teamId, function(data){
+function removeTeam(id) {
+	$.getJSON('../api/json/team/removeTeam.php?id=' + id, function(data){
 		if (data.result) {
 			location.reload();
 		} else {

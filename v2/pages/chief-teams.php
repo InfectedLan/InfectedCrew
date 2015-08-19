@@ -66,7 +66,7 @@ if (Session::isAuthenticated()) {
 								echo '</td>';
 								echo '<td><input type="submit" value="Endre"></td>';
 							echo '</form>';
-							echo '<td><input type="button" value="Slett" onClick="removeTeam(' . $group->getId() . ', ' . $team->getId() . ')"></td>';
+							echo '<td><input type="button" value="Slett" onClick="removeTeam(' . $team->getId() . ')"></td>';
 						echo '</tr>';
 					}
 				echo '</table>';
