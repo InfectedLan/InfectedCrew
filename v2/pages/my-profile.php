@@ -188,10 +188,6 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></td>';
 					echo '</tr>';
-				}
-
-				if ($user->hasPermission('*') ||
-					$user->equals($profileUser)) {
 
 					if ($profileUser->hasTicket()) {
 						echo '<tr>';
@@ -208,20 +204,17 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
+				echo '<tr>';
+					echo '<td></td>';
+					echo '<td><a href="index.php?page=user-history&id=' . $profileUser->getId() . '">Vis historie</a></td>';
+				echo '</tr>';
+
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('admin.permissions')) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></td>';
 					echo '</tr>';
-					echo '<tr>';
-						echo '<td></td>';
-						echo '<td><a href="index.php?page=user-history">Vis historie</a></td>';
-					echo '</tr>';
-				}
-
-				if ($user->hasPermission('*') ||
-					$user->hasPermission('admin.permissions')) {
 
 					if (!$profileUser->isGroupMember()) {
 						echo '<tr>';
