@@ -117,7 +117,13 @@ if (Session::isAuthenticated()) {
 				if ($user->hasPermission('*')) {
 					echo '<tr>';
 						echo '<td>Aktivert:</td>';
-						echo '<td>' . ($profileUser->isActivated() ? 'Ja' : 'Nei') . '</td>';
+						echo '<td>';
+							echo ($profileUser->isActivated() ? 'Ja' : 'Nei');
+
+							if (!$profileUser->isActivated()) {
+								echo '<input type="button" value="Aktiver" onClick="activateUser(' . $profileUser->getId() . ')">';
+							}
+						echo '</td>';
 					echo '</tr>';
 				}
 
