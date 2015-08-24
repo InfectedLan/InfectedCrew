@@ -39,7 +39,6 @@ if (Session::isAuthenticated()) {
 					echo '<th>Tag:</th>';
 					echo '<th>Beskrivelse:</th>';
 					echo '<th>Spill-modus:</th>';
-					echo '<th>Premiepris:</th>';
 					echo '<th>Start-tidspunkt:</th>';
 					echo '<th>Påmeldingsfrist:</th>';
 					echo '<th>Lag-størrelse:</th>';
@@ -53,7 +52,6 @@ if (Session::isAuthenticated()) {
 							echo '<td><input type="text" name="tag" placeholder="Skriv inn en tag her..." value="' . $compo->getTag() . '" required></td>';
 							echo '<td><textarea name="description">' . $compo->getDescription() . '</textarea></td>';
 							echo '<td><input type="text" name="mode" placeholder="Skriv inn et spill-modus her..." value="' . $compo->getMode() . '"></td>';
-							echo '<td><input type="number" name="price" min="0" value="' . $compo->getPrice() . '"></td>';
 							echo '<td>';
 								echo '<input type="time" name="startTime" value="' . date('H:i', $compo->getStartTime()) . '" required>';
 								echo '<br>';
@@ -94,10 +92,6 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Spill-modus:</td>';
 					echo '<td><input type="text" name="mode" placeholder="Skriv inn et spill-modus her..."></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Premiepris:</td>';
-					echo '<td><input type="number" name="price" min="0" value="0"></td>';
 				echo '</tr>';
 
 				echo '<tr>';

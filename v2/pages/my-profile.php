@@ -114,7 +114,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
-				if ($user->hasPermission('*')) {
+				if ($user->hasPermission('user.activate')) {
 					echo '<tr>';
 						echo '<td>Aktivert:</td>';
 						echo '<td>';
