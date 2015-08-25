@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
 
-		if ($user->hasPermission('chief.teams')) {
+		if ($user->hasPermission('chief.team')) {
 			$teamList = $user->getGroup()->getTeams();
 			$userList = $group->getMembers();
 

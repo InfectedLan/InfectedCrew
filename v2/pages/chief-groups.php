@@ -25,7 +25,7 @@ require_once 'handlers/grouphandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('chief.groups')) {
+	if ($user->hasPermission('chief.group')) {
 		$groupList = GroupHandler::getGroups();
 
 		echo '<script src="scripts/chief-groups.js"></script>';

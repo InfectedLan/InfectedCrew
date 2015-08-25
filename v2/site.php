@@ -184,11 +184,11 @@ class Site {
 									$this->pageName == 'chief-email' ||
 									$this->pageName == 'application') {
 
-									if ($user->hasPermission('chief.groups')) {
+									if ($user->hasPermission('chief.group')) {
 										echo '<li><a' . ($this->pageName == 'chief-groups' ? ' class="active"' : null) . ' href="index.php?page=chief-groups">Crew</a></li>';
 									}
 
-									if ($user->hasPermission('chief.teams')) {
+									if ($user->hasPermission('chief.team')) {
 										echo '<li><a' . ($this->pageName == 'chief-teams' ? ' class="active"' : null) . ' href="index.php?page=chief-teams">Lag</a></li>';
 									}
 
