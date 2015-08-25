@@ -27,7 +27,7 @@ if (Session::isAuthenticated()) {
 
 	if ($user->hasPermission('chief.email')) {
 		echo '<script src="scripts/chief-email.js"></script>';
-		
+
 		echo '<h3>E-poster:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
 
