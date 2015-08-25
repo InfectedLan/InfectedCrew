@@ -66,7 +66,7 @@ function displayGroup(Group $group) {
 					if ($member->hasRole()) {
 						echo 'Stilling: ' . $member->getRole() . '<br>';
 					}
-					
+
 					echo 'Telefon: ' . $member->getPhoneAsString() . '<br>';
 					echo 'E-post: ' . $member->getEmail() . '</p>';
 				echo '</div>';

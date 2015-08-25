@@ -24,8 +24,7 @@ require_once 'handlers/restrictedpagehandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.my-crew')) {
+	if ($user->hasPermission('chief.my-crew')) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
 			$page = RestrictedPageHandler::getPage($_GET['id']);

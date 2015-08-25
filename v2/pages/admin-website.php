@@ -26,8 +26,7 @@ $site = 'http://infected.no/v7/';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.website')) {
+	if ($user->hasPermission('admin.website')) {
 		$pageList = PageHandler::getPages();
 		echo '<script src="scripts/admin-website.js"></script>';
 

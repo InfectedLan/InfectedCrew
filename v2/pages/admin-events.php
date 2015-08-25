@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,13 +24,12 @@ require_once 'handlers/locationhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.events')) {
+
+	if ($user->hasPermission('admin.events')) {
 		echo '<script src="scripts/admin-events.js"></script>';
 		echo '<h3>Arrangementer:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
-		
+
 		echo '<table>';
 			echo '<tr>';
 				echo '<th>Id:</th>';
@@ -40,7 +39,7 @@ if (Session::isAuthenticated()) {
 				echo '<th>Start:</th>';
 				echo '<th>Slutt:</th>';
 			echo '</tr>';
-			
+
 			foreach (EventHandler::getEvents() as $event) {
 				echo '<tr>';
 					echo '<form class="admin-events-edit" name="input" method="post">';
@@ -70,7 +69,7 @@ if (Session::isAuthenticated()) {
 							echo '<input type="button" value="Vis setekart" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">';
 						echo '</td>';
 					echo '</form>';
-					
+
 					echo '<td></td>';
 
 					if ($user->hasPermission('*')) {
@@ -89,7 +88,7 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 			}
 		echo '</table>';
-		
+
 		echo '<h3>Legg til nytt arrangement:</h3>';
 		echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 		echo '<form class="admin-events-add" method="post">';

@@ -25,8 +25,7 @@ require_once 'handlers/eventhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('event.checkin')) {
+	if ($user->hasPermission('event.checkin')) {
 		echo '<script src="scripts/event-checkin.js"></script>';
 		echo '<h3>Sjekk inn billett</h3>';
 
