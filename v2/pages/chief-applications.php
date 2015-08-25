@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,29 +24,28 @@ require_once 'handlers/eventhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.applications')) {
+
+	if ($user->hasPermission('chief.applications')) {
 		$pendingApplicationList = null;
 		$queuedApplicationList = null;
 		$acceptedApplicationList = null;
-			
+
 		if ($user->hasPermission('*')) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplications();
 			$queuedApplicationList = ApplicationHandler::getQueuedApplications();
 			$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
 		} else if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
 			$group = $user->getGroup();
-			$pendingApplicationList = ApplicationHandler::getPendingApplicationsForGroup($group);
-			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsForGroup($group);
-			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsForGroup($group);
+			$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
+			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsByGroup($group);
+			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsByGroup($group);
 		}
-		
+
 		echo '<script src="scripts/chief-applications.js"></script>';
 		echo '<h3>Søknader</h3>';
-		
+
 		echo '<h3>Åpne søknader:</h3>';
-		
+
 		if (!empty($pendingApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
@@ -55,10 +54,10 @@ if (Session::isAuthenticated()) {
 					echo '<th>Dato søkt</th>';
 					echo '<th>Status</th>';
 				echo '</tr>';
-				
+
 				foreach ($pendingApplicationList as $application) {
 					$applicationUser = $application->getUser();
-					
+
 					echo '<tr>';
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
@@ -72,9 +71,9 @@ if (Session::isAuthenticated()) {
 		} else {
 			echo '<p>Det er ingen søknader som venter på godkjenning.</p>';
 		}
-		
+
 		echo '<h3>Søknader i kø:</h3>';
-		
+
 		if (!empty($queuedApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
@@ -84,12 +83,12 @@ if (Session::isAuthenticated()) {
 					echo '<th>Dato søkt</th>';
 					echo '<th>Status</th>';
 				echo '</tr>';
-				
+
 				$index = 1;
-				
+
 				foreach ($queuedApplicationList as $application) {
 					$applicationUser = $application->getUser();
-				
+
 					echo '<tr>';
 						echo '<td>' . $index . '</td>';
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
@@ -99,16 +98,16 @@ if (Session::isAuthenticated()) {
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
 						echo '<td><input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
-					
+
 					$index++;
 				}
 			echo '</table>';
 		} else {
 			echo '<p>Det er ingen søknader i køen.</p>';
 		}
-		
+
 		echo '<h3>Tidligere søknader:</h3>';
-		
+
 		if (!empty($acceptedApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
@@ -117,10 +116,10 @@ if (Session::isAuthenticated()) {
 					echo '<th>Crew</th>';
 					echo '<th>Dato søkt</th>';
 				echo '</tr>';
-				
+
 				foreach ($acceptedApplicationList as $application) {
 					$applicationUser = $application->getUser();
-					
+
 					echo '<tr>';
 						echo '<td>' . $application->getEvent()->getTitle() . '</td>';
 						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';

@@ -25,8 +25,7 @@ require_once 'handlers/permissionhandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.permissions')) {
+	if ($user->hasPermission('admin.permissions')) {
 		echo '<script src="scripts/admin-permissions.js"></script>';
 
 		if (isset($_GET['id'])) {

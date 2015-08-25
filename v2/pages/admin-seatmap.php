@@ -25,8 +25,7 @@ require_once 'handlers/seatmaphandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.seatmap')) {
+	if ($user->hasPermission('admin.seatmap')) {
 		echo '<script src="scripts/seatmapEditor.js"></script>';
 
 		if (isset($_GET['id']) &&

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,28 +23,27 @@ require_once 'handlers/restrictedpagehandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	if ($user->isGroupMember()) {
 		$group = $user->getGroup();
-		
-		if ($user->hasPermission('*') || 
-			$user->hasPermission('chief.my-crew')) {
+
+		if ($user->hasPermission('chief.my-crew')) {
 			echo '<script src="scripts/chief-my-crew.js"></script>';
 			echo '<h3>Mine sider</h3>';
-			
+
 			$pageList = RestrictedPageHandler::getAllPagesForGroup($group);
-			
+
 			if (!empty($pageList)) {
 				echo '<table>';
 					echo '<tr>';
 						echo '<th>Navn</th>';
 						echo '<th>Tilgang</th>';
 					echo '</tr>';
-				
+
 					// Loop through the pages.
 					foreach ($pageList as $page) {
 						$team = $page->getTeam();
-						
+
 						echo '<tr>';
 							echo '<td><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></td>';
 							echo '<td>' . ($team != null ? $team->getTitle() : 'Alle') . '</td>';
@@ -56,7 +55,7 @@ if (Session::isAuthenticated()) {
 			} else {
 				echo '<p>Det er ikke opprettet noen sider enda, du kan legge til en ny side under.</p>';
 			}
-			
+
 			echo '<h3>Legg til ny side:</h3>';
 			echo '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 			echo '<form class="chief-my-crew-add" method="post">';
@@ -69,9 +68,9 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td>Tilgang:</td>';
 						echo '<td>';
-							echo '<select class="chosen-select select" name="teamId">';	
+							echo '<select class="chosen-select select" name="teamId">';
 								echo '<option value="0">Alle</option>';
-								
+
 								foreach ($group->getTeams() as $team) {
 									echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 								}

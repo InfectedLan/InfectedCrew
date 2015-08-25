@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,11 +24,10 @@ require_once 'handlers/userhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.email')) {
-		
+
+	if ($user->hasPermission('chief.email')) {
 		echo '<script src="scripts/chief-email.js"></script>';
+		
 		echo '<h3>E-poster:</h3>';
 		echo '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
 
@@ -46,11 +45,11 @@ if (Session::isAuthenticated()) {
 								echo '<option value="allWithTickets">Alle med flere billetter</option>';
 								echo '<option value="allWithTicketLast3">Alle med billett siste 3 arrangementer</option>';
 							}
-							
+
 							if ($user->isGroupMember()) {
 								echo '<option value="group">Alle i ' . $user->getGroup()->getTitle() . '</option>';
 							}
-							
+
 							foreach (UserHandler::getUsers() as $userValue) {
 								echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 							}
@@ -60,7 +59,7 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Emne:</td>';
 					echo '<td><input type="text" name="subject" required></td>';
-				echo '</tr>';	
+				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Melding:</td>';
 					echo '<td><textarea name="message" class="editor" rows="10" cols="80"></textarea></td>';

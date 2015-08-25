@@ -24,8 +24,7 @@ require_once 'handlers/slidehandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('event.screen')) {
+	if ($user->hasPermission('event.screen')) {
 		echo '<script src="scripts/event-screen.js"></script>';
 		echo '<h3>Slides</h3>';
 

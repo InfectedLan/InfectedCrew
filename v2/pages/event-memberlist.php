@@ -23,9 +23,8 @@ require_once 'handlers/eventhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('event.memberlist')) {
+
+	if ($user->hasPermission('event.memberlist')) {
 		echo '<script src="scripts/event-memberlist.js"></script>';
 		echo '<h3>Medlemsliste</h3>';
 

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,14 +23,13 @@ require_once 'handlers/userhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('developer.change-user')) {
+
+	if ($user->hasPermission('developer.change-user')) {
 		echo '<script src="scripts/developer-change-user.js"></script>';
 		echo '<h1>Bytt bruker</h1>';
 		echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
 		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
-		
+
 		echo '<form class="developer-changeuser" name="input" method="post">';
 			echo '<table>';
 				echo '<tr>';
@@ -38,7 +37,7 @@ if (Session::isAuthenticated()) {
 					echo '<td>';
 						echo '<select class="chosen-select" name="userId" autofocus>';
 							$userList = UserHandler::getUsers();
-							
+
 							foreach ($userList as $user) {
 								echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
 							}

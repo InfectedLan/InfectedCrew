@@ -24,8 +24,7 @@ require_once 'handlers/compohandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('event.compo')) {
+	if ($user->hasPermission('event.compo')) {
 		echo '<script src="scripts/event-compo.js"></script>';
 
 		$compoList = CompoHandler::getCompos();

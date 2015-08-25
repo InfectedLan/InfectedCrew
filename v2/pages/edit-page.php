@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,17 +23,16 @@ require_once 'handlers/pagehandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('admin.website')) {
+
+	if ($user->hasPermission('admin.website')) {
 		if (isset($_GET['id']) &&
 			is_numeric($_GET['id'])) {
 			$page = PageHandler::getPage($_GET['id']);
-				
+
 			if ($page != null) {
 				echo '<script src="scripts/edit-page.js"></script>';
 				echo '<h3>Du endrer nå siden "' . $page->getTitle() . '"</h3>';
-				
+
 				echo '<form class="edit-page" method="post">';
 					echo '<input type="hidden" name="id" value="' . $page->getId() . '">';
 					echo '<table>';

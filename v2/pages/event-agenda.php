@@ -24,8 +24,7 @@ require_once 'handlers/agendahandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('event.agenda')) {
+	if ($user->hasPermission('event.agenda')) {
 		echo '<script src="scripts/event-agenda.js"></script>';
 		echo '<h3>Agenda</h3>';
 
