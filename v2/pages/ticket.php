@@ -24,7 +24,7 @@ require_once 'handlers/tickethandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('event.tickets')) {
+	if ($user->hasPermission('user.ticket')) {
 		if (isset($_GET['id'])) {
 			$ticket = TicketHandler::getTicket($_GET['id']);
 
