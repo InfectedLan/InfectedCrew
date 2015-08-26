@@ -30,7 +30,6 @@ if (Session::isAuthenticated()) {
 		$user->equals($historyUser)) {
 		$eventList = $historyUser->getParticipatedEvents($historyUser);
 
-		echo '<script src="scripts/userhistory.js"></script>';
 		echo '<h3>Du ser nå ' . $historyUser->getDisplayName() . '\'s historie</h3>';
 
 		if (!empty($eventList)) {
