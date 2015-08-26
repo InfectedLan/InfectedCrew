@@ -26,11 +26,11 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
+	if ($user->hasPermission('user.history') ||
 		$user->equals($historyUser)) {
 		$eventList = $historyUser->getParticipatedEvents($historyUser);
 
-		echo '<h3>Du ser nå ' . $historyUser->getDisplayName() . '\'s historie</h3>';
+		echo '<h3>Du ser nå ' . $historyUser->getDisplayName() . '\'s historikk</h3>';
 
 		if (!empty($eventList)) {
 			echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';

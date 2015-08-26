@@ -27,8 +27,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 if (Session::isAuthenticated()) {
   $user = Session::getCurrentUser();
 
-  if ($user->hasPermission('user.search') ||
-    $user->hasPermission('chief.tickets')) {
+  if ($user->hasPermission('user.relocate')) {
     $relocateUser = UserHandler::getUser($id);
 
     if ($relocateUser != null) {
