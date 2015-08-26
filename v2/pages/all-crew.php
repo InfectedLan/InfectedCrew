@@ -27,22 +27,16 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if (isset($_GET['id'])) {
-		if ($user->isGroupMember()) {
-			if (isset($_GET['teamId'])) {
-				$team = TeamHandler::getTeam($_GET['teamId']);
+		$group = GroupHandler::getGroup($_GET['id']);
 
-				if ($team != null) {
-					displayTeamWithInfo($team);
-				}
-			} else {
-				$group = GroupHandler::getGroup($_GET['id']);
+		if ($group != null) {
+			displayGroupWithInfo($group);
+		}
+	} else if (isset($_GET['teamId'])) {
+		$team = TeamHandler::getTeam($_GET['teamId']);
 
-				if ($group != null) {
-					displayGroupWithInfo($group);
-				}
-			}
-		} else {
-			echo 'Du er ikke i crew.';
+		if ($team != null) {
+			displayTeamWithInfo($team);
 		}
 	} else {
 		$groupList = GroupHandler::getGroups();

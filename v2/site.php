@@ -271,7 +271,7 @@ class Site {
 								$this->viewPage($this->pageName);
 							} else {
 								$publicPages = array('apply',
-													 'crew',
+													 'all-crew',
 													 'user-profile',
 													 'edit-profile',
 													 'edit-password',
