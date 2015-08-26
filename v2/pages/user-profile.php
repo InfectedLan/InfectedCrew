@@ -34,7 +34,7 @@ if (Session::isAuthenticated()) {
 	if ($profileUser != null) {
 		if ($user->hasPermission('search.users') ||
 			$user->equals($profileUser)) {
-			echo '<script src="scripts/my-profile.js"></script>';
+			echo '<script src="scripts/user-profile.js"></script>';
 
 			echo '<h3>' . $profileUser->getDisplayName(). '</h3>';
 			echo '<table style="float: left;">';
@@ -219,7 +219,7 @@ if (Session::isAuthenticated()) {
 						echo '<tr>';
 							echo '<td></td>';
 							echo '<td>';
-								echo '<form class="my-profile-group-add-user" method="post">';
+								echo '<form class="user-profile-group-add-user" method="post">';
 									echo '<input type="hidden" name="userId" value="' . $profileUser->getId() . '">';
 									echo '<select class="chosen-select" name="groupId">';
 										foreach (GroupHandler::getGroups() as $group) {

@@ -47,7 +47,7 @@ function search() {
 				for (var i = 0; i < data.users.length; i++) {
 					var user = data.users[i];
 					
-					content += '<li><a href="index.php?page=my-profile&id=' + user.id + '"><b class="highlight">' + user.firstname + ' "' + user.username + '" ' + user.lastname + '</b></a></li>';
+					content += '<li><a href="index.php?page=user-profile&id=' + user.id + '"><b class="highlight">' + user.firstname + ' "' + user.username + '" ' + user.lastname + '</b></a></li>';
 				}
 			} else {
 				content = '<li><b>Ingen resultater funnet.</b></li>';

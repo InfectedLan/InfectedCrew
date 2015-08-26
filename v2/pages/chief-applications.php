@@ -59,7 +59,7 @@ if (Session::isAuthenticated()) {
 					$applicationUser = $application->getUser();
 
 					echo '<tr>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
@@ -91,7 +91,7 @@ if (Session::isAuthenticated()) {
 
 					echo '<tr>';
 						echo '<td>' . $index . '</td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
@@ -122,7 +122,7 @@ if (Session::isAuthenticated()) {
 
 					echo '<tr>';
 						echo '<td>' . $application->getEvent()->getTitle() . '</td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';

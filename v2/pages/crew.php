@@ -60,10 +60,10 @@ function displayGroup(Group $group) {
 						$avatarFile = AvatarHandler::getDefaultAvatar($member);
 					}
 
-					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
+					echo '<a href="index.php?page=user-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
 
-					if ($member->hasRole()) {
+					if ($member->hasSpecialRole()) {
 						echo 'Stilling: ' . $member->getRole() . '<br>';
 					}
 
@@ -116,10 +116,10 @@ function displayTeam(Team $team) {
 						$avatarFile = AvatarHandler::getDefaultAvatar($member);
 					}
 
-					echo '<a href="index.php?page=my-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
+					echo '<a href="index.php?page=user-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
 					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
 
-					if ($member->hasRole()) {
+					if ($member->hasSpecialRole()) {
 						echo 'Stilling: ' . $member->getRole() . '<br>';
 					}
 

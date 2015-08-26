@@ -59,7 +59,7 @@ if (Session::isAuthenticated()) {
 
 					echo '<tr>';
 						echo '<td><b>Søkers navn:</b></td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Dato søkt:</b></td>';

@@ -272,7 +272,7 @@ class Site {
 							} else {
 								$publicPages = array('apply',
 													 'crew',
-													 'my-profile',
+													 'user-profile',
 													 'edit-profile',
 													 'edit-password',
 													 'edit-avatar');
@@ -364,11 +364,11 @@ class Site {
 									}
 								}
 
-								if ($this->pageName == 'my-profile' ||
+								if ($this->pageName == 'user-profile' ||
 									$this->pageName == 'edit-user-location') {
-									echo '<li class="active"><a href="index.php?page=my-profile"><img src="images/my-profile.png"></a></li>';
+									echo '<li class="active"><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
 								} else {
-									echo '<li><a href="index.php?page=my-profile"><img src="images/my-profile.png"></a></li>';
+									echo '<li><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
 								}
 							}
 						echo '</ul>';

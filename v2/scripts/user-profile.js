@@ -18,7 +18,7 @@
  */
 
 $(document).ready(function() {
-	$('.my-profile-group-add-user').submit(function(e) {
+	$('.user-profile-group-add-user').submit(function(e) {
 		e.preventDefault();
 		addUserToGroup(this);
 	});

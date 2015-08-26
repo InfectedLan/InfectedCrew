@@ -44,19 +44,19 @@ if (Session::isAuthenticated()) {
 						$buyerUser = $ticket->getBuyer();
 
 						echo '<td>Kjøpt av:</td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						$ticketUser = $ticket->getUser();
 
 						echo '<td>Brukes av:</td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						$seaterUser = $ticket->getSeater();
 
 						echo '<td>Plasseres av:</td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
 					echo '</tr>';
 
 					if ($ticket->isSeated()) {
