@@ -126,12 +126,12 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
-				if ($profileUser->hasTicketsByAllEvents()) {
-					echo '<tr>';
-						echo '<td>Deltatt tidligere:</td>';
-						echo '<td>' . count($profileUser->getTicketsByAllEvents()) . ' ganger</td>';
-					echo '</tr>';
-				}
+				$historyEventCount = count($profileUser->getParticipatedEvents());
+
+				echo '<tr>';
+					echo '<td>Deltatt tidligere:</td>';
+					echo '<td>' . $historyEventCount . ' ' . ($historyEventCount > 1 ? 'ganger' : 'gang') . '</td>';
+				echo '</tr>';
 
 				if ($profileUser->isGroupMember()) {
 					echo '<tr>';

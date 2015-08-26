@@ -302,7 +302,7 @@ class Site {
 
 								if ($user->hasPermission('user.search')) {
 
-									echo '<li' . ($this->pageName == 'search-users' ? ' class="active"' : null) . '><a href="index.php?page=search-users"><img src="images/search.png"></a></li>';
+									echo '<li' . ($this->pageName == 'user-search' ? ' class="active"' : null) . '><a href="index.php?page=user-search"><img src="images/search.png"></a></li>';
 								}
 
 								if ($user->isGroupMember()) {

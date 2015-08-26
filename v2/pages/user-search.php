@@ -24,7 +24,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('user.search')) {
-		echo '<script src="scripts/search-users.js"></script>';
+		echo '<script src="scripts/user-search.js"></script>';
 		echo '<h3>Søk etter bruker</h3>';
 
 		echo '<input class="search" type="text" placeholder="Søk etter bruker..." autocomplete="off" autofocus>';
