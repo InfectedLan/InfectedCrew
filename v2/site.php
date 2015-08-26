@@ -300,7 +300,7 @@ class Site {
 							if (Session::isAuthenticated()) {
 								$user = Session::getCurrentUser();
 
-								if ($user->hasPermission('search.users')) {
+								if ($user->hasPermission('user.search')) {
 
 									echo '<li' . ($this->pageName == 'search-users' ? ' class="active"' : null) . '><a href="index.php?page=search-users"><img src="images/search.png"></a></li>';
 								}

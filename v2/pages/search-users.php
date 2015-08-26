@@ -23,7 +23,7 @@ require_once 'session.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('search.users')) {
+	if ($user->hasPermission('user.search')) {
 		echo '<script src="scripts/search-users.js"></script>';
 		echo '<h3>Søk etter bruker</h3>';
 

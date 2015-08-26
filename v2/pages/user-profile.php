@@ -32,7 +32,7 @@ if (Session::isAuthenticated()) {
 	$profileUser = UserHandler::getUser($id);
 
 	if ($profileUser != null) {
-		if ($user->hasPermission('search.users') ||
+		if ($user->hasPermission('user.search') ||
 			$user->equals($profileUser)) {
 			echo '<script src="scripts/user-profile.js"></script>';
 
