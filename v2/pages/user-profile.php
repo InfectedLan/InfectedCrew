@@ -187,6 +187,7 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></td>';
 					echo '</tr>';
+				}
 
 				if ($user->hasPermission('user.relocate') ||
 					$user->equals($profileUser)) {
@@ -211,7 +212,7 @@ if (Session::isAuthenticated()) {
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=user-history&id=' . $profileUser->getId() . '">Vis historikk</a></td>';
 					echo '</tr>';
-
+				}
 
 				if ($user->hasPermission('admin.permissions')) {
 					echo '<tr>';
