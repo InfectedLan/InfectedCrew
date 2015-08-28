@@ -38,6 +38,9 @@ if (Session::isAuthenticated()) {
 
 			if (!empty($commonNoteList)) {
 				echo '<h3>Sjekkliste for ' . $group->getTitle() . '</h3>';
+				echo '<p>Er kan du legge til oppgaver for crew\'et ditt.<br>';
+				echo 'Du kan sette oppgaven på et lag, da vil lag-leder få opp denne hos seg.<br>';
+				echo 'Eller så kan du deligere en oppgave direkte til et medlem av crewet ditt.</p>';
 
 				echo printNotelist($commonNoteList, false);
 			}
@@ -47,6 +50,8 @@ if (Session::isAuthenticated()) {
 
 		if (!empty($privateNoteList)) {
 			echo '<h3>Din private sjekkliste</h3>';
+			echo '<p>Her kan du legge til oppgaver som bare gjelder deg. <br>';
+			echo 'Disse vil ikke være synlige for noen andre.</p>';
 
 			echo printNotelist($privateNoteList, true);
 		}
