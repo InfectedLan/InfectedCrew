@@ -18,12 +18,12 @@
  */
 
 $(document).ready(function() {
-	$('.chief-note-add').submit(function(e) {
+	$('.chief-checklist-add').submit(function(e) {
 		e.preventDefault();
 		addNote(this);
 	});
 
-	$('.chief-note-edit').submit(function(e) {
+	$('.chief-checklist-edit').submit(function(e) {
 		e.preventDefault();
 		editNote(this);
 	});
