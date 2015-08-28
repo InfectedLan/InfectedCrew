@@ -132,7 +132,11 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 
 							if ($note->isDelegated()) {
-								$content .= '<td>Delegert til deg</td>';
+								if ($note->isUser($user)) {
+									$content .= '<td>Delegert til deg</td>';
+								} else {
+									$content .= '<td>Delegert</td>';
+								}
 							} else {
 								$content .= '<td>Din</td>';
 							}
