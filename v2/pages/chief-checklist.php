@@ -24,46 +24,36 @@ require_once 'handlers/notehandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->isGroupMember()) {
-		$group = $user->getGroup();
+	if ($user->hasPermission('chief.checklist')) {
+		echo '<script src="scripts/chief-checklist.js"></script>';
+		echo '<h3>' . $user->getDisplayName() . '\'s sjekklister</h3>';
 
-		if ($user->hasPermission('chief.checklist')) {
-			echo '<script src="scripts/chief-checklist.js"></script>';
-			echo '<h3>' . $user->getDisplayName() . '\'s sjekkliste</h3>';
+		echo '<p>Dette er sjekklister der du kan legge til punkter du/andre skal huske på.<br>';
+		echo 'Du har en privat sjekkliste som bare er din, om du har en spesiell stilling, har du en for den og.<br>';
+		echo 'Kan velge å få et e-postvarsel tidsfristen holder på å løpe ut.</p>';
 
-			echo '<p>Dette er sjekklister der du kan legge til punkter du/andre skal huske på.<br>';
-			echo 'Du har en privat sjekkliste som bare er din, om du har en spesiell stilling, har du en for den og.<br>';
-			echo 'Kan velge å få et e-postvarsel tidsfristen holder på å løpe ut.</p>';
+		if ($user->isGroupMember()) {
+			$group = $user->getGroup();
+			$commonNoteList = NoteHandler::getNotesByGroupAndTeamAndUser($user);
 
-			/*
-			$noteList = array();
-
-			if ($user->isGroupLeader() || $user->isGroupCoLeader()) {
-				$noteList = NoteHandler::getNotesByGroup($group);
-			} else if ($user->isTeamMember() && $user->isTeamLeader()) {
-				$noteList = NoteHandler::getNotesByTeam($user->getTeam());
-			}
-			*/
-
-			$noteList = NoteHandler::getNotesByGroupAndUser($group, $user);
-
-			if (!empty($noteList)) {
+			if (!empty($commonNoteList)) {
 				echo '<h3>Sjekkliste for ' . $group->getTitle() . '</h3>';
 
-				echo printNotelist($noteList, false);
+				echo printNotelist($commonNoteList, false);
 			}
+		}
 
-			$privateNoteList = NoteHandler::getNotesByUser($user);
+		$privateNoteList = NoteHandler::getNotesByUser($user);
 
-			if (!empty($privateNoteList)) {
-				echo '<h3>Din private sjekkliste</h3>';
+		if (!empty($privateNoteList)) {
+			echo '<h3>Din private sjekkliste</h3>';
 
-				echo printNotelist($privateNoteList, true);
-			}
+			echo printNotelist($privateNoteList, true);
+		}
 
-			if (empty($noteList) && empty($privateNoteList)) {
-				echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
-			}
+		if (empty($commonNoteList) && empty($privateNoteList)) {
+			echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
+		}
 
 			/*
 			echo '<h3>Legg til ny side:</h3>';
@@ -97,11 +87,8 @@ if (Session::isAuthenticated()) {
 				echo '<input type="submit" value="Legg til">';
 			echo '</form>';
 			*/
-		} else {
-			echo '<p>Du har ikke rettigheter til dette!</p>';
-		}
 	} else {
-		echo '<p>Du er ikke medlem av en gruppe.</p>';
+		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}
 } else {
 	echo '<p>Du er ikke logget inn!</p>';
@@ -109,7 +96,6 @@ if (Session::isAuthenticated()) {
 
 function printNotelist(array $noteList, $private) {
 	$content = null;
-
 
 	if (Session::isAuthenticated()) {
 		$user = Session::getCurrentUser();
@@ -124,7 +110,11 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<th>Frist</th>';
 
 					if (!$private) {
-						$content .= '<th>Deleger</th>';
+						if ($user->isGroupLeader() || $user->isGroupCoLeader()) {
+							$content .= '<th>Lag?</th>';
+						}
+
+						$content .= '<th>Delegert?</th>';
 					}
 
 					$content .= '<th>Varsling</th>';
@@ -149,15 +139,34 @@ function printNotelist(array $noteList, $private) {
 							$content .= '</td>';
 
 							if (!$private) {
+								if ($user->isGroupLeader() || $user->isGroupCoLeader()) {
+									$content .= '<td>';
+										$content .= '<select class="chosen-select" name="teamId">';
+											$content .= '<option value="0">Ingen</option>';
+
+											foreach ($group->getTeams() as $team) {
+												if ($note->hasTeam() && $team->equals($note->getTeam())) {
+													$content .= '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
+												} else {
+													$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+												}
+											}
+
+										$content .= '</select>';
+									$content .= '</td>';
+								} else if ($user->isTeamMember() && $user->isTeamLeader()) {
+									$content .= '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
+								}
+
 								$content .= '<td>';
 									$content .= '<select class="chosen-select" name="userId">';
-										$content .= '<option value="0">Meg</option>';
+									 	$content .= '<option value="0">Ingen</option>';
 
 										foreach ($group->getMembers() as $member) {
 											if ($note->hasUser() && $member->equals($note->getUser())) {
-												$content .= '<option value="' . $member->getId() . '" selected>' . $member->getDisplayName(). '</option>';
+												$content .= '<option value="' . $member->getId() . '" selected>' . $member->getDisplayName() . '</option>';
 											} else {
-												$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName(). '</option>';
+												$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
 											}
 										}
 
@@ -194,7 +203,10 @@ function printNotelist(array $noteList, $private) {
 								$content .= '</select>';
 							$content .= '</td>';
 							$content .= '<td><input type="submit" value="Endre"></td>';
-							$content .= '<td><input type="button" value="Fjern" onClick="removeNote(' . $note->getId() . ')"></td>';
+
+							if ($note->isAdmin($user)) {
+								$content .= '<td><input type="button" value="Fjern" onClick="removeNote(' . $note->getId() . ')"></td>';
+							}
 						$content .= '</form>';
 					$content .= '</tr>';
 				}
