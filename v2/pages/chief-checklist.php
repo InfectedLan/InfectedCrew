@@ -110,6 +110,7 @@ function printNotelist(array $noteList, $private) {
 
 			$content .= '<table>';
 				$content .= '<tr>';
+					$content .= '<th>Eier</th>';
 					$content .= '<th>Gjort?</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Frist</th>';
@@ -129,6 +130,12 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<tr>';
 						$content .= '<form class="chief-note-edit" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
+
+							if ($note->isDelegated()) {
+								$content .= '<td>Delegert til deg</td>';
+							} else {
+								$content .= '<td>Din</td>';
+							}
 
 							if ($note->isDone()) {
 								$content .= '<td><input type="checkbox" name="done" value="1" checked></td>';
