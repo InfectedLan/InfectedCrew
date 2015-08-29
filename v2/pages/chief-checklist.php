@@ -213,7 +213,7 @@ function printNotelist(array $noteList, $private) {
 								$content .= '<td><input type="checkbox" name="done" value="1"></td>';
 							}
 
-							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" required></a></td>';
+							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv inn gjøremål her..." required></a></td>';
 							$content .= '<td>';
 								$content .= '<input type="time" name="deadlineTime" value="' . date('H:i', $note->getDeadlineTime()) . '">';
 								$content .= '<br>';
