@@ -228,6 +228,12 @@ class Site {
 									if ($user->hasPermission('admin.website')) {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
+
+                                } else if($this->pageName=='compo-overview') {
+                                    if($user->hasPermission('compo.management')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
+                                    }
+                                            
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user') {
 
@@ -352,6 +358,14 @@ class Site {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
+									}
+								}
+
+                                if ($user->hasPermission('compo.management')) {
+									if ($this->pageName == 'compo-overview') {
+										echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
 									}
 								}
 
