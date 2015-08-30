@@ -24,6 +24,7 @@ require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/applicationhandler.php';
 require_once 'handlers/avatarhandler.php';
+require_once 'handlers/compohandler.php';
 
 class Site {
 	private $pageName;
@@ -229,9 +230,24 @@ class Site {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
 
-                                } else if($this->pageName=='compo-overview') {
+                                } else if($this->pageName=='compo-overview' ||
+                                $this->pageName=='compo-new' ||
+                                $this->pageName=='compo-view') {
                                     if($user->hasPermission('compo.management')) {
                                         echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.edit')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-new' ? ' class="active"' : null) . ' href="index.php?page=compo-new">Ny compo</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.management')) {
+                                        $compos = CompoHandler::getCompos();
+                                        if(count($compos) > 0) {
+                                            echo "<li>|</li>";
+                                            foreach($compos as $compo) {
+                                                echo '<li><a ' . ($this->pageName == 'compo-view' && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : null) . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                            }
+                                            echo "<li>|</li>";
+                                        }
                                     }
                                             
 								} else if ($this->pageName == 'developer' ||
