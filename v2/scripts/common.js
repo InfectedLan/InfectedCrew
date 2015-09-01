@@ -78,3 +78,32 @@ $( document ).ready(function() {
 });
 var errorFunction = 0;
 var infoFunction = 0;
+
+
+var timers = [];
+
+function registerTimer(target, targetTime) {
+    timers.push({target: target, targetTime: targetTime});
+}
+
+$(document).ready(function(){
+    setInterval(updateTimers, 1000);
+});
+
+function updateTimers() {
+    var now = Math.round(Date.now() / 1000);
+    for(var i = 0; i < timers.length; i++) {
+	var difference = timers[i].targetTime - now;
+	var negative = difference < 0;
+	if(negative) {
+	    difference = difference * -1;
+	}
+	var seconds = Math.floor(difference % 60);
+	var minutes = Math.floor(difference / 60)%60;
+	var hours = Math.floor(Math.floor(difference/60)/60)%24;
+	var days = Math.floor(Math.floor(Math.floor(difference/60)/60)/24);
+	//console.log("Difference: " + difference);
+	var string = "" + (negative ? "for " : "om ") + (days > 0 ? days + " dager, " : "") + (hours > 0 ? hours + " timer, " : "") + (minutes > 0 ? minutes + " minutter, " : "") + seconds + " sekunder" + (negative ? " siden" : "");
+	$(timers[i].target).html(string);
+    }
+}
