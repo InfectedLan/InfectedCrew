@@ -60,9 +60,9 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<td>Påmeldingsfrist:</td>';
 					echo '<td>';
-						echo '<input type="time" name="registrationEndTime" value="' . date('H:i') . '" required>';
+                    	echo '<input type="time" name="registrationEndTime" value="' . date('H:i', $event->getStartTime()-7200) . '" required>';
 						echo '<br>';
-						echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d') . '" required>';
+						echo '<input type="date" name="registrationEndDate" value="' . date('Y-m-d', $event->getStartTime()-7200) . '" required>';
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';

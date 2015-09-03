@@ -32,7 +32,7 @@ $(document).ready(function() {
 function addCompo(form) {
 	$.getJSON('../api/json/compo/addCompo.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
-			location.reload();
+			window.location.replace("index.php?page=compo-view&id=" + data.id);
 		} else {
 			error(data.message);
 		}
