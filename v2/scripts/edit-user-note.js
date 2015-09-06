@@ -1,4 +1,3 @@
-<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -18,34 +17,19 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
-require_once 'handlers/teamhandler.php';
-require_once 'handlers/grouphandler.php';
-require_once 'pages/crew.php';
+$(document).ready(function() {
+ 	$('.edit-user-note').submit(function(e) {
+ 		e.preventDefault();
+ 		editUserNote(this);
+ 	});
+});
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
-
-	if (isset($_GET['id'])) {
-		$group = GroupHandler::getGroup($_GET['id']);
-
-		if ($group != null) {
-			displayGroupWithInfo($group);
-		}
-	} else if (isset($_GET['teamId'])) {
-		$team = TeamHandler::getTeam($_GET['teamId']);
-
-		if ($team != null) {
-			displayTeamWithInfo($team);
-		}
-	} else {
-		$groupList = GroupHandler::getGroups();
-
-		foreach ($groupList as $group) {
-			displayGroupWithInfo($group);
-		}
-	}
-} else {
-	echo '<p>Du er ikke logget inn!</p>';
+function editUserNote(form) {
+ 	$.getJSON('../api/json/user/editUserNote.php' + '?' + $(form).serialize(), function(data) {
+ 		if (data.result) {
+      $(location).attr('href', 'index.php?page=user-profile');
+ 		} else {
+ 			error(data.message);
+ 		}
+ 	});
 }
-?>
