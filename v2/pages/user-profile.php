@@ -113,6 +113,14 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
+				if ($user->hasPermission('user.note') &&
+					$profileUser->hasNote()) {
+					echo '<tr>';
+						echo '<td>Notat:</td>';
+						echo '<td>' . $profileUser->getNote() . '</td>';
+					echo '</tr>';
+				}
+
 				if ($user->hasPermission('user.activate')) {
 					echo '<tr>';
 						echo '<td>Aktivert:</td>';
@@ -181,11 +189,27 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
+				if ($user->hasPermission('user.history') ||
+					$user->equals($profileUser)) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="index.php?page=user-history&id=' . $profileUser->getId() . '">Vis historikk</a></td>';
+					echo '</tr>';
+				}
+
 				if ($user->hasPermission('user.edit') ||
 					$user->equals($profileUser)) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></td>';
+					echo '</tr>';
+				}
+
+				if ($user->hasPermission('user.note') ||
+					$user->equals($profileUser)) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="index.php?page=edit-user-note&id=' . $profileUser->getId() . '">Noter på bruker</a></td>';
 					echo '</tr>';
 				}
 
@@ -203,14 +227,6 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-avatar">Endre avatar</a></td>';
-					echo '</tr>';
-				}
-
-				if ($user->hasPermission('user.history') ||
-					$user->equals($profileUser)) {
-					echo '<tr>';
-						echo '<td></td>';
-						echo '<td><a href="index.php?page=user-history&id=' . $profileUser->getId() . '">Vis historikk</a></td>';
 					echo '</tr>';
 				}
 

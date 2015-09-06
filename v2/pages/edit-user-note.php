@@ -19,6 +19,7 @@
  */
 
 require_once 'session.php';
+require_once 'localization.php';
 require_once 'handlers/userhandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
@@ -26,28 +27,26 @@ $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 if (Session::isAuthenticated()) {
   $user = Session::getCurrentUser();
 
-  if ($user->hasPermission('user.relocate')) {
+  if ($user->hasPermission('user.note')) {
     $editUser = UserHandler::getUser($id);
 
     if ($editUser != null) {
-      if ($editUser->hasTicket()) {
-        $ticket = $editUser->getTicket();
+      echo '<script src="scripts/edit-user-note.js"></script>';
 
-        echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-        //echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+			echo '<h3>Endrer notat på bruker ' . $editUser->getDisplayName() . '</h3>';
 
-        echo '<h3>Endrer plasseringen til ' . $editUser->getDisplayName() . '</h3>';
-        echo '<div id="seatmapCanvas"></div>';
-        echo '<script>';
-          echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';';
-          echo 'var ticketId = ' . $ticket->getId() . ';';
-          echo '$(document).ready(function() {';
-            echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';
-          echo '});';
-        echo '</script>';
-      } else {
-        echo '<p>Brukeren du prøver å flytte har ingen gyldig billett for dette arrangementet.</p>';
-      }
+			echo '<table>';
+				echo '<form class="edit-user-note" method="post">';
+					echo '<input type="hidden" name="id" value="' . $editUser->getId() . '">';
+					echo '<tr>';
+						echo '<td>Notat:</td>';
+            echo '<td><textarea name="content" rows="10" cols="80">' . ($editUser->hasNote() ? $editUser->getNote() : null) . '</textarea></td>';
+					echo '</tr>';
+          echo '<tr>';
+            echo '<td><input type="submit" value="' . Localization::getLocale('save') . '"></td>';
+          echo '</tr>';
+        echo '</form>';
+			echo '</table>';
     } else {
       echo '<p>Den angitte brukeren finnes ikke.</p>';
     }
