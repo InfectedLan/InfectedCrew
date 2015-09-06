@@ -40,7 +40,7 @@ if (Session::isAuthenticated()) {
 					echo '<input type="hidden" name="id" value="' . $editUser->getId() . '">';
 					echo '<tr>';
 						echo '<td>Notat:</td>';
-            echo '<td><textarea name="content" rows="10" cols="80">' . ($editUser->hasNote() ? $editUser->getNote() : null) . '</textarea></td>';
+            echo '<td><textarea name="content" rows="10" cols="80" placeholder="Skriv inn et notat her...">' . ($editUser->hasNote() ? $editUser->getNote() : null) . '</textarea></td>';
 					echo '</tr>';
           echo '<tr>';
             echo '<td><input type="submit" value="' . Localization::getLocale('save') . '"></td>';
