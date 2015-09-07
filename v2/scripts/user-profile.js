@@ -22,7 +22,22 @@ $(document).ready(function() {
 		e.preventDefault();
 		addUserToGroup(this);
 	});
+
+	$('.edit-user-note').submit(function(e) {
+ 		e.preventDefault();
+ 		editUserNote(this);
+ 	});
 });
+
+function editUserNote(form) {
+ 	$.getJSON('../api/json/user/editUserNote.php' + '?' + $(form).serialize(), function(data) {
+ 		if (data.result) {
+      location.reload();
+ 		} else {
+ 			error(data.message);
+ 		}
+ 	});
+}
 
 function addUserToGroup(form) {
 	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
