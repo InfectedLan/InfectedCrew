@@ -52,6 +52,10 @@ $(document).ready(function() {
 	});
 });
 
+function viewGroup(id) {
+	$(location).attr('href', 'index.php?page=chief-teams&groupId=' + id);
+}
+
 function removeTeam(id) {
 	$.getJSON('../api/json/team/removeTeam.php?id=' + id, function(data){
 		if (data.result) {
