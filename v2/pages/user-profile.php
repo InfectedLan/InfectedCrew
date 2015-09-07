@@ -197,8 +197,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
-				if ($user->hasPermission('user.note') ||
-					$user->equals($profileUser)) {
+				if ($user->hasPermission('user.note')) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=edit-user-note&id=' . $profileUser->getId() . '">Noter på bruker</a></td>';
