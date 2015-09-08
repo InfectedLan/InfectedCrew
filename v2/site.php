@@ -183,6 +183,7 @@ class Site {
 									$this->pageName == 'chief-my-crew' ||
 									$this->pageName == 'chief-email' ||
 									$this->pageName == 'chief-checklist' ||
+									$this->pageName == 'edit-checklist' ||
 									$this->pageName == 'application') {
 
 									if ($user->hasPermission('chief.group')) {
@@ -210,7 +211,7 @@ class Site {
 									}
 
 									if ($user->hasPermission('chief.checklist')) {
-										echo '<li><a' . ($this->pageName == 'chief-checklist' ? ' class="active"' : null) . ' href="index.php?page=chief-checklist">Sjekkliste</a></li>';
+										echo '<li><a' . ($this->pageName == 'chief-checklist' || $this->pageName == 'edit-checklist' ? ' class="active"' : null) . ' href="index.php?page=chief-checklist">Sjekkliste</a></li>';
 									}
 								} else if ($this->pageName == 'admin' ||
 									$this->pageName == 'admin-events' ||
@@ -341,7 +342,8 @@ class Site {
 										$this->pageName == 'chief-applications' ||
 										$this->pageName == 'chief-my-crew' ||
 										$this->pageName == 'chief-email' ||
-										$this->pageName == 'chief-checklist') {
+										$this->pageName == 'chief-checklist' ||
+										$this->pageName == 'edit-checklist') {
 										echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';

@@ -18,14 +18,24 @@
  */
 
 $(document).ready(function() {
-	$('.chief-checklist-add').submit(function(e) {
+	$('.edit-checklist-edit').submit(function(e) {
 		e.preventDefault();
-		addNote(this);
+		editNote(this);
 	});
 });
 
-function addNote(form) {
-	$.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
+function editNote(form) {
+	$.getJSON('../api/json/note/editNote.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function removeNote(id) {
+	$.getJSON('../api/json/note/removeNote.php?id=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
