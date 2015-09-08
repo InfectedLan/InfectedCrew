@@ -28,7 +28,8 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('admin.permissions')) {
 		echo '<script src="scripts/admin-permissions.js"></script>';
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id']) &&
+			is_numeric($_GET['id'])) {
 			$permissionUser = UserHandler::getUser($_GET['id']);
 
 			if ($permissionUser != null) {
