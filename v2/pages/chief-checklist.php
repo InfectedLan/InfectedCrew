@@ -127,8 +127,12 @@ if (Session::isAuthenticated()) {
 							echo '<select class="chosen-select" name="userId">';
 								echo '<option value="0">Ingen</option>';
 
-								foreach ($group->getMembers() as $member) {
-									echo '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+								$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+								foreach ($memberList as $member) {
+									if (!$member->equals($user)) {
+										echo '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+									}
 								}
 
 							echo '</select> Gjelder ikke for private gjøremål.';
@@ -146,14 +150,14 @@ if (Session::isAuthenticated()) {
 							for ($day = 1; $day <= 6; $day++) {
 								$seconds = $day * 86400;
 
-								echo '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før fristen</option>';
+								echo '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
 							}
 
 							// Adding weeks.
 							for ($week = 1; $week <= 6; $week++) {
 								$seconds = $week * 604800;
 
-								echo '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før fristen</option>';
+								echo '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
 							}
 
 						echo '</select>';
@@ -184,7 +188,8 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<th>Gjort?</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Detaljer</th>';
-					$content .= '<th>Frist</th>';
+					$content .= '<th>Når?</th>';
+					$content .= '<th>Klokkeslett</th>';
 
 					if (!$private) {
 						if ($user->isGroupLeader() || $user->isGroupCoLeader()) {
@@ -194,7 +199,6 @@ function printNotelist(array $noteList, $private) {
 						$content .= '<th>Delegert?</th>';
 					}
 
-					$content .= '<th>Varsling</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
@@ -221,9 +225,60 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
 							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
 							$content .= '<td>';
-								$content .= '<input type="time" name="deadlineTime" value="' . date('H:i', $note->getDeadlineTime()) . '" required>';
-								$content .= '<br>';
-								$content .= '<input type="date" name="deadlineDate" value="' . date('Y-m-d', $note->getDeadlineTime()) . '" required>';
+								$content .= '<select class="chosen-select" name="secondsBeforeOffset">';
+									$content .= '<option value="-172800">Søndag</option>';
+									$content .= '<option value="-86400">Lørdag</option>';
+									$content .= '<option value="0">Fredag</option>';
+									$content .= '<option value="86400">Torsdag</option>';
+
+									// TODO: Set the correct day in the compobox based on time in seconds.
+									/*
+									// This is the period we allow the time variable to be set, 86400 is the number of secounds in a day.
+									$eventTime = strtotime(date('Y-m-d', EventHandler::getCurrentEvent()->getStartTime()));
+
+									if ($note->getSecondsBeforeOffset() == 0) {
+										$content .= '<option value="0" selected>Fredag</option>';
+									} else {
+										$content .= '<option value="0">Fredag</option>';
+									}
+
+									if ($note->getSecondsBeforeOffset() != 0 &&
+										$eventTime > ($eventTime - $note->getSecondsBeforeOffset()) &&
+										($eventTime - 86400) < ($eventTime - $note->getSecondsBeforeOffset())) {
+										$content .= '<option value="86400" selected>Torsdag</option>';
+									} else {
+										$content .= '<option value="86400">Torsdag</option>';
+									}
+									*/
+
+									/*
+									// Adding days.
+									for ($day = 1; $day <= 6; $day++) {
+										$seconds = $day * 86400;
+
+										if ($seconds == $note->getNotificationTimeBeforeOffset()) {
+											$content .= '<option value="' . $seconds . '" selected>' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
+										} else {
+											$content .= '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
+										}
+									}
+									*/
+
+									// Adding weeks.
+									for ($week = 1; $week <= 6; $week++) {
+										$seconds = $week * 604800;
+
+										if ($seconds == $note->getSecondsBeforeOffset() && $note->getTime() == 0) {
+										 	$content .= '<option value="' . $seconds . '" selected>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
+										} else {
+											$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
+										}
+									}
+
+								$content .= '</select>';
+							$content .= '</td>';
+							$content .= '<td>';
+								$content .= '<input type="time" name="time" value="' . date('H:i', $note->getTime()) . '" required>';
 							$content .= '</td>';
 
 							if (!$private) {
@@ -248,13 +303,17 @@ function printNotelist(array $noteList, $private) {
 
 								$content .= '<td>';
 									$content .= '<select class="chosen-select" name="userId">';
-									 	$content .= '<option value="0">Ingen</option>';
+										$content .= '<option value="0">Ingen</option>';
 
-										foreach ($group->getMembers() as $member) {
-											if ($note->hasUser() && $member->equals($note->getUser())) {
-												$content .= '<option value="' . $member->getId() . '" selected>' . $member->getDisplayName() . '</option>';
-											} else {
-												$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+										$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+										foreach ($memberList as $member) {
+											if (!$member->equals($user)) {
+												if ($note->hasUser() && $member->equals($note->getUser())) {
+													$content .= '<option value="' . $member->getId() . '" selected>' . $member->getDisplayName() . '</option>';
+												} else {
+													$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+												}
 											}
 										}
 
@@ -262,34 +321,6 @@ function printNotelist(array $noteList, $private) {
 								$content .= '</td>';
 							}
 
-							$content .= '<td>';
-								$content .= '<select class="chosen-select" name="notificationTimeBeforeOffset">';
-									$content .= '<option value="0">Ingen</option>';
-
-									// Adding days.
-									for ($day = 1; $day <= 6; $day++) {
-										$seconds = $day * 86400;
-
-										if ($seconds == $note->getNotificationTimeBeforeOffset()) {
-											$content .= '<option value="' . $seconds . '" selected>' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
-										} else {
-											$content .= '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
-										}
-									}
-
-									// Adding weeks.
-									for ($week = 1; $week <= 6; $week++) {
-										$seconds = $week * 604800;
-
-										if ($seconds == $note->getNotificationTimeBeforeOffset()) {
-										 $content .= '<option value="' . $seconds . '" selected>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
-										} else {
-											$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
-										}
-									}
-
-								$content .= '</select>';
-							$content .= '</td>';
 							$content .= '<td><input type="submit" value="Endre"></td>';
 
 							if ($note->isOwner($user)) {
