@@ -82,16 +82,20 @@ if (Session::isAuthenticated()) {
 
 				echo '<tr>';
 					echo '<td>Oppgave</td>';
+					echo '<td><input type="text" name="title" placeholder="Skriv inn et gjøremål her..." required></td>';
+				echo '</tr>';
+				echo '<tr>';
+					echo '<td>Detaljer</td>';
 					echo '<td>';
-						echo '<textarea name="content" rows="2" cols="80" placeholder="Skriv inn gjøremål her..."></textarea>';
+						echo '<textarea name="content" rows="2" cols="80" placeholder="Skriv detaljer rundt gjøremålet her..." required></textarea>';
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';
 				echo '<td>Frist</td>';
 					echo '<td>';
-						echo '<input type="time" name="deadlineTime" value="' . date('H:i') . '">';
+						echo '<input type="time" name="deadlineTime" value="' . date('H:i') . '" required>';
 						echo '<br>';
-						echo '<input type="date" name="deadlineDate" value="' . date('Y-m-d') . '">';
+						echo '<input type="date" name="deadlineDate" value="' . date('Y-m-d') . '" required>';
 					echo '</td>';
 				echo '</tr>';
 
@@ -179,6 +183,7 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<th>Eier</th>';
 					$content .= '<th>Gjort?</th>';
 					$content .= '<th>Oppgave</th>';
+					$content .= '<th>Detaljer</th>';
 					$content .= '<th>Frist</th>';
 
 					if (!$private) {
@@ -213,11 +218,12 @@ function printNotelist(array $noteList, $private) {
 								$content .= '<td><input type="checkbox" name="done" value="1"></td>';
 							}
 
-							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv inn gjøremål her..." required></a></td>';
+							$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
+							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
 							$content .= '<td>';
-								$content .= '<input type="time" name="deadlineTime" value="' . date('H:i', $note->getDeadlineTime()) . '">';
+								$content .= '<input type="time" name="deadlineTime" value="' . date('H:i', $note->getDeadlineTime()) . '" required>';
 								$content .= '<br>';
-								$content .= '<input type="date" name="deadlineDate" value="' . date('Y-m-d', $note->getDeadlineTime()) . '">';
+								$content .= '<input type="date" name="deadlineDate" value="' . date('Y-m-d', $note->getDeadlineTime()) . '" required>';
 							$content .= '</td>';
 
 							if (!$private) {
