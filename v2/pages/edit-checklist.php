@@ -228,30 +228,26 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
 							$content .= '<td>';
 								$content .= '<select class="chosen-select" name="secondsOffset">';
-									$content .= '<option value="172800">Søndag</option>';
-									$content .= '<option value="86400">Lørdag</option>';
-									$content .= '<option value="0">Fredag</option>';
-									$content .= '<option value="-86400">Torsdag</option>';
+									$secondsOffset = $note->getSecondsOffset();
 
-									// TODO: Set the correct day in the compobox based on time in seconds.
-									/*
-									// This is the period we allow the time variable to be set, 86400 is the number of secounds in a day.
-									$eventTime = strtotime(date('Y-m-d', EventHandler::getCurrentEvent()->getStartTime()));
+									// Søndag.
+									$content .= '<option value="172800"' . ($secondsOffset <= 172800 && $secondsOffset > 86400 ? ' selected' : null) . '>Søndag</option>';
 
-									if ($note->getsecondsOffset() == 0) {
-										$content .= '<option value="0" selected>Fredag</option>';
-									} else {
-										$content .= '<option value="0">Fredag</option>';
+									// Lørdag.
+									$content .= '<option value="86400"' . ($secondsOffset <= 86400 && $secondsOffset > 0 ? ' selected' : null) . '>Lørdag</option>';
+
+									// Fredag.
+									$content .= '<option value="0"' . ($secondsOffset <= 0 && $secondsOffset > -86400 ? ' selected' : null) . '>Fredag</option>';
+
+									// Torsdag.
+									$content .= '<option value="-86400"' . ($secondsOffset <= -86400 && $secondsOffset > -172800 ? ' selected' : null) . '>Torsdag</option>';
+
+									// Adding weeks.
+									for ($week = 1; $week <= 6; $week++) {
+										$seconds = -$week * 604800;
+
+										$content .= '<option value="' . $seconds . '"' . ($secondsOffset <= $seconds && $secondsOffset > ($seconds - 604800) ? ' selected' : null) . '>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
 									}
-
-									if ($note->getsecondsOffset() != 0 &&
-										$eventTime > ($eventTime - $note->getsecondsOffset()) &&
-										($eventTime - 86400) < ($eventTime - $note->getsecondsOffset())) {
-										$content .= '<option value="86400" selected>Torsdag</option>';
-									} else {
-										$content .= '<option value="86400">Torsdag</option>';
-									}
-									*/
 
 									/*
 									// Adding days.
@@ -265,17 +261,6 @@ function printNotelist(array $noteList, $private) {
 										}
 									}
 									*/
-
-									// Adding weeks.
-									for ($week = 1; $week <= 6; $week++) {
-										$seconds = $week * 604800;
-
-										if ($seconds == $note->getsecondsOffset() && $note->getTime() == 0) {
-										 	$content .= '<option value="' . $seconds . '" selected>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
-										} else {
-											$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
-										}
-									}
 
 								$content .= '</select>';
 							$content .= '</td>';
