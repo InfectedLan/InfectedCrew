@@ -18,14 +18,18 @@
  */
 
 $(document).ready(function() {
-	$('.chief-checklist-add').submit(function(e) {
-		e.preventDefault();
-		addNote(this);
+	$('.chief-checklist-check').on('click', 'input:checkbox', function() {
+		$(this).closest('form').trigger('submit');
+	})
+
+	$('.chief-checklist-check').on('submit', function(event) {
+	    event.preventDefault();
+	    checkNote(this);
 	});
 });
 
-function addNote(form) {
-	$.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
+function checkNote(form) {
+	$.getJSON('../api/json/note/checkNote.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

@@ -81,16 +81,11 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<tr>';
 						$content .= '<form class="chief-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
-
-							if ($note->isDone()) {
-								$content .= '<td><input type="checkbox" name="done" value="1" checked></td>';
-							} else {
-								$content .= '<td><input type="checkbox" name="done" value="1"></td>';
-							}
-
+							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
 							$content .= '<td>' . $note->getContent() . '</td>';
-							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' kl. ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
+							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' den ' . date('d', $note->getAbsoluteTime()) . '. kl. ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
+							$content .= '<td><input type="submit" value="Endre"></td>';
 						$content .= '</form>';
 					$content .= '</tr>';
 				}
