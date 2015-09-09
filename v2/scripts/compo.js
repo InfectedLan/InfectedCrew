@@ -48,3 +48,33 @@ function editCompo(form) {
 		}
 	});
 }
+
+function disqualifyClan(clanid) {
+    $.getJSON('../api/json/compo/disqualifyClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+	if (data.result) {
+	    location.reload();
+	} else {
+	    error(data.message);
+	}
+    });
+}
+function deleteClan(clanid, shouldask) {
+    if(!shouldask || !confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
+	$.getJSON('../api/json/compo/deleteClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+    }
+}
+function qualifyClan(clanid) {
+    $.getJSON('../api/json/compo/qualifyClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+	if (data.result) {
+	    location.reload();
+	} else {
+	    error(data.message);
+	}
+    });
+}

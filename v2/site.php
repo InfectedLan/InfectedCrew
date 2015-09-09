@@ -232,7 +232,8 @@ class Site {
 
                                 } else if($this->pageName=='compo-overview' ||
                                 $this->pageName=='compo-new' ||
-                                $this->pageName=='compo-view') {
+                                $this->pageName=='compo-view' ||
+                                $this->pageName=='compo-clans') {
                                     if($user->hasPermission('compo.management')) {
                                         echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
                                     }
@@ -244,7 +245,7 @@ class Site {
                                         if(count($compos) > 0) {
                                             echo "<li>|</li>";
                                             foreach($compos as $compo) {
-                                                echo '<li><a ' . ($this->pageName == 'compo-view' && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : null) . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : null) . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
                                             }
                                             echo "<li>|</li>";
                                         }
