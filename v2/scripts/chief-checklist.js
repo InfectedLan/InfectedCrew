@@ -29,7 +29,7 @@ $(document).ready(function() {
 });
 
 function checkNote(form) {
-	$.getJSON('../api/json/note/checkNote.php' + '?' + $(form).serialize(), function(data) {
+	$.getJSON('../api/json/note/editNoteDone.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
