@@ -267,8 +267,6 @@ function getNoteList(array $noteList, $private) {
 
 										$content .= '</select>';
 									$content .= '</td>';
-								} else if ($note->hasTeam()) {
-									$content .= '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
 								}
 
 								if ($note->isOwner($user) && !$note->isUser($user)) {
@@ -286,8 +284,6 @@ function getNoteList(array $noteList, $private) {
 
 										$content .= '</select>';
 									$content .= '</td>';
-								} else if ($note->hasUser()) {
-									$content .= '<input type="hidden" name="userId" value="' . $note->getUser()->getId() . '">';
 								}
 							}
 
