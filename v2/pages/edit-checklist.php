@@ -93,7 +93,7 @@ function addNote() {
 								$content .= '<select class="chosen-select" style="width:10%;" name="private">';
 									$content .= '<option value="1">Ja</option>';
 									$content .= '<option value="0">Nei</option>';
-								$content .= '</select>';
+								$content .= '</select> <i>Svarer du nei, kan gjøremålet tildeles til leder, en shift-leder, eller et medlem.</i>';
 							$content .= '</td>';
 						$content .= '</tr>';
 					}
@@ -142,7 +142,7 @@ function addNote() {
 										$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 									}
 
-								$content .= '</select> Gjelder ikke for private gjøremål.';
+								$content .= '</select> <i>Gjelder ikke for private gjøremål.</i>';
 							$content .= '</td>';
 						$content .= '</tr>';
 					}
@@ -164,7 +164,7 @@ function addNote() {
 										}
 									}
 
-								$content .= '</select> Gjelder ikke for private gjøremål.';
+								$content .= '</select> <i>Gjelder ikke for private gjøremål.</i>';
 							$content .= '</td>';
 						$content .= '</tr>';
 					}
