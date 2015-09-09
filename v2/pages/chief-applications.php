@@ -114,7 +114,8 @@ if (Session::isAuthenticated()) {
 					echo '<th>Arrangement</th>';
 					echo '<th>Søker\'s navn</th>';
 					echo '<th>Crew</th>';
-					echo '<th>Dato søkt</th>';
+					echo '<th>Søketidspunkt</th>';
+					echo '<th>Svartidspunkt</th>';
 					echo '<th>Status</th>';
 				echo '</tr>';
 
@@ -126,6 +127,7 @@ if (Session::isAuthenticated()) {
 						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+						echo '<td>' . date('d.m.Y H:i', $application->getClosedTime()) . '</td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';

@@ -18,6 +18,10 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once 'handlers/notehandler.php';
+
+var_dump(NoteHandler::getNotesReachedNotificationTime());
+
 require_once 'session.php';
 require_once 'handlers/notehandler.php';
 require_once 'utils/dateutils.php';
@@ -84,7 +88,7 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
 							$content .= '<td>' . $note->getContent() . '</td>';
-							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' den ' . date('d', $note->getAbsoluteTime()) . '. kl. ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
+							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' den ' . date('d', $note->getAbsoluteTime()) . '. ' . DateUtils::getMonthFromInt(date('m', $note->getAbsoluteTime())) . ' kl. ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
 							$content .= '<td><input type="submit" value="Endre"></td>';
 						$content .= '</form>';
 					$content .= '</tr>';
