@@ -80,7 +80,7 @@ function addNote() {
 		if ($user->isGroupMember()) {
 			$group = $user->getGroup();
 
-			$content .= '<form class="chief-checklist-add" method="post">';
+			$content .= '<form class="edit-checklist-add" method="post">';
 				$content .= '<table>';
 
 					if ($user->hasPermission('*') ||

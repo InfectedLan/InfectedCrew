@@ -17,12 +17,27 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready(function() {
-	$('.edit-checklist-edit').submit(function(e) {
-		e.preventDefault();
+$(function() {
+	$('.edit-checklist-add').on('submit', function(event) {
+		event.preventDefault();
+		addNote(this);
+	});
+
+	$('.edit-checklist-edit').on('submit', function(event) {
+		event.preventDefault();
 		editNote(this);
 	});
 });
+
+function addNote(form) {
+	$.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
 
 function editNote(form) {
 	$.getJSON('../api/json/note/editNote.php' + '?' + $(form).serialize(), function(data) {
