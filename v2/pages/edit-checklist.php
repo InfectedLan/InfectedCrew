@@ -205,7 +205,7 @@ function printNotelist(array $noteList, $private) {
 
 				foreach ($noteList as $note) {
 					$content .= '<tr>';
-						$content .= '<form class="chief-checklist-edit" method="post">';
+						$content .= '<form class="edit-checklist-edit" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 
 							if ($note->isDelegated()) {
@@ -286,7 +286,7 @@ function printNotelist(array $noteList, $private) {
 
 										$content .= '</select>';
 									$content .= '</td>';
-								} else if ($user->isTeamMember() && $user->isTeamLeader()) {
+								} else {
 									$content .= '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
 								}
 
