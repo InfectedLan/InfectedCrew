@@ -26,7 +26,7 @@ if (Session::isAuthenticated()) {
 
 	if ($user->hasPermission('chief.checklist')) {
 		echo '<script src="scripts/edit-checklist.js"></script>';
-		echo '<h3>' . $user->getDisplayName() . '\'s sjekklister</h3>';
+		echo '<h3>Endre sjekklister</h3>';
 
 		echo '<p>Dette er sjekklister der du kan legge til punkter du/andre skal huske på.<br>';
 		echo 'Du har en privat sjekkliste som bare er din, om du har en spesiell stilling, har du en for den og.<br>';
@@ -42,7 +42,7 @@ if (Session::isAuthenticated()) {
 				echo 'Du kan sette oppgaven på et lag, da vil lag-leder få opp denne hos seg.<br>';
 				echo 'Eller så kan du deligere en oppgave direkte til et medlem av crewet ditt.</p>';
 
-				echo printNotelist($commonNoteList, false);
+				echo getNoteList($commonNoteList, false);
 			}
 		}
 
@@ -53,7 +53,7 @@ if (Session::isAuthenticated()) {
 			echo '<p>Her kan du legge til oppgaver som bare gjelder deg. <br>';
 			echo 'Disse vil ikke være synlige for noen andre.</p>';
 
-			echo printNotelist($privateNoteList, true);
+			echo getNoteList($privateNoteList, true);
 		}
 
 		if (empty($commonNoteList) && empty($privateNoteList)) {
@@ -63,109 +63,7 @@ if (Session::isAuthenticated()) {
 		echo '<h3>Legg til ett nytt gjøremål:</h3>';
 		echo '<p>Fyll ut feltene under for å legge til et nytt gjøremål.</p>';
 
-		echo '<form class="chief-checklist-add" method="post">';
-			echo '<table>';
-
-				if ($user->isGroupLeader() ||
-					$user->isGroupCoLeader() ||
-					($user->isTeamMember() && $user->isTeamLeader())) {
-					echo '<tr>';
-						echo '<td>Er dette privat?</td>';
-						echo '<td>';
-							echo '<select class="chosen-select" style="width:10%;" name="private">';
-								echo '<option value="1">Ja</option>';
-								echo '<option value="0">Nei</option>';
-							echo '</select>';
-						echo '</td>';
-					echo '</tr>';
-				}
-
-				echo '<tr>';
-					echo '<td>Oppgave</td>';
-					echo '<td><input type="text" name="title" placeholder="Skriv inn et gjøremål her..." required></td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td>Detaljer</td>';
-					echo '<td>';
-						echo '<textarea name="content" rows="2" cols="80" placeholder="Skriv detaljer rundt gjøremålet her..." required></textarea>';
-					echo '</td>';
-				echo '</tr>';
-				echo '<tr>';
-				echo '<td>Frist</td>';
-					echo '<td>';
-						echo '<input type="time" name="deadlineTime" value="' . date('H:i') . '" required>';
-						echo '<br>';
-						echo '<input type="date" name="deadlineDate" value="' . date('Y-m-d') . '" required>';
-					echo '</td>';
-				echo '</tr>';
-
-				// TODO: Hide these.
-				if ($user->isGroupLeader() || $user->isGroupCoLeader()) {
-					echo '<tr>';
-						echo '<td>Deleger til lag</td>';
-						echo '<td>';
-							echo '<select class="chosen-select" style="width:20%;" name="teamId">';
-								echo '<option value="0">Ingen</option>';
-
-								foreach ($group->getTeams() as $team) {
-									echo '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
-								}
-
-							echo '</select> Gjelder ikke for private gjøremål.';
-						echo '</td>';
-					echo '</tr>';
-				} else if ($user->isTeamMember() && $user->isTeamLeader()) {
-					echo '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
-				}
-
-				if ($user->isGroupLeader() ||
-					$user->isGroupCoLeader() ||
-					($user->isTeamMember() && $user->isTeamLeader())) {
-					echo '<tr>';
-						echo '<td>Deleger til medlem</td>';
-					  echo '<td>';
-							echo '<select class="chosen-select" name="userId">';
-								echo '<option value="0">Ingen</option>';
-
-								$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
-
-								foreach ($memberList as $member) {
-									if (!$member->equals($user)) {
-										echo '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
-									}
-								}
-
-							echo '</select> Gjelder ikke for private gjøremål.';
-						echo '</td>';
-					echo '</tr>';
-				}
-
-				echo '<tr>';
-					echo '<td>Varsling</td>';
-					echo '<td>';
-						echo '<select class="chosen-select" style="width:25%;" name="notificationTimeBeforeOffset">';
-							echo '<option value="0">Ingen</option>';
-
-							// Adding days.
-							for ($day = 1; $day <= 6; $day++) {
-								$seconds = $day * 86400;
-
-								echo '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
-							}
-
-							// Adding weeks.
-							for ($week = 1; $week <= 6; $week++) {
-								$seconds = $week * 604800;
-
-								echo '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
-							}
-
-						echo '</select>';
-					echo '</td>';
-				echo '</tr>';
-			echo '</table>';
-			echo '<input type="submit" value="Legg til">';
-		echo '</form>';
+		echo addNote();
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}
@@ -173,7 +71,114 @@ if (Session::isAuthenticated()) {
 	echo '<p>Du er ikke logget inn!</p>';
 }
 
-function printNotelist(array $noteList, $private) {
+function addNote() {
+	$content = null;
+
+	if (Session::isAuthenticated()) {
+		$user = Session::getCurrentUser();
+
+		if ($user->isGroupMember()) {
+			$group = $user->getGroup();
+
+			$content .= '<form class="chief-checklist-add" method="post">';
+				$content .= '<table>';
+
+					if ($user->hasPermission('*') ||
+						$user->isGroupLeader() ||
+						$user->isGroupCoLeader() ||
+						($user->isTeamMember() && $user->isTeamLeader())) {
+						$content .= '<tr>';
+							$content .= '<td>Er dette privat?</td>';
+							$content .= '<td>';
+								$content .= '<select class="chosen-select" style="width:10%;" name="private">';
+									$content .= '<option value="1">Ja</option>';
+									$content .= '<option value="0">Nei</option>';
+								$content .= '</select>';
+							$content .= '</td>';
+						$content .= '</tr>';
+					}
+
+					$content .= '<tr>';
+						$content .= '<td>Oppgave</td>';
+						$content .= '<td><input type="text" name="title" placeholder="Skriv inn et gjøremål her..." required></td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Detaljer</td>';
+						$content .= '<td>';
+							$content .= '<textarea name="content" rows="2" cols="80" placeholder="Skriv detaljer rundt gjøremålet her..." required></textarea>';
+						$content .= '</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Dag/Tidspunkt</td>';
+						$content .= '<td>';
+							$content .= '<select class="chosen-select" name="secondsOffset">';
+								$content .= '<option value="172800">Søndag</option>'; // Søndag.
+								$content .= '<option value="86400">Lørdag</option>'; // Lørdag.
+								$content .= '<option value="0">Fredag</option>'; // Fredag.
+								$content .= '<option value="-86400">Torsdag</option>'; // Torsdag.
+
+								// Adding weeks.
+								for ($week = 1; $week <= 6; $week++) {
+									$seconds = -$week * 604800;
+
+									$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
+								}
+
+							$content .= '</select>';
+							$content .= '<input type="time" name="time" placeholder="00:00" value="' . date('H:i') . '">';
+						$content .= '</td>';
+					$content .= '</tr>';
+
+					if ($user->isGroupLeader() ||
+						$user->isGroupCoLeader() ||
+						($user->isTeamMember() && $user->isTeamLeader())) {
+						$content .= '<tr>';
+							$content .= '<td>Deleger til lag</td>';
+							$content .= '<td>';
+								$content .= '<select class="chosen-select" style="width:20%;" name="teamId">';
+									$content .= '<option value="0">Ingen</option>';
+
+									foreach ($group->getTeams() as $team) {
+										$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+									}
+
+								$content .= '</select> Gjelder ikke for private gjøremål.';
+							$content .= '</td>';
+						$content .= '</tr>';
+					}
+
+					if ($user->isGroupLeader() ||
+						$user->isGroupCoLeader() ||
+						($user->isTeamMember() && $user->isTeamLeader())) {
+						$content .= '<tr>';
+							$content .= '<td>Deleger til medlem</td>';
+							$content .= '<td>';
+								$content .= '<select class="chosen-select" name="userId">';
+									$content .= '<option value="0">Ingen</option>';
+
+									$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+									foreach ($memberList as $member) {
+										if (!$member->equals($user)) {
+											$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+										}
+									}
+
+								$content .= '</select> Gjelder ikke for private gjøremål.';
+							$content .= '</td>';
+						$content .= '</tr>';
+					}
+
+				$content .= '</table>';
+				$content .= '<input type="submit" value="Legg til">';
+			$content .= '</form>';
+		}
+	}
+
+	return $content;
+}
+
+function getNoteList(array $noteList, $private) {
 	$content = null;
 
 	if (Session::isAuthenticated()) {
@@ -188,12 +193,11 @@ function printNotelist(array $noteList, $private) {
 					$content .= '<th>Gjort?</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Detaljer</th>';
-					$content .= '<th>Når?</th>';
-					$content .= '<th>Klokkeslett</th>';
+					$content .= '<th>Dag</th>';
+					$content .= '<th>Tidspunkt</th>';
 
 					if (!$private) {
-						if ($user->hasPermission('*') ||
-							$user->isGroupLeader() ||
+						if ($user->isGroupLeader() ||
 							$user->isGroupCoLeader()) {
 							$content .= '<th>Lag?</th>';
 						}
@@ -218,12 +222,7 @@ function printNotelist(array $noteList, $private) {
 								$content .= '<td>Din</td>';
 							}
 
-							if ($note->isDone()) {
-								$content .= '<td><input type="checkbox" name="done" value="1" checked></td>';
-							} else {
-								$content .= '<td><input type="checkbox" name="done" value="1"></td>';
-							}
-
+							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
 							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
 							$content .= '<td>';
@@ -249,65 +248,47 @@ function printNotelist(array $noteList, $private) {
 										$content .= '<option value="' . $seconds . '"' . ($secondsOffset <= $seconds && $secondsOffset > ($seconds - 604800) ? ' selected' : null) . '>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
 									}
 
-									/*
-									// Adding days.
-									for ($day = 1; $day <= 6; $day++) {
-										$seconds = $day * 86400;
-
-										if ($seconds == $note->getNotificationTimeBeforeOffset()) {
-											$content .= '<option value="' . $seconds . '" selected>' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
-										} else {
-											$content .= '<option value="' . $seconds . '">' . $day . ' ' . ($day > 1 ? 'dager' : 'dag') . ' før</option>';
-										}
-									}
-									*/
-
 								$content .= '</select>';
 							$content .= '</td>';
 							$content .= '<td>';
-								$content .= '<input type="time" name="time" value="' . date('H:i', $note->getTime()) . '" required>';
+								$content .= '<input type="time" name="time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
 							$content .= '</td>';
 
 							if (!$private) {
-								if ($user->hasPermission('*') ||
-									$user->isGroupLeader() ||
+								if ($user->isGroupLeader() ||
 									$user->isGroupCoLeader()) {
 									$content .= '<td>';
 										$content .= '<select class="chosen-select" name="teamId">';
 											$content .= '<option value="0">Ingen</option>';
 
 											foreach ($group->getTeams() as $team) {
-												if ($note->hasTeam() && $team->equals($note->getTeam())) {
-													$content .= '<option value="' . $team->getId() . '" selected>' . $team->getTitle() . '</option>';
-												} else {
-													$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+												$content .= '<option value="' . $team->getId() . '"' . ($note->hasTeam() && $team->equals($note->getTeam()) ? ' selected' : null) . '>' . $team->getTitle() . '</option>';
+											}
+
+										$content .= '</select>';
+									$content .= '</td>';
+								} else if ($note->hasTeam()) {
+									$content .= '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
+								}
+
+								if ($note->isOwner($user) && !$note->isUser($user)) {
+									$content .= '<td>';
+										$content .= '<select class="chosen-select" name="userId">';
+											$content .= '<option value="0">Ingen</option>';
+
+											$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+											foreach ($memberList as $member) {
+												if (!$member->equals($user)) {
+													$content .= '<option value="' . $member->getId() . '"' . ($note->hasUser() && $member->equals($note->getUser()) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
 												}
 											}
 
 										$content .= '</select>';
 									$content .= '</td>';
-								} else {
-									$content .= '<input type="hidden" name="teamId" value="' . $user->getTeam()->getId() . '">';
+								} else if ($note->hasUser()) {
+									$content .= '<input type="hidden" name="userId" value="' . $note->getUser()->getId() . '">';
 								}
-
-								$content .= '<td>';
-									$content .= '<select class="chosen-select" name="userId">';
-										$content .= '<option value="0">Ingen</option>';
-
-										$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
-
-										foreach ($memberList as $member) {
-											if (!$member->equals($user)) {
-												if ($note->hasUser() && $member->equals($note->getUser())) {
-													$content .= '<option value="' . $member->getId() . '" selected>' . $member->getDisplayName() . '</option>';
-												} else {
-													$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
-												}
-											}
-										}
-
-									$content .= '</select>';
-								$content .= '</td>';
 							}
 
 							$content .= '<td><input type="submit" value="Endre"></td>';
