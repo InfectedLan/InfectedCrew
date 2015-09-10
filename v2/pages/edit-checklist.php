@@ -90,9 +90,9 @@ function addNote() {
 						$content .= '<tr>';
 							$content .= '<td>Er dette privat?</td>';
 							$content .= '<td>';
-								$content .= '<select class="chosen-select" style="width:10%;" name="private">';
-									$content .= '<option value="1">Ja</option>';
-									$content .= '<option value="0">Nei</option>';
+								$content .= '<select class="chosen-select edit-checklist-add-private" style="width:20%;" name="private">';
+									$content .= '<option value="0">Stillingsbasert</option>';
+									$content .= '<option value="1">Privat</option>';
 								$content .= '</select> <i>Svarer du nei, kan gjøremålet tildeles til leder, en shift-leder, eller et medlem.</i>';
 							$content .= '</td>';
 						$content .= '</tr>';
@@ -111,7 +111,7 @@ function addNote() {
 					$content .= '<tr>';
 						$content .= '<td>Dag/Tidspunkt</td>';
 						$content .= '<td>';
-							$content .= '<select class="chosen-select" name="secondsOffset">';
+							$content .= '<select class="chosen-select edit-checklist-add-secondsOffset" style="width:20%;" name="secondsOffset">';
 								$content .= '<option value="172800">Søndag</option>'; // Søndag.
 								$content .= '<option value="86400">Lørdag</option>'; // Lørdag.
 								$content .= '<option value="0">Fredag</option>'; // Fredag.
@@ -125,48 +125,45 @@ function addNote() {
 								}
 
 							$content .= '</select>';
-							$content .= '<input type="time" name="time" placeholder="00:00" value="' . date('H:i') . '">';
+							$content .= '<input type="time" name="time" class="edit-checklist-add-time" placeholder="00:00" value="' . date('H:i') . '">';
 						$content .= '</td>';
 					$content .= '</tr>';
 
 					if ($user->isGroupLeader() ||
 						$user->isGroupCoLeader() ||
 						($user->isTeamMember() && $user->isTeamLeader())) {
-						$content .= '<tr>';
-							$content .= '<td>Deleger til lag</td>';
-							$content .= '<td>';
-								$content .= '<select class="chosen-select" style="width:20%;" name="teamId">';
-									$content .= '<option value="0">Ingen</option>';
+						$content .= '<div class="edit-checklist-add-nonPrivate">';
+							$content .= '<tr>';
+								$content .= '<td>Deleger til lag</td>';
+								$content .= '<td>';
+									$content .= '<select class="chosen-select edit-checklist-add-teamId" style="width:20%;" name="teamId">';
+										$content .= '<option value="0">Ingen</option>';
 
-									foreach ($group->getTeams() as $team) {
-										$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
-									}
-
-								$content .= '</select> <i>Gjelder ikke for private gjøremål.</i>';
-							$content .= '</td>';
-						$content .= '</tr>';
-					}
-
-					if ($user->isGroupLeader() ||
-						$user->isGroupCoLeader() ||
-						($user->isTeamMember() && $user->isTeamLeader())) {
-						$content .= '<tr>';
-							$content .= '<td>Deleger til medlem</td>';
-							$content .= '<td>';
-								$content .= '<select class="chosen-select" name="userId">';
-									$content .= '<option value="0">Ingen</option>';
-
-									$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
-
-									foreach ($memberList as $member) {
-										if (!$member->equals($user)) {
-											$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+										foreach ($group->getTeams() as $team) {
+											$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 										}
-									}
 
-								$content .= '</select> <i>Gjelder ikke for private gjøremål.</i>';
-							$content .= '</td>';
-						$content .= '</tr>';
+									$content .= '</select>';
+								$content .= '</td>';
+							$content .= '</tr>';
+							$content .= '<tr>';
+								$content .= '<td>Deleger til medlem</td>';
+								$content .= '<td>';
+									$content .= '<select class="chosen-select edit-checklist-add-userId" name="userId">';
+										$content .= '<option value="0">Ingen</option>';
+
+										$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+										foreach ($memberList as $member) {
+											if (!$member->equals($user)) {
+												$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+											}
+										}
+
+									$content .= '</select>';
+								$content .= '</td>';
+							$content .= '</tr>';
+						$content .= '</div>';
 					}
 
 				$content .= '</table>';
@@ -189,8 +186,10 @@ function getNoteList(array $noteList, $private) {
 
 			$content .= '<table>';
 				$content .= '<tr>';
-					$content .= '<th>Eier</th>';
-					$content .= '<th>Gjort?</th>';
+					if (!$private) {
+						$content .= '<th>Eier</th>';
+					}
+
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Detaljer</th>';
 					$content .= '<th>Dag</th>';
@@ -212,21 +211,22 @@ function getNoteList(array $noteList, $private) {
 						$content .= '<form class="edit-checklist-edit" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 
-							if ($note->isDelegated()) {
-								if ($note->isUser($user)) {
-									$content .= '<td>Delegert til deg</td>';
+							if (!$private) {
+								if ($note->isDelegated()) {
+									if ($note->isUser($user)) {
+										$content .= '<td>Delegert til deg</td>';
+									} else {
+										$content .= '<td>Delegert</td>';
+									}
 								} else {
-									$content .= '<td>Delegert</td>';
+									$content .= '<td>Din</td>';
 								}
-							} else {
-								$content .= '<td>Din</td>';
 							}
 
-							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
 							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
 							$content .= '<td>';
-								$content .= '<select class="chosen-select" name="secondsOffset">';
+								$content .= '<select class="chosen-select edit-checklist-edit-secondsOffset" style="width:100px;" name="secondsOffset">';
 									$secondsOffset = $note->getSecondsOffset();
 
 									// Søndag.
@@ -251,7 +251,7 @@ function getNoteList(array $noteList, $private) {
 								$content .= '</select>';
 							$content .= '</td>';
 							$content .= '<td>';
-								$content .= '<input type="time" name="time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
+								$content .= '<input type="time" name="time" class="edit-checklist-edit-time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
 							$content .= '</td>';
 
 							if (!$private) {

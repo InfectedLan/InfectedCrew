@@ -18,8 +18,20 @@
  */
 
 $(document).ready(function() {
-	$('.chief-checklist-check').on('click', 'input:checkbox', function() {
-		$(this).closest('form').trigger('submit');
+	$('.slidingBox').hide();
+
+	$('.show_hide').on('click', function() {
+		if ($('.slidingBox').is(':visible')) {
+			$('.show_hide').text('Vis detaljer');
+		} else {
+			$('.show_hide').text('Skjul detaljer');
+		}
+
+		$('.slidingBox').slideToggle();
+	});
+
+	$(this).on('change', 'input:checkbox', function() {
+		$('.chief-checklist-check').trigger('submit');
 	})
 
 	$('.chief-checklist-check').on('submit', function(event) {
@@ -30,9 +42,7 @@ $(document).ready(function() {
 
 function checkNote(form) {
 	$.getJSON('../api/json/note/editNoteDone.php' + '?' + $(form).serialize(), function(data) {
-		if (data.result) {
-			location.reload();
-		} else {
+		if (!data.result) {
 			error(data.message);
 		}
 	});

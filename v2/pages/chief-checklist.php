@@ -71,10 +71,9 @@ function printNotelist(array $noteList, $private) {
 
 			$content .= '<table>';
 				$content .= '<tr>';
-					$content .= '<th>Gjort?</th>';
+					$content .= '<th>Ferdig?</th>';
 					$content .= '<th>Oppgave</th>';
-					$content .= '<th>Detaljer</th>';
-					$content .= '<th>Når?</th>';
+					$content .= '<th>Tidspunkt</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
@@ -83,10 +82,14 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
-							$content .= '<td>' . $note->getContent() . '</td>';
-							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' den ' . date('d', $note->getAbsoluteTime()) . '. ' . DateUtils::getMonthFromInt(date('m', $note->getAbsoluteTime())) . ' kl. ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
-							$content .= '<td><input type="submit" value="Endre"></td>';
+							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . '' . date('H:i', $note->getAbsoluteTime()) . '</td>';
 						$content .= '</form>';
+						$content .= '<td>';
+							$content .= '<a href="#" class="show_hide">Vis detaljer</a>';
+							$content .= '<div class="slidingBox">';
+								$content .= $note->getContent();
+							$content .= '</div>';
+						$content .= '</td>';
 					$content .= '</tr>';
 				}
 
