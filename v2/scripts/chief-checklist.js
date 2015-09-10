@@ -24,7 +24,7 @@ $(document).ready(function() {
 		if ($('.slidingBox').is(':visible')) {
 			$('.show_hide').text('Vis detaljer');
 		} else {
-			$('.show_hide').text('Skjul detaljer');
+			$('.show_hide').text('Skjul');
 		}
 
 		$('.slidingBox').slideToggle();

@@ -37,7 +37,7 @@ if (Session::isAuthenticated()) {
 
 			if (!empty($commonNoteList)) {
 				echo '<h3>Sjekkliste for ' . $group->getTitle() . '</h3>';
-				echo printNotelist($commonNoteList, false);
+				echo getNotelist($commonNoteList, false);
 			}
 		}
 
@@ -45,7 +45,7 @@ if (Session::isAuthenticated()) {
 
 		if (!empty($privateNoteList)) {
 			echo '<h3>Din private sjekkliste</h3>';
-			echo printNotelist($privateNoteList, true);
+			echo getNotelist($privateNoteList, true);
 		}
 
 		if (empty($commonNoteList) && empty($privateNoteList)) {
@@ -60,7 +60,7 @@ if (Session::isAuthenticated()) {
 	echo '<p>Du er ikke logget inn!</p>';
 }
 
-function printNotelist(array $noteList, $private) {
+function getNotelist(array $noteList, $private) {
 	$content = null;
 
 	if (Session::isAuthenticated()) {
@@ -82,7 +82,7 @@ function printNotelist(array $noteList, $private) {
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
-							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . '' . date('H:i', $note->getAbsoluteTime()) . '</td>';
+							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
 						$content .= '</form>';
 						$content .= '<td>';
 							$content .= '<a href="#" class="show_hide">Vis detaljer</a>';

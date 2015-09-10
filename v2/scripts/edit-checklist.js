@@ -47,11 +47,11 @@ $(document).ready(function() {
 
 function validateAddPrivate() {
 	if ($('.edit-checklist-add-private').val() == '0') {
-		$('.edit-checklist-add-teamId').prop('disabled', true);
-		$('.edit-checklist-add-userId').prop('disabled', true);
-	} else {
 		$('.edit-checklist-add-teamId').prop('disabled', false);
 		$('.edit-checklist-add-userId').prop('disabled', false);
+	} else {
+		$('.edit-checklist-add-teamId').prop('disabled', true);
+		$('.edit-checklist-add-userId').prop('disabled', true);
 	}
 
 	$('.edit-checklist-add-userId').trigger("chosen:updated");
