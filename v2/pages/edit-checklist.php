@@ -93,7 +93,7 @@ function addNote() {
 								$content .= '<select class="chosen-select edit-checklist-add-private" style="width:20%;" name="private">';
 									$content .= '<option value="0">Stillingsbasert</option>';
 									$content .= '<option value="1">Privat</option>';
-								$content .= '</select> <i>Svarer du nei, kan gjøremålet tildeles til leder, en shift-leder, eller et medlem.</i>';
+								$content .= '</select> <i>Privat er for deg, Stillingsbasert låses til din rolle, og kan tildeles andre.</i>';
 							$content .= '</td>';
 						$content .= '</tr>';
 					}
