@@ -34,6 +34,7 @@ if (Session::isAuthenticated()) {
            echo '<hr>';
 	           echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
                echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
+               echo '<a href="index.php?page=compo-matches&id=' . $compo->getId() . '">Matcher(Liste)</a> ';
            echo '<hr>';
            echo '<p>Under construction.</p>';
        } else {

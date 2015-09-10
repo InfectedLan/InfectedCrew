@@ -30,9 +30,26 @@ if (Session::isAuthenticated()) {
         $id = $_GET["id"];
         $clan = ClanHandler::getClan($id);
 
+        $playingMembers = ClanHandler::getPlayingClanMembers($clan);
+        $stepins = ClanHandler::getStepInClanMembers($clan);
+
         echo '<h1>' . $clan->getTag() . ' ' . $clan->getName() . '</h1>';
 
+        echo '<h3>Medlemmer</h3>';
+
+        echo '<ul>';
+        foreach($playingMembers as $member) {
+            echo '<li><a href="index.php?page=user-profile&id=' . $member->getId() . '">' . $member->getCompoDisplayName() . '</a></li>';
+        }
+        echo '</ul>';
+
+        echo '<h3>Step-in medlemmer</h3>';
         
+        echo '<ul>';
+        foreach($stepins as $member) {
+            echo '<li><a href="index.php?page=user-profile&id=' . $member->getId() . '">' . $member->getCompoDisplayName() . '</a></li>';
+        }
+        echo '</ul>';
 
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
