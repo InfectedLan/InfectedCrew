@@ -103,7 +103,7 @@ function getNotelist(array $noteList, $private) {
 								$content .= $note->getContent();
 							$content .= '</div>';
 						$content .= '</td>';
-						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getTitle() : 'Ingen') . '</td>';
+						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getDisplayName() : 'Ingen') . '</td>';
 					$content .= '</tr>';
 				}
 
