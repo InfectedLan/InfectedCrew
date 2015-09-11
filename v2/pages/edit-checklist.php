@@ -24,7 +24,7 @@ require_once 'handlers/notehandler.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('chief.checklist')) {
+	if ($user->hasPermission('event.checklist')) {
 		echo '<script src="scripts/edit-checklist.js"></script>';
 		echo '<h3>Endre sjekklister</h3>';
 
@@ -118,7 +118,7 @@ function addNote() {
 								$content .= '<option value="-86400">Torsdag</option>'; // Torsdag.
 
 								// Adding weeks.
-								for ($week = 1; $week <= 6; $week++) {
+								for ($week = 1; $week <= 8; $week++) {
 									$seconds = -$week * 604800;
 
 									$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
@@ -246,7 +246,7 @@ function getNoteList(array $noteList, $private) {
 									$content .= '<option value="-86400"' . ($secondsOffset <= -86400 && $secondsOffset > -172800 ? ' selected' : null) . '>Torsdag</option>';
 
 									// Adding weeks.
-									for ($week = 1; $week <= 6; $week++) {
+									for ($week = 1; $week <= 8; $week++) {
 										$seconds = -$week * 604800;
 
 										$content .= '<option value="' . $seconds . '"' . ($secondsOffset <= $seconds && $secondsOffset > ($seconds - 604800) ? ' selected' : null) . '>' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
@@ -277,6 +277,14 @@ function getNoteList(array $noteList, $private) {
 									$content .= '<td>';
 										$content .= '<select class="chosen-select" name="userId">';
 											$content .= '<option value="0">Ingen</option>';
+
+											if ($user->hasPermission('*')) {
+												$memberList = UserHandler::getMemberUsers();
+											} else if ($user->isGroupLeader()) {
+												$memberList = $group->getMembers();
+											} else if ($user->isTeamLeader()) {
+												$memberList = $team->getMembers();
+											}
 
 											$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
 

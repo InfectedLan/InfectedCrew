@@ -25,8 +25,8 @@ require_once 'utils/dateutils.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('chief.checklist')) {
-		echo '<script src="scripts/chief-checklist.js"></script>';
+	if ($user->hasPermission('event.checklist')) {
+		echo '<script src="scripts/event-checklist.js"></script>';
 		echo '<h3>Sjekklister</h3>';
 
 		echo '<p>Dette er sjekklistene dine, gå igjennom å huk av når ting er gjort, eller klikk nederet på siden for å endre dem.</p>';
@@ -80,7 +80,7 @@ function getNotelist(array $noteList, $private) {
 
 				foreach ($noteList as $note) {
 					$content .= '<tr>';
-						$content .= '<form class="chief-checklist-check" method="post">';
+						$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';

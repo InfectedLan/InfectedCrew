@@ -31,10 +31,10 @@ $(document).ready(function() {
 	});
 
 	$(this).on('change', 'input:checkbox', function() {
-		$('.chief-checklist-check').trigger('submit');
+		$('.event-checklist-check').trigger('submit');
 	})
 
-	$('.chief-checklist-check').on('submit', function(event) {
+	$('.event-checklist-check').on('submit', function(event) {
 	    event.preventDefault();
 	    checkNote(this);
 	});

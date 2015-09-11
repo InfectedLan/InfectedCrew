@@ -142,18 +142,23 @@ class Site {
 									}
 								} else if ($this->pageName == 'event' ||
 										   $this->pageName == 'event-checkin' ||
+											 $this->pageName == 'event-checklist' ||
+											 $this->pageName == 'edit-checklist' ||
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
-										   $this->pageName == 'event-compo' ||
-										   $this->pageName == 'event-memberlist') {
+										   $this->pageName == 'event-compo') {
 
 									if ($user->hasPermission('event.checkin')) {
 										echo '<li><a' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . ' href="index.php?page=event-checkin">Innsjekk</a></li>';
 									}
 
+									if ($user->hasPermission('event.checklist')) {
+										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-checklist' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
+									}
+
 									if ($user->hasPermission('event.seatmap')) {
-										echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Seatmap</a></li>';
+										echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Setekart</a></li>';
 									}
 
 									if ($user->hasPermission('event.screen')) {
@@ -168,10 +173,6 @@ class Site {
 										echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
 									}
 
-									if ($user->hasPermission('event.memberlist')) {
-										echo '<li><a' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . ' href="index.php?page=event-memberlist">Medlemsliste</a></li>';
-									}
-
 									if ($user->hasPermission('event.table-labels')) {
 										echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 									}
@@ -182,8 +183,6 @@ class Site {
 									$this->pageName == 'chief-applications' ||
 									$this->pageName == 'chief-my-crew' ||
 									$this->pageName == 'chief-email' ||
-									$this->pageName == 'chief-checklist' ||
-									$this->pageName == 'edit-checklist' ||
 									$this->pageName == 'application') {
 
 									if ($user->hasPermission('chief.group')) {
@@ -209,15 +208,12 @@ class Site {
 									if ($user->hasPermission('chief.email')) {
 										echo '<li><a' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . ' href="index.php?page=chief-email">Send e-post</a></li>';
 									}
-
-									if ($user->hasPermission('chief.checklist')) {
-										echo '<li><a' . ($this->pageName == 'chief-checklist' || $this->pageName == 'edit-checklist' ? ' class="active"' : null) . ' href="index.php?page=chief-checklist">Sjekkliste</a></li>';
-									}
 								} else if ($this->pageName == 'admin' ||
 									$this->pageName == 'admin-events' ||
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
-									$this->pageName == 'admin-website') {
+									$this->pageName == 'admin-website' ||
+									$this->pageName == 'admin-memberlist') {
 
 									if ($user->hasPermission('admin.events')) {
 										echo '<li><a' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . ' href="index.php?page=admin-events">Arrangementer</a></li>';
@@ -225,6 +221,10 @@ class Site {
 
 									if ($user->hasPermission('admin.permissions')) {
 										echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Rettigheter</a></li>';
+									}
+
+									if ($user->hasPermission('admin.memberlist')) {
+										echo '<li><a' . ($this->pageName == 'admin-memberlist' ? ' class="active"' : null) . ' href="index.php?page=admin-memberlist">Medlemsliste</a></li>';
 									}
 
 									if ($user->hasPermission('admin.seatmap')) {
@@ -322,11 +322,12 @@ class Site {
 								if ($user->hasPermission('event')) {
 									if ($this->pageName == 'event' ||
 										$this->pageName == 'event-checkin' ||
+										$this->pageName == 'event-checklist' ||
+										$this->pageName == 'edit-checklist' ||
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
 										$this->pageName == 'event-agenda' ||
-										$this->pageName == 'event-compo' ||
-										$this->pageName == 'event-memberlist') {
+										$this->pageName == 'event-compo') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
@@ -341,9 +342,7 @@ class Site {
 										$this->pageName == 'chief-avatars' ||
 										$this->pageName == 'chief-applications' ||
 										$this->pageName == 'chief-my-crew' ||
-										$this->pageName == 'chief-email' ||
-										$this->pageName == 'chief-checklist' ||
-										$this->pageName == 'edit-checklist') {
+										$this->pageName == 'chief-email') {
 										echo '<li class="active"><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=chief"><img src="images/chief.png"></a></li>';
@@ -354,9 +353,9 @@ class Site {
 									if ($this->pageName == 'admin' ||
 										$this->pageName == 'admin-events' ||
 										$this->pageName == 'admin-permissions' ||
-										$this->pageName == 'admin-change-user' ||
 										$this->pageName == 'admin-seatmap' ||
-										$this->pageName == 'admin-website') {
+										$this->pageName == 'admin-website' ||
+										$this->pageName == 'admin-memberlist') {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
