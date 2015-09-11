@@ -74,6 +74,8 @@ function getNotelist(array $noteList, $private) {
 					$content .= '<th>Ferdig?</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Tidspunkt</th>';
+					$content .= '<th>Detaljer</th>';
+					$content .= '<th>Ansvarlig</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
@@ -82,7 +84,18 @@ function getNotelist(array $noteList, $private) {
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
-							$content .= '<td>' . DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime()) . '</td>';
+							$content .= '<td>';
+								$secondsOffset = $note->getSecondsOffset();
+
+								if ($secondsOffset >= -86400 && $secondsOffset <= 172800) {
+									$content .= DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime());
+								} else {
+									$week = abs(round($secondsOffset / 604800));
+
+									$content .= $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før';
+								}
+
+							$content .= '</td>';
 						$content .= '</form>';
 						$content .= '<td>';
 							$content .= '<a href="#" class="show_hide">Vis detaljer</a>';
@@ -90,6 +103,7 @@ function getNotelist(array $noteList, $private) {
 								$content .= $note->getContent();
 							$content .= '</div>';
 						$content .= '</td>';
+						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getTitle() : 'Ingen') . '</td>';
 					$content .= '</tr>';
 				}
 

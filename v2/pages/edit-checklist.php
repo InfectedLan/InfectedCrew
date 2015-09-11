@@ -128,11 +128,10 @@ function addNote() {
 							$content .= '<input type="time" name="time" class="edit-checklist-add-time" placeholder="00:00" value="' . date('H:i') . '">';
 						$content .= '</td>';
 					$content .= '</tr>';
+					$content .= '<div class="edit-checklist-add-nonPrivate">';
 
-					if ($user->isGroupLeader() ||
-						$user->isGroupCoLeader() ||
-						($user->isTeamMember() && $user->isTeamLeader())) {
-						$content .= '<div class="edit-checklist-add-nonPrivate">';
+						if ($user->isGroupLeader() ||
+							$user->isGroupCoLeader()) {
 							$content .= '<tr>';
 								$content .= '<td>Deleger til lag</td>';
 								$content .= '<td>';
@@ -146,6 +145,11 @@ function addNote() {
 									$content .= '</select>';
 								$content .= '</td>';
 							$content .= '</tr>';
+						}
+
+						if ($user->isGroupLeader() ||
+							$user->isGroupCoLeader() ||
+							($user->isTeamMember() && $user->isTeamLeader())) {
 							$content .= '<tr>';
 								$content .= '<td>Deleger til medlem</td>';
 								$content .= '<td>';
@@ -163,9 +167,9 @@ function addNote() {
 									$content .= '</select>';
 								$content .= '</td>';
 							$content .= '</tr>';
-						$content .= '</div>';
-					}
+						}
 
+					$content .= '</div>';
 				$content .= '</table>';
 				$content .= '<input type="submit" value="Legg til">';
 			$content .= '</form>';
