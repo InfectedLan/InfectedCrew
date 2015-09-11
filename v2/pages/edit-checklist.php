@@ -282,11 +282,9 @@ function getNoteList(array $noteList, $private) {
 												$memberList = UserHandler::getMemberUsers();
 											} else if ($user->isGroupLeader()) {
 												$memberList = $group->getMembers();
-											} else if ($user->isTeamLeader()) {
-												$memberList = $team->getMembers();
+											} else if ($user->isTeamMember() && $user->isTeamLeader()) {
+												$memberList = $user->getTeam()->getMembers();
 											}
-
-											$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
 
 											foreach ($memberList as $member) {
 												if (!$member->equals($user)) {
