@@ -372,7 +372,11 @@ class Site {
 								}
 
 								if ($this->pageName == 'user-profile' ||
-									$this->pageName == 'edit-user-location') {
+									$this->pageName == 'user-history' ||
+									$this->pageName == 'edit-profile' ||
+									$this->pageName == 'edit-password' ||
+									$this->pageName == 'edit-user-location' ||
+									$this->pageName == 'edit-avatar') {
 									echo '<li class="active"><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
 								} else {
 									echo '<li><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
