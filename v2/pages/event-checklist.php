@@ -98,10 +98,10 @@ function getNotelist(array $noteList, $private) {
 						$color = "#ffff00"; // Yellow
 					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
 						$color = "#0000ff"; // Blue
-					} else if (false) { // Punkter du har fått delegert: En annen blåtone bakgrunn
+					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
 						$color = "#1e90ff"; // Dodger Blue
-					} else if (false) { //Punkter du har delegert bort: lyslilla bakgrunn
-						$color = "#9370db"; // Green
+					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
+						$color = "#9370db"; // Purple
 					}
 
 					$content .= '<tr style="background: ' . $color . ';">';
