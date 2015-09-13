@@ -34,7 +34,8 @@ if (Session::isAuthenticated()) {
         $ticket = $editUser->getTicket();
 
         echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-        //echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+        echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+        echo '<script src="scripts/edit-user-location.js"></script>';
 
         echo '<h3>Endrer plasseringen til ' . $editUser->getDisplayName() . '</h3>';
         echo '<div id="seatmapCanvas"></div>';
