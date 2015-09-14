@@ -96,14 +96,14 @@ function getNotelist(array $noteList, $private) {
 						$color = "#ff0000"; // Red
 					} else if ($note->isPrivate()) { // Private: Gul bakgrunn
 						$color = "#ffff00"; // Yellow
-					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
-						$color = "#0000ff"; // Blue
 					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
 						$color = "#1e90ff"; // Dodger Blue
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
 						$color = "#9370db"; // Purple
+					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
+						$color = "#0000ff"; // Blue
 					}
-					
+
 					$content .= '<tr style="background: ' . $color . ';">';
 						$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
@@ -130,7 +130,7 @@ function getNotelist(array $noteList, $private) {
 								$content .= '</div>';
 							$content .= '</div>';
 						$content .= '</td>';
-						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
+						$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
 					$content .= '</tr>';
 				}
 

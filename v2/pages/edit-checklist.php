@@ -273,7 +273,7 @@ function getNoteList(array $noteList, $private) {
 									$content .= '</td>';
 								}
 
-								if ($note->isOwner($user) && !$note->isUser($user)) {
+								if ($note->isOwner($user)) {
 									$content .= '<td>';
 										$content .= '<select class="chosen-select" name="userId">';
 											$content .= '<option value="0">Ingen</option>';
