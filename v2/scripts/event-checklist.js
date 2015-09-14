@@ -18,16 +18,12 @@
  */
 
 $(document).ready(function() {
-	$('.slidingBox').hide();
+	$('.slidingBox .details').hide();
 
-	$('.show_hide').on('click', function() {
-		if ($('.slidingBox').is(':visible')) {
-			$('.show_hide').text('Vis detaljer');
-		} else {
-			$('.show_hide').text('Skjul');
-		}
+	$('.slidingBox .show_hide').on('click', function() {
+		$(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
 
-		$('.slidingBox').slideToggle();
+		$(this).next('.details').slideToggle();
 	});
 
 	$(this).on('change', 'input:checkbox', function() {

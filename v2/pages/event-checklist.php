@@ -123,9 +123,11 @@ function getNotelist(array $noteList, $private) {
 							$content .= '</td>';
 						$content .= '</form>';
 						$content .= '<td>';
-							$content .= '<a href="#" class="show_hide">Vis detaljer</a>';
 							$content .= '<div class="slidingBox">';
-								$content .= $note->getContent();
+								$content .= '<a href="#" class="show_hide">Vis</a>';
+								$content .= '<div class="details">';
+									$content .= $note->getContent();
+								$content .= '</div>';
 							$content .= '</div>';
 						$content .= '</td>';
 						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
