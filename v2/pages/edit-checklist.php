@@ -133,7 +133,7 @@ function addNote() {
 						if ($user->isGroupLeader() ||
 							$user->isGroupCoLeader()) {
 							$content .= '<tr>';
-								$content .= '<td>Deleger til lag</td>';
+								$content .= '<td>Deleger til lag-leder</td>';
 								$content .= '<td>';
 									$content .= '<select class="chosen-select edit-checklist-add-teamId" style="width:20%;" name="teamId">';
 										$content .= '<option value="0">Ingen</option>';
