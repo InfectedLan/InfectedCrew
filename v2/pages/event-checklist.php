@@ -90,7 +90,11 @@ function getNotelist(array $noteList, $private) {
 					Punkter du har delegert bort: lyslilla bakgrunn
 					*/
 
-					if ($note->isPrivate()) { // Private: Gul bakgrunn
+					if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
+						$color = "#008000"; // Green
+					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
+						$color = "#ff0000"; // Red
+					} else if ($note->isPrivate()) { // Private: Gul bakgrunn
 						$color = "#ffff00"; // Yellow
 					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
 						$color = "#0000ff"; // Blue
@@ -98,12 +102,8 @@ function getNotelist(array $noteList, $private) {
 						$color = "#1e90ff"; // Dodger Blue
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
 						$color = "#9370db"; // Purple
-					} else if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
-						$color = "#008000"; // Green
-					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
-						$color = "#ff0000"; // Red
 					}
-
+					
 					$content .= '<tr style="background: ' . $color . ';">';
 						$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';

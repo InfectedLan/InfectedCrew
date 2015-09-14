@@ -38,7 +38,9 @@ $(document).ready(function() {
 
 function checkNote(form) {
 	$.getJSON('../api/json/note/editNoteDone.php' + '?' + $(form).serialize(), function(data) {
-		if (!data.result) {
+		if (data.result) {
+			location.reload();
+		} else {
 			error(data.message);
 		}
 	});
