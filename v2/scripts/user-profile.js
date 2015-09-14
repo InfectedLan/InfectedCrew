@@ -58,3 +58,13 @@ function activateUser(id) {
 		}
 	});
 }
+
+function setUserSwimming(id, swimming) {
+	$.getJSON('../api/json/user/editUserSwimming.php?id=' + id  + '&swimming=' + swimming, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}

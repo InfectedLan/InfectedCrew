@@ -69,7 +69,7 @@ function getNotelist(array $noteList, $private) {
 		if ($user->isGroupMember()) {
 			$group = $user->getGroup();
 
-			$content .= '<table>';
+			$content .= '<table cellspacing="0">';
 				$content .= '<tr>';
 					$content .= '<th>Ferdig?</th>';
 					$content .= '<th>Oppgave</th>';
@@ -79,7 +79,32 @@ function getNotelist(array $noteList, $private) {
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
-					$content .= '<tr>';
+					$color = "#ffffff";
+
+					/*
+					Punker som er ferdig: Teskten blir grønn
+					Punkter som er over tiden: Tesksten blir rød
+					Private: Gul bakgrunn
+					Stilling: Blå bakgrunn
+					Punkter du har fått delegert: En annen blåtone bakgrunn
+					Punkter du har delegert bort: lyslilla bakgrunn
+					*/
+
+					if ($note->isPrivate()) { // Private: Gul bakgrunn
+						$color = "#ffff00"; // Yellow
+					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
+						$color = "#0000ff"; // Blue
+					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
+						$color = "#1e90ff"; // Dodger Blue
+					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
+						$color = "#9370db"; // Purple
+					} else if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
+						$color = "#008000"; // Green
+					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
+						$color = "#ff0000"; // Red
+					}
+
+					$content .= '<tr style="background: ' . $color . ';">';
 						$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
@@ -103,7 +128,7 @@ function getNotelist(array $noteList, $private) {
 								$content .= $note->getContent();
 							$content .= '</div>';
 						$content .= '</td>';
-						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getDisplayName() : 'Ingen') . '</td>';
+						$content .= '<td>' . ($note->hasUser() ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
 					$content .= '</tr>';
 				}
 
