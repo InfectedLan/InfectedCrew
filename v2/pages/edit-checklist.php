@@ -20,6 +20,8 @@
 
 require_once 'session.php';
 require_once 'handlers/notehandler.php';
+require_once 'handlers/userhandler.php';
+require_once 'handlers/grouphandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -199,8 +201,15 @@ function getNoteList(array $noteList, $private) {
 					$content .= '<th>Dag</th>';
 					$content .= '<th>Tidspunkt</th>';
 
+
+
 					if (!$private) {
-						if ($user->isGroupLeader() ||
+						if ($user->hasPermission('*')) {
+								$content .= '<th>Crew?</th>';
+						}
+
+						if ($user->hasPermission('*') ||
+							$user->isGroupLeader() ||
 							$user->isGroupCoLeader()) {
 							$content .= '<th>Lag?</th>';
 						}
@@ -259,7 +268,20 @@ function getNoteList(array $noteList, $private) {
 							$content .= '</td>';
 
 							if (!$private) {
-								if ($user->isGroupLeader() ||
+								if ($user->hasPermission('*')) {
+									$content .= '<td>';
+										$content .= '<select class="chosen-select" name="groupId">';
+
+											foreach (GroupHandler::getGroups() as $group) {
+												$content .= '<option value="' . $group->getId() . '"' . ($note->hasGroup() && $group->equals($note->getGroup()) ? ' selected' : null) . '>' . $group->getTitle() . '</option>';
+											}
+
+										$content .= '</select>';
+									$content .= '</td>';
+								}
+
+								if ($user->hasPermission('*') ||
+									$user->isGroupLeader() ||
 									$user->isGroupCoLeader()) {
 									$content .= '<td>';
 										$content .= '<select class="chosen-select" name="teamId">';
