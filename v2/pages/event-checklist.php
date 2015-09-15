@@ -82,17 +82,17 @@ function getNotelist(array $noteList, $private) {
 					$color = "#ffffff";
 
 					if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
-						$color = "#008000"; // Green
+						$color = "#44ce44"; // Green
 					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
-						$color = "#ff0000"; // Red
+						$color = "#ff5151"; // Red
 					} else if ($note->isPrivate()) { // Private: Gul bakgrunn
-						$color = "#ffff00"; // Yellow
+						$color = "#ffff51"; // Yellow
 					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
-						$color = "#1e90ff"; // Dodger Blue
+						$color = "#8acfff"; // Blue tone
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
-						$color = "#9370db"; // Purple
+						$color = "#b289e1"; // Purple
 					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
-						$color = "#0000ff"; // Blue
+						$color = "#3f94ff"; // Blue
 					}
 
 					$content .= '<tr style="background: ' . $color . ';">';
