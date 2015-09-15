@@ -201,20 +201,15 @@ function getNoteList(array $noteList, $private) {
 					$content .= '<th>Dag</th>';
 					$content .= '<th>Tidspunkt</th>';
 
-
-
 					if (!$private) {
-						if ($user->hasPermission('*')) {
-								$content .= '<th>Crew?</th>';
-						}
-
 						if ($user->hasPermission('*') ||
 							$user->isGroupLeader() ||
 							$user->isGroupCoLeader()) {
-							$content .= '<th>Lag?</th>';
+							$content .= '<th>' . ($user->hasPermission('*') ? 'Crew/Lag' : 'Lag') . '</th>';
 						}
 
-						$content .= '<th>Delegert?</th>';
+						$content .= '<th>Delegert til</th>';
+						$content .= '<th>Tilskuere</th>';
 					}
 
 				$content .= '</tr>';
@@ -225,19 +220,25 @@ function getNoteList(array $noteList, $private) {
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
 
 							if (!$private) {
-								if ($note->isDelegated()) {
-									if ($note->isUser($user)) {
-										$content .= '<td>Delegert til deg</td>';
-									} else {
-										$content .= '<td>Delegert</td>';
-									}
+								if ($note->isWatching($user)) {
+									$content .= '<td>Tilskuer</td>';
 								} else {
-									$content .= '<td>Din</td>';
+									if ($note->isDelegated()) {
+										if ($note->isOwner($user)) {
+											$content .= '<td>Delegert til ' . $note->getUser()->getFirstname() . '</td>';
+										} else if ($note->isUser($user)) {
+											$content .= '<td>Delegert til deg</td>';
+										} else {
+											$content .= '<td>Delegert</td>';
+										}
+									} else {
+										$content .= '<td>Din</td>';
+									}
 								}
 							}
 
 							$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
-							$content .= '<td><input type="text" name="content" value="' . $note->getContent() . '" placeholder="Skriv detaljer rundt gjøremålet her..." required></a></td>';
+							$content .= '<td><textarea name="content" rows="1" cols="20" placeholder="Skriv detaljer rundt gjøremålet her..." required>' . $note->getContent() . '</textarea></td>';
 							$content .= '<td>';
 								$content .= '<select class="chosen-select edit-checklist-edit-secondsOffset" style="width:100px;" name="secondsOffset">';
 									$secondsOffset = $note->getSecondsOffset();
@@ -268,22 +269,21 @@ function getNoteList(array $noteList, $private) {
 							$content .= '</td>';
 
 							if (!$private) {
-								if ($user->hasPermission('*')) {
-									$content .= '<td>';
-										$content .= '<select class="chosen-select" name="groupId">';
-
-											foreach (GroupHandler::getGroups() as $group) {
-												$content .= '<option value="' . $group->getId() . '"' . ($note->hasGroup() && $group->equals($note->getGroup()) ? ' selected' : null) . '>' . $group->getTitle() . '</option>';
-											}
-
-										$content .= '</select>';
-									$content .= '</td>';
-								}
-
 								if ($user->hasPermission('*') ||
 									$user->isGroupLeader() ||
 									$user->isGroupCoLeader()) {
 									$content .= '<td>';
+
+										if ($user->hasPermission('*')) {
+											$content .= '<select class="chosen-select" name="groupId">';
+
+												foreach (GroupHandler::getGroups() as $group) {
+													$content .= '<option value="' . $group->getId() . '"' . ($note->hasGroup() && $group->equals($note->getGroup()) ? ' selected' : null) . '>' . $group->getTitle() . '</option>';
+												}
+
+											$content .= '</select>';
+										}
+
 										$content .= '<select class="chosen-select" name="teamId">';
 											$content .= '<option value="0">Ingen</option>';
 
@@ -294,6 +294,7 @@ function getNoteList(array $noteList, $private) {
 										$content .= '</select>';
 									$content .= '</td>';
 								}
+
 
 								if ($note->isOwner($user)) {
 									$content .= '<td>';
@@ -316,6 +317,29 @@ function getNoteList(array $noteList, $private) {
 
 										$content .= '</select>';
 									$content .= '</td>';
+									$content .= '<td>';
+										$content .= '<select class="chosen-select" multiple name="watchingUserIdList" data-placeholder="Velg brukere...">';
+											if ($user->hasPermission('*')) {
+												$memberList = UserHandler::getMemberUsers();
+											} else if ($user->isGroupLeader()) {
+												$memberList = $group->getMembers();
+											} else if ($user->isTeamMember() && $user->isTeamLeader()) {
+												$memberList = $user->getTeam()->getMembers();
+											}
+
+											$watchingUserList = NoteHandler::getWatchingUsers($note);
+
+											foreach ($memberList as $member) {
+												if (!$member->equals($user)) {
+													$content .= '<option value="' . $member->getId() . '"' . (in_array($member, $watchingUserList) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
+												}
+											}
+
+										$content .= '</select>';
+									$content .= '</td>';
+								} else {
+									$content .= '<td></td>';
+									$content .= '<td></td>';
 								}
 							}
 
