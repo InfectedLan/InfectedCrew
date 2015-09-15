@@ -20,7 +20,7 @@
 $(document).ready(function() {
 	validateAddPrivate();
 	validateAddSecondsOffset();
-	validateEditSecondsOffset();
+	//validateEditSecondsOffset();
 
 	$('.edit-checklist-add-private').on('change', function() {
     validateAddPrivate();
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	});
 
 	$('.edit-checklist-edit-secondsOffset').on('change', function() {
-    validateEditSecondsOffset();
+    //validateEditSecondsOffset();
 	});
 
 	$('.edit-checklist-edit').on('submit', function(event) {
