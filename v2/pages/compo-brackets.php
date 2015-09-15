@@ -21,6 +21,9 @@
 require_once 'session.php';
 require_once 'handlers/compohandler.php';
 require_once 'handlers/eventhandler.php';
+require_once 'handlers/clanhandler.php';
+require_once 'handlers/matchhandler.php';
+require_once 'handlers/compopluginhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -30,7 +33,6 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
-            //echo '<h1>' . $compo->getTitle() . '</h1>';
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
@@ -39,7 +41,7 @@ if (Session::isAuthenticated()) {
                 echo '<a href="index.php?page=compo-brackets&id=' . $compo->getId() . '">Rediger brackets</a> ';
             }
             echo '<hr>';
-            echo '<p>Under construction.</p>';
+            
         } else {
             echo '<p>Compoen eksisterer ikke!</p>';
         }

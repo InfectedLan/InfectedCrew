@@ -36,6 +36,9 @@ if (Session::isAuthenticated()) {
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
             echo '<a href="index.php?page=compo-matches&id=' . $compo->getId() . '">Matcher(Liste)</a> ';
+            if($user->hasPermission('compo.bracketmanagement')) {
+                echo '<a href="index.php?page=compo-brackets&id=' . $compo->getId() . '">Rediger brackets</a> ';
+            }
             echo '<hr>';
             $clans = ClanHandler::getClansByCompo($compo);
 
