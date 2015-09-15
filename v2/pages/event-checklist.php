@@ -81,15 +81,6 @@ function getNotelist(array $noteList, $private) {
 				foreach ($noteList as $note) {
 					$color = "#ffffff";
 
-					/*
-					Punker som er ferdig: Teskten blir grønn
-					Punkter som er over tiden: Tesksten blir rød
-					Private: Gul bakgrunn
-					Stilling: Blå bakgrunn
-					Punkter du har fått delegert: En annen blåtone bakgrunn
-					Punkter du har delegert bort: lyslilla bakgrunn
-					*/
-
 					if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
 						$color = "#008000"; // Green
 					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
