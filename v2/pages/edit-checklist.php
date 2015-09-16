@@ -318,7 +318,7 @@ function getNoteList(array $noteList, $private) {
 										$content .= '</select>';
 									$content .= '</td>';
 									$content .= '<td>';
-										$content .= '<select class="chosen-select" multiple name="watchingUserIdList" data-placeholder="Velg brukere...">';
+										$content .= '<select multiple class="chosen-select" name="watchingUserIdList[]" data-placeholder="Velg brukere...">';
 											if ($user->hasPermission('*')) {
 												$memberList = UserHandler::getMemberUsers();
 											} else if ($user->isGroupLeader()) {
