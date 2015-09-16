@@ -30,6 +30,7 @@ if (Session::isAuthenticated()) {
 		echo '<h3>Sjekklister</h3>';
 
 		echo '<p>Dette er sjekklistene dine, gå igjennom å huk av når ting er gjort, eller klikk nederet på siden for å endre dem.</p>';
+		echo '<img src="images/checklist-description.jpg" alt="Beskrivelse av farger">';
 
 		if ($user->isGroupMember()) {
 			$group = $user->getGroup();
@@ -71,11 +72,11 @@ function getNotelist(array $noteList, $private) {
 
 			$content .= '<table cellspacing="0">';
 				$content .= '<tr>';
-					$content .= '<th>Ferdig?</th>';
-					$content .= '<th>Oppgave</th>';
-					$content .= '<th>Tidspunkt</th>';
-					$content .= '<th>Detaljer</th>';
-					$content .= '<th>Ansvarlig</th>';
+					$content .= '<th align="left">Ferdig?</th>';
+					$content .= '<th align="left">Oppgave</th>';
+					$content .= '<th align="left">Tidspunkt</th>';
+					$content .= '<th align="left">Detaljer</th>';
+					$content .= '<th align="left">Ansvarlig</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
