@@ -330,9 +330,7 @@ function getNoteList(array $noteList, $private) {
 											$watchingUserList = NoteHandler::getWatchingUsers($note);
 
 											foreach ($memberList as $member) {
-												if (!$member->equals($user)) {
-													$content .= '<option value="' . $member->getId() . '"' . (in_array($member, $watchingUserList) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
-												}
+												$content .= '<option value="' . $member->getId() . '"' . (in_array($member, $watchingUserList) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
 											}
 
 										$content .= '</select>';
