@@ -107,7 +107,7 @@ function getNotelist(array $noteList, $private) {
 						$color = "#8acfff"; // Blue tone
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
 						$color = "#b289e1"; // Purple
-					} else if (!$note->isPrivate()) { // Stilling: Blå bakgrunn
+					} else if (!$note->isPrivate() && $note->isUser($user)) { // Stilling: Blå bakgrunn
 						$color = "#3f94ff"; // Blue
 					}
 
