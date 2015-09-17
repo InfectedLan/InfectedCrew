@@ -27,8 +27,21 @@ if (Session::isAuthenticated()) {
 
 	if ($user->hasPermission('event.checklist')) {
 		echo '<script src="scripts/event-checklist.js"></script>';
-		echo '<h3>Sjekklister</h3>';
+		echo '<style>';
+			echo 'table {';
+				echo 'border-spacing: 0px;';
+			echo '}';
 
+			echo 'th {';
+				echo 'text-align: left;';
+			echo '}';
+
+			echo 'td {';
+				echo 'padding: 2px;';
+			echo '}';
+		echo '</style>';
+
+		echo '<h3>Sjekklister</h3>';
 		echo '<p>Dette er sjekklistene dine, gå igjennom å huk av når ting er gjort, eller klikk nederet på siden for å endre dem.</p>';
 
 		if ($user->isGroupMember()) {
@@ -36,7 +49,7 @@ if (Session::isAuthenticated()) {
 			$commonNoteList = NoteHandler::getNotesByGroupAndTeamAndUser($user);
 
 			if (!empty($commonNoteList)) {
-				echo '<h3>Sjekkliste for ' . $group->getTitle() . '</h3>';
+				echo '<h3>Sjekkliste for din stilling</h3>';
 				echo getNotelist($commonNoteList, false);
 			}
 		}
@@ -69,13 +82,13 @@ function getNotelist(array $noteList, $private) {
 		if ($user->isGroupMember()) {
 			$group = $user->getGroup();
 
-			$content .= '<table cellspacing="0">';
+			$content .= '<table>';
 				$content .= '<tr>';
 					$content .= '<th>Ferdig?</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Tidspunkt</th>';
-					$content .= '<th>Detaljer</th>';
 					$content .= '<th>Ansvarlig</th>';
+					$content .= '<th>Detaljer</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
@@ -85,8 +98,10 @@ function getNotelist(array $noteList, $private) {
 						$color = "#008000"; // Green
 					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
 						$color = "#ff0000"; // Red
+					/*
 					} else if ($note->isPrivate()) { // Private: Gul bakgrunn
 						$color = "#ffff00"; // Yellow
+					*/
 					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
 						$color = "#1e90ff"; // Dodger Blue
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
@@ -113,15 +128,13 @@ function getNotelist(array $noteList, $private) {
 
 							$content .= '</td>';
 						$content .= '</form>';
+						$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
 						$content .= '<td>';
 							$content .= '<div class="slidingBox">';
 								$content .= '<a href="#" class="show_hide">Vis</a>';
-								$content .= '<div class="details">';
-									$content .= $note->getContent();
-								$content .= '</div>';
+								$content .= '<div class="details">' . $note->getContent() . '</div>';
 							$content .= '</div>';
 						$content .= '</td>';
-						$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
 					$content .= '</tr>';
 				}
 
