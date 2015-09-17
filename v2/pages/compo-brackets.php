@@ -33,6 +33,8 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
+            
+            echo '<script src="scripts/compo-bracketeditor.js"></script>';
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
@@ -41,7 +43,19 @@ if (Session::isAuthenticated()) {
                 echo '<a href="index.php?page=compo-brackets&id=' . $compo->getId() . '">Rediger brackets</a> ';
             }
             echo '<hr>';
+            echo '<div class="toolbar">';
+	            echo '<input type="button" class="fa fa-2x" value="&#xf0c7;" onClick="save()" ></input>';
+                echo '<input type="button" class="fa fa-2x" value="&#xf021;" onClick="refreshBrackets()" ></input>';
+                echo '<input type="button" class="fa fa-2x" value="&#xf067;" onClick="addMatch()" ></input>';
+                echo '<input type="button" class="fa fa-2x" value="&#xf085;" onClick="generateBrackets()" ></input>';
+            echo '</div>';
             
+            echo '<div class="editor-canvas">';
+            	echo '<center>';
+            		echo '<i class="fa fa-4x fa-database"></i><br />';
+                	echo '<h3>Laster inn data...</h3>';
+                echo '</center>';
+            echo '</div>';
         } else {
             echo '<p>Compoen eksisterer ikke!</p>';
         }
