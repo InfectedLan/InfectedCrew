@@ -281,17 +281,20 @@ function getNoteList(array $noteList, $private) {
 													$content .= '<option value="' . $group->getId() . '"' . ($note->hasGroup() && $group->equals($note->getGroup()) ? ' selected' : null) . '>' . $group->getTitle() . '</option>';
 												}
 
+											$content .= '</select><br>';
+										}
+
+										if ($note->hasGroup()) {
+											$content .= '<select class="chosen-select" name="teamId">';
+												$content .= '<option value="0">Ingen</option>';
+
+												foreach ($note->getGroup()->getTeams() as $team) {
+													$content .= '<option value="' . $team->getId() . '"' . ($note->hasTeam() && $team->equals($note->getTeam()) ? ' selected' : null) . '>' . $team->getTitle() . '</option>';
+												}
+
 											$content .= '</select>';
 										}
 
-										$content .= '<select class="chosen-select" name="teamId">';
-											$content .= '<option value="0">Ingen</option>';
-
-											foreach ($group->getTeams() as $team) {
-												$content .= '<option value="' . $team->getId() . '"' . ($note->hasTeam() && $team->equals($note->getTeam()) ? ' selected' : null) . '>' . $team->getTitle() . '</option>';
-											}
-
-										$content .= '</select>';
 									$content .= '</td>';
 								}
 
