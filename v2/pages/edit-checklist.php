@@ -319,17 +319,9 @@ function getNoteList(array $noteList, $private) {
 									$content .= '</td>';
 									$content .= '<td>';
 										$content .= '<select multiple class="chosen-select" name="watchingUserIdList[]" data-placeholder="Velg brukere...">';
-											if ($user->hasPermission('*')) {
-												$memberList = UserHandler::getMemberUsers();
-											} else if ($user->isGroupLeader()) {
-												$memberList = $group->getMembers();
-											} else if ($user->isTeamMember() && $user->isTeamLeader()) {
-												$memberList = $user->getTeam()->getMembers();
-											}
-
 											$watchingUserList = NoteHandler::getWatchingUsers($note);
 
-											foreach ($memberList as $member) {
+											foreach (UserHandler::getMemberUsers() as $member) {
 												$content .= '<option value="' . $member->getId() . '"' . (in_array($member, $watchingUserList) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
 											}
 
