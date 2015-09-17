@@ -65,6 +65,21 @@ class Site {
 					echo 'ga(\'create\', \'UA-54254513-3\', \'auto\');';
 					echo 'ga(\'send\', \'pageview\');';
 				echo '</script>';
+
+				if (Session::isAuthenticated()) {
+					$user = Session::getCurrentUser();
+
+					if ($user->hasEasterEgg()) {
+						echo '<style>';
+							echo 'body {';
+								echo 'background: url(\'images/hello-kitty-edition.jpg\') right top,
+								                  url(\'images/hello-kitty-edition.jpg\') left top;';
+								echo 'background-repeat: repeat-y;';
+								echo 'background-size: 350px;';
+							echo '};';
+						echo '</style>';
+					}
+				}
 			echo '</head>';
 			echo '<body>';
 				echo '<div class="user">';
