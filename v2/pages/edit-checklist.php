@@ -39,7 +39,7 @@ if (Session::isAuthenticated()) {
 			$commonNoteList = NoteHandler::getNotesByGroupAndTeamAndUser($user);
 
 			if (!empty($commonNoteList)) {
-				echo '<h3>Sjekkliste for ' . $group->getTitle() . '</h3>';
+				echo '<h3>Sjekkliste for din stilling</h3>';
 				echo '<p>Er kan du legge til oppgaver for crew\'et ditt.<br>';
 				echo 'Du kan sette oppgaven på et lag, da vil lag-leder få opp denne hos seg.<br>';
 				echo 'Eller så kan du deligere en oppgave direkte til et medlem av crewet ditt.</p>';
@@ -58,7 +58,17 @@ if (Session::isAuthenticated()) {
 			echo getNoteList($privateNoteList, true);
 		}
 
-		if (empty($commonNoteList) && empty($privateNoteList)) {
+		if ($user->hasPermission('event.checklist.list')) {
+			$noteList = NoteHandler::getNotes();
+
+			if (!empty($noteList)) {
+				echo '<h3>Alle\'s sjekkliste</h3>';
+
+				echo getNoteList($noteList, false);
+			}
+		}
+
+		if (empty($noteList) && empty($commonNoteList) && empty($privateNoteList)) {
 			echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
 		}
 
@@ -205,10 +215,9 @@ function getNoteList(array $noteList, $private) {
 						if ($user->hasPermission('*') ||
 							$user->isGroupLeader() ||
 							$user->isGroupCoLeader()) {
-							$content .= '<th>' . ($user->hasPermission('*') ? 'Crew/Lag' : 'Lag') . '</th>';
+							$content .= '<th>Delegert til</th>';
 						}
 
-						$content .= '<th>Delegert til</th>';
 						$content .= '<th>Tilskuere</th>';
 					}
 
@@ -271,7 +280,8 @@ function getNoteList(array $noteList, $private) {
 							if (!$private) {
 								if ($user->hasPermission('*') ||
 									$user->isGroupLeader() ||
-									$user->isGroupCoLeader()) {
+									$user->isGroupCoLeader() ||
+									$note->isOwner($user)) {
 									$content .= '<td>';
 
 										if ($user->hasPermission('*')) {
@@ -284,12 +294,36 @@ function getNoteList(array $noteList, $private) {
 											$content .= '</select><br>';
 										}
 
-										if ($note->hasGroup()) {
+										if ($user->hasPermission('*') ||
+											($note->hasGroup() && ($user->isGroupLeader() || $user->isGroupCoLeader()))) {
 											$content .= '<select class="chosen-select" name="teamId">';
 												$content .= '<option value="0">Ingen</option>';
 
-												foreach ($note->getGroup()->getTeams() as $team) {
+												$teamList = $user->hasPermission('*') ? TeamHandler::getTeams() : $note->getGroup()->getTeams();
+
+												foreach ($teamList as $team) {
 													$content .= '<option value="' . $team->getId() . '"' . ($note->hasTeam() && $team->equals($note->getTeam()) ? ' selected' : null) . '>' . $team->getTitle() . '</option>';
+												}
+
+											$content .= '</select><br>';
+										}
+
+										if ($note->isOwner($user)) {
+											$content .= '<select class="chosen-select" name="userId">';
+												$content .= '<option value="0">Ingen</option>';
+
+												if ($user->hasPermission('event.checklist.delegate')) {
+													$memberList = UserHandler::getMemberUsers();
+												} else if ($user->isGroupLeader()) {
+													$memberList = $group->getMembers();
+												} else if ($user->isTeamMember() && $user->isTeamLeader()) {
+													$memberList = $user->getTeam()->getMembers();
+												}
+
+												foreach ($memberList as $member) {
+													if (!$member->equals($user)) {
+														$content .= '<option value="' . $member->getId() . '"' . ($note->hasUser() && $member->equals($note->getUser()) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
+													}
 												}
 
 											$content .= '</select>';
@@ -300,26 +334,6 @@ function getNoteList(array $noteList, $private) {
 
 
 								if ($note->isOwner($user)) {
-									$content .= '<td>';
-										$content .= '<select class="chosen-select" name="userId">';
-											$content .= '<option value="0">Ingen</option>';
-
-											if ($user->hasPermission('event.checklist.delegate')) {
-												$memberList = UserHandler::getMemberUsers();
-											} else if ($user->isGroupLeader()) {
-												$memberList = $group->getMembers();
-											} else if ($user->isTeamMember() && $user->isTeamLeader()) {
-												$memberList = $user->getTeam()->getMembers();
-											}
-
-											foreach ($memberList as $member) {
-												if (!$member->equals($user)) {
-													$content .= '<option value="' . $member->getId() . '"' . ($note->hasUser() && $member->equals($note->getUser()) ? ' selected' : null) . '>' . $member->getDisplayName() . '</option>';
-												}
-											}
-
-										$content .= '</select>';
-									$content .= '</td>';
 									$content .= '<td>';
 										$content .= '<select multiple class="chosen-select" name="watchingUserIdList[]" data-placeholder="Velg brukere...">';
 

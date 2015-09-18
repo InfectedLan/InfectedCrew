@@ -62,7 +62,16 @@ if (Session::isAuthenticated()) {
 			echo getNotelist($privateNoteList, true);
 		}
 
-		if (empty($commonNoteList) && empty($privateNoteList)) {
+		if ($user->hasPermission('event.checklist.list')) {
+			$noteList = NoteHandler::getNotes();
+
+			if (!empty($noteList)) {
+				echo '<h3>Alle\'s sjekkliste</h3>';
+				echo getNotelist($noteList, false);
+			}
+		}
+
+		if (empty($noteList) && empty($commonNoteList) && empty($privateNoteList)) {
 			echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
 		}
 
