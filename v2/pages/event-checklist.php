@@ -99,10 +99,6 @@ function getNotelist(array $noteList, $private) {
 						$color = "#44ce44"; // Green
 					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
 						$color = "#ff5151"; // Red
-					/*
-					} else if ($note->isPrivate()) { // Private: Gul bakgrunn
-						$color = "#ffff51"; // Yellow
-					*/
 					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
 						$color = "#8acfff"; // Blue tone
 					} else if ($note->isDelegated() && $note->isOwner($user)) { // Punkter du har delegert bort: lyslilla bakgrunn
