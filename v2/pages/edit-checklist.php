@@ -158,7 +158,7 @@ function addNote() {
 									$content .= '<select class="chosen-select edit-checklist-add-userId" name="userId">';
 										$content .= '<option value="0">Ingen</option>';
 
-										$memberList = $user->hasPermission('*') ? UserHandler::getMemberUsers() : $group->getMembers();
+										$memberList = $user->hasPermission('event.checklist.delegate') ? UserHandler::getMemberUsers() : $group->getMembers();
 
 										foreach ($memberList as $member) {
 											if (!$member->equals($user)) {
@@ -304,7 +304,7 @@ function getNoteList(array $noteList, $private) {
 										$content .= '<select class="chosen-select" name="userId">';
 											$content .= '<option value="0">Ingen</option>';
 
-											if ($user->hasPermission('*')) {
+											if ($user->hasPermission('event.checklist.delegate')) {
 												$memberList = UserHandler::getMemberUsers();
 											} else if ($user->isGroupLeader()) {
 												$memberList = $group->getMembers();
@@ -322,6 +322,7 @@ function getNoteList(array $noteList, $private) {
 									$content .= '</td>';
 									$content .= '<td>';
 										$content .= '<select multiple class="chosen-select" name="watchingUserIdList[]" data-placeholder="Velg brukere...">';
+
 											$watchingUserList = NoteHandler::getWatchingUsers($note);
 
 											foreach (UserHandler::getMemberUsers() as $member) {
