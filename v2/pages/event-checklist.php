@@ -51,7 +51,7 @@ if (Session::isAuthenticated()) {
 
 			if (!empty($commonNoteList)) {
 				echo '<h3>Sjekkliste for din stilling</h3>';
-				echo getNotelist($commonNoteList, false);
+				echo getNotelist($commonNoteList);
 			}
 		}
 
@@ -59,23 +59,26 @@ if (Session::isAuthenticated()) {
 
 		if (!empty($privateNoteList)) {
 			echo '<h3>Din private sjekkliste</h3>';
-			echo getNotelist($privateNoteList, true);
+			echo getNotelist($privateNoteList);
 		}
+
+		if (empty($commonNoteList) && empty($privateNoteList)) {
+			echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
+		}
+
+		echo '<h3>Legg til ett nytt gjøremål:</h3>';
+		echo '<p>Fyll ut feltene under for å legge til et nytt gjøremål.</p>';
+
+		echo addNote();
 
 		if ($user->hasPermission('event.checklist.list')) {
 			$noteList = NoteHandler::getNotes();
 
 			if (!empty($noteList)) {
-				echo '<h3>Alle\'s sjekkliste</h3>';
-				echo getNotelist($noteList, false);
+				echo '<h3>Oversikt over alle gjøremål for hele crewet</h3>';
+				echo getNotelist($noteList);
 			}
 		}
-
-		if (empty($noteList) && empty($commonNoteList) && empty($privateNoteList)) {
-			echo '<p>Det er ikke opprettet noe gjøremål i sjekklisten enda, du kan legge til gjøremål under.</p>';
-		}
-
-		echo '<a href="index.php?page=edit-checklist">Endre sjekklister</a></td>';
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}
@@ -83,7 +86,7 @@ if (Session::isAuthenticated()) {
 	echo '<p>Du er ikke logget inn!</p>';
 }
 
-function getNotelist(array $noteList, $private) {
+function getNotelist(array $noteList) {
 	$content = null;
 
 	if (Session::isAuthenticated()) {
@@ -141,10 +144,125 @@ function getNotelist(array $noteList, $private) {
 								$content .= '<div class="details">' . $note->getContent() . '</div>';
 							$content .= '</div>';
 						$content .= '</td>';
+						$content .= '<td><input type="button" value="Endre" onClick="editNote(' . $note->getId() . ')"></td>';
+
+						if ($user->hasPermission('*') ||
+							$note->isOwner($user)) {
+							$content .= '<td><input type="button" value="Fjern" onClick="removeNote(' . $note->getId() . ')"></td>';
+						}
+
 					$content .= '</tr>';
 				}
 
 			$content .= '</table>';
+		}
+	}
+
+	return $content;
+}
+
+function addNote() {
+	$content = null;
+
+	if (Session::isAuthenticated()) {
+		$user = Session::getCurrentUser();
+
+		if ($user->isGroupMember()) {
+			$group = $user->getGroup();
+
+			$content .= '<form class="event-checklist-add" method="post">';
+				$content .= '<table>';
+
+					if ($user->hasPermission('*') ||
+						$user->isGroupLeader() ||
+						$user->isGroupCoLeader() ||
+						($user->isTeamMember() && $user->isTeamLeader())) {
+						$content .= '<tr>';
+							$content .= '<td>Er dette privat?</td>';
+							$content .= '<td>';
+								$content .= '<select class="chosen-select event-checklist-add-private" style="width:20%;" name="private">';
+									$content .= '<option value="0">Stillingsbasert</option>';
+									$content .= '<option value="1">Privat</option>';
+								$content .= '</select> <i>Privat er for deg, Stillingsbasert låses til din rolle, og kan tildeles andre.</i>';
+							$content .= '</td>';
+						$content .= '</tr>';
+					}
+
+					$content .= '<tr>';
+						$content .= '<td>Oppgave</td>';
+						$content .= '<td><input type="text" name="title" placeholder="Skriv inn et gjøremål her..." required></td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Detaljer</td>';
+						$content .= '<td>';
+							$content .= '<textarea name="content" rows="2" cols="80" placeholder="Skriv detaljer rundt gjøremålet her..." required></textarea>';
+						$content .= '</td>';
+					$content .= '</tr>';
+					$content .= '<tr>';
+						$content .= '<td>Dag/Tidspunkt</td>';
+						$content .= '<td>';
+							$content .= '<select class="chosen-select event-checklist-add-secondsOffset" style="width:20%;" name="secondsOffset">';
+								$content .= '<option value="172800">Søndag</option>'; // Søndag.
+								$content .= '<option value="86400">Lørdag</option>'; // Lørdag.
+								$content .= '<option value="0">Fredag</option>'; // Fredag.
+								$content .= '<option value="-86400">Torsdag</option>'; // Torsdag.
+
+								// Adding weeks.
+								for ($week = 1; $week <= 8; $week++) {
+									$seconds = -$week * 604800;
+
+									$content .= '<option value="' . $seconds . '">' . $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før</option>';
+								}
+
+							$content .= '</select>';
+							$content .= '<input type="time" name="time" class="event-checklist-add-time" placeholder="00:00" value="' . date('H:i') . '">';
+						$content .= '</td>';
+					$content .= '</tr>';
+					$content .= '<div class="edit-checklist-add-nonPrivate">';
+
+						if ($user->isGroupLeader() ||
+							$user->isGroupCoLeader()) {
+							$content .= '<tr>';
+								$content .= '<td>Deleger til lag-leder</td>';
+								$content .= '<td>';
+									$content .= '<select class="chosen-select event-checklist-add-teamId" style="width:20%;" name="teamId">';
+										$content .= '<option value="0">Ingen</option>';
+
+										foreach ($group->getTeams() as $team) {
+											$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+										}
+
+									$content .= '</select>';
+								$content .= '</td>';
+							$content .= '</tr>';
+						}
+
+						if ($user->isGroupLeader() ||
+							$user->isGroupCoLeader() ||
+							($user->isTeamMember() && $user->isTeamLeader())) {
+							$content .= '<tr>';
+								$content .= '<td>Deleger til medlem</td>';
+								$content .= '<td>';
+									$content .= '<select class="chosen-select event-checklist-add-userId" name="userId">';
+										$content .= '<option value="0">Ingen</option>';
+
+										$memberList = $user->hasPermission('event.checklist.delegate') ? UserHandler::getMemberUsers() : $group->getMembers();
+
+										foreach ($memberList as $member) {
+											if (!$member->equals($user)) {
+												$content .= '<option value="' . $member->getId() . '">' . $member->getDisplayName() . '</option>';
+											}
+										}
+
+									$content .= '</select>';
+								$content .= '</td>';
+							$content .= '</tr>';
+						}
+
+					$content .= '</div>';
+				$content .= '</table>';
+				$content .= '<input type="submit" value="Legg til">';
+			$content .= '</form>';
 		}
 	}
 

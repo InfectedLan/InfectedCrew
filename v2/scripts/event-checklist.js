@@ -34,10 +34,74 @@ $(document).ready(function() {
 	    event.preventDefault();
 	    checkNote(this);
 	});
+
+	validatePrivate();
+	validateSecondsOffset();
+
+	$('.event-checklist-add-private').on('change', function() {
+    validatePrivate();
+	});
+
+	$('.event-checklist-add-secondsOffset').on('change', function() {
+    validateSecondsOffset();
+	});
+
+	$('.event-checklist-add').on('submit', function(event) {
+		event.preventDefault();
+		addNote(this);
+	});
 });
 
 function checkNote(form) {
 	$.getJSON('../api/json/note/editNoteDone.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function editNote(id) {
+	$(location).attr('href', 'index.php?page=edit-note&id=' + id);
+}
+
+function removeNote(id) {
+	$.getJSON('../api/json/note/removeNote.php?id=' + id, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function validatePrivate() {
+	if ($('.event-checklist-add-private').val() == '0') {
+		$('.event-checklist-add-teamId').prop('disabled', false);
+		$('.event-checklist-add-userId').prop('disabled', false);
+	} else {
+		$('.event-checklist-add-teamId').prop('disabled', true);
+		$('.event-checklist-add-userId').prop('disabled', true);
+	}
+
+	$('.event-checklist-add-userId').trigger("chosen:updated");
+	$('.event-checklist-add-teamId').trigger("chosen:updated");
+}
+
+function validateSecondsOffset(value, time) {
+	var value = $('.event-checklist-add-secondsOffset').val();
+	var time = $('.event-checklist-add-time');
+
+	if (value >= -86400 && value <= 172800) {
+			time.prop('disabled', false);
+	} else {
+			time.prop('disabled', true);
+	}
+}
+
+function addNote(form) {
+	$.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
