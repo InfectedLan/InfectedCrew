@@ -28,6 +28,15 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('event.checklist')) {
 		echo '<script src="scripts/event-checklist.js"></script>';
 		echo '<style>';
+			echo '.squareBox {';
+				echo 'display: block;';
+			echo '}';
+
+			echo '.square {';
+				echo 'width: 20px;';
+				echo 'height: 20px;';
+			echo '}';
+
 			echo 'table {';
 				echo 'border-spacing: 0px;';
 			echo '}';
@@ -43,6 +52,31 @@ if (Session::isAuthenticated()) {
 
 		echo '<h3>Sjekklister</h3>';
 		echo '<p>Dette er sjekklistene dine, gå igjennom å huk av når ting er gjort, eller klikk nederet på siden for å endre dem.</p>';
+
+		echo '<table>';
+			echo '<tr>';
+				echo '<td>';
+					echo '<div class="squareBox"><div class="square" style="background-color: #3f94ff;"></div>Punkter som er satt til stilling</div>';
+				echo '</td>';
+				echo '<td>';
+					echo '<div class="squareBox"><div class="square" style="background-color: #44ce44;"></div>Punkter som er ferdig</div>';
+				echo '</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>';
+					echo '<div class="squareBox"><div class="square" style="background-color: #8acfff;"></div>Punkter du har fått delegert</div>';
+				echo '</td>';
+				echo '<td>';
+					echo '<div class="squareBox"><div class="square" style="background-color: #ff5151;"></div>Punkter som er over tiden</div>';
+				echo '</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>';
+					echo '<div class="squareBox"><div class="square" style="background-color: #b289e1;"></div>Punkter du har delegert til andre</div>';
+				echo '</td>';
+			echo '</tr>';
+		echo '<table>';
+
 		echo '<img src="images/checklist-description.jpg" alt="Beskrivelse av farger">';
 
 		if ($user->isGroupMember()) {
