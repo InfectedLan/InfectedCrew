@@ -154,7 +154,7 @@ function editNote(Note $note) {
 										$content .= '<select class="chosen-select" name="teamId">';
 											$content .= '<option value="0">Ingen</option>';
 
-											$teamList = $user->hasPermission('*') ? TeamHandler::getTeams() : $note->getGroup()->getTeams();
+											$teamList = $user->hasPermission('event.checklist.delegate') ? TeamHandler::getTeams() : $note->getGroup()->getTeams();
 
 											foreach ($teamList as $team) {
 												$content .= '<option value="' . $team->getId() . '"' . ($note->hasTeam() && $team->equals($note->getTeam()) ? ' selected' : null) . '>' . $team->getTitle() . '</option>';
