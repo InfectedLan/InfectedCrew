@@ -189,7 +189,8 @@ function editNote(Note $note) {
 							$content .= '</tr>';
 						}
 
-						if ($note->isOwner($user)) {
+						if ($user->hasPermission('event.checklist.watchlist') ||
+							$note->isOwner($user)) {
 							$content .= '<tr>';
 								$content .= '<td><b>Tilskuere</b></td>';
 								$content .= '<td>';
