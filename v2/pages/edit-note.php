@@ -89,7 +89,7 @@ function editNote(Note $note) {
 
 					$content .= '<tr>';
 						$content .= '<td><b>Oppgave</b></td>';
-						$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." required></td>';
+						$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." style="width: 250px;" required></td>';
 					$content .= '</tr>';
 					$content .= '<tr>';
 						$content .= '<td><b>Detaljer</b></td>';
@@ -126,7 +126,7 @@ function editNote(Note $note) {
 					$content .= '<tr>';
 						$content .= '<td><b>Tidspunkt</b></td>';
 						$content .= '<td>';
-							$content .= '<input type="time" name="time" class="edit-note-edit-time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
+							$content .= '<input type="time" name="time" class="edit-note-time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
 						$content .= '</td>';
 					$content .= '</tr>';
 
@@ -163,7 +163,8 @@ function editNote(Note $note) {
 										$content .= '</select><br>';
 									}
 
-									if ($note->isOwner($user)) {
+									if ($user->hasPermission('event.checklist.delegate') ||
+										$note->isOwner($user)) {
 										$content .= '<select class="chosen-select" name="userId">';
 											$content .= '<option value="0">Ingen</option>';
 

@@ -122,7 +122,7 @@ function getNotelist(array $noteList) {
 					$content .= '<tr style="background: ' . $color . ';">';
 						$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
-							$content .= '<td><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
+							$content .= '<td style="padding-left: 16px;"><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
 							$content .= '<td>' . $note->getTitle() . '</td>';
 							$content .= '<td>';
 								$secondsOffset = $note->getSecondsOffset();

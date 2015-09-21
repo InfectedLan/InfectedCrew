@@ -20,19 +20,19 @@
 $(document).ready(function() {
 	validateSecondsOffset();
 
-	$('.edit-note-edit-secondsOffset').on('change', function() {
+	$('.edit-note-secondsOffset').on('change', function() {
     validateSecondsOffset();
 	});
 
-	$('.edit-note-edit').on('submit', function(event) {
+	$('.edit-note').on('submit', function(event) {
 		event.preventDefault();
 		editNote(this);
 	});
 });
 
 function validateSecondsOffset(value, time) {
-	var value = $('.edit-note-edit-secondsOffset').val();
-	var time = $('.edit-note-edit-time');
+	var value = $('.edit-note-secondsOffset').val();
+	var time = $('.edit-note-time');
 
 	if (value >= -86400 && value <= 172800) {
 			time.prop('disabled', false);
