@@ -139,7 +139,7 @@ function editNote(Note $note) {
 								$content .= '<td><b>Delegert til</b></td>';
 								$content .= '<td>';
 
-									if ($user->hasPermission('*')) {
+									if ($user->hasPermission('event.checklist.delegate')) {
 										$content .= '<select class="chosen-select" name="groupId">';
 
 											foreach (GroupHandler::getGroups() as $group) {
@@ -149,7 +149,7 @@ function editNote(Note $note) {
 										$content .= '</select><br>';
 									}
 
-									if ($user->hasPermission('*') ||
+									if ($user->hasPermission('event.checklist.delegate') ||
 										($note->hasGroup() && ($user->isGroupLeader() || $user->isGroupCoLeader()))) {
 										$content .= '<select class="chosen-select" name="teamId">';
 											$content .= '<option value="0">Ingen</option>';
