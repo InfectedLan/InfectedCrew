@@ -47,7 +47,13 @@ if (Session::isAuthenticated()) {
 			} else {
 				echo '<p>Siden finnes ikke.</p>';
 			}
+		} else {
+			echo '<p>Ingen side spesifisert.</p>';
 		}
+	} else {
+		echo '<p>Du har ikke rettigheter til dette.</p>';
 	}
+} else {
+	echo '<p>Du er ikke logget inn.</p>';
 }
 ?>
