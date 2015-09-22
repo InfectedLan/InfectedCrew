@@ -109,7 +109,7 @@ class Site {
 										$pageList = RestrictedPageHandler::getPagesForGroup($group);
 									}
 
-									$pageNameList = array();
+									$pageNameList = [];
 
 									foreach ($pageList as $page) {
 										array_push($pageNameList, strtolower($page->getName()));
@@ -118,7 +118,7 @@ class Site {
 									if ($this->pageName == 'my-crew' ||
 										in_array($this->pageName, $pageNameList)) {
 										$teamList = $group->getTeams();
-										$teamNameList = array();
+										$teamNameList = [];
 
 										foreach ($teamList as $team) {
 											array_push($teamNameList, strtolower($team->getName()));
@@ -487,7 +487,7 @@ class Site {
 		} else {
 			$directoryList = array(Settings::api_path . 'pages',
 								   'pages');
-			$includedPages = array();
+			$includedPages = [];
 			$found = false;
 
 			foreach ($directoryList as $directory) {
