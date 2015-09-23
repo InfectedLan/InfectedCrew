@@ -33,8 +33,9 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
-            
+            echo '<script src="../api/scripts/bracket.js"></script>';
             echo '<script src="scripts/compo-bracketeditor.js"></script>';
+            echo "<script>$(document).ready(function(){initBracketEditor(" . $compo->getId() . ");});</script>";
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
