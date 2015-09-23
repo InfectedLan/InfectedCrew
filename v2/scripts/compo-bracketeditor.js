@@ -3,5 +3,5 @@ var bracket = null;
 
 function initBracketEditor(compoId) {
     bracketSource = new DataSource(compoId);
-    bracket = bracketSource.derive('');
+    bracket = bracketSource.derive("editor-canvas", '.*');
 }

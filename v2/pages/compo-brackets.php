@@ -51,7 +51,7 @@ if (Session::isAuthenticated()) {
                 echo '<input type="button" class="fa fa-2x" value="&#xf085;" onClick="generateBrackets()" ></input>';
             echo '</div>';
             
-            echo '<div class="editor-canvas">';
+            echo '<div id="editor-canvas">';
             	echo '<center>';
             		echo '<i class="fa fa-4x fa-database"></i><br />';
                 	echo '<h3>Laster inn data...</h3>';
