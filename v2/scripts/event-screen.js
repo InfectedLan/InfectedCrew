@@ -18,13 +18,13 @@
  */
 
 $(document).ready(function() {
-	$('.slide-add').submit(function(e) {
-		e.preventDefault();
+	$('.slide-add').on('submit', function(event) {
+		event.preventDefault();
 		addSlide(this);
 	});
 
-	$('.slide-edit').submit(function(e) {
-		e.preventDefault();
+	$('.slide-edit').on('submit', function(event) {
+		event.preventDefault();
 		editSlide(this);
 	});
 });

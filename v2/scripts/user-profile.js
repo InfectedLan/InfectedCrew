@@ -18,13 +18,13 @@
  */
 
 $(document).ready(function() {
-	$('.user-profile-group-add-user').submit(function(e) {
-		e.preventDefault();
+	$('.user-profile-group-add-user').on('submit', function(event) {
+		event.preventDefault();
 		addUserToGroup(this);
 	});
 
-	$('.edit-user-note').submit(function(e) {
- 		e.preventDefault();
+	$('.edit-user-note').on('submit', function(event) {
+ 		event.preventDefault();
  		editUserNote(this);
  	});
 });
