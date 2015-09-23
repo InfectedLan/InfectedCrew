@@ -158,7 +158,7 @@ class Site {
 								} else if ($this->pageName == 'event' ||
 										   $this->pageName == 'event-checkin' ||
 											 $this->pageName == 'event-checklist' ||
-											 $this->pageName == 'edit-checklist' ||
+											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
@@ -169,7 +169,7 @@ class Site {
 									}
 
 									if ($user->hasPermission('event.checklist')) {
-										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-checklist' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
+										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
 									}
 
 									if ($user->hasPermission('event.seatmap')) {
@@ -338,7 +338,7 @@ class Site {
 									if ($this->pageName == 'event' ||
 										$this->pageName == 'event-checkin' ||
 										$this->pageName == 'event-checklist' ||
-										$this->pageName == 'edit-checklist' ||
+										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
 										$this->pageName == 'event-agenda' ||
