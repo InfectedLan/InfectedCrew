@@ -112,7 +112,7 @@ class Site {
 									$pageNameList = [];
 
 									foreach ($pageList as $page) {
-										array_push($pageNameList, strtolower($page->getName()));
+										$pageNameList[] = strtolower($page->getName());
 									}
 
 									if ($this->pageName == 'my-crew' ||
@@ -121,7 +121,7 @@ class Site {
 										$teamNameList = [];
 
 										foreach ($teamList as $team) {
-											array_push($teamNameList, strtolower($team->getName()));
+											$teamNameList[] = strtolower($team->getName());
 										}
 
 										// Only show pages for that group.
@@ -291,12 +291,12 @@ class Site {
 								// View the page specified by "pageName" variable.
 								$this->viewPage($this->pageName);
 							} else {
-								$publicPages = array('apply',
-													 'all-crew',
-													 'user-profile',
-													 'edit-profile',
-													 'edit-password',
-													 'edit-avatar');
+								$publicPages = ['apply',
+															  'all-crew',
+															  'user-profile',
+															  'edit-profile',
+															  'edit-password',
+															  'edit-avatar'];
 
 								if (in_array($this->pageName, $publicPages)) {
 									$this->viewPage($this->pageName);
@@ -305,9 +305,9 @@ class Site {
 								}
 							}
 						} else {
-							$publicPages = array('register',
-												 'activation',
-												 'reset-password');
+							$publicPages = ['register',
+															'activation',
+															'reset-password'];
 
 							if (in_array($this->pageName, $publicPages)) {
 								$this->viewPage($this->pageName);
@@ -485,8 +485,8 @@ class Site {
 				echo 'Du har ikke tilgang til dette.';
 			}
 		} else {
-			$directoryList = array(Settings::api_path . 'pages',
-								   'pages');
+			$directoryList = [Settings::api_path . 'pages',
+								   			'pages'];
 			$includedPages = [];
 			$found = false;
 
@@ -497,7 +497,7 @@ class Site {
 					in_array($filePath, glob($directory . '/*.php'))) {
 					// Make sure we don't include pages with same name twice,
 					// and set the found varialbe so that we don't have to display the not found message.
-					array_push($includedPages, $pageName);
+					$includedPages[] = $pageName;
 					$found = true;
 
 					include_once $filePath;
