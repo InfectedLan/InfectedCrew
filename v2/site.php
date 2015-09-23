@@ -104,7 +104,7 @@ class Site {
 
 							echo '.menu ul li a:after {';
 								echo 'border-left-color: rgba(230, 14, 99, 0.3);';
-							echo '}
+							echo '}';
 						echo '</style>';
 					}
 				}
