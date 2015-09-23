@@ -26,6 +26,17 @@ $(document).ready(function() {
 		$(this).next('.details').slideToggle();
 	});
 
+	/* How this should be done, but this somehow doesn't work.
+	$('form').on('click', 'input:checkbox', function() {
+    $(this).closest('form').trigger('submit');
+  });
+
+  $('form').on('submit', function(event) {
+    event.preventDefault();
+    alert('submitting');
+  });
+	*/
+
 	$(this).on('change', 'input:checkbox', function() {
 		$('.event-checklist-check').trigger('submit');
 	})
