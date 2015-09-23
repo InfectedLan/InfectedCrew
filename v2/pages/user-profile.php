@@ -134,23 +134,12 @@ if (Session::isAuthenticated()) {
 				echo '</tr>';
 
 				if ($editUser->isGroupMember()) {
-					echo '<tr>';
-						echo '<td>Crew:</td>';
-						echo '<td>';
-							if ($editUser->isGroupMember()) {
-								echo $editUser->getGroup()->getTitle();
-							} else {
-								echo '<i>Ingen</i>';
-							}
-						echo '</td>';
-					echo '</tr>';
+					$group = $editUser->getGroup();
 
-					if ($editUser->isTeamMember()) {
-						echo '<tr>';
-							echo '<td>Lag:</td>';
-							echo '<td>' . $editUser->getTeam()->getTitle() . '</td>';
-						echo '</tr>';
-					}
+					echo '<tr>';
+						echo '<td>' . ($editUser->isTeamMember() ? 'Crew/Lag:' : 'Crew') . '</td>';
+						echo '<td>' . ($editUser->isTeamMember() ? $group->getTitle() . ':' . $editUser->getTeam()->getTitle() : $group->getTitle()) . '</td>';
+					echo '</tr>';
 				}
 
 				if ($editUser->hasTicket()) {
