@@ -47,8 +47,8 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/topmenu.css">';
 				echo '<link rel="stylesheet" href="styles/menu.css">';
 				echo '<link rel="stylesheet" href="../api/libraries/chosen/chosen.css">';
-				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
-				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/jquery-1.11.3.min.js"></script>';
+				//echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="../api/libraries/chosen/chosen.jquery.js"></script>';
