@@ -48,7 +48,7 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/menu.css">';
 				echo '<link rel="stylesheet" href="../api/libraries/chosen/chosen.css">';
 				echo '<script src="../api/scripts/jquery-1.11.3.min.js"></script>';
-				//echo '<script src="../api/scripts/jquery.form.min.js"></script>';
+				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
 				echo '<script src="../api/libraries/chosen/chosen.jquery.js"></script>';
@@ -76,7 +76,35 @@ class Site {
 								                  url(\'images/hello-kitty-edition.jpg\') left top;';
 								echo 'background-repeat: repeat-y;';
 								echo 'background-size: 350px;';
-							echo '};';
+							echo '}';
+							echo '.main .content {';
+								echo 'box-shadow: 0px 0px 0px 7px rgba(230, 14, 99, 0.30);';
+							echo '}';
+
+							echo '.information {';
+								echo 'background-color: rgba(230, 14, 99, 0.30);';
+								echo 'border-color: rgba(230, 14, 99, 0.40);';
+							echo '}';
+
+							echo '.topmenu ul .active, .topmenu ul li a:hover {';
+								echo 'border-bottom: 3px solid rgba(230, 14, 99, 0.50);';
+							echo '}';
+
+							echo '.menu ul .active {';
+								echo 'background: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:hover {';
+								echo 'background: rgba(230, 14, 99, 0.5);';
+							echo '}';
+
+							echo '.menu ul .active:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 0.3);';
+							echo '}
 						echo '</style>';
 					}
 				}
