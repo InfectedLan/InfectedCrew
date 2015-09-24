@@ -100,7 +100,7 @@ function editNote(Note $note) {
 					$content .= '<tr>';
 						$content .= '<td><b>Tidspunkt</b></td>';
 						$content .= '<td>';
-							$content .= '<input type="time" name="time" class="edit-note-time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
+							$content .= '<input type="time" name="time" class="edit-note-time" placeholder="00:00" value="' . gmdate('H:i', $note->getTime()) . '">';
 						$content .= '</td>';
 					$content .= '</tr>';
 
