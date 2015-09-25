@@ -50,6 +50,9 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.bracketmanagement')) {
                 echo '<a href="index.php?page=compo-brackets&id=' . $compo->getId() . '">Rediger brackets</a> ';
             }
+            if($user->hasPermission('compo.chat')) {
+                echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
+            }
             echo '<hr>';
             echo '<div class="toolbar">';
 	            echo '<input type="button" class="fa fa-2x" value="&#xf0c7;" onClick="save()" ></input>';

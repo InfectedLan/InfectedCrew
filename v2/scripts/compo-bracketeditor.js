@@ -197,7 +197,7 @@ function api_setTag(id, value) {
 function getParticipantString(participant, clans) {
     if(participant.type == participant_type_clan) {
 	for(var i = 0; i < clans.length; i++) {
-	    if(clans[i].id == participant.id) {
+	    if(clans[i].id == participant.participantId) {
 		return clans[i].tag;
 	    }
 	}

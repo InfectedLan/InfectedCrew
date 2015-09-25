@@ -285,3 +285,7 @@ tr {
     height: 40px;
     padding: 3px;
 }
+.compoChat {
+    width: 100%;
+    border: 1px black solid;
+}
