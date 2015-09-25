@@ -18,13 +18,13 @@
  */
 
 $(document).ready(function() {
-	$('.compo-add').submit(function(e) {
-		e.preventDefault();
+	$('.compo-add').on('submit', function(event) {
+		event.preventDefault();
 		addCompo(this);
 	});
 
-	$('.compo-edit').submit(function(e) {
-		e.preventDefault();
+	$('.compo-edit').on('submit', function(event) {
+		event.preventDefault();
 		editCompo(this);
 	});
 });

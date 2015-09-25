@@ -75,7 +75,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Telefon:</b></td>';
-						echo '<td>' . $applicationUser->getPhone() . '</td>';
+						echo '<td>' . $applicationUser->getPhoneAsString() . '</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Alder:</b></td>';

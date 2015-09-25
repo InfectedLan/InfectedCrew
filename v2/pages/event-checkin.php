@@ -29,7 +29,7 @@ if (Session::isAuthenticated()) {
 		echo '<script src="scripts/event-checkin.js"></script>';
 		echo '<h3>Sjekk inn billett</h3>';
 
-		$event = $this->getEvent();
+		$event = EventHandler::getCurrentEvent();
 		$season = date('m', $event->getStartTime()) == 2 ? 'VINTER' : 'HØST';
 		$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season;
 

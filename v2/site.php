@@ -49,7 +49,7 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/menu.css">';
 				echo '<link rel="stylesheet" href="../api/libraries/chosen/chosen.css">';
                 echo '<link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">';
-				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
+				echo '<script src="../api/scripts/jquery-1.11.3.min.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
@@ -67,6 +67,49 @@ class Site {
 					echo 'ga(\'create\', \'UA-54254513-3\', \'auto\');';
 					echo 'ga(\'send\', \'pageview\');';
 				echo '</script>';
+
+				if (Session::isAuthenticated()) {
+					$user = Session::getCurrentUser();
+
+					if ($user->hasEasterEgg()) {
+						echo '<style>';
+							echo 'body {';
+								echo 'background: url(\'images/hello-kitty-edition.jpg\') right top,
+								                  url(\'images/hello-kitty-edition.jpg\') left top;';
+								echo 'background-repeat: repeat-y;';
+								echo 'background-size: 350px;';
+							echo '}';
+							echo '.main .content {';
+								echo 'box-shadow: 0px 0px 0px 7px rgba(230, 14, 99, 0.30);';
+							echo '}';
+
+							echo '.information {';
+								echo 'background-color: rgba(230, 14, 99, 0.30);';
+								echo 'border-color: rgba(230, 14, 99, 0.40);';
+							echo '}';
+
+							echo '.topmenu ul .active, .topmenu ul li a:hover {';
+								echo 'border-bottom: 3px solid rgba(230, 14, 99, 0.50);';
+							echo '}';
+
+							echo '.menu ul .active {';
+								echo 'background: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:hover {';
+								echo 'background: rgba(230, 14, 99, 0.5);';
+							echo '}';
+
+							echo '.menu ul .active:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 0.3);';
+							echo '}';
+						echo '</style>';
+					}
+				}
 			echo '</head>';
 			echo '<body>';
 				echo '<div class="user">';
@@ -96,19 +139,19 @@ class Site {
 										$pageList = RestrictedPageHandler::getPagesForGroup($group);
 									}
 
-									$pageNameList = array();
+									$pageNameList = [];
 
 									foreach ($pageList as $page) {
-										array_push($pageNameList, strtolower($page->getName()));
+										$pageNameList[] = strtolower($page->getName());
 									}
 
 									if ($this->pageName == 'my-crew' ||
 										in_array($this->pageName, $pageNameList)) {
 										$teamList = $group->getTeams();
-										$teamNameList = array();
+										$teamNameList = [];
 
 										foreach ($teamList as $team) {
-											array_push($teamNameList, strtolower($team->getName()));
+											$teamNameList[] = strtolower($team->getName());
 										}
 
 										// Only show pages for that group.
@@ -144,18 +187,23 @@ class Site {
 									}
 								} else if ($this->pageName == 'event' ||
 										   $this->pageName == 'event-checkin' ||
+											 $this->pageName == 'event-checklist' ||
+											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
-										   $this->pageName == 'event-compo' ||
-										   $this->pageName == 'event-memberlist') {
+										   $this->pageName == 'event-compo') {
 
 									if ($user->hasPermission('event.checkin')) {
 										echo '<li><a' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . ' href="index.php?page=event-checkin">Innsjekk</a></li>';
 									}
 
+									if ($user->hasPermission('event.checklist')) {
+										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
+									}
+
 									if ($user->hasPermission('event.seatmap')) {
-										echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Seatmap</a></li>';
+										echo '<li><a' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . ' href="index.php?page=event-seatmap">Setekart</a></li>';
 									}
 
 									if ($user->hasPermission('event.screen')) {
@@ -168,10 +216,6 @@ class Site {
 
 									if ($user->hasPermission('event.compo')) {
 										echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
-									}
-
-									if ($user->hasPermission('event.memberlist')) {
-										echo '<li><a' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . ' href="index.php?page=event-memberlist">Medlemsliste</a></li>';
 									}
 
 									if ($user->hasPermission('event.table-labels')) {
@@ -213,7 +257,8 @@ class Site {
 									$this->pageName == 'admin-events' ||
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
-									$this->pageName == 'admin-website') {
+									$this->pageName == 'admin-website' ||
+									$this->pageName == 'admin-memberlist') {
 
 									if ($user->hasPermission('admin.events')) {
 										echo '<li><a' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . ' href="index.php?page=admin-events">Arrangementer</a></li>';
@@ -221,6 +266,10 @@ class Site {
 
 									if ($user->hasPermission('admin.permissions')) {
 										echo '<li><a' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . ' href="index.php?page=admin-permissions">Rettigheter</a></li>';
+									}
+
+									if ($user->hasPermission('admin.memberlist')) {
+										echo '<li><a' . ($this->pageName == 'admin-memberlist' ? ' class="active"' : null) . ' href="index.php?page=admin-memberlist">Medlemsliste</a></li>';
 									}
 
 									if ($user->hasPermission('admin.seatmap')) {
@@ -296,12 +345,12 @@ class Site {
 								// View the page specified by "pageName" variable.
 								$this->viewPage($this->pageName);
 							} else {
-								$publicPages = array('apply',
-													 'all-crew',
-													 'user-profile',
-													 'edit-profile',
-													 'edit-password',
-													 'edit-avatar');
+								$publicPages = ['apply',
+															  'all-crew',
+															  'user-profile',
+															  'edit-profile',
+															  'edit-password',
+															  'edit-avatar'];
 
 								if (in_array($this->pageName, $publicPages)) {
 									$this->viewPage($this->pageName);
@@ -310,9 +359,9 @@ class Site {
 								}
 							}
 						} else {
-							$publicPages = array('register',
-												 'activation',
-												 'reset-password');
+							$publicPages = ['register',
+															'activation',
+															'reset-password'];
 
 							if (in_array($this->pageName, $publicPages)) {
 								$this->viewPage($this->pageName);
@@ -342,11 +391,12 @@ class Site {
 								if ($user->hasPermission('event')) {
 									if ($this->pageName == 'event' ||
 										$this->pageName == 'event-checkin' ||
+										$this->pageName == 'event-checklist' ||
+										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
 										$this->pageName == 'event-agenda' ||
-										$this->pageName == 'event-compo' ||
-										$this->pageName == 'event-memberlist') {
+										$this->pageName == 'event-compo') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
@@ -372,9 +422,9 @@ class Site {
 									if ($this->pageName == 'admin' ||
 										$this->pageName == 'admin-events' ||
 										$this->pageName == 'admin-permissions' ||
-										$this->pageName == 'admin-change-user' ||
 										$this->pageName == 'admin-seatmap' ||
-										$this->pageName == 'admin-website') {
+										$this->pageName == 'admin-website' ||
+										$this->pageName == 'admin-memberlist') {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
@@ -399,7 +449,11 @@ class Site {
 								}
 
 								if ($this->pageName == 'user-profile' ||
-									$this->pageName == 'edit-user-location') {
+									$this->pageName == 'user-history' ||
+									$this->pageName == 'edit-profile' ||
+									$this->pageName == 'edit-password' ||
+									$this->pageName == 'edit-user-location' ||
+									$this->pageName == 'edit-avatar') {
 									echo '<li class="active"><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
 								} else {
 									echo '<li><a href="index.php?page=user-profile"><img src="images/user-profile.png"></a></li>';
@@ -493,9 +547,9 @@ class Site {
 				echo 'Du har ikke tilgang til dette.';
 			}
 		} else {
-			$directoryList = array(Settings::api_path . 'pages',
-								   'pages');
-			$includedPages = array();
+			$directoryList = [Settings::api_path . 'pages',
+								   			'pages'];
+			$includedPages = [];
 			$found = false;
 
 			foreach ($directoryList as $directory) {
@@ -505,7 +559,7 @@ class Site {
 					in_array($filePath, glob($directory . '/*.php'))) {
 					// Make sure we don't include pages with same name twice,
 					// and set the found varialbe so that we don't have to display the not found message.
-					array_push($includedPages, $pageName);
+					$includedPages[] = $pageName;
 					$found = true;
 
 					include_once $filePath;

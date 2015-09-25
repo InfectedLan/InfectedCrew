@@ -1,4 +1,3 @@
-<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -18,20 +17,36 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
+$(document).ready(function() {
+	validateSecondsOffset();
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
+	$('.edit-note-secondsOffset').on('change', function() {
+    validateSecondsOffset();
+	});
 
-	if ($user->hasPermission('functions') || 
-		$user->isGroupLeader()) {
-		echo '<h3>Functions</h3>';
+	$('.edit-note').on('submit', function(event) {
+		event.preventDefault();
+		editNote(this);
+	});
+});
 
-		echo '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
+function validateSecondsOffset(value, time) {
+	var value = $('.edit-note-secondsOffset').val();
+	var time = $('.edit-note-time');
+
+	if (value >= -86400 && value <= 172800) {
+			time.prop('disabled', false);
 	} else {
-		echo 'Du har ikke rettigheter til dette!';
+			time.prop('disabled', true);
 	}
-} else {
-	echo 'Du er ikke logget inn!';
 }
-?>
+
+function editNote(form) {
+	$.getJSON('../api/json/note/editNote.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			$(location).attr('href', 'index.php?page=event-checklist');
+		} else {
+			error(data.message);
+		}
+	});
+}

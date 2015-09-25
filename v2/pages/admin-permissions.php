@@ -28,7 +28,8 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('admin.permissions')) {
 		echo '<script src="scripts/admin-permissions.js"></script>';
 
-		if (isset($_GET['id'])) {
+		if (isset($_GET['id']) &&
+			is_numeric($_GET['id'])) {
 			$permissionUser = UserHandler::getUser($_GET['id']);
 
 			if ($permissionUser != null) {
@@ -66,7 +67,7 @@ if (Session::isAuthenticated()) {
 			echo '<p>Under ser du en liste med alle brukere som har spesielle rettigheter tildelt, sortert etter hvilket crew de er medlem av.</p>';
 
 			$groupList = GroupHandler::getGroups();
-			array_push($groupList, null); // Adding dummy group for the rest of the users that's not member of any group.
+			$groupList[] = null; // Adding dummy group for the rest of the users that's not member of any group.
 
 			if (!empty($groupList)) {
 				foreach ($groupList as $group) {

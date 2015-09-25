@@ -18,11 +18,26 @@
  */
 
 $(document).ready(function() {
-	$('.user-profile-group-add-user').submit(function(e) {
-		e.preventDefault();
+	$('.user-profile-group-add-user').on('submit', function(event) {
+		event.preventDefault();
 		addUserToGroup(this);
 	});
+
+	$('.edit-user-note').on('submit', function(event) {
+ 		event.preventDefault();
+ 		editUserNote(this);
+ 	});
 });
+
+function editUserNote(form) {
+ 	$.getJSON('../api/json/user/editUserNote.php' + '?' + $(form).serialize(), function(data) {
+ 		if (data.result) {
+      location.reload();
+ 		} else {
+ 			error(data.message);
+ 		}
+ 	});
+}
 
 function addUserToGroup(form) {
 	$.getJSON('../api/json/group/addUserToGroup.php' + '?' + $(form).serialize(), function(data) {
@@ -36,6 +51,16 @@ function addUserToGroup(form) {
 
 function activateUser(id) {
 	$.getJSON('../api/json/user/activateUser.php?id=' + id, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function setUserSwimming(id, swimming) {
+	$.getJSON('../api/json/user/editUserSwimming.php?id=' + id  + '&swimming=' + swimming, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

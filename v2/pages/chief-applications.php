@@ -28,17 +28,17 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('chief.applications')) {
 		$pendingApplicationList = null;
 		$queuedApplicationList = null;
-		$acceptedApplicationList = null;
+		$previousApplicationList = null;
 
 		if ($user->hasPermission('*')) {
 			$pendingApplicationList = ApplicationHandler::getPendingApplications();
 			$queuedApplicationList = ApplicationHandler::getQueuedApplications();
-			$acceptedApplicationList = ApplicationHandler::getAcceptedApplications();
+			$previousApplicationList = ApplicationHandler::getPreviousApplications();
 		} else if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
 			$group = $user->getGroup();
 			$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
 			$queuedApplicationList = ApplicationHandler::getQueuedApplicationsByGroup($group);
-			$acceptedApplicationList = ApplicationHandler::getAcceptedApplicationsByGroup($group);
+			$previousApplicationList = ApplicationHandler::getPreviousApplicationsByGroup($group);
 		}
 
 		echo '<script src="scripts/chief-applications.js"></script>';
@@ -108,16 +108,18 @@ if (Session::isAuthenticated()) {
 
 		echo '<h3>Tidligere søknader:</h3>';
 
-		if (!empty($acceptedApplicationList)) {
+		if (!empty($previousApplicationList)) {
 			echo '<table>';
 				echo '<tr>';
 					echo '<th>Arrangement</th>';
 					echo '<th>Søker\'s navn</th>';
 					echo '<th>Crew</th>';
-					echo '<th>Dato søkt</th>';
+					echo '<th>Søketidspunkt</th>';
+					echo '<th>Svartidspunkt</th>';
+					echo '<th>Status</th>';
 				echo '</tr>';
 
-				foreach ($acceptedApplicationList as $application) {
+				foreach ($previousApplicationList as $application) {
 					$applicationUser = $application->getUser();
 
 					echo '<tr>';
@@ -125,6 +127,8 @@ if (Session::isAuthenticated()) {
 						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
 						echo '<td>' . $application->getGroup()->getTitle() . '</td>';
 						echo '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
+						echo '<td>' . date('d.m.Y H:i', $application->getClosedTime()) . '</td>';
+						echo '<td>' . $application->getStateAsString() . '</td>';
 						echo '<td><input type="button" value="Vis" onClick="viewApplication(' . $application->getId() . ')"></td>';
 					echo '</tr>';
 				}

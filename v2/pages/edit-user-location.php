@@ -20,7 +20,6 @@
 
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
-require_once 'handlers/eventhandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -28,19 +27,20 @@ if (Session::isAuthenticated()) {
   $user = Session::getCurrentUser();
 
   if ($user->hasPermission('user.relocate')) {
-    $relocateUser = UserHandler::getUser($id);
+    $editUser = UserHandler::getUser($id);
 
-    if ($relocateUser != null) {
-      if ($relocateUser->hasTicket()) {
-        $ticket = $relocateUser->getTicket();
+    if ($editUser != null) {
+      if ($editUser->hasTicket()) {
+        $ticket = $editUser->getTicket();
 
         echo '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-        //echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+        echo '<script src="../api/scripts/seatmapRenderer.js"></script>';
+        echo '<script src="scripts/edit-user-location.js"></script>';
 
-        echo '<h3>Endrer plasseringen til ' . $relocateUser->getDisplayName() . '</h3>';
+        echo '<h3>Endrer plasseringen til ' . $editUser->getDisplayName() . '</h3>';
         echo '<div id="seatmapCanvas"></div>';
         echo '<script>';
-          echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';'; // TODO: Fix this, somehow event here is null...
+          echo 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';';
           echo 'var ticketId = ' . $ticket->getId() . ';';
           echo '$(document).ready(function() {';
             echo 'downloadAndRenderSeatmap("#seatmapCanvas", seatHandlerFunction, callback);';

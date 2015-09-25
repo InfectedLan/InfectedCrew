@@ -18,8 +18,8 @@
  */
 
 $(document).ready(function() {
-	$('.chief-teams-add').submit(function(e) {
-		e.preventDefault();
+	$('.chief-teams-add').on('submit', function(event) {
+		event.preventDefault();
 		$.getJSON('../api/json/team/addTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
@@ -29,8 +29,8 @@ $(document).ready(function() {
 		});
 	});
 
-	$('.chief-teams-edit').submit(function(e) {
-		e.preventDefault();
+	$('.chief-teams-edit').on('submit', function(event) {
+		event.preventDefault();
 	    $.getJSON('../api/json/team/editTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
@@ -40,8 +40,8 @@ $(document).ready(function() {
 		});
 	});
 
-	$('.chief-teams-adduser').submit(function(e) {
-		e.preventDefault();
+	$('.chief-teams-adduser').on('submit', function(event) {
+		event.preventDefault();
 		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {
 				location.reload();
@@ -51,6 +51,10 @@ $(document).ready(function() {
 		});
 	});
 });
+
+function viewGroup(id) {
+	$(location).attr('href', 'index.php?page=chief-teams&groupId=' + id);
+}
 
 function removeTeam(id) {
 	$.getJSON('../api/json/team/removeTeam.php?id=' + id, function(data){
