@@ -35,7 +35,7 @@ if (Session::isAuthenticated()) {
         if($compo != null) {
             echo '<script src="../api/scripts/bracket.js"></script>';
             echo '<script src="scripts/compo-bracketeditor.js"></script>';
-            echo '<link rel="stylesheet" type="text/css" href="../api/styles/bracket.css" />';
+            echo '<link rel="stylesheet" type="text/css" href="../api/styles/bracket-editor.css" />';
             echo "<script>var compoId = " . $compo->getId() . ";$(document).ready(function(){initBracketEditor();});</script>";
             echo '<script>';
             echo 'var participant_type_clan = ' . Settings::compo_match_participant_type_clan . ';';
@@ -78,7 +78,9 @@ if (Session::isAuthenticated()) {
                 echo '<h1>Velg clan</h1>';
                 $participants = ClanHandler::getClansByCompo($compo);
                 foreach($participants as $clan) {
-                    echo '<input type="radio" name="participantClan" class="participantClan" value="' .$clan->getId()  . '" /> ' . $clan->getName() . '<br />';
+                    if($clan->isQualified($compo)) {
+                        echo '<input type="radio" name="participantClan" class="participantClan" value="' .$clan->getId()  . '" /> ' . $clan->getName() . '<br />';
+                    }
                 }
                 echo '</div>';
                 echo '<div id="participantIdSelector">';

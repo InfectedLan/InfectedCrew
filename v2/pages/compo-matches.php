@@ -28,24 +28,26 @@ require_once 'handlers/compopluginhandler.php';
 function renderMatch($match, $plugin) {
     $participants = MatchHandler::getParticipantsJsonByMatch($match);
 	echo '<table>';
-    	echo '<tr>';
-           	echo '<td>';
-            	$first = true;
-                $isReady = true;
-                foreach($participants as $participant) {
-                    if(!$first) {
-                        echo " vs ";
-                    }
-                    if($participant["type"] != Settings::compo_match_participant_type_clan) {
-                        echo '<i>' . $participant["value"] . '</i>';
-                        $isReady = false;
-                    } else {
-                        echo $participant["value"];
-                    }
-                    $first = false;
-                }
-            echo '</td>';
-        echo '</tr>';
+    echo '<script src="../api/scripts/compo-bracketeditor.js"></script>';
+    $first = true;
+    $isReady = true;
+    echo '<tr>';
+    foreach($participants as $participant) {
+        if(!$first) {
+            echo " </tr><tr> ";
+        }
+        if($participant["type"] != Settings::compo_match_participant_type_clan) {
+            echo '<td><i>' . $participant["value"] . '</i></td>';
+            $isReady = false;
+        } else {
+            echo '<td>' . $participant["value"] . '</td>';
+            if($match->getWinner() == null && $match->getScheduledTime() < time()) {
+                echo '<td><input type="button" value="Sett vinner" onClick="setWinner(' . $match->getId() . ', ' . $participant["id"] . ')" /></td>';
+            }
+        }
+        $first = false;
+    }
+    echo '</tr>';
         echo '<tr>';
         	echo '<td>';
             	echo "Starttid: ";

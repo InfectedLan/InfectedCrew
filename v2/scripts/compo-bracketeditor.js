@@ -209,3 +209,13 @@ function getParticipantString(participant, clans) {
 	return "Walkover";
     }
 }
+
+function setWinner(matchId, clanId) {
+    $.getJSON('../api/json/match/setmatchwinner.php?matchId=' + matchId + "&winnerId=" + clanId, function(data) {
+	if(data.result) {
+	    location.reload();
+	} else {
+	    error(data.message);
+	}
+    });
+}
