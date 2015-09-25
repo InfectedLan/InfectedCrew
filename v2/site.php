@@ -24,6 +24,7 @@ require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/applicationhandler.php';
 require_once 'handlers/avatarhandler.php';
+require_once 'handlers/compohandler.php';
 
 class Site {
 	private $pageName;
@@ -47,6 +48,7 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/topmenu.css">';
 				echo '<link rel="stylesheet" href="styles/menu.css">';
 				echo '<link rel="stylesheet" href="../api/libraries/chosen/chosen.css">';
+                echo '<link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">';
 				echo '<script src="../api/scripts/jquery-1.11.3.min.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
@@ -277,6 +279,30 @@ class Site {
 									if ($user->hasPermission('admin.website')) {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
+
+                                } else if($this->pageName=='compo-overview' ||
+                                $this->pageName=='compo-new' ||
+                                $this->pageName=='compo-view' ||
+                                $this->pageName=='compo-clans' ||
+                                $this->pageName=='compo-matches' ||
+                                $this->pageName=='compo-clan') {
+                                    if($user->hasPermission('compo.management')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.edit')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-new' ? ' class="active"' : null) . ' href="index.php?page=compo-new">Ny compo</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.management')) {
+                                        $compos = CompoHandler::getCompos();
+                                        if(count($compos) > 0) {
+                                            echo "<li>|</li>";
+                                            foreach($compos as $compo) {
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                            }
+                                            echo "<li>|</li>";
+                                        }
+                                    }
+                                            
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user') {
 
@@ -402,6 +428,14 @@ class Site {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
+									}
+								}
+
+                                if ($user->hasPermission('compo.management')) {
+									if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
+										echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
 									}
 								}
 
