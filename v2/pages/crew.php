@@ -61,7 +61,7 @@ function displayGroup(Group $group) {
 					}
 
 					echo '<a href="index.php?page=user-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
-					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
+					echo '<p>Navn: <a href="index.php?page=user-profile&id=' . $member->getId() . '">' . $member->getDisplayName() . '</a><br>';
 
 					if ($member->hasSpecialRole()) {
 						echo 'Stilling: ' . $member->getRole() . '<br>';
@@ -117,7 +117,7 @@ function displayTeam(Team $team) {
 					}
 
 					echo '<a href="index.php?page=user-profile&id=' . $member->getId() . '"><img src="../api/' . $avatarFile . '" width="146" height="110" style="float: right;"></a>';
-					echo '<p>Navn: ' . $member->getDisplayName() . '<br>';
+					echo '<p>Navn: <a href="index.php?page=user-profile&id=' . $member->getId() . '">' . $member->getDisplayName() . '</a><br>';
 
 					if ($member->hasSpecialRole()) {
 						echo 'Stilling: ' . $member->getRole() . '<br>';
