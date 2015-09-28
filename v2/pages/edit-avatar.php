@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,11 +22,11 @@ require_once 'session.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
+
 	// TODO: Sjekk om det er noen som har et uncropped bilde.
 	echo '<script>';
 		echo 'function deleteAvatar() {';
-			echo '$.getJSON(\'../api/json/avatar/deleteAvatar.php\', function(data) {';
+			echo '$.getJSON(\'../api/json/avatar/removeAvatar.php\', function(data) {';
 				echo 'if (data.result) {';
 					echo 'location.reload()';
 				echo '} else { ';
@@ -35,12 +35,14 @@ if (Session::isAuthenticated()) {
 			echo '});';
 		echo '}';
 	echo '</script>';
-	
+
 	if ($user->hasAvatar()) {
 		$avatar = $user->getAvatar();
-		
+
 		switch ($avatar->getState()) {
 			case 0:
+				echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
+				echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
 				echo '<script>';
 					echo '$(document).ready(function() {';
 						echo 'var options = {';
@@ -56,8 +58,8 @@ if (Session::isAuthenticated()) {
 						echo '$("#cropform").ajaxForm(options);';
 					echo '});';
 				echo '</script>';
-				echo '<script src="../api/libraries/jcrop/js/jquery.Jcrop.js"></script>';
-				echo '<link rel="stylesheet" href="../api/libraries/jcrop/css/jquery.Jcrop.css">';
+
+
 				echo '<script>';
 					echo '$(function() {';
 						echo '$(\'#cropbox\').Jcrop({';
@@ -65,15 +67,18 @@ if (Session::isAuthenticated()) {
 							$temp = explode('.', $avatar->getTemp());
 							$extension = strtolower(end($temp));
 							$image = 0;
-							
+
 							if ($extension == 'png') {
 								$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
-							} else if ($extension == 'jpeg' || 
-									   $extension == 'jpg') {
+							} else if ($extension == 'jpeg' ||
+								$extension == 'jpg') {
 								$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
+							} else {
+								// TODO: Handle if the format is not supported here...
 							}
 
 							$scaleFactor = 800 / imagesx($image);
+                            echo 'setSelect:   [ 0, 0, 800, ' . ( $scaleFactor * imagesy($image))  . ' ],';
 							echo 'aspectRatio: 400/300,';
 							echo 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
 							echo 'onSelect: updateCoords';
@@ -94,8 +99,23 @@ if (Session::isAuthenticated()) {
 					echo '};';
 				echo '</script>';
 
-			echo '<h1>Beskjær bilde</h1>';
-			echo '<img src="../api/' . $avatar->getTemp() . '" id="cropbox"  width="800">';
+			echo '<table class="wizard-table">';
+            echo '<tr>';
+            echo '<td class="wizard-next">';
+            echo '<b>Steg 1:</b>';
+            echo '<p>Last opp et bilde</p>';
+            echo '</td>';
+            echo '<td class="wizard-current">';
+            echo '<b>Steg 2:</b>';
+            echo '<p>Beskjær bildet og lagre</p>';
+            echo '</td>';
+            echo '<td class="wizard-nostyle">';
+            echo '<b>Steg 3:</b>';
+            echo '<p>Ferdig!</p>';
+            echo '</td>';
+            echo '</tr>';
+            echo '</table>';
+			echo '<img src="' . $avatar->getTemp() . '" id="cropbox"  width="800">';
 			echo '<form action="../api/json/avatar/cropAvatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
 				echo '<input type="hidden" id="x" name="x">';
 				echo '<input type="hidden" id="y" name="y">';
@@ -105,20 +125,36 @@ if (Session::isAuthenticated()) {
 			echo '</form><br>';
 			echo '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-			
+
 			case 1:
+                echo '<table class="wizard-table">';
+                echo '<tr>';
+                echo '<td class="wizard-other">';
+                echo '<b>Steg 1:</b>';
+                echo '<p>Last opp et bilde</p>';
+                echo '</td>';
+                echo '<td class="wizard-next">';
+                echo '<b>Steg 2:</b>';
+                echo '<p>Beskjær bildet og lagre</p>';
+                echo '</td>';
+                echo '<td class="wizard-fill">';
+                echo '<b>Steg 3:</b>';
+                echo '<p>Ferdig!</p>';
+                echo '</td>';
+                echo '</tr>';
+                echo '</table>';
 				echo '<h1>Ditt bilde venter på godkjenning</h1>';
-				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
+				echo '<img src="' . $avatar->getHd() . '" width="800">';
 				echo '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-				
+
 			case 2:
 				echo '<h1>Nåværende avatar:</h1>';
 				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
 				echo '<br>';
 				echo 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
-				
+
 			default:
 				echo '<b>Avataren din er ikke godkjent!</b>';
 				echo '<br>';
@@ -128,6 +164,10 @@ if (Session::isAuthenticated()) {
 	} else {
 		echo '<script>';
 			echo '$(document).ready(function() {';
+            	echo '$("#file").change(function() {';
+                	echo '$("#uploadForm").submit();';
+                    echo '$("#uploadForm").fadeOut();';
+                echo '});';
 				echo 'var options = {';
 					echo 'success: function(responseText, statusText, xhr, $form) {';
 						echo 'var data = jQuery.parseJSON(responseText);';
@@ -135,19 +175,34 @@ if (Session::isAuthenticated()) {
 							echo 'location.reload();';
 						echo '} else {';
 							echo 'error(data.message);';
+                            echo '$("#uploadForm").fadeIn();';
 						echo '}';
 					echo '}';
 				echo '};';
 				echo '$("#uploadForm").ajaxForm(options);';
 			echo '});';
 		echo '</script>';
+        echo '<table class="wizard-table">';
+        echo '<tr>';
+        echo '<td class="wizard-current">';
+        echo '<b>Steg 1:</b>';
+        echo '<p>Last opp et bilde</p>';
+        echo '</td>';
+        echo '<td class="wizard-other">';
+        echo '<b>Steg 2:</b>';
+        echo '<p>Beskjær bildet og lagre</p>';
+        echo '</td>';
+        echo '<td class="wizard-nostyle">';
+        echo '<b>Steg 3:</b>';
+        echo '<p>Ferdig!</p>';
+        echo '</td>';
+        echo '</tr>';
+        echo '</table>';
 		echo '<b>Last opp profilbilde: </b>';
 		echo '<form action="../api/json/avatar/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
-			echo '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
+			echo '<input type="hidden" name="MAX_FILE_SIZE" value="15728640" />';
 			echo '<label for="file">Filnavn:</label>';
 			echo '<input type="file" name="file" id="file">';
-			echo '<br>';
-			echo '<input type="submit" name="submit" value="Last opp!">';
 		echo '</form>';
 	}
 } else {

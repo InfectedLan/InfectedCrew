@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,11 +26,11 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 	$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
 
-	if ($user->hasPermission('*') ||
+	if ($user->hasPermission('user.history') ||
 		$user->equals($historyUser)) {
-		$eventList = UserHistoryHandler::getEventsByUser($historyUser);
-		echo '<script src="scripts/userhistory.js"></script>';
-		echo '<h3>Bruker historie</h3>';
+		$eventList = $historyUser->getParticipatedEvents($historyUser);
+
+		echo '<h3>Du ser nå ' . $historyUser->getDisplayName() . '\'s historikk</h3>';
 
 		if (!empty($eventList)) {
 			echo '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
@@ -38,12 +38,33 @@ if (Session::isAuthenticated()) {
 				echo '<tr>';
 					echo '<th>Arrangement:</th>';
 					echo '<th>Rolle:</th>';
+					echo '<th>Medlemskap:</th>';
+					echo '<th>Billetter:</th>';
 				echo '</tr>';
 
 				foreach ($eventList as $event) {
 					echo '<tr>';
 						echo '<td>' . $event->getTitle() . '</td>';
 						echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+
+						if ($historyUser->isGroupMemberByEvent($event)) {
+							$group = $historyUser->getGroupByEvent($event);
+
+							echo '<td><a href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></td>';
+							echo '<td>Ingen</td>';
+						} else if ($historyUser->hasTicketByEvent($event)) {
+							echo '<td>Ingen</td>';
+							echo '<td>';
+								$ticketList = $historyUser->getTicketsByEvent($event);
+
+								foreach ($ticketList as $ticket) {
+									echo '<a href="index.php?page=ticket&id=' . $ticket->getId() . '">#' . $ticket->getId() . '</a>';
+
+									// Only print comma if this is not the last ticket in the array.
+									echo $ticket !== end($ticketList) ? ', ' : null;
+								}
+							echo '</td>';
+						}
 					echo '</tr>';
 				}
 			echo '</table>';

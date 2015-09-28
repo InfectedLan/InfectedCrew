@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,14 +23,13 @@ require_once 'handlers/applicationhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.applications') ||
+
+	if ($user->hasPermission('chief.applications') ||
 		$user->isGroupLeader()) {
-		
+
 		if (isset($_GET['id'])) {
 			$application = ApplicationHandler::getApplication($_GET['id']);
-			
+
 			if ($application != null) {
 				$applicationUser = $application->getUser();
 
@@ -45,7 +44,7 @@ if (Session::isAuthenticated()) {
 						foreach ($applicationList as $applicationValue) {
 							if (!$application->equals($applicationValue)) {
 								$group = $applicationValue->getGroup();
-								
+
 								echo '<li><a href="index.php?page=application&id=' . $applicationValue->getId() . '">' . $group->getTitle() . '</a></li>';
 							}
 						}
@@ -57,10 +56,10 @@ if (Session::isAuthenticated()) {
 						echo '<td><b>Status:</b></td>';
 						echo '<td>' . $application->getStateAsString() . '</td>';
 					echo '</tr>';
-				
+
 					echo '<tr>';
 						echo '<td><b>Søkers navn:</b></td>';
-						echo '<td><a href="index.php?page=my-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
+						echo '<td><a href="index.php?page=user-profile&id=' . $applicationUser->getId() . '">' . $applicationUser->getFullname(). '</a></td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Dato søkt:</b></td>';
@@ -76,7 +75,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Telefon:</b></td>';
-						echo '<td>' . $applicationUser->getPhone() . '</td>';
+						echo '<td>' . $applicationUser->getPhoneAsString() . '</td>';
 					echo '</tr>';
 					echo '<tr>';
 						echo '<td><b>Alder:</b></td>';
@@ -87,7 +86,7 @@ if (Session::isAuthenticated()) {
 						echo '<td>' . wordwrap($application->getContent(), 64, '<br>') . '</td>';
 					echo '</tr>';
 				echo '</table>';
-				
+
 				switch ($application->getState()) {
 					case 1:
 						echo '<form class="chief-applications-reject" method="post">';
@@ -96,15 +95,15 @@ if (Session::isAuthenticated()) {
 							echo '<input type="submit" value="Avslå">';
 						echo '</form>';
 						echo '<input type="button" value="Godkjenn" onClick="acceptApplication(' . $application->getId() . ')">';
-						
+
 						if (!$application->isQueued()) {
 							echo '<input type="button" value="Sett i kø" onClick="queueApplication(' . $application->getId() . ')">';
 						} else {
 							echo '<input type="button" value="Fjern fra kø" onClick="unqueueApplication(' . $application->getId() . ')">';
 						}
-						
+
 						break;
-						
+
 					case 3:
 						echo 'Begrunnelse for avslåelse: <i>' . $application->getComment() . '</i>';
 						break;

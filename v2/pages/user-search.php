@@ -1,3 +1,4 @@
+<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -7,19 +8,31 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready(function() {
-	$('.memberlist').submit(function(e) {
-		e.preventDefault();
-		window.open('/api/pages/utils/memberList.php' + '?' + $(this).serialize());
-	});
-});
+require_once 'session.php';
+
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
+
+	if ($user->hasPermission('user.search')) {
+		echo '<script src="scripts/user-search.js"></script>';
+		echo '<h3>Søk etter bruker</h3>';
+
+		echo '<input class="search" type="text" placeholder="Søk etter bruker..." autocomplete="off" autofocus>';
+		echo '<ul class="search-results"></ul>';
+	} else {
+		echo '<p>Du har ikke rettigheter til dette!</p>';
+	}
+} else {
+	echo '<p>Du er ikke logget inn!</p>';
+}
+?>

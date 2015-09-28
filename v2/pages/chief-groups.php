@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,14 +24,13 @@ require_once 'handlers/grouphandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
-	
-	if ($user->hasPermission('*') ||
-		$user->hasPermission('chief.groups')) {
+
+	if ($user->hasPermission('chief.group')) {
 		$groupList = GroupHandler::getGroups();
-	
+
 		echo '<script src="scripts/chief-groups.js"></script>';
 		echo '<h3>Crewene</h3>';
-		
+
 		if (!empty($groupList)) {
 			echo '<table>';
 				echo '<tr>';
@@ -40,9 +39,9 @@ if (Session::isAuthenticated()) {
 					echo '<th>Beskrivelse</th>';
 					echo '<th>Chief/Co-chief</th>';
 				echo '</tr>';
-				
+
 				$userList = UserHandler::getMemberUsers();
-				
+
 				foreach ($groupList as $group) {
 					echo '<tr>';
 						echo '<form class="chief-groups-edit" method="post">';
@@ -53,9 +52,9 @@ if (Session::isAuthenticated()) {
 							echo '<td>';
 								echo '<select class="chosen-select select" name="leader" data-placeholder="Velg en chief...">';
 									echo '<option value="0"></option>';
-									
+
 									foreach ($userList as $userValue) {
-										if ($userValue->equals($group->getLeader())) {
+										if ($group->hasLeader() && $userValue->equals($group->getLeader())) {
 											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -65,9 +64,9 @@ if (Session::isAuthenticated()) {
 								echo '<br>';
 								echo '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
 									echo '<option value="0"></option>';
-									
+
 									foreach ($userList as $userValue) {
-										if ($userValue->equals($group->getCoLeader())) {
+										if ($group->hasCoLeader() && $userValue->equals($group->getCoLeader())) {
 											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -79,13 +78,13 @@ if (Session::isAuthenticated()) {
 						echo '</form>';
 					echo '</tr>';
 				}
-				
+
 				echo '<tr>';
 					echo '<td>Totalt:</td>';
 					echo '<td>' . count($userList) . '</td>';
 				echo '</tr>';
 			echo '</table>';
-			
+
 			echo '<h3>Legg til et nytt crew</h3>';
 			echo '<form class="chief-groups-add" method="post">';
 				echo '<table>';
@@ -102,7 +101,7 @@ if (Session::isAuthenticated()) {
 						echo '<td>';
 							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
 								echo '<option value="0"></option>';
-								
+
 								foreach ($userList as $userValue) {
 									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
@@ -114,7 +113,7 @@ if (Session::isAuthenticated()) {
 						echo '<td>';
 							echo '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
 								echo '<option value="0"></option>';
-								
+
 								foreach ($userList as $userValue) {
 									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 								}
@@ -126,11 +125,11 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				echo '</table>';
 			echo '</form>';
-			
+
 			echo '<h3>Medlemmer</h3>';
-			
+
 			$freeUserList = UserHandler::getNonMemberUsers();
-			
+
 			if (!empty($freeUserList)) {
 				echo '<table>';
 					echo '<tr>';
@@ -156,10 +155,10 @@ if (Session::isAuthenticated()) {
 			} else {
 				echo '<p>Alle registrerte medlemmer er allerede med i et crew.</p>';
 			}
-			
+
 			foreach ($groupList as $group) {
 				$memberList = $group->getMembers();
-				
+
 				echo '<h4>' . $group->getTitle() . '</h4>';
 				echo '<table>';
 					if (!empty($memberList)) {
@@ -169,7 +168,7 @@ if (Session::isAuthenticated()) {
 								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $userValue->getId() . ')"></td>';
 							echo '</tr>';
 						}
-						
+
 						if (count($groupList) > 1) {
 							echo '<tr>';
 								echo '<td><input type="button" value="Fjern alle" onClick="removeUsersFromGroup(' . $group->getId() . ')"></td>';
