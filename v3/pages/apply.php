@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -36,9 +36,9 @@ class ApplyPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			$content .= '<h1>Søk deg inn i crew</h1>';
-			
+
 			if (!$user->isGroupMember()) {
 				if ($user->hasCroppedAvatar()) {
 					$groupList = GroupHandler::getGroups();
@@ -55,9 +55,11 @@ class ApplyPage implements IPage {
 								$content .= '<td>Crew:</td>';
 								$content .= '<td>';
 									$content .= '<select name="groupId">';
+
 										foreach ($groupList as $group) {
 											$content .= '<option value="' . $group->getId() . '">' . $group->getTitle() . '</option>';
 										}
+										
 									$content .= '</select>';
 								$content .= '</td>';
 							$content .= '</tr>';
@@ -77,7 +79,7 @@ class ApplyPage implements IPage {
 				}
 			} else {
 				$group = $user->getGroup();
-				
+
 				$content .= '<p>Du er allerede med i <a href="index.php?page=crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a>!<br>';
 			}
 		} else {

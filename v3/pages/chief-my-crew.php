@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,28 +33,27 @@ class ChiefMyCrewPage extends ChiefPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			if ($user->isGroupMember()) {
 				$group = $user->getGroup();
-				
-				if ($user->hasPermission('*') || 
-					$user->hasPermission('chief.my-crew')) {
+
+				if ($user->hasPermission('chief.my-crew')) {
 					$content .= '<script src="scripts/chief-my-crew.js"></script>';
 					$content .= '<h3>Mine sider</h3>';
-					
+
 					$pageList = RestrictedPageHandler::getAllPagesForGroup($group);
-					
+
 					if (!empty($pageList)) {
 						$content .= '<table>';
 							$content .= '<tr>';
 								$content .= '<th>Navn</th>';
 								$content .= '<th>Tilgang</th>';
 							$content .= '</tr>';
-						
+
 							// Loop through the pages.
 							foreach ($pageList as $page) {
 								$team = $page->getTeam();
-								
+
 								$content .= '<tr>';
 									$content .= '<td><a href="index.php?page=' . $page->getName() . '">' . $page->getTitle() . '</a></td>';
 									$content .= '<td>' . ($team != null ? $team->getTitle() : 'Alle') . '</td>';
@@ -66,7 +65,7 @@ class ChiefMyCrewPage extends ChiefPage implements IPage {
 					} else {
 						$content .= '<p>Det er ikke opprettet noen sider enda, du kan legge til en ny side under.</p>';
 					}
-					
+
 					$content .= '<h3>Legg til ny side:</h3>';
 					$content .= '<p>Fyll ut feltene under for å legge til en ny side.</p>';
 					$content .= '<form class="chief-my-crew-add" method="post">';
@@ -79,9 +78,9 @@ class ChiefMyCrewPage extends ChiefPage implements IPage {
 							$content .= '<tr>';
 								$content .= '<td>Tilgang:</td>';
 								$content .= '<td>';
-									$content .= '<select class="chosen-select select" name="teamId">';	
+									$content .= '<select class="chosen-select select" name="teamId">';
 										$content .= '<option value="0">Alle</option>';
-										
+
 										foreach ($group->getTeams() as $team) {
 											$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
 										}

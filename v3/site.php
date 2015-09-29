@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,11 +28,11 @@ require_once 'utils/stringutils.php';
 
 class Site {
 	private $pageName;
-	
+
 	public function __construct() {
 		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'my-crew';
 	}
-	
+
 	// Execute the site.
 	public function execute() {
 		echo '<!DOCTYPE html>';
@@ -55,7 +55,7 @@ class Site {
 				if (Session::isAuthenticated()) {
 					//<!-- Ionicons 2.0.0 -->
 					echo '<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />';
-					//<!-- AdminLTE Skins. Choose a skin from the css/skins 
+					//<!-- AdminLTE Skins. Choose a skin from the css/skins
 					//	   folder instead of downloading all of them to reduce the load. -->
 					echo '<link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />';
 					//<!-- iCheck -->
@@ -86,7 +86,7 @@ class Site {
 				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
 				//<!-- iCheck -->
 				echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-				
+
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
 					echo '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
@@ -97,7 +97,7 @@ class Site {
 					echo 'ga(\'send\', \'pageview\');';
 				echo '</script>';
 		  	echo '</head>';
-		  	
+
 			if (Session::isAuthenticated()) {
 				$user = Session::getCurrentUser();
 
@@ -205,11 +205,11 @@ class Site {
 										// Check for group applications.
 										if ($user->hasPermission('*')) {
 											$pendingApplicationList = ApplicationHandler::getPendingApplications();
-										} else if ($user->hasPermission('chief.applications') && 
+										} else if ($user->hasPermission('chief.applications') &&
 												   $user->isGroupMember()) {
 											$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($user->getGroup());
 										}
-										
+
 										// Check for avatars.
 										if ($user->hasPermission('*') ||
 											$user->hasPermission('chief.applications') && $user->isGroupMember()) {
@@ -217,7 +217,7 @@ class Site {
 										}
 
 										$notificationsCount = count($pendingApplicationList) + count($pendingAvatarList);
-										
+
 										//<!-- Notifications: style can be found in dropdown.less -->';
 										echo '<li class="dropdown notifications-menu">';
 											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
@@ -226,16 +226,16 @@ class Site {
 										  		if ($notificationsCount > 0) {
 										  			echo '<span class="label label-warning">' . $notificationsCount . '</span>';
 										  		}
-										  		
+
 											echo '</a>';
 											echo '<ul class="dropdown-menu">';
-										  		
-										  		if ($notificationsCount > 0) {
+
+									  		if ($notificationsCount > 0) {
 													echo '<li class="header">Du har ' . $notificationsCount . ' varsler.</li>';
 													echo '<li>';
 														//<!-- inner menu: contains the actual data -->';
 														echo '<ul class="menu">';
-														
+
 															if (!empty($pendingApplicationList)) {
 																foreach ($pendingApplicationList as $pendingApplication) {
 																	echo '<li><a href="?page=application&id=' . $pendingApplication->getId() . '"><i class="fa fa-users text-aqua"></i>Søknaden til ' . $pendingApplication->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
@@ -249,18 +249,18 @@ class Site {
 															}
 
 														echo '</ul>';
-										  			echo '</li>';
-											  		/*
-											  		echo '<li class="footer"><a href="#">View all</a></li>';
-											  		*/
-										  		} else {
-										  			echo '<li class="header">Du har for øyeblikket ingen varsler.</li>';
-										  		}
-										  		
-											echo '</ul>';
-									  	echo '</li>';
+										  		echo '</li>';
+										  		/*
+										  		echo '<li class="footer"><a href="#">View all</a></li>';
+										  		*/
+									  		} else {
+									  			echo '<li class="header">Du har for øyeblikket ingen varsler.</li>';
+									  		}
 
-									  	/*
+											echo '</ul>';
+									  echo '</li>';
+
+								  	/*
 										//<!-- Tasks: style can be found in dropdown.less -->
 										echo '<li class="dropdown tasks-menu">';
 											echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
@@ -335,7 +335,7 @@ class Site {
 
 					  					//<!-- User Account: style can be found in dropdown.less -->
 						  				echo '<li class="dropdown user user-menu">';
-						  				
+
 											if ($user->hasValidAvatar()) {
 												$avatarFile = $user->getAvatar()->getThumbnail();
 											} else {
@@ -382,12 +382,10 @@ class Site {
 											  	echo '</li>';
 											echo '</ul>';
 										echo '</li>';
-						  				echo '<!-- Control Sidebar Toggle Button -->';
-										echo '<li>';
-											echo '<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>';
-									  	echo '</li>';
+						  			echo '<!-- Control Sidebar Toggle Button -->';
+										echo '<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>';
 									echo '</ul>';
-					  			echo '</div>';
+					  		echo '</div>';
 							echo '</nav>';
 				  		echo '</header>';
 				  		echo '<!-- Left side column. contains the logo and sidebar -->';
@@ -422,7 +420,7 @@ class Site {
 												}
 
 										  	echo '</ul>';
-										echo '</li>';
+											echo '</li>';
 					   				}
 
 					   				if ($user->isGroupMember()) {
@@ -434,16 +432,16 @@ class Site {
 										} else {
 											$pageList = RestrictedPageHandler::getPagesForGroup($group);
 										}
-										
-										$pageNameList = array();
-									
+
+										$pageNameList = [];
+
 										foreach ($pageList as $page) {
 											array_push($pageNameList, strtolower($page->getName()));
 										}
-										
+
 										$teamList = $group->getTeams();
-										$teamNameList = array();
-										
+										$teamNameList = [];
+
 										foreach ($teamList as $team) {
 											array_push($teamNameList, strtolower($team->getName()));
 										}
@@ -454,10 +452,8 @@ class Site {
 											echo '<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
 										} else {
 											echo '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
-											  	echo '<a href="?page=my-crew">';
-													echo '<i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i>';
-											  	echo '</a>';
-											  	echo '<ul class="treeview-menu">';
+										  	echo '<a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i></a>';
+										  	echo '<ul class="treeview-menu">';
 													echo '<li><a href="?page=my-crew"><i class="fa fa-circle-o"></i>' . $group->getTitle() . '</a></li>';
 
 													// Only create link for groups that actually contain teams.
@@ -466,7 +462,7 @@ class Site {
 															echo '<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i>' . $team->getTitle() . '</a></li>';
 														}
 													}
-													
+
 													if (!empty($pageList)) {
 														foreach ($pageList as $page) {
 															if (strtolower($page->getName()) != strtolower($group->getName())) {
@@ -482,42 +478,20 @@ class Site {
 										}
 									}
 
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('event')) {
-
+									if ($user->hasPermission('event')) {
 										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
-										  	echo '<a href="?page=event">';
-												echo '<i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i>';
-										  	echo '</a>';
-										  	echo '<ul class="treeview-menu">';
+										  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i></a>';
+										  echo '<ul class="treeview-menu">';
 
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.checkin')) {
+												if ($user->hasPermission('event.checkin')) {
 													echo '<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-check"></i>Innsjekk</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.seatmap')) {
-													echo '<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-map-marker"></i>Setekart</a></li>';
+
+												if ($user->hasPermission('event.checklist')) {
+													echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist"><i class="fa fa-check"></i>Sjekkliste</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.screen')) {
-													echo '<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-desktop"></i>Skjerm</a></li>';
-												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.agenda')) {
-													echo '<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-clock-o"></i>Agenda</a></li>';
-												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.memberlist')) {
-													echo '<li' . ($this->pageName == 'event-memberlist' ? ' class="active"' : null) . '><a href="?page=event-memberlist"><i class="fa fa-file-text-o"></i>Medlemsliste</a></li>';
-												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('event.table.labels')) {
+
+												if ($user->hasPermission('event.table-labels')) {
 													echo '<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-external-link"></i>Print bordlapper</a></li>';
 												}
 
@@ -525,42 +499,32 @@ class Site {
 										echo '</li>';
 									}
 
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('chief')) {
-
+									if ($user->hasPermission('chief')) {
 										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'chief') ? ' active' : null) . '">';
-										  	echo '<a href="?page=chief">';
-												echo '<i class="fa fa-gavel"></i><span>Chief</span><i class="fa fa-angle-left pull-right"></i>';
-										  	echo '</a>';
-										  	echo '<ul class="treeview-menu">';
+									  	echo '<a href="?page=chief"><i class="fa fa-gavel"></i><span>Chief</span><i class="fa fa-angle-left pull-right"></i></a>';
+									  	echo '<ul class="treeview-menu">';
 
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.group')) {
+												if ($user->hasPermission('chief.group')) {
 													echo '<li' . ($this->pageName == 'chief-group' ? ' class="active"' : null) . '><a href="?page=chief-group"><i class="fa fa-circle-o"></i>Crew</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.team')) {
+
+												if ($user->hasPermission('chief.team')) {
 													echo '<li' . ($this->pageName == 'chief-team' ? ' class="active"' : null) . '><a href="?page=chief-team"><i class="fa fa-circle-o"></i>Lag</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.avatar')) {
+
+												if ($user->hasPermission('chief.avatar')) {
 													echo '<li' . ($this->pageName == 'chief-avatar' ? ' class="active"' : null) . '><a href="?page=chief-avatar"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.application')) {
+
+												if ($user->hasPermission('chief.application')) {
 													echo '<li' . ($this->pageName == 'chief-application' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-application"><i class="fa fa-circle-o"></i>Søknader</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.my-crew')) {
+
+												if ($user->hasPermission('chief.my-crew')) {
 													echo '<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=chief-my-crew"><i class="fa fa-circle-o"></i>My crew</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('chief.email')) {
+
+												if ($user->hasPermission('chief.email')) {
 													echo '<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-send"></i>Send e-post</a></li>';
 												}
 
@@ -568,50 +532,41 @@ class Site {
 										echo '</li>';
 									}
 
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('developer')) {
-
+									if ($user->hasPermission('developer')) {
 										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'developer') ? ' active' : null) . '">';
-										  	echo '<a href="?page=developer">';
-												echo '<i class="fa fa-wrench"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i>';
-										  	echo '</a>';
-										  	echo '<ul class="treeview-menu">';
+									  	echo '<a href="?page=developer"><i class="fa fa-wrench"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i></a>';
+									  	echo '<ul class="treeview-menu">';
 
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('developer.switch.user')) {
-													echo '<li' . ($this->pageName == 'developer-switch-user' ? ' class="active"' : null) . '><a href="?page=developer-switch-user"><i class="fa fa-rocket"></i>Bytt bruker</a></li>';
+												if ($user->hasPermission('developer.change-user')) {
+													echo '<li' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . '><a href="?page=developer-change-user"><i class="fa fa-rocket"></i>Bytt bruker</a></li>';
 												}
-												
+
 											echo '</ul>';
 										echo '</li>';
 									}
 
-									if ($user->hasPermission('*') ||
-										$user->hasPermission('admin')) {
-
+									if ($user->hasPermission('admin')) {
 										echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';
-										  	echo '<a href="?page=admin">';
-												echo '<i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i>';
-										  	echo '</a>';
-										  	echo '<ul class="treeview-menu">';
+									  	echo '<a href="?page=admin"><i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i></a>';
+									  	echo '<ul class="treeview-menu">';
 
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('admin.events')) {
+												if ($user->hasPermission('admin.events')) {
 													echo '<li' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . '><a href="?page=admin-events"><i class="fa fa-calendar"></i>Arrangementer</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('admin.permissions')) {
+
+												if ($user->hasPermission('admin.permissions')) {
 													echo '<li' . ($this->pageName == 'admin-permissions' ? ' class="active"' : null) . '><a href="?page=admin-permissions"><i class="fa fa-check-square-o"></i>Rettigheter</a></li>';
 												}
 
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('admin.seatmap')) {
+												if ($user->hasPermission('admin.memberlist')) {
+													echo '<li><a' . ($this->pageName == 'admin-memberlist' ? ' class="active"' : null) . ' href="index.php?page=admin-memberlist"><i class="fa fa-check-square-o"></i>Medlemsliste</a></li>';
+												}
+
+												if ($user->hasPermission('admin.seatmap')) {
 													echo '<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-map-marker"></i>Endre setekart</a></li>';
 												}
-												
-												if ($user->hasPermission('*') ||
-													$user->hasPermission('admin.website')) {
+
+												if ($user->hasPermission('admin.website')) {
 													echo '<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-edit"></i>Endre hovedsiden</a></li>';
 												}
 
@@ -624,28 +579,29 @@ class Site {
 							echo '<!-- /.sidebar -->';
 				  		echo '</aside>';
 
-					  	echo '<!-- Content Wrapper. Contains page content -->';
+					  	// Content Wrapper. Contains page content
 					  	echo '<div class="content-wrapper">';
 
-							if ($user->hasPermission('*') ||
-								$user->isGroupMember()) {
-								// View the page specified by "pageName" variable.
-								$this->getPage($this->pageName);
-							} else {
-								$publicPages = array('apply', 
-													 'all-crew', 
-													 'my-profile', 
-													 'edit-profile', 
-													 'edit-password', 
-													 'edit-avatar');
-								
-								if (in_array($this->pageName, $publicPages)) {
+								if ($user->hasPermission('*') ||
+									$user->isGroupMember()) {
+									// View the page specified by "pageName" variable.
 									$this->getPage($this->pageName);
 								} else {
-									$this->getPage('all-crew');
+									$publicPages = ['apply',
+																	'all-crew',
+																	'my-profile',
+																	'edit-profile',
+																	'edit-password',
+																	'edit-avatar'];
+
+									if (in_array($this->pageName, $publicPages)) {
+										$this->getPage($this->pageName);
+									} else {
+										$this->getPage('all-crew');
+									}
 								}
-							}
-					 	echo '</div><!-- /.content-wrapper -->';
+
+					 		echo '</div><!-- /.content-wrapper -->';
 					  	echo '<footer class="main-footer">';
 					  		/*
 							echo '<div class="pull-right hidden-xs">';
@@ -654,9 +610,9 @@ class Site {
 							*/
 							echo '<strong>Copyright &copy; 2015' . (date('Y') > 2015 ? '-' . date('Y') : null) . ' <a href="https://infected.no/">' . Settings::name . '</a>.</strong> All rights reserved.';
 					  	echo '</footer>';
-					  
-					  	//<!-- Control Sidebar -->  
-					  	echo '<aside class="control-sidebar control-sidebar-dark">';		
+
+					  	//<!-- Control Sidebar -->
+					  	echo '<aside class="control-sidebar control-sidebar-dark">';
 							echo '<!-- Create the tabs -->';
 							echo '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">';
 						  		echo '<li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>';
@@ -709,7 +665,7 @@ class Site {
 									echo '<h3 class="control-sidebar-heading">Tasks Progress</h3>';
 									echo '<ul class="control-sidebar-menu">';
 									  	echo '<li>';
-											echo '<a href="javascript::;">'; 
+											echo '<a href="javascript::;">';
 											  	echo '<h4 class="control-sidebar-subheading">';
 													echo 'Custom Template Design';
 													echo '<span class="label label-danger pull-right">70%</span>';
@@ -731,7 +687,7 @@ class Site {
 											echo '</a>';
 							  			echo '</li>';
 							  			echo '<li>';
-											echo '<a href="javascript::;">'; 
+											echo '<a href="javascript::;">';
 									  			echo '<h4 class="control-sidebar-subheading">';
 													echo 'Laravel Integration';
 													echo '<span class="label label-waring pull-right">50%</span>';
@@ -817,7 +773,7 @@ class Site {
 							echo '</div>';
 						echo '</aside><!-- /.control-sidebar -->';
 					  	//<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-					  	echo '<div class="control-sidebar-bg"></div>';
+					  echo '<div class="control-sidebar-bg"></div>';
 					echo '</div><!-- ./wrapper -->';
 
 					//<!-- jQuery 2.1.4 -->
@@ -863,86 +819,86 @@ class Site {
 					echo '<script src="../api/scripts/logout.js"></script>';
 				echo '</body>';
 			} else {
-				$publicPageList = array('register',
-									   'activation',
-									   'reset-password');
-				
+				$publicPageList = ['register',
+												   'activation',
+												   'reset-password'];
+
 				// Show page if it is whitelisted.
 				if (in_array($this->pageName, $publicPageList)) {
 					$this->getPage($this->pageName);
 				} else {
 					echo '<body class="login-page">';
-	    				echo '<div class="login-box">';
-					      	echo '<div class="login-logo">';
-					        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-					      	echo '</div><!-- /.login-logo -->';
-					      	echo '<div class="login-box-body">';
-					        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
-						        echo '<form class="login" method="post">';
-						          	echo '<div class="form-group has-feedback">';
-						            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
-						            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-						          	echo '</div>';
-						          	echo '<div class="form-group has-feedback">';
-						            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
-						            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-						          	echo '</div>';
-						          	echo '<div class="row">';
-						            	echo '<div class="col-xs-8">';
-						            		/*
-						              		echo '<div class="checkbox icheck">';
-						                		echo '<label><input type="checkbox"> Husk meg</label>';
-						              		echo '</div>';
-						              		*/
-						            	echo '</div><!-- /.col -->';
-						           		echo '<div class="col-xs-4">';
-						              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-						            	echo '</div><!-- /.col -->';
-						          	echo '</div>';
-						        echo '</form>';
-						        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
-						        echo '<a href="?page=register">Register deg</a>';
-						    echo '</div><!-- /.login-box-body -->';
+    				echo '<div class="login-box">';
+			      	echo '<div class="login-logo">';
+			        	echo '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+			      	echo '</div><!-- /.login-logo -->';
+			      	echo '<div class="login-box-body">';
+			        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
+				        echo '<form class="login" method="post">';
+			          	echo '<div class="form-group has-feedback">';
+			            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
+			            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+			          	echo '</div>';
+			          	echo '<div class="form-group has-feedback">';
+			            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
+			            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+			          	echo '</div>';
+			          	echo '<div class="row">';
+			            	echo '<div class="col-xs-8">';
+			            		/*
+		              		echo '<div class="checkbox icheck">';
+		                		echo '<label><input type="checkbox"> Husk meg</label>';
+		              		echo '</div>';
+		              		*/
+			            	echo '</div><!-- /.col -->';
+			           		echo '<div class="col-xs-4">';
+			              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
+			            	echo '</div><!-- /.col -->';
+			          	echo '</div>';
+				        echo '</form>';
+				        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
+				        echo '<a href="?page=register">Register deg</a>';
+					    echo '</div><!-- /.login-box-body -->';
 						echo '</div><!-- /.login-box -->';
 
-					    //<!-- jQuery 2.1.4 -->
-					    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-					    //<!-- Bootstrap 3.3.2 JS -->
-					    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-					    //<!-- iCheck -->
-					    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-					    echo '<script>';
-					    	echo '$(function () {';
-					        	echo '$(\'input\').iCheck({';
-					          		echo 'checkboxClass: \'icheckbox_square-blue\',';
-					          		echo 'radioClass: \'iradio_square-blue\',';
-					          		echo 'increaseArea: \'20%\''; // optional
-					        	echo '});';
-					      	echo '});';
-					    echo '</script>';
+				    //<!-- jQuery 2.1.4 -->
+				    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				    //<!-- Bootstrap 3.3.2 JS -->
+				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
+				    //<!-- iCheck -->
+				    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
+				    echo '<script>';
+				    	echo '$(function () {';
+				        echo '$(\'input\').iCheck({';
+				        	echo 'checkboxClass: \'icheckbox_square-blue\',';
+				          echo 'radioClass: \'iradio_square-blue\',';
+				          echo 'increaseArea: \'20%\''; // optional
+				        echo '});';
+				      echo '});';
+				    echo '</script>';
 
-					    // Other
-					    echo '<script src="../api/scripts/login.js"></script>';
+				    // Other
+				    echo '<script src="../api/scripts/login.js"></script>';
 					echo '</body>';
 				}
 			}
 
 		echo '</html>';
 	}
-	
+
 	private function getPage($pageName) {
 		// Fetch the page object from the database and display it.
 		$page = RestrictedPageHandler::getPageByName($pageName);
-		
+
 		if ($page != null) {
 			if (Session::isAuthenticated()) {
 				$user = Session::getCurrentUser();
-				
+
 				//<!-- Content Header (Page header) -->';
 				echo '<section class="content-header">';
 			  		echo '<h1>';
-						echo $page->getTitle();
-						echo '<small>' . $page->getTitle() . '</small>';
+							echo $page->getTitle();
+							echo '<small>' . $page->getTitle() . '</small>';
 			  		echo '</h1>';
 			  		/*
 			  		echo '<ol class="breadcrumb">';
@@ -951,26 +907,24 @@ class Site {
 			  		echo '</ol>';
 			  		*/
 				echo '</section>';
-				//<!-- Main content -->';
+				// Main content
 				echo '<section class="content">';
-
 					echo $page->getContent();
-
 				echo '</section><!-- /.content -->';
 
 			} else {
 				echo 'Du har ikke tilgang til dette.'; // TODO: Improve this with a nice error box.
 			}
 		} else {
-			$directoryList = array('pages',
-								   Settings::api_path . 'pages');
+			$directoryList = ['pages',
+								   			Settings::api_path . 'pages'];
 			$found = false;
 
 			foreach ($directoryList as $directory) {
 				$filePath = $directory . '/' . $pageName . '.php';
-			
+
 				if (in_array($filePath, glob($directory . '/*.php'))) {
-					// Make sure we don't include pages with same name twice, 
+					// Make sure we don't include pages with same name twice,
 					// and set the found varialbe so that we don't have to display the not found message.
 					require_once $filePath;
 
@@ -980,7 +934,7 @@ class Site {
 					if (class_exists($class)) {
 						// Create a new instance of this class.
 						$page = new $class();
-	 					
+
 						if (Session::isAuthenticated()) {
 		 					// Print the page.
 							//<!-- Content Header (Page header) -->';
@@ -989,13 +943,14 @@ class Site {
 
 						  			// Check if this page as a parent or not, and decide what to show.
 						  			if ($page->hasParent()) {
-										echo $page->getParent()->getTitle();
-										echo '<small>' . $page->getTitle() . '</small>';
+											echo $page->getParent()->getTitle();
+											echo '<small>' . $page->getTitle() . '</small>';
 						  			} else {
-										echo $page->getTitle();
+											echo $page->getTitle();
 						  			}
 
 						  		echo '</h1>';
+
 						  		/*
 						  		echo '<ol class="breadcrumb">';
 									echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
@@ -1003,11 +958,9 @@ class Site {
 						  		echo '</ol>';
 						  		*/
 							echo '</section>';
-							//<!-- Main content -->';
+							// Main content
 							echo '<section class="content">';
-
 								echo $page->getContent();
-
 							echo '</section><!-- /.content -->';
 						} else {
 							echo $page->getContent();
@@ -1019,21 +972,21 @@ class Site {
 					}
 				}
 			}
-			
+
 			if (!$found) {
-		        //<!-- Main content -->
-		        echo '<section class="content">';
+		    // Main content
+		    echo '<section class="content">';
 					echo '<div class="error-page">';
-			            echo '<h2 class="headline text-yellow"> 404</h2>';
-			            echo '<div class="error-content">';
-			              	echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
-			              	echo '<p>';
-			                	echo 'We could not find the page you were looking for.';
-			                	echo 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
-			              	echo '</p>';
-			            echo '</div><!-- /.error-content -->';
-			       echo '</div><!-- /.error-page -->';
-			    echo '</section><!-- /.content -->';
+		        echo '<h2 class="headline text-yellow">404</h2>';
+	          echo '<div class="error-content">';
+              echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
+            	echo '<p>';
+              	echo 'We could not find the page you were looking for.';
+              	echo 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
+            	echo '</p>';
+          	echo '</div><!-- /.error-content -->';
+		    	echo '</div><!-- /.error-page -->';
+		    echo '</section><!-- /.content -->';
 			}
 		}
 	}

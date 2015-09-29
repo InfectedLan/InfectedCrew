@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,12 +27,11 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 	public function getTitle() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			if (isset($_GET['teamId'])) {
 				$team = TeamHandler::getTeam($_GET['teamId']);
 
-				if ($user->hasPermission('*') ||
-					$user->hasPermission('chief.team') ||
+				if ($user->hasPermission('chief.team') ||
 					$user->equals($team->getLeader())) {
 
 					return $team->getGroup()->getTitle() . ':' . $team->getTitle();
@@ -40,10 +39,10 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 			} else if (isset($_GET['groupId']) ||
 				$user->isGroupMember()) {
 				$group = isset($_GET['groupId']) ? GroupHandler::getGroup($_GET['groupId']) : $user->getGroup();
-				
+
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('chief.team') ||
-					$user->equals($group->getLeader()) || 
+					$user->equals($group->getLeader()) ||
 					$user->equals($group->getCoLeader())) {
 
 					return 'Lagene i ' . $group->getTitle();
@@ -75,7 +74,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 							  		$content .= '<h3 class="box-title">Medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-						  			
+
 						  			$memberList = $team->getMembers();
 
 									if (!empty($memberList)) {
@@ -87,7 +86,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 													$content .= '<button type="button" class="btn btn-xs btn-primary pull-right" onClick="removeUserFromTeam(' . $userValue->getId() . ')">Fjern</button>';
 												$content .= '</li>';
 											}
-	
+
 										$content .= '</ul>';
 										$content .= '<button type="button" class="btn btn-primary" onClick="removeUsersFromTeam(' . $team->getId() . ')">Fjern alle</button>';
 									} else {
@@ -103,7 +102,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 							  		$content .= '<h3 class="box-title">Legg til medlemmer</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-									
+
 									$freeUserList = $this->getFreeUsers($group);
 
 									if (!empty($freeUserList)) {
@@ -113,11 +112,11 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 									  			$content .= '<label>Velg bruker</label>';
 									  			$content .= '<div class="input-group">';
 													$content .= '<select class="form-control" name="userId" required>';
-									  				
+
 										  				foreach ($freeUserList as $userValue) {
 															$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 														}
-													
+
 													$content .= '</select>';
 													$content .= '<span class="input-group-btn">';
 												  		$content .= '<button type="submit" class="btn btn-primary btn-flat">Legg til</button>';
@@ -128,7 +127,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 									} else {
 										$content .= '<p>Alle medlemmer av ' . $group->getTitle() . ' er allerede med i et lag.</p>';
 									}
-									
+
 								$content .= '</div><!-- /.box-body -->';
 							$content .= '</div><!-- /.box -->';
 						$content .= '</div><!--/.col (right) -->';
@@ -143,17 +142,17 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 			} else if (isset($_GET['groupId']) ||
 				$user->isGroupMember()) {
 				$group = isset($_GET['groupId']) ? GroupHandler::getGroup($_GET['groupId']) : $user->getGroup();
-				
+
 				if ($user->hasPermission('*') ||
 					$user->hasPermission('chief.team') ||
-					$user->equals($group->getLeader()) || 
+					$user->equals($group->getLeader()) ||
 					$user->equals($group->getCoLeader())) {
 
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
 
 							$teamList = $group->getTeams();
-				
+
 							if (!empty($teamList)) {
 								$userList = UserHandler::getMemberUsers();
 
@@ -183,7 +182,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 										  			$content .= '<label>Chief</label>';
 										  			$content .= '<select class="form-control" name="leader" required>';
 										  				$content .= '<option value="0"></option>';
-												
+
 														foreach ($userList as $userValue) {
 															if ($userValue->equals($team->getLeader())) {
 																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
@@ -191,7 +190,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 															}
 														}
-														
+
 													$content .= '</select>';
 												$content .= '</div>';
 
@@ -242,7 +241,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 
 	private function getFreeUsers($group) {
 		$freeUserList = $group->getMembers();
-		
+
 		foreach ($freeUserList as $key => $freeUser) {
 			if ($freeUser->isTeamMember()) {
 				unset($freeUserList[$key]);

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ class EditAvatarPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			// TODO: Sjekk om det er noen som har et uncropped bilde.
 			$content .= '<script>';
 				$content .= 'function deleteAvatar() {';
@@ -47,10 +47,10 @@ class EditAvatarPage implements IPage {
 					$content .= '});';
 				$content .= '}';
 			$content .= '</script>';
-			
+
 			if ($user->hasAvatar()) {
 				$avatar = $user->getAvatar();
-				
+
 				switch ($avatar->getState()) {
 					case 0:
 						$content .= '<script>';
@@ -77,10 +77,10 @@ class EditAvatarPage implements IPage {
 									$temp = explode('.', $avatar->getTemp());
 									$extension = strtolower(end($temp));
 									$image = 0;
-									
+
 									if ($extension == 'png') {
 										$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
-									} else if ($extension == 'jpeg' || 
+									} else if ($extension == 'jpeg' ||
 											   $extension == 'jpg') {
 										$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
 									}
@@ -117,20 +117,20 @@ class EditAvatarPage implements IPage {
 					$content .= '</form><br>';
 					$content .= '<i>Er du ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
-					
+
 					case 1:
 						$content .= '<h1>Ditt bilde venter på godkjenning</h1>';
 						$content .= '<img src="../api/' . $avatar->getHd() . '" width="800">';
 						$content .= '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
-						
+
 					case 2:
 						$content .= '<h1>Nåværende avatar:</h1>';
 						$content .= '<img src="../api/' . $avatar->getHd() . '" width="800">';
 						$content .= '<br>';
 						$content .= 'Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 						break;
-						
+
 					default:
 						$content .= '<b>Avataren din er ikke godkjent!</b>';
 						$content .= '<br>';

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.	If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ class ResetPasswordPage implements IPage {
                 $content .= '<div class="register-box">';
                     $content .= '<div class="register-logo">';
                         $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-                    $content .= '</div>';   
+                    $content .= '</div>';
 
                     $content .= '<div class="register-box-body">';
                         $content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
@@ -67,10 +67,10 @@ class ResetPasswordPage implements IPage {
                     $content .= '<p>' . Localization::getLocale('enter_your_username_or_email_in_order_to_reset_your_password') . ': <input type="text" name="identifier"></p>';
                     $content .= '<input type="submit" value="' . Localization::getLocale('reset_password') . '">';
                 $content .= '</form>';
-            } else {    
+            } else {
                 $content .= '<h2>' . Localization::getLocale('reset_password') . '</h2>';
                 $content .= '<p>' . Localization::getLocale('enter_a_new_password') . '</p>';
-                
+
                 $content .= '<form class="reset-password" method="post">';
                     $content .= '<input type="hidden" name="code" value="' . $_GET['code'] . '">';
                     $content .= '<table>';
@@ -109,7 +109,7 @@ class ResetPasswordPage implements IPage {
 													<h3 class="text-center">Forgot Password?</h3>
 													<p>If you have forgotten your password - reset it here.</p>
 														<div class="panel-body">
-															
+
 															<form class="form"><!--start form--><!--add form action as needed-->
 																<fieldset>
 																	<div class="form-group">
@@ -124,7 +124,7 @@ class ResetPasswordPage implements IPage {
 																	</div>
 																</fieldset>
 															</form><!--/end form-->
-															
+
 														</div>
 												</div>
 										</div>

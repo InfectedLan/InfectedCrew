@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,9 +33,8 @@ class ChiefAvatarPage extends ChiefPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.avatar') ||
+
+			if ($user->hasPermission('chief.avatar') ||
 				$user->isGroupLeader() ||
 				$user->isGroupCoLeader()) {
 
@@ -46,12 +45,12 @@ class ChiefAvatarPage extends ChiefPage implements IPage {
 						  		$content .= '<h3 class="box-title">Godkjenn profilbilder</h3>';
 							$content .= '</div><!-- /.box-header -->';
 							$content .= '<div class="box-body">';
-					  			
+
 						  		$pendingAvatarList = AvatarHandler::getPendingAvatars();
-					
+
 								if (!empty($pendingAvatarList)) {
 									$index = 0;
-									
+
 									$content = '<div class="row">';
 
 										foreach ($pendingAvatarList as $avatar) {
@@ -76,7 +75,7 @@ class ChiefAvatarPage extends ChiefPage implements IPage {
 										}
 
 										$content .= '</div><!-- /.row -->';
-									
+
 								} else {
 									$content .= '<p>Det er ingen profilbilder som trenger godkjenning akkurat nå.</p>';
 								}
