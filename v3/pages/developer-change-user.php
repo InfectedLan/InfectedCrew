@@ -44,7 +44,7 @@ class DeveloperSwitchUserPage extends DeveloperPage implements IPage {
 								$content .= '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker.</p>';
 								$content .= '<p>Dette er en funksjon som <b>ikke</b> skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
 
-								$content .= '<form class="developer-switch-user" method="post">';
+								$content .= '<form class="developer-change-user" method="post">';
 									$content .= '<div class="input-group">';
 										$content .= '<select class="form-control" name="userId" autofocus>';
 											$userList = UserHandler::getUsers();
@@ -55,7 +55,7 @@ class DeveloperSwitchUserPage extends DeveloperPage implements IPage {
 
 										$content .= '</select>';
                   	$content .= '<span class="input-group-btn">';
-                    	$content .= '<button class="btn btn-info btn-flat" type="button">Bytt</button>';
+                    	$content .= '<button class="btn btn-info btn-flat" type="submit">Bytt</button>';
                   	$content .= '</span>';
                  	$content .= '</div><!-- /input-group -->';
                 $content .= '</form>';

@@ -18,14 +18,18 @@
  */
 
 $(document).ready(function() {
-	$('.developer-changeuser').on('submit', function(event) {
+	$('.developer-change-user').on('submit', function(event) {
 		event.preventDefault();
-		$.getJSON('../api/json/user/switchUser.php' + '?' + $(this).serialize(), function(data){
-			if (data.result) {
-				$(location).attr('href', 'index.php?page=user-profile');
-			} else {
-				error(data.message);
-			}
-		});
+		changeUser(this);
 	});
 });
+
+function changeUser(form) {
+	$.getJSON('../api/json/user/switchUser.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			$(location).attr('href', 'index.php?page=user-profile');
+		} else {
+			error(data.message);
+		}
+	});
+}
