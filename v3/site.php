@@ -406,23 +406,6 @@ class Site {
 					  			echo '<ul class="sidebar-menu">';
 					   				echo '<li class="header">Hovedmeny</li>';
 
-					   				$groupList = GroupHandler::getGroups();
-
-					   				if (!empty($groupList)) {
-						   				echo '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
-										  	echo '<a href="?page=all-crew">';
-												echo '<i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i>';
-										  	echo '</a>';
-										  	echo '<ul class="treeview-menu">';
-
-													foreach ($groupList as $group) {
-														echo '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
-													}
-
-										  	echo '</ul>';
-											echo '</li>';
-					   				}
-
 					   				if ($user->isGroupMember()) {
 											$group = $user->getGroup();
 
@@ -478,6 +461,23 @@ class Site {
 											}
 										}
 
+										$groupList = GroupHandler::getGroups();
+
+										if (!empty($groupList)) {
+											echo '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
+												echo '<a href="?page=all-crew">';
+												echo '<i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i>';
+												echo '</a>';
+												echo '<ul class="treeview-menu">';
+
+													foreach ($groupList as $group) {
+														echo '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
+													}
+
+												echo '</ul>';
+											echo '</li>';
+										}
+
 										if ($user->hasPermission('event')) {
 											echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
 											  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i></a>';
@@ -489,6 +489,18 @@ class Site {
 
 													if ($user->hasPermission('event.checklist')) {
 														echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist"><i class="fa fa-check"></i>Sjekkliste</a></li>';
+													}
+
+													if ($user->hasPermission('event.seatmap')) {
+														echo '<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-map-marker"></i>Setekart</a></li>';
+													}
+
+													if ($user->hasPermission('event.screen')) {
+														echo '<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-desktop"></i>Skjerm</a></li>';
+													}
+
+													if ($user->hasPermission('event.agenda')) {
+														echo '<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-clock-o"></i>Agenda</a></li>';
 													}
 
 													if ($user->hasPermission('event.table-labels')) {
