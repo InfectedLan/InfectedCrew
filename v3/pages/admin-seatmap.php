@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,10 +40,10 @@ class AdminSeatmapPage extends AdminPage implements IPage {
 
 	public function getContent() {
 		$content = null;
-		
+
 		if (isset($_GET['id'])) {
 			$seatmap = SeatmapHandler::getSeatmap($_GET["id"]);
-			
+
 			$content .= '<div class="box">';
 				$content .= '<div class="box-body">';
 
@@ -85,7 +85,7 @@ class AdminSeatmapPage extends AdminPage implements IPage {
 									$content .= 'location.reload();';
 								$content .= '});';
 							$content .= '});';
-						$content .= '</script>';				
+						$content .= '</script>';
 					} else {
 						$content .= '<p>Setekartet finnes ikke.</p>';
 					}
@@ -98,7 +98,7 @@ class AdminSeatmapPage extends AdminPage implements IPage {
 					$content .= '<div id="seatmapIntro">';
 						$content .= '<p>For å starte, må du velge et seatmap du vil redigere, eller lage et nytt.</p>';
 						$content .= '<select id="seatmapSelect">';
-							
+
 							foreach (SeatmapHandler::getSeatmaps() as $seatmap) {
 								$content .= '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';
 							}

@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,14 +33,13 @@ class EventScreenPage extends EventPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-				
-			if ($user->hasPermission('*') || 
-				$user->hasPermission('event.screen')) {
+
+			if ($user->hasPermission('event.screen')) {
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-6">';
 
 						$slideList = SlideHandler::getSlides();
-					
+
 						if (!empty($slideList)) {
 							foreach ($slideList as $slide) {
 								$content .= '<div class="box">';
@@ -48,7 +47,7 @@ class EventScreenPage extends EventPage implements IPage {
 								  		$content .= '<h3 class="box-title">' . $slide->getTitle() . '</h3>';
 									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
-							  		
+
 										$content .= '<form class="slide-edit" method="post">';
 											$content .= '<input type="hidden" name="id" value="' . $slide->getId() . '">';
 											$content .= '<div class="form-group">';
@@ -90,7 +89,7 @@ class EventScreenPage extends EventPage implements IPage {
 								$content .= '</div><!-- /.box-body -->';
 							$content .= '</div><!-- /.box -->';
 						}
-					
+
 					$content .= '</div><!--/.col (left) -->';
 					$content .= '<div class="col-md-6">';
 					  	$content .= '<div class="box">';

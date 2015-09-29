@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,12 +28,11 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 	public function getTitle() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
+
 			if (isset($_GET['groupId'])) {
 				$group = GroupHandler::getGroup($_GET['groupId']);
 
-				if ($user->hasPermission('*') ||
-					$user->hasPermission('chief.group') ||
+				if ($user->hasPermission('chief.group') ||
 					$user->equals($group->getLeader()) ||
 					$user->equals($group->getCoLeader())) {
 
@@ -50,7 +49,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-				
+
 			if (isset($_GET['groupId'])) {
 				$group = GroupHandler::getGroup($_GET['groupId']);
 
@@ -66,13 +65,13 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 							  		$content .= '<h3 class="box-title">Medlemmer i ' . $group->getTitle() . '</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-						  		
+
 									if (!empty($memberList)) {
 										foreach ($memberList as $userValue) {
 											$content .= $userValue->getDisplayName();
 											$content .= '<button type="button" class="btn btn-primary" onClick="removeUserFromGroup(' . $userValue->getId() . ')">Fjern</button>';
 										}
-										
+
 										if (count($groupList) > 1) {
 											$content .= '<button type="button" class="btn btn-primary" onClick="removeUsersFromGroup(' . $group->getId() . ')">Fjern alle</button>';
 										}
@@ -103,11 +102,11 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 								  			$content .= '<label>Chief</label>';
 								  			$content .= '<select class="form-control" name="leader" required>';
 								  				$content .= '<option value="0"></option>';
-										
+
 												foreach ($userList as $userValue) {
 													$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 												}
-												
+
 											$content .= '</select>';
 										$content .= '</div>';
 										$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
@@ -121,7 +120,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 								$content .= '<div class="box-body">';
 
 									$freeUserList = UserHandler::getNonMemberUsers();
-					
+
 									if (!empty($freeUserList)) {
 										$content .= '<form class="chief-groups-adduser" method="post">';
 											$content .= '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
@@ -129,11 +128,11 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 									  			$content .= '<label>Velg bruker</label>';
 									  			$content .= '<div class="input-group">';
 													$content .= '<select class="form-control" name="userId" required>';
-									  				
+
 										  				foreach ($freeUserList as $userValue) {
 															$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 														}
-													
+
 													$content .= '</select>';
 													$content .= '<span class="input-group-btn">';
 												  		$content .= '<button type="submit" class="btn btn-primary btn-flat">Legg til</button>';
@@ -162,7 +161,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
-							
+
 							$content .= '<div class="box">';
 				                $content .= '<div class="box-header">';
 				                  	$content .= '<h3 class="box-title">Oversikt</h3>';
@@ -188,7 +187,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 				            $content .= '</div><!-- /.box -->';
 
 							$groupList = GroupHandler::getGroups();
-						
+
 							if (!empty($groupList)) {
 								$userList = UserHandler::getMemberUsers();
 
@@ -217,7 +216,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 										  			$content .= '<label>Chief</label>';
 										  			$content .= '<select class="form-control" name="leader" required>';
 										  				$content .= '<option value="0"></option>';
-												
+
 														foreach ($userList as $userValue) {
 															if ($userValue->equals($group->getLeader())) {
 																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
@@ -225,14 +224,14 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 															}
 														}
-														
+
 													$content .= '</select>';
 												$content .= '</div>';
 												$content .= '<div class="form-group">';
 										  			$content .= '<label>Co-chief</label>';
 										  			$content .= '<select class="form-control" name="leader" required>';
 										  				$content .= '<option value="0"></option>';
-												
+
 														foreach ($userList as $userValue) {
 															if ($userValue->equals($group->getCoLeader())) {
 																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
@@ -240,7 +239,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 															}
 														}
-														
+
 													$content .= '</select>';
 												$content .= '</div>';
 												$content .= '<div class="btn-group" role="group" aria-label="...">';
@@ -279,7 +278,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 								  			$content .= '<label>Chief</label>';
 								  			$content .= '<select class="form-control" name="leader" required>';
 								  				$content .= '<option value="0"></option>';
-										
+
 												foreach ($userList as $userValue) {
 													if ($userValue->equals($group->getLeader())) {
 														$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
@@ -287,14 +286,14 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 														$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 													}
 												}
-												
+
 											$content .= '</select>';
 										$content .= '</div>';
 										$content .= '<div class="form-group">';
 								  			$content .= '<label>Co-chief</label>';
 								  			$content .= '<select class="form-control" name="leader" required>';
 								  				$content .= '<option value="0"></option>';
-										
+
 												foreach ($userList as $userValue) {
 													if ($userValue->equals($group->getCoLeader())) {
 														$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
@@ -302,7 +301,7 @@ class ChiefGroupPage extends ChiefPage implements IPage {
 														$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 													}
 												}
-												
+
 											$content .= '</select>';
 										$content .= '</div>';
 									  	$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';

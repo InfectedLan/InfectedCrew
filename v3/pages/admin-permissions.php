@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,6 +26,14 @@ require_once 'interfaces/page.php';
 
 class AdminPermissionsPage extends AdminPage implements IPage {
 	public function getTitle() {
+		if (isset($_GET['id'])) {
+			$permissionUser = UserHandler::getUser($_GET['id']);
+
+			if ($permissionUser != null) {
+				return $permissionUser->getFullName() . '\'s rettigheter</h3>';
+			}
+		}
+
 		return 'Rettigheter';
 	}
 
@@ -34,20 +42,17 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('admin.permissions')) {
-				
+
+			if ($user->hasPermission('admin.permissions')) {
+				$content .= '<script src="scripts/admin-permissions.js"></script>';
+
 				if (isset($_GET['id'])) {
 					$permissionUser = UserHandler::getUser($_GET['id']);
 
 					if ($permissionUser != null) {
 						$content .= '<div class="box">';
-							$content .= '<div class="box-header with-border">';
-								$content .= '<h3 class="box-title">Du endrer nå "' . $permissionUser->getFullName() . '" sine rettigheter</h3>';
-							$content .= '</div>';
 							$content .= '<div class="box-body">';
-								$content .= '<p>Du velger rettigheter for denne brukeren ved å huke av rettighetene under.</p>';
+								$content .= '<p>Du velger rettigheter for denne brukeren ved å huke av rettighetene under, og klikke på "Lagre" knappen.</p>';
 
 								$content .= '<form class="admin-permissions-edit" method="post">';
 									$content .= '<input type="hidden" name="id" value="' . $permissionUser->getId() . '">';
@@ -57,7 +62,7 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 											$content .= '<th>Verdi</th>';
 											$content .= '<th>Beskrivelse</th>';
 										$content .= '</tr>';
-									
+
 										foreach (PermissionHandler::getPermissions() as $permission) {
 											if ($user->hasPermission('*') ||
 												$user->hasPermission($permission->getValue())) {
@@ -91,9 +96,6 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 					}
 				} else {
 					$content .= '<div class="box">';
-						$content .= '<div class="box-header with-border">';
-							$content .= '<h3 class="box-title">Rettigheter</h3>';
-						$content .= '</div>';
 						$content .= '<div class="box-body">';
 							$content .= '<p>Under ser du en liste med alle brukere som har spesielle rettigheter.</p>';
 						$content .= '</div><!-- /.box-body -->';
@@ -103,10 +105,8 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 						$content .= '<div class="col-md-4">';
 
 						$permissionUserList = UserHandler::getPermissionUsers();
-		
-							if (!empty($permissionUserList)) {
-								
 
+							if (!empty($permissionUserList)) {
 								foreach ($permissionUserList as $permissionUser) {
 									if ($permissionUser != null) {
 										$permissionCount = count($permissionUser->getPermissions());
@@ -140,8 +140,6 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 						$content .= '</div><!--/.col (left) -->';
 					$content .= '</div><!-- /.row -->';
 				}
-
-				$content .= '<script src="scripts/admin-permissions.js"></script>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';

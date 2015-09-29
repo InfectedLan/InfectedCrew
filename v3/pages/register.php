@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ class RegisterPage implements IPage {
     			$content .= '<div class="register-box">';
     				$content .= '<div class="register-logo">';
     					$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-    				$content .= '</div>';	
+    				$content .= '</div>';
 
     				$content .= '<div class="register-box-body">';
     					$content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
@@ -90,7 +90,7 @@ class RegisterPage implements IPage {
                                 $content .= '<div class="row">';
                                     $content .= '<div class="col-md-4">';
                                         $content .= '<select class="form-control" name="birthday">';
-                                            
+
                                             for ($day = 1; $day <= 31; $day++) {
                                                 $content .= '<option value="' . $day . '">' . $day . '</option>';
                                             }
@@ -99,7 +99,7 @@ class RegisterPage implements IPage {
                                     $content .= '</div><!-- /.col -->';
                                     $content .= '<div class="col-md-4">';
                                         $content .= '<select class="form-control" name="birthmonth">';
-                                        
+
                                             for ($month = 1; $month <= 12; $month++) {
                                                 $content .= '<option value="' . $month . '">' . DateUtils::getMonthFromInt($month) . '</option>';
                                             }
@@ -108,7 +108,7 @@ class RegisterPage implements IPage {
                                     $content .= '</div><!-- /.col -->';
                                      $content .= '<div class="col-md-4">';
                                         $content .= '<select class="form-control" name="birthyear">';
-                                        
+
                                             for ($year = date('Y') - 100; $year <= date('Y'); $year++) {
                                                 if ($year == date('Y') - 18) {
                                                   $content .= '<option value="' . $year . '" selected>' . $year . '</option>';

@@ -18,32 +18,21 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'interfaces/page.php';
-require_once 'traits/page.php';
+require_once 'session.php';
 
-class ChiefPage implements IPage {
-	use TPage;
+if (Session::isAuthenticated()) {
+	$user = Session::getCurrentUser();
 
-	public function getTitle() {
-		return 'Chief';
+	if ($user->hasPermission('user.search')) {
+		echo '<script src="scripts/user-search.js"></script>';
+		echo '<h3>Søk etter bruker</h3>';
+
+		echo '<input class="search" type="text" placeholder="Søk etter bruker..." autocomplete="off" autofocus>';
+		echo '<ul class="search-results"></ul>';
+	} else {
+		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}
-
-	public function getContent() {
-		$content = null;
-
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-
-			if ($user->hasPermission('chief')) {
-				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.';
-			} else {
-				$content .= 'Du har ikke rettigheter til dette!';
-			}
-		} else {
-			$content .= 'Du er ikke logget inn!';
-		}
-
-		return $content;
-	}
+} else {
+	echo '<p>Du er ikke logget inn!</p>';
 }
 ?>

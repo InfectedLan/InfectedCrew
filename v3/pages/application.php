@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,15 +35,14 @@ class ApplicationPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.application') ||
+
+			if ($user->hasPermission('chief.application') ||
 				$user->isGroupLeader() ||
 				$user->isGroupCoLeader()) {
-				
+
 				if (isset($_GET['applicationId'])) {
 					$application = ApplicationHandler::getApplication($_GET['applicationId']);
-					
+
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
 
@@ -55,7 +54,7 @@ class ApplicationPage implements IPage {
 								  		$content .= '<h3 class="box-title">Søknad fra ' . $applicationUser->getDisplayName() . '</h3>';
 									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
-							  			
+
 										/*
 										$applicationList = ApplicationHandler::getUserApplications($applicationUser);
 
@@ -65,7 +64,7 @@ class ApplicationPage implements IPage {
 												foreach ($applicationList as $applicationValue) {
 													if (!$application->equals($applicationValue)) {
 														$group = $applicationValue->getGroup();
-														
+
 														$content .= '<li><a href="index.php?page=application&id=' . $applicationValue->getId() . '">' . $group->getTitle() . '</a></li>';
 													}
 												}
@@ -107,7 +106,7 @@ class ApplicationPage implements IPage {
 												$content .= '<td>' . $application->getContent() . '</td>';
 											$content .= '</tr>';
 										$content .= '</table>';
-										
+
 										switch ($application->getState()) {
 											case 1:
 												$content .= '<form class="chief-applications-reject" method="post">';
@@ -125,17 +124,17 @@ class ApplicationPage implements IPage {
 														} else {
 															$content .= '<button type="button" class="btn btn-primary" onClick="unqueueApplication(' . $application->getId() . ')">Fjern fra kø</button>';
 														}
-											  			
+
 													$content .= '</div>';
 												$content .= '</form>';
-												
+
 												break;
-												
+
 											case 3:
 												$content .= 'Begrunnelse for avslåelse: <i>' . $application->getComment() . '</i>';
 												break;
 										}
-									
+
 									$content .= '</div><!-- /.box-body -->';
 								$content .= '</div><!-- /.box -->';
 							}

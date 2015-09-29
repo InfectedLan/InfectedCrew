@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,13 +34,10 @@ class AdminEventsPage extends AdminPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('admin.events')) {
 
+			if ($user->hasPermission('admin.events')) {
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-6">';
-							
 						$eventList = EventHandler::getEvents();
 
 						// Sort this array so that we show newest events first.
@@ -53,7 +50,7 @@ class AdminEventsPage extends AdminPage implements IPage {
 								  		$content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
 									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
-							  		
+
 										$content .= '<form class="admin-events-edit" method="post">';
 											$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
 											$content .= '<div class="form-group">';
@@ -67,7 +64,7 @@ class AdminEventsPage extends AdminPage implements IPage {
 															$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
 														}
 													}
-													
+
 												$content .= '</select>';
 											$content .= '</div>';
 									  		$content .= '<div class="form-group">';

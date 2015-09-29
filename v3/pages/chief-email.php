@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,9 +33,8 @@ class ChiefEmailPage extends ChiefPage implements IPage {
 
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('chief.email')) {
+
+			if ($user->hasPermission('chief.email')) {
 				$content .= '<script src="scripts/chief-email.js"></script>';
 
 				$content .= '<p>Her er en liste over Infected arrangementer som har vært eller skal være. Neste arrangement blir automatisk vist på hovedsiden.</p>';
@@ -54,11 +53,11 @@ class ChiefEmailPage extends ChiefPage implements IPage {
 										$content .= '<option value="allWithTickets">Alle med flere billetter</option>';
 										$content .= '<option value="allWithTicketLast3">Alle med billett siste 3 arrangementer</option>';
 									}
-									
+
 									if ($user->isGroupMember()) {
 										$content .= '<option value="group">Alle i ' . $user->getGroup()->getTitle() . '</option>';
 									}
-									
+
 									foreach (UserHandler::getUsers() as $userValue) {
 										$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
 									}
@@ -68,7 +67,7 @@ class ChiefEmailPage extends ChiefPage implements IPage {
 						$content .= '<tr>';
 							$content .= '<td>Emne:</td>';
 							$content .= '<td><input type="text" name="subject" required></td>';
-						$content .= '</tr>';	
+						$content .= '</tr>';
 						$content .= '<tr>';
 							$content .= '<td>Melding:</td>';
 							$content .= '<td><textarea name="message" class="editor" rows="10" cols="80"></textarea></td>';

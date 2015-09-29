@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ class MyProfilePage implements IPage {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			$profileUser = UserHandler::getUser($id);
-			
+
 			if ($profileUser != null) {
 				if ($user->equals($profileUser)) {
 					return 'Min profil';
@@ -55,12 +55,11 @@ class MyProfilePage implements IPage {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 			$profileUser = UserHandler::getUser($id);
-			
+
 			if ($profileUser != null) {
-				if ($user->hasPermission('*') ||
-					$user->hasPermission('search.users') ||
+				if ($user->hasPermission('search.users') ||
 					$user->equals($profileUser)) {
-					
+
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
 						  	$content .= '<div class="box">';
@@ -126,7 +125,7 @@ class MyProfilePage implements IPage {
 											$content .= '<td><b>Kallenavn</b></td>';
 											$content .= '<td>' . $profileUser->getNickname() . '</td>';
 										$content .= '</tr>';
-										
+
 										if ($profileUser->hasEmergencyContact()) {
 											$content .= '<tr>';
 												$content .= '<td><b>Foresatte\'s telefon</b></td>';
@@ -148,7 +147,7 @@ class MyProfilePage implements IPage {
 												$content .= '<td>' . ($profileUser->isActivated() ? 'Ja' : 'Nei') . '</td>';
 											$content .= '</tr>';
 										}
-										
+
 										if ($profileUser->isGroupMember()) {
 											$content .= '<tr>';
 												$content .= '<td><b>Crew</b></td>';
@@ -162,13 +161,13 @@ class MyProfilePage implements IPage {
 
 												$content .= '</td>';
 											$content .= '</tr>';
-											
+
 											if ($profileUser->isTeamMember()) {
 												$content .= '<tr>';
 													$content .= '<td><b>Lag</b></td>';
 													$content .= '<td>' . $profileUser->getTeam()->getTitle() . '</td>';
 												$content .= '</tr>';
-											}	
+											}
 										}
 
 										if ($profileUser->hasTicket()) {
@@ -194,7 +193,7 @@ class MyProfilePage implements IPage {
 										if ($profileUser->hasTicket() &&
 											$profileUser->hasSeat()) {
 											$ticket = $profileUser->getTicket();
-											
+
 											$content .= '<tr>';
 												$content .= '<td><b>Plass</b></td>';
 												$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
@@ -226,22 +225,22 @@ class MyProfilePage implements IPage {
 								$content .= '</div><!-- /.box-body -->';
 						  	$content .= '</div><!-- /.box -->';
 						$content .= '</div><!--/.col (left) -->';
-						
+
 						$content .= '<div class="col-md-6">';
 						  	$content .= '<div class="box">';
 						  		$content .= '<div class="box-header">';
 							  		$content .= '<h3 class="box-title">Profilbilde</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-							  		
+
 									$avatarFile = null;
-									
+
 									if ($profileUser->hasValidAvatar()) {
 										$avatarFile = $profileUser->getAvatar()->getHd();
 									} else {
 										$avatarFile = $profileUser->getDefaultAvatar();
 									}
-									
+
 				  					$content .= '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profilbilde">';
 
 								$content .= '</div><!-- /.box-body -->';
@@ -262,11 +261,11 @@ class MyProfilePage implements IPage {
 												$user->equals($profileUser)) {
 												$content .= '<li role="presentation"><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></li>';
 											}
-											
+
 											if ($user->equals($profileUser)) {
 												$content .= '<li role="presentation"><a href="index.php?page=edit-avatar">Endre avatar</a></li>';
 											}
-												
+
 											if ($user->hasPermission('*') ||
 												$user->hasPermission('admin.permissions')) {
 												$content .= '<li role="presentation"><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></li>';
@@ -283,12 +282,12 @@ class MyProfilePage implements IPage {
 					/*
 					if (($user->hasPermission('*') ||
 						$user->hasPermission('search.users') ||
-						$user->hasPermission('chief.tickets')) && // TODO: Verify this permission. 
+						$user->hasPermission('chief.tickets')) && // TODO: Verify this permission.
 						$profileUser->hasTicket()) {
 						$ticket = $profileUser->getTicket();
 
 						$content .= '<link rel="stylesheet" href="../api/styles/seatmap.css">';
-						
+
 
 						$content .= '<div class="box">';
 							$content .= '<div class="box-header">';
@@ -298,7 +297,7 @@ class MyProfilePage implements IPage {
 								$content .= '<div id="seatmapCanvas"></div>';
 							$content .= '</div><!-- /.box-body -->';
 						$content .= '</div><!-- /.box -->';
-						
+
 						$content .= '<script src="../api/scripts/seatmapRenderer.js"></script>';
 						$content .= '<script>';
 							$content .= 'var seatmapId = ' . $ticket->getEvent()->getSeatmap()->getId() . ';';
