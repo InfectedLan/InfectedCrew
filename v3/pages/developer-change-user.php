@@ -55,7 +55,7 @@ class DeveloperSwitchUserPage extends DeveloperPage implements IPage {
 
 										$content .= '</select>';
                   	$content .= '<span class="input-group-btn">';
-                    	$content .= '<button class="btn btn-info btn-flat" type="submit">Bytt</button>';
+                    	$content .= '<button type="submit" class="btn btn-info btn-flat">Bytt</button>';
                   	$content .= '</span>';
                  	$content .= '</div><!-- /input-group -->';
                 $content .= '</form>';
