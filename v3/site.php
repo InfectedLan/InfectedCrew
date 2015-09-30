@@ -42,50 +42,82 @@ class Site {
 				echo '<meta name="description" content="' . Settings::description . '">';
 				echo '<meta name="keywords" content="' . Settings::keywords . '">';
 				echo '<meta name="author" content="halvors and petterroea">';
-				echo '<meta charset="UTF-8">';
-				echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
+				echo '<meta charset="utf-8">';
+				echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
+				// Tell the browser to be responsive to screen width
+		    echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
 				echo '<link rel="shortcut icon" href="images/favicon.ico">';
-				//<!-- Bootstrap 3.3.4 -->
-				echo '<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- FontAwesome 4.3.0 -->
-				echo '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- Theme style -->
-				echo '<link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />';
+
+				// Bootstrap 3.3.5 -->
+				echo '<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">';
+				// <!-- Font Awesome -->
+				echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">';
+				// <!-- Ionicons -->
+				echo '<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">';
+				// <!-- Theme style -->
+				echo '<link rel="stylesheet" href="dist/css/AdminLTE.min.css">';
+				// <!-- AdminLTE Skins. Choose a skin from the css/skins
+				// 		 folder instead of downloading all of them to reduce the load. -->
+				echo '<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">';
+				// <!-- iCheck -->
+				echo '<link rel="stylesheet" href="plugins/iCheck/flat/blue.css">';
+				// <!-- Morris chart -->
+				echo '<link rel="stylesheet" href="plugins/morris/morris.css">';
+				// <!-- jvectormap -->
+				echo '<link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">';
+				// <!-- Date Picker -->
+				echo '<link rel="stylesheet" href="plugins/datepicker/datepicker3.css">';
+				// <!-- Daterange picker -->
+				echo '<link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">';
+				// <!-- bootstrap wysihtml5 - text editor -->
+				echo '<link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">';
+
+		    //<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		    //<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		    echo '<!--[if lt IE 9]>';
+		      echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>';
+		      echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
+		    echo '<![endif]-->';
+
+				// <!-- jQuery 2.1.4 -->
+				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
+				// <!-- jQuery UI 1.11.4 -->
+				echo '<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>';
+				// <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+				echo '<script>';
+				  echo '$.widget.bridge(\'uibutton\', $.ui.button);';
+				echo '</script>';
+				// <!-- Bootstrap 3.3.5
+				echo '<script src="bootstrap/js/bootstrap.min.js"></script>';
+				// <!-- Morris.js charts
+				echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>';
+				echo '<script src="plugins/morris/morris.min.js"></script>';
+				// <!-- Sparkline
+				echo '<script src="plugins/sparkline/jquery.sparkline.min.js"></script>';
+				// <!-- jvectormap
+				echo '<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>';
+				echo '<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>';
+				// <!-- jQuery Knob Chart
+				echo '<script src="plugins/knob/jquery.knob.js"></script>';
+				// <!-- daterangepicker
+				echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>';
+				echo '<script src="plugins/daterangepicker/daterangepicker.js"></script>';
+				// <!-- datepicker
+				echo '<script src="plugins/datepicker/bootstrap-datepicker.js"></script>';
+				// <!-- Bootstrap WYSIHTML5
+				echo '<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>';
+				// <!-- Slimscroll
+				echo '<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>';
+				// <!-- FastClick
+				echo '<script src="plugins/fastclick/fastclick.min.js"></script>';
+				// <!-- AdminLTE App
+				echo '<script src="dist/js/app.min.js"></script>';
 
 				if (Session::isAuthenticated()) {
-					//<!-- Ionicons 2.0.0 -->
-					echo '<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />';
-					//<!-- AdminLTE Skins. Choose a skin from the css/skins
-					//	   folder instead of downloading all of them to reduce the load. -->
-					echo '<link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />';
-					//<!-- iCheck -->
-					echo '<link href="plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />';
-					//<!-- Morris chart -->
-					echo '<link href="plugins/morris/morris.css" rel="stylesheet" type="text/css" />';
-					//<!-- jvectormap -->
-					echo '<link href="plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />';
-					//<!-- Date Picker -->
-					echo '<link href="plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />';
-					//<!-- Daterange picker -->
-					echo '<link href="plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />';
-					//<!-- bootstrap wysihtml5 - text editor -->
-					echo '<link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />';
+					echo '<script src="../api/scripts/logout.js"></script>';
 				} else {
-			    //<!-- iCheck -->
-			    echo '<link href="plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />';
+					echo '<script src="../api/scripts/login.js"></script>';
 				}
-
-				//<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-				//<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-				echo '<!--[if lt IE 9]>';
-					echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>';
-					echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
-				echo '<![endif]-->';
-
-				//<!-- jQuery 2.1.4 -->
-				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-				//<!-- iCheck -->
-				echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
 
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
@@ -101,7 +133,7 @@ class Site {
 			if (Session::isAuthenticated()) {
 				$user = Session::getCurrentUser();
 
-				echo '<body class="skin-blue sidebar-mini">';
+				echo '<body class="hold-transition skin-blue sidebar-mini">';
 					echo '<div class="wrapper">';
 			  		echo '<header class="main-header">';
 							echo '<!-- Logo -->';
@@ -617,10 +649,10 @@ class Site {
 					  	echo '<footer class="main-footer">';
 						  	/*
 								echo '<div class="pull-right hidden-xs">';
-							  		echo '<b>Version</b> 2.0';
+							  	echo '<b>Version</b> 2.3.0';
 								echo '</div>';
 								*/
-								echo '<strong>Copyright &copy; 2015' . (date('Y') > 2015 ? '-' . date('Y') : null) . ' <a href="https://infected.no/">' . Settings::name . '</a>.</strong> All rights reserved.';
+								echo '<strong>Copyright &copy; 2015' . (date('Y') > 2015 ? '-' . date('Y') : null) . ' <a href="//' . Settings::domain . '/">' . Settings::name . '</a>.</strong> All rights reserved.';
 						  echo '</footer>';
 
 					  	//<!-- Control Sidebar -->
@@ -782,48 +814,6 @@ class Site {
 						  //<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
 						  echo '<div class="control-sidebar-bg"></div>';
 						echo '</div><!-- ./wrapper -->';
-
-						//<!-- jQuery 2.1.4 -->
-						//echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-						//<!-- jQuery UI 1.11.2 -->
-						echo '<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>';
-						//<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-						echo '<script>';
-							echo '$.widget.bridge(\'uibutton\', $.ui.button);';
-						echo '</script>';
-						//<!-- Bootstrap 3.3.2 JS -->
-						echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-						//<!-- Morris.js charts -->
-						echo '<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>';
-						echo '<script src="plugins/morris/morris.min.js" type="text/javascript"></script>';
-						//<!-- Sparkline -->
-						echo '<script src="plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>';
-						//<!-- jvectormap -->
-						echo '<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" type="text/javascript"></script>';
-						echo '<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>';
-						//<!-- jQuery Knob Chart -->
-						echo '<script src="plugins/knob/jquery.knob.js" type="text/javascript"></script>';
-						//<!-- daterangepicker -->
-						echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js" type="text/javascript"></script>';
-						echo '<script src="plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>';
-						//<!-- datepicker -->
-						echo '<script src="plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>';
-						//<!-- Bootstrap WYSIHTML5 -->
-						echo '<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>';
-						//<!-- Slimscroll -->
-						echo '<script src="plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>';
-						//<!-- FastClick -->
-						echo '<script src="plugins/fastclick/fastclick.min.js"></script>';
-						//<!-- AdminLTE App -->
-						echo '<script src="dist/js/app.min.js" type="text/javascript"></script>';
-
-						//<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-						echo '<script src="dist/js/pages/dashboard.js" type="text/javascript"></script>';
-						//<!-- AdminLTE for demo purposes -->
-						echo '<script src="dist/js/demo.js" type="text/javascript"></script>';
-
-						// Other
-						echo '<script src="../api/scripts/logout.js"></script>';
 					echo '</body>';
 			} else {
 				$publicPageList = ['register',
@@ -867,25 +857,6 @@ class Site {
 				        echo '<a href="?page=register">Register deg</a>';
 					    echo '</div><!-- /.login-box-body -->';
 						echo '</div><!-- /.login-box -->';
-
-				    //<!-- jQuery 2.1.4 -->
-				    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-				    //<!-- Bootstrap 3.3.2 JS -->
-				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-				    //<!-- iCheck -->
-				    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-				    echo '<script>';
-				    	echo '$(function () {';
-				        echo '$(\'input\').iCheck({';
-				        	echo 'checkboxClass: \'icheckbox_square-blue\',';
-				          echo 'radioClass: \'iradio_square-blue\',';
-				          echo 'increaseArea: \'20%\''; // optional
-				        echo '});';
-				      echo '});';
-				    echo '</script>';
-
-				    // Other
-				    echo '<script src="../api/scripts/login.js"></script>';
 					echo '</body>';
 				}
 			}
