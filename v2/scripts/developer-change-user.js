@@ -18,7 +18,7 @@
  */
 
 $(document).ready(function() {
-	$('.developer-changeuser').on('submit', function(event) {
+	$('.developer-change-user').on('submit', function(event) {
 		event.preventDefault();
 		$.getJSON('../api/json/user/switchUser.php' + '?' + $(this).serialize(), function(data){
 			if (data.result) {

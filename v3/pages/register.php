@@ -35,7 +35,7 @@ class RegisterPage implements IPage {
         $content = null;
 
 		if (!Session::isAuthenticated()) {
-            $content .= '<body class="register-page">';
+        $content .= '<body class="register-page">';
     			$content .= '<div class="register-box">';
     				$content .= '<div class="register-logo">';
     					$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
@@ -73,54 +73,54 @@ class RegisterPage implements IPage {
     							$content .= '<input type="password" class="form-control" name="confirmpassword" placeholder="Bekreft passord" required>';
     							$content .= '<span class="glyphicon glyphicon-repeat form-control-feedback"></span>';
     						$content .= '</div>';
-                            $content .= '<div class="row">';
-                                $content .= '<div class="col-md-4">';
-                                    $content .= '<div class="radio">';
-                                        $content .= '<label><input type="radio" name="gender" value="0" checked> Mann</label>';
-                                    $content .= '</div>';
-                                $content .= '</div><!-- /.col -->';
-                                $content .= '<div class="col-md-4">';
-                                    $content .= '<div class="radio">';
-                                        $content .= '<label><input type="radio" name="gender" value="1"> Kvinne</label>';
-                                    $content .= '</div>';
-                                $content .= '</div><!-- /.col -->';
-                            $content .= '</div>';
-                            $content .= '<div class="form-group">';
-                                $content .= '<label>Fødselsdato</label>';
-                                $content .= '<div class="row">';
-                                    $content .= '<div class="col-md-4">';
-                                        $content .= '<select class="form-control" name="birthday">';
+                  $content .= '<div class="row">';
+                    $content .= '<div class="col-md-4">';
+                      $content .= '<div class="radio">';
+                        $content .= '<label><input type="radio" name="gender" value="0" checked> Mann</label>';
+                      $content .= '</div>';
+                    $content .= '</div><!-- /.col -->';
+                    $content .= '<div class="col-md-4">';
+                      $content .= '<div class="radio">';
+                        $content .= '<label><input type="radio" name="gender" value="1"> Kvinne</label>';
+                      $content .= '</div>';
+                    $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
+                  $content .= '<div class="form-group">';
+                    $content .= '<label>Fødselsdato</label>';
+                    $content .= '<div class="row">';
+                      $content .= '<div class="col-md-4">';
+                        $content .= '<select class="form-control" name="birthday">';
 
-                                            for ($day = 1; $day <= 31; $day++) {
-                                                $content .= '<option value="' . $day . '">' . $day . '</option>';
-                                            }
+                          for ($day = 1; $day <= 31; $day++) {
+                              $content .= '<option value="' . $day . '">' . $day . '</option>';
+                          }
 
-                                        $content .= '</select>';
-                                    $content .= '</div><!-- /.col -->';
-                                    $content .= '<div class="col-md-4">';
-                                        $content .= '<select class="form-control" name="birthmonth">';
+                        $content .= '</select>';
+                      $content .= '</div><!-- /.col -->';
+                      $content .= '<div class="col-md-4">';
+                        $content .= '<select class="form-control" name="birthmonth">';
 
-                                            for ($month = 1; $month <= 12; $month++) {
-                                                $content .= '<option value="' . $month . '">' . DateUtils::getMonthFromInt($month) . '</option>';
-                                            }
+                          for ($month = 1; $month <= 12; $month++) {
+                              $content .= '<option value="' . $month . '">' . DateUtils::getMonthFromInt($month) . '</option>';
+                          }
 
-                                        $content .= '</select>';
-                                    $content .= '</div><!-- /.col -->';
-                                     $content .= '<div class="col-md-4">';
-                                        $content .= '<select class="form-control" name="birthyear">';
+                        $content .= '</select>';
+                      $content .= '</div><!-- /.col -->';
+                       $content .= '<div class="col-md-4">';
+                        $content .= '<select class="form-control" name="birthyear">';
 
-                                            for ($year = date('Y') - 100; $year <= date('Y'); $year++) {
-                                                if ($year == date('Y') - 18) {
-                                                  $content .= '<option value="' . $year . '" selected>' . $year . '</option>';
-                                                } else {
-                                                  $content .= '<option value="' . $year . '">' . $year . '</option>';
-                                                }
-                                            }
+                          for ($year = date('Y') - 100; $year <= date('Y'); $year++) {
+                              if ($year == date('Y') - 18) {
+                                $content .= '<option value="' . $year . '" selected>' . $year . '</option>';
+                              } else {
+                                $content .= '<option value="' . $year . '">' . $year . '</option>';
+                              }
+                          }
 
-                                        $content .= '</select>';
-                                    $content .= '</div><!-- /.col -->';
-                                $content .= '</div>';
-                            $content .= '</div>';
+                        $content .= '</select>';
+                      $content .= '</div><!-- /.col -->';
+                    $content .= '</div>';
+                  $content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
     							$content .= '<input type="tel" class="form-control" data-inputmask="\'mask\': \'99 99 99 99\'" name="phone" placeholder="Telefon" data-mask required>';
     							$content .= '<span class="glyphicon glyphicon-earphone form-control-feedback"></span>';
@@ -130,15 +130,15 @@ class RegisterPage implements IPage {
     							$content .= '<span class="glyphicon glyphicon-map-marker form-control-feedback"></span>';
     						$content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
-                                $content .= '<div class="row">';
-                                    $content .= '<div class="col-md-8">';
-                                        $content .= '<input type="number" class="form-control postalcode" name="postalcode" min="1" max="10000" placeholder="Postnummer" required>';
-                                        $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
-                                    $content .= '</div><!-- /.col -->';
-                                    $content .= '<div class="col-md-4">';
-                                        $content .= '<label class="city">Hvalstad</label>';
-                                    $content .= '</div><!-- /.col -->';
-                                $content .= '</div>';
+                  $content .= '<div class="row">';
+                    $content .= '<div class="col-md-8">';
+                      $content .= '<input type="number" class="form-control postalcode" name="postalcode" min="1" max="10000" placeholder="Postnummer" required>';
+                      $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
+                    $content .= '</div><!-- /.col -->';
+                    $content .= '<div class="col-md-4">';
+                      $content .= '<label class="city">Hvalstad</label>';
+                    $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
     						$content .= '</div>';
     						$content .= '<div class="form-group has-feedback">';
     							$content .= '<input type="text" class="form-control" name="nickname" placeholder="Kallenavn (Valgfritt)">';
@@ -186,7 +186,7 @@ class RegisterPage implements IPage {
 
     			$content .= '<script src="../api/scripts/register.js"></script>';
     			$content .= '<script src="../api/scripts/lookupCity.js"></script>';
-            $content .= '</body>';
+      $content .= '</body>';
 		} else {
             $content .= '<p>Du er allerde registrert.</p>';
 		}
