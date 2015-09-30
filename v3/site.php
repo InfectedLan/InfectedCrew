@@ -72,6 +72,10 @@ class Site {
 				// <!-- bootstrap wysihtml5 - text editor -->
 				echo '<link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">';
 
+				/* Custom */
+				// Select2
+    		echo '<link rel="stylesheet" href="plugins/select2/select2.min.css">';
+
 		    //<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		    //<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		    echo '<!--[if lt IE 9]>';
@@ -112,6 +116,11 @@ class Site {
 				echo '<script src="plugins/fastclick/fastclick.min.js"></script>';
 				// <!-- AdminLTE App
 				echo '<script src="dist/js/app.min.js"></script>';
+
+				/* Custom */
+				// Select2
+    		echo '<link rel="stylesheet" href="../../plugins/select2/select2.min.css">';
+
 
 				if (Session::isAuthenticated()) {
 					echo '<script src="../api/scripts/logout.js"></script>';

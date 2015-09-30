@@ -30,24 +30,16 @@ if (Session::isAuthenticated()) {
 		echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
 		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
 
-		echo '<form class="developer-changeuser" name="input" method="post">';
-			echo '<table>';
-				echo '<tr>';
-					echo '<td>Bruker:</td>';
-					echo '<td>';
-						echo '<select class="chosen-select" name="userId" autofocus>';
-							$userList = UserHandler::getUsers();
+		echo '<form class="developer-change-user" method="post">';
+			echo '<div class="form-group">';
+				echo '<select class="form-control select2" name="userId" autofocus>';
+					$userList = UserHandler::getUsers();
 
-							foreach ($userList as $user) {
-								echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
-							}
-						echo '</select>';
-					echo '</td>';
-				echo '</tr>';
-				echo '<tr>';
-					echo '<td><input type="submit" value="Bytt bruker"></td>';
-				echo '</tr>';
-			echo '</table>';
+					foreach ($userList as $user) {
+						echo '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
+					}
+				echo '</select>';
+			echo '</div><!-- /.form-group -->';
 		echo '</form>';
 	} else {
 		echo 'Du har ikke rettigheter til dette.';
