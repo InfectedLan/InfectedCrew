@@ -95,25 +95,25 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 						$content .= '</div><!-- /.box -->';
 					}
 				} else {
-					$content .= '<div class="box">';
-						$content .= '<div class="box-body">';
-							$content .= '<p>Under ser du en liste med alle brukere som har spesielle rettigheter.</p>';
-						$content .= '</div><!-- /.box-body -->';
-					$content .= '</div><!-- /.box -->';
+				  $permissionUserList = UserHandler::getPermissionUsers();
 
-					$content .= '<div class="row">';
-						$content .= '<div class="col-md-4">';
+					if (!empty($permissionUserList)) {
+						$content .= '<div class="box">';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Under ser du en liste med alle brukere som har spesielle rettigheter.</p>';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
 
-						$permissionUserList = UserHandler::getPermissionUsers();
+						$content .= '<div class="row">';
+							$content .= '<div class="col-md-4">';
 
-							if (!empty($permissionUserList)) {
 								foreach ($permissionUserList as $permissionUser) {
 									if ($permissionUser != null) {
 										$permissionCount = count($permissionUser->getPermissions());
 
 										$content .= '<div class="box">';
 											$content .= '<div class="box-header with-border">';
-												$content .= '<h3 class="box-title"><a href="?page=my-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
+												$content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
 											$content .= '</div>';
 											$content .= '<div class="box-body">';
 												$content .= '<p class="pull-left">Denne brukeren har ' . $permissionCount . ' ' . ($permissionCount > 1 ? 'tilganger' : 'tilgang') . '.</p>';
@@ -126,15 +126,11 @@ class AdminPermissionsPage extends AdminPage implements IPage {
 									}
 								}
 							} else {
-								$content .= '<div class="row">';
-									$content .= '<div class="col-md-4">';
-										$content .= '<div class="box">';
-											$content .= '<div class="box-body">';
-												$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
-											$content .= '</div><!-- /.box-body -->';
-										$content .= '</div><!-- /.box -->';
-									$content .= '</div><!--/.col (left) -->';
-								$content .= '</div><!-- /.row -->';
+								$content .= '<div class="box">';
+									$content .= '<div class="box-body">';
+										$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
 							}
 
 						$content .= '</div><!--/.col (left) -->';

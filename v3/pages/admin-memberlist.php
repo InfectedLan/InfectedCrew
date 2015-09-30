@@ -37,7 +37,7 @@ class AdminMemberListPage extends AdminPage implements IPage {
 				$content .= '<script src="scripts/admin-memberlist.js"></script>';
 
 				$content .= '<div class="row">';
-					$content .= '<div class="col-md-6">';
+					$content .= '<div class="col-md-4">';
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';

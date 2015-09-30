@@ -62,7 +62,7 @@ class MyProfilePage implements IPage {
 
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
-						  	$content .= '<div class="box">';
+					  	$content .= '<div class="box">';
 								$content .= '<div class="box-header">';
 							  		$content .= '<h3 class="box-title">Informasjon</h3>';
 								$content .= '</div><!-- /.box-header -->';

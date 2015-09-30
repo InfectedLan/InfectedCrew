@@ -36,10 +36,24 @@ class AdminPage implements IPage {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('admin')) {
-				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Admin inneholder alle funskjoner på administrativt nivå.</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			} else {
-				$content .= '<p>Du har ikke tilgang til dette.</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
+		} else {
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;

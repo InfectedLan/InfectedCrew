@@ -26,7 +26,7 @@ class EventPage implements IPage {
 	use TPage;
 
 	public function getTitle() {
-		return 'Event';
+		return 'Arrangement';
 	}
 
 	public function getContent() {
@@ -36,10 +36,24 @@ class EventPage implements IPage {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('event')) {
-				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Arrangement inneholder alle funskjoner som er knyttet til et arrangement.</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			} else {
-				$content .= '<p>Du har ikke tilgang til dette.</p>';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette!</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
+		} else {
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;
