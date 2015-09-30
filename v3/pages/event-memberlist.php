@@ -35,18 +35,20 @@ class EventMemberListPage extends EventPage implements IPage {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('event.memberlist')) {
+				$content .= '<script src="scripts/event-memberlist.js"></script>';
+
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-6">';
-					  	$content .= '<div class="box">';
+					  $content .= '<div class="box">';
 							$content .= '<div class="box-header">';
-						  		$content .= '<h3 class="box-title">Hent ut medlemsliste</h3>';
+						  	$content .= '<h3 class="box-title">Hent ut medlemsliste</h3>';
 							$content .= '</div><!-- /.box-header -->';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
 
 						  		$content .= '<form class="memberlist" method="post">';
 									$content .= '<div class="form-group">';
-							  			$content .= '<label>År</label>';
+							  		$content .= '<label>År</label>';
 							  			$content .= '<select class="form-control" name="year">';
 
 											$eventList = EventHandler::getEvents();
@@ -62,8 +64,8 @@ class EventMemberListPage extends EventPage implements IPage {
 										$content .= '</select>';
 									$content .= '</div>';
 									$content .= '<div class="form-group">';
-									  	$content .= '<label>Aldersgrense</label>';
-									  	$content .= '<select class="form-control" name="ageLimit">';
+										$content .= '<label>Aldersgrense</label>';
+									  $content .= '<select class="form-control" name="ageLimit">';
 
 											for ($age = 1; $age <= 100; $age++) {
 												if ($age == 20) {
@@ -81,15 +83,13 @@ class EventMemberListPage extends EventPage implements IPage {
 											$content .= '<option value="html" selected>Tekst (.html)</option>';
 											$content .= '<option value="csv">Regneark (.csv)</option>';
 										$content .= '</select>';
-								  	$content .= '</div><!-- /.form group -->';
-								  	$content .= '<button type="submit" class="btn btn-primary">Hent</button>';
-						  		$content .= '</form>';
+								  $content .= '</div><!-- /.form group -->';
+								  $content .= '<button type="submit" class="btn btn-primary">Hent</button>';
+						  	$content .= '</form>';
 							$content .= '</div><!-- /.box-body -->';
-					  	$content .= '</div><!-- /.box -->';
+					  $content .= '</div><!-- /.box -->';
 					$content .= '</div><!--/.col (left) -->';
 				$content .= '</div><!-- /.row -->';
-
-				$content .= '<script src="scripts/event-memberlist.js"></script>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
