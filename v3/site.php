@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2015 Infected <http://infected.no>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,7 +15,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library.  If not, see <http://www.gnu.org/licenses>.
  */
 
 require_once 'session.php';
@@ -167,7 +167,7 @@ class Site {
 								  					echo '<li><!-- start message -->';
 															echo '<a href="#">';
 										  					echo '<div class="pull-left">';
-																echo '<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>';
+																echo '<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">';
 														  	echo '</div>';
 														  	echo '<h4>';
 																echo 'Support Team';
@@ -179,7 +179,7 @@ class Site {
 								  					echo '<li>';
 															echo '<a href="#">';
 														  	echo '<div class="pull-left">';
-																echo '<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>';
+																echo '<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image">';
 														  	echo '</div>';
 														  	echo '<h4>';
 																echo 'AdminLTE Design Team';
@@ -191,7 +191,7 @@ class Site {
 														echo '<li>';
 															echo '<a href="#">';
 														  	echo '<div class="pull-left">';
-																echo '<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>';
+																echo '<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image">';
 														  	echo '</div>';
 														  	echo '<h4>';
 																echo 'Developers';
@@ -203,7 +203,7 @@ class Site {
 														echo '<li>';
 															echo '<a href="#">';
 														  	echo '<div class="pull-left">';
-																echo '<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>';
+																echo '<img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image">';
 														  	echo '</div>';
 														  	echo '<h4>';
 																echo 'Sales Department';
@@ -215,7 +215,7 @@ class Site {
 														echo '<li>';
 															echo '<a href="#">';
 														  	echo '<div class="pull-left">';
-																echo '<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>';
+																echo '<img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image">';
 														  	echo '</div>';
 														  	echo '<h4>';
 																echo 'Reviewers';
@@ -427,7 +427,7 @@ class Site {
 					  		echo '<!-- search form -->';
 					  		echo '<form action="#" method="get" class="sidebar-form">';
 					   			echo '<div class="input-group">';
-						  			echo '<input type="text" name="q" class="form-control" placeholder="Search..."/>';
+						  			echo '<input type="text" name="q" class="form-control" placeholder="Search...">';
 						  			echo '<span class="input-group-btn">';
 											echo '<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>';
 						  			echo '</span>';
@@ -512,7 +512,7 @@ class Site {
 
 										if ($user->hasPermission('event')) {
 											echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
-											  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i></a>';
+											  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Arrangement</span><i class="fa fa-angle-left pull-right"></i></a>';
 											  echo '<ul class="treeview-menu">';
 
 													if ($user->hasPermission('event.checkin')) {
@@ -734,7 +734,7 @@ class Site {
 												echo '<a href="javascript::;">';
 										  		echo '<h4 class="control-sidebar-subheading">';
 														echo 'Laravel Integration';
-														echo '<span class="label label-waring pull-right">50%</span>';
+														echo '<span class="label label-warning pull-right">50%</span>';
 										 			echo '</h4>';
 									  			echo '<div class="progress progress-xxs">';
 														echo '<div class="progress-bar progress-bar-warning" style="width: 50%"></div>';
@@ -763,7 +763,7 @@ class Site {
 										  echo '<div class="form-group">';
 												echo '<label class="control-sidebar-subheading">';
 											  	echo 'Report panel usage';
-											  	echo '<input type="checkbox" class="pull-right" checked />';
+											  	echo '<input type="checkbox" class="pull-right" checked>';
 												echo '</label>';
 												echo '<p>';
 											  	echo 'Some information about this general settings option';
@@ -772,7 +772,7 @@ class Site {
 										  echo '<div class="form-group">';
 												echo '<label class="control-sidebar-subheading">';
 											  	echo 'Allow mail redirect';
-											  	echo '<input type="checkbox" class="pull-right" checked />';
+											  	echo '<input type="checkbox" class="pull-right" checked>';
 												echo '</label>';
 												echo '<p>';
 											  	echo 'Other sets of options are available';
@@ -781,7 +781,7 @@ class Site {
 									  	echo '<div class="form-group">';
 												echo '<label class="control-sidebar-subheading">';
 												  echo 'Expose author name in posts';
-													echo '<input type="checkbox" class="pull-right" checked />';
+													echo '<input type="checkbox" class="pull-right" checked>';
 												echo '</label>';
 												echo '<p>';
 												  echo 'Allow the user to show his name in blog posts';
@@ -792,13 +792,13 @@ class Site {
 											echo '<div class="form-group">';
 												echo '<label class="control-sidebar-subheading">';
 												  echo 'Show me as online';
-												  echo '<input type="checkbox" class="pull-right" checked />';
+												  echo '<input type="checkbox" class="pull-right" checked>';
 												echo '</label>';
 										  echo '</div><!-- /.form-group -->';
 										  echo '<div class="form-group">';
 												echo '<label class="control-sidebar-subheading">';
 													echo 'Turn off notifications';
-												  echo '<input type="checkbox" class="pull-right" />';
+												  echo '<input type="checkbox" class="pull-right">';
 												echo '</label>';
 										  echo '</div><!-- /.form-group -->';
 										  echo '<div class="form-group">';
@@ -833,11 +833,11 @@ class Site {
 			        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
 				        echo '<form class="login" method="post">';
 			          	echo '<div class="form-group has-feedback">';
-			            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post"/>';
+			            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post">';
 			            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
 			          	echo '</div>';
 			          	echo '<div class="form-group has-feedback">';
-			            	echo '<input type="password" name="password" class="form-control" placeholder="Passord"/>';
+			            	echo '<input type="password" name="password" class="form-control" placeholder="Passord">';
 			            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
 			          	echo '</div>';
 			          	echo '<div class="row">';

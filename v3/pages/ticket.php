@@ -29,21 +29,19 @@ class TicketPage implements IPage {
 	public function getTitle() {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('event.tickets')) {
 
+			if ($user->hasPermission('user.ticket')) {
 				if (isset($_GET['id'])) {
 					$ticket = TicketHandler::getTicket($_GET['id']);
 
 					if ($ticket != null) {
-						return 'Billet #' . $ticket->getId();
+						return 'Billett #' . $ticket->getId();
 					}
 				}
 			}
 		}
 
-		return 'Billet';
+		return 'Billett';
 	}
 
 	public function getContent() {
@@ -52,70 +50,93 @@ class TicketPage implements IPage {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 
-			if ($user->hasPermission('*') ||
-				$user->hasPermission('event.tickets')) {
-
+			if ($user->hasPermission('user.ticket')) {
 				if (isset($_GET['id'])) {
 					$ticket = TicketHandler::getTicket($_GET['id']);
 
 					if ($ticket != null) {
-						$content .= '<h3>' . $ticket->getString() . '</h3>';
+						$content .= '<div class="row">';
+							$content .= '<div class="col-md-4">';
+								$content .= '<div class="box">';
+									$content .= '<div class="box-header">';
+								  	$content .= '<h3 class="box-title">' . $ticket->getString() . '</h3>';
+									$content .= '</div><!-- /.box-header -->';
+									$content .= '<div class="box-body">';
+										$content .= '<table class="table">';
+											$content .= '<tr>';
+												$content .= '<td>Billettnummer:</td>';
+												$content .= '<td>' . $ticket->getId() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td>Type:</td>';
+												$content .= '<td>' . $ticket->getType()->getTitle() . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$buyerUser = $ticket->getBuyer();
 
-						$content .= '<table>';
-							$content .= '<tr>';
-								$content .= '<td>Billettnummer:</td>';
-								$content .= '<td>' . $ticket->getId() . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td>Type:</td>';
-								$content .= '<td>' . $ticket->getType()->getTitle() . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$buyerUser = $ticket->getBuyer();
+												$content .= '<td>Kjøpt av:</td>';
+												$content .= '<td><a href="index.php?page=user-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$ticketUser = $ticket->getUser();
 
-								$content .= '<td>Kjøpt av:</td>';
-								$content .= '<td><a href="index.php?page=my-profile&id=' . $buyerUser->getId()  . '">' . $buyerUser->getFullname() . '</a></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$ticketUser = $ticket->getUser();
+												$content .= '<td>Brukes av:</td>';
+												$content .= '<td><a href="index.php?page=user-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$seaterUser = $ticket->getSeater();
 
-								$content .= '<td>Brukes av:</td>';
-								$content .= '<td><a href="index.php?page=my-profile&id=' . $ticketUser->getId()  . '">' . $ticketUser->getFullname() . '</a></td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$seaterUser = $ticket->getSeater();
+												$content .= '<td>Plasseres av:</td>';
+												$content .= '<td><a href="index.php?page=user-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
+											$content .= '</tr>';
 
-								$content .= '<td>Plasseres av:</td>';
-								$content .= '<td><a href="index.php?page=my-profile&id=' . $seaterUser->getId()  . '">' . $seaterUser->getFullname() . '</a></td>';
-							$content .= '</tr>';
+											if ($ticket->isSeated()) {
+												$content .= '<tr>';
+													$content .= '<td>Plass:</td>';
+													$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
+												$content .= '</tr>';
+											}
 
-							if ($ticket->isSeated()) {
-								$content .= '<tr>';
-									$content .= '<td>Plass:</td>';
-									$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
-								$content .= '</tr>';
-							}
-
-							$content .= '<tr>';
-								$content .= '<td>Kan returneres?</td>';
-								$content .= '<td>' . ($ticket->isRefundable() ? 'Ja' : 'Nei') . '</td>';
-							$content .= '</tr>';
-							$content .= '<tr>';
-								$content .= '<td>Sjekket inn?</td>';
-								$content .= '<td>' . ($ticket->isCheckedIn() ? 'Ja' : 'Nei') . '</td>';
-							$content .= '</tr>';
-						$content .= '</table>';
+											$content .= '<tr>';
+												$content .= '<td>Kan returneres?</td>';
+												$content .= '<td>' . ($ticket->isRefundable() ? 'Ja' : 'Nei') . '</td>';
+											$content .= '</tr>';
+											$content .= '<tr>';
+												$content .= '<td>Sjekket inn?</td>';
+												$content .= '<td>' . ($ticket->isCheckedIn() ? 'Ja' : 'Nei') . '</td>';
+											$content .= '</tr>';
+										$content .= '</table>';
+									$content .= '</div><!-- /.box-body -->';
+							  $content .= '</div><!-- /.box -->';
+							$content .= '</div><!--/.col (left) -->';
+						$content .= '</div><!-- /.row -->';
 					} else {
-						$content .= '<p>Billetten finnes ikke.</p>';
+						$content .= '<div class="box">';
+							$content .= '<div class="box-body">';
+								$content .= '<p>Denne billetten finnes ikke.</p>';
+							$content .= '</div><!-- /.box-body -->';
+						$content .= '</div><!-- /.box -->';
 					}
 				} else {
-					$content .= '<p>Ingen billett spesifisert.</p>';
+					$content .= '<div class="box">';
+						$content .= '<div class="box-body">';
+							$content .= '<p>Ingen billett spesifisert.</p>';
+						$content .= '</div><!-- /.box-body -->';
+					$content .= '</div><!-- /.box -->';
 				}
 			} else {
-				$content .= 'Du har ikke rettigheter til dette.';
+				$content .= '<div class="box">';
+					$content .= '<div class="box-body">';
+						$content .= '<p>Du har ikke rettigheter til dette.</p>';
+					$content .= '</div><!-- /.box-body -->';
+				$content .= '</div><!-- /.box -->';
 			}
 		} else {
-			$content .= 'Du er ikke logget inn.';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn.</p>';
+				$content .= '</div><!-- /.box-body -->';
+			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;
