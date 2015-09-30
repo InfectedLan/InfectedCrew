@@ -43,23 +43,26 @@ class Site {
 				echo '<meta name="keywords" content="' . Settings::keywords . '">';
 				echo '<meta name="author" content="halvors and petterroea">';
 				echo '<meta charset="UTF-8">';
-				echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
+				// Tell the browser to be responsive to screen width
+		    echo '<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">';
 				echo '<link rel="shortcut icon" href="images/favicon.ico">';
-				//<!-- Bootstrap 3.3.4 -->
-				echo '<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- FontAwesome 4.3.0 -->
-				echo '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />';
-				//<!-- Theme style -->
-				echo '<link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />';
+
+				// Bootstrap 3.3.5
+		    echo '<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">';
+				// Font Awesome
+				echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">';
+				// Ionicons
+				echo '<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">';
+				// Theme style
+				echo '<link rel="stylesheet" href="dist/css/AdminLTE.min.css">';
+				// AdminLTE Skins. Choose a skin from the css/skins
+				// folder instead of downloading all of them to reduce the load.
+				echo '<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">';
+
+				// iCheck
+				echo '<link rel="stylesheet" href="plugins/iCheck/square/blue.css">';
 
 				if (Session::isAuthenticated()) {
-					//<!-- Ionicons 2.0.0 -->
-					echo '<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />';
-					//<!-- AdminLTE Skins. Choose a skin from the css/skins
-					//	   folder instead of downloading all of them to reduce the load. -->
-					echo '<link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />';
-					//<!-- iCheck -->
-					echo '<link href="plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />';
 					//<!-- Morris chart -->
 					echo '<link href="plugins/morris/morris.css" rel="stylesheet" type="text/css" />';
 					//<!-- jvectormap -->
@@ -70,22 +73,38 @@ class Site {
 					echo '<link href="plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />';
 					//<!-- bootstrap wysihtml5 - text editor -->
 					echo '<link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />';
-				} else {
-			    //<!-- iCheck -->
-			    echo '<link href="plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />';
 				}
 
-				//<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-				//<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+				// HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+		    // WARNING: Respond.js doesn't work if you view the page via file://
 				echo '<!--[if lt IE 9]>';
-					echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>';
+					echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>';
 					echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
 				echo '<![endif]-->';
 
-				//<!-- jQuery 2.1.4 -->
+				// jQuery 2.1.4
 				echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-				//<!-- iCheck -->
-				echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
+				// Bootstrap 3.3.5
+				echo '<script src="bootstrap/js/bootstrap.min.js"></script>';
+				// iCheck
+				echo '<script src="plugins/iCheck/icheck.min.js"></script>';
+
+				// Custom scripts
+				if (Session::isAuthenticated()) {
+					echo '<script src="../api/scripts/logout.js"></script>';
+				} else {
+					echo '<script src="../api/scripts/login.js"></script>';
+				}
+
+				echo '<script>';
+					echo '$(function () {';
+						echo '$(\'input\').iCheck({';
+							echo 'checkboxClass: \'icheckbox_square-blue\',';
+							echo 'radioClass: \'iradio_square-blue\',';
+							echo 'increaseArea: \'20%\'';// optional
+						echo '});';
+					echo '});';
+				echo '</script>';
 
 				echo '<script>';
 					echo '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
@@ -101,7 +120,7 @@ class Site {
 			if (Session::isAuthenticated()) {
 				$user = Session::getCurrentUser();
 
-				echo '<body class="skin-blue sidebar-mini">';
+				echo '<body class="hold-transition skin-blue sidebar-mini">">';
 					echo '<div class="wrapper">';
 			  		echo '<header class="main-header">';
 							echo '<!-- Logo -->';
@@ -480,7 +499,7 @@ class Site {
 
 										if ($user->hasPermission('event')) {
 											echo '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
-											  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Event</span><i class="fa fa-angle-left pull-right"></i></a>';
+											  echo '<a href="?page=event"><i class="fa fa-calendar"></i><span>Arrangement</span><i class="fa fa-angle-left pull-right"></i></a>';
 											  echo '<ul class="treeview-menu">';
 
 													if ($user->hasPermission('event.checkin')) {
@@ -783,6 +802,7 @@ class Site {
 						  echo '<div class="control-sidebar-bg"></div>';
 						echo '</div><!-- ./wrapper -->';
 
+						/*
 						//<!-- jQuery 2.1.4 -->
 						//echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
 						//<!-- jQuery UI 1.11.2 -->
@@ -791,8 +811,6 @@ class Site {
 						echo '<script>';
 							echo '$.widget.bridge(\'uibutton\', $.ui.button);';
 						echo '</script>';
-						//<!-- Bootstrap 3.3.2 JS -->
-						echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
 						//<!-- Morris.js charts -->
 						echo '<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>';
 						echo '<script src="plugins/morris/morris.min.js" type="text/javascript"></script>';
@@ -816,14 +834,7 @@ class Site {
 						echo '<script src="plugins/fastclick/fastclick.min.js"></script>';
 						//<!-- AdminLTE App -->
 						echo '<script src="dist/js/app.min.js" type="text/javascript"></script>';
-
-						//<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-						echo '<script src="dist/js/pages/dashboard.js" type="text/javascript"></script>';
-						//<!-- AdminLTE for demo purposes -->
-						echo '<script src="dist/js/demo.js" type="text/javascript"></script>';
-
-						// Other
-						echo '<script src="../api/scripts/logout.js"></script>';
+						*/
 					echo '</body>';
 			} else {
 				$publicPageList = ['register',
@@ -867,25 +878,6 @@ class Site {
 				        echo '<a href="?page=register">Register deg</a>';
 					    echo '</div><!-- /.login-box-body -->';
 						echo '</div><!-- /.login-box -->';
-
-				    //<!-- jQuery 2.1.4 -->
-				    //echo '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-				    //<!-- Bootstrap 3.3.2 JS -->
-				    echo '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-				    //<!-- iCheck -->
-				    //echo '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-				    echo '<script>';
-				    	echo '$(function () {';
-				        echo '$(\'input\').iCheck({';
-				        	echo 'checkboxClass: \'icheckbox_square-blue\',';
-				          echo 'radioClass: \'iradio_square-blue\',';
-				          echo 'increaseArea: \'20%\''; // optional
-				        echo '});';
-				      echo '});';
-				    echo '</script>';
-
-				    // Other
-				    echo '<script src="../api/scripts/login.js"></script>';
 					echo '</body>';
 				}
 			}
@@ -946,24 +938,24 @@ class Site {
 		 					// Print the page.
 							//<!-- Content Header (Page header) -->';
 							echo '<section class="content-header">';
-						  		echo '<h1>';
+					  		echo '<h1>';
 
-						  			// Check if this page as a parent or not, and decide what to show.
-						  			if ($page->hasParent()) {
-											echo $page->getParent()->getTitle();
-											echo '<small>' . $page->getTitle() . '</small>';
-						  			} else {
-											echo $page->getTitle();
-						  			}
+					  			// Check if this page as a parent or not, and decide what to show.
+					  			if ($page->hasParent()) {
+										echo $page->getParent()->getTitle();
+										echo '<small>' . $page->getTitle() . '</small>';
+					  			} else {
+										echo $page->getTitle();
+					  			}
 
-						  		echo '</h1>';
+					  		echo '</h1>';
 
-						  		/*
-						  		echo '<ol class="breadcrumb">';
-									echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-									echo '<li class="active">Dashboard</li>';
-						  		echo '</ol>';
-						  		*/
+					  		/*
+					  		echo '<ol class="breadcrumb">';
+								echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+								echo '<li class="active">Dashboard</li>';
+					  		echo '</ol>';
+					  		*/
 							echo '</section>';
 							// Main content
 							echo '<section class="content">';
