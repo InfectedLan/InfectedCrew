@@ -25,7 +25,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('admin.memberlist')) {
-		echo '<script src="scripts/event-memberlist.js"></script>';
+		echo '<script src="scripts/admin-memberlist.js"></script>';
 		echo '<h3>Medlemsliste</h3>';
 
 		echo '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.<br></p>';
