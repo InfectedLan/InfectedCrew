@@ -58,14 +58,11 @@ class TicketPage implements IPage {
 						$content .= '<div class="row">';
 							$content .= '<div class="col-md-4">';
 								$content .= '<div class="box">';
-									$content .= '<div class="box-header">';
-								  	$content .= '<h3 class="box-title">' . $ticket->getString() . '</h3>';
-									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
 										$content .= '<table class="table">';
 											$content .= '<tr>';
 												$content .= '<td>Billettnummer:</td>';
-												$content .= '<td>' . $ticket->getId() . '</td>';
+												$content .= '<td>' . $ticket->toString() . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Type:</td>';
