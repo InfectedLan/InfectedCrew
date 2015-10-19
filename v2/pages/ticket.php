@@ -29,7 +29,7 @@ if (Session::isAuthenticated()) {
 			$ticket = TicketHandler::getTicket($_GET['id']);
 
 			if ($ticket != null) {
-				echo '<h3>' . $ticket->getString() . '</h3>';
+				echo '<h3>' . $ticket->toString() . '</h3>';
 
 				echo '<table>';
 					echo '<tr>';
