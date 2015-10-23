@@ -53,7 +53,7 @@ class EventChecklistPage extends EventPage implements IPage {
 										$content .= '<h3 class="box-title">Sjekkliste for din stilling</h3>';
 									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
-										$content .= self::getNotelist($commonNoteList);
+										$content .= self::getNoteListTable($commonNoteList);
 									$content .= '</div><!-- /.box-body -->';
 								$content .= '</div><!-- /.box -->';
 							}
@@ -67,7 +67,7 @@ class EventChecklistPage extends EventPage implements IPage {
 									$content .= '<h3 class="box-title">Din private sjekkliste</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-									$content .= self::getNotelist($privateNoteList);
+									$content .= self::getNoteListTable($privateNoteList);
 								$content .= '</div><!-- /.box-body -->';
 							$content .= '</div><!-- /.box -->';
 						}
@@ -100,7 +100,7 @@ class EventChecklistPage extends EventPage implements IPage {
 									$content .= '</div><!-- /.box-header -->';
 									$content .= '<div class="box-body">';
 										$content .= '<p>Fyll ut feltene under for å legge til et nytt gjøremål.</p>';
-										$content .= self::getNotelist($noteList);
+										$content .= self::getNoteListTable($noteList);
 									$content .= '</div><!-- /.box-body -->';
 								$content .= '</div><!-- /.box -->';
 							}
@@ -126,7 +126,7 @@ class EventChecklistPage extends EventPage implements IPage {
 		return $content;
 	}
 
-	private function getNotelist(array $noteList) {
+	private function getNoteListTable(array $noteList) {
 		$content = null;
 
 		if (Session::isAuthenticated()) {
@@ -222,7 +222,7 @@ class EventChecklistPage extends EventPage implements IPage {
 		return $content;
 	}
 
-	private function addNote() {
+	private function getAddNoteForm() {
 		$content = null;
 
 		if (Session::isAuthenticated()) {
