@@ -18,21 +18,25 @@
  */
 
 $(document).ready(function() {
-	$('.chief-groups-add').on('submit', function(event) {
+	$('.chief-group-add').on('submit', function(event) {
 		event.preventDefault();
 		addGroup(this);
 	});
 
-	$('.chief-groups-edit').on('submit', function(event) {
+	$('.chief-group-edit').on('submit', function(event) {
 		event.preventDefault();
 	    editGroup(this);
 	});
 
-	$('.chief-groups-adduser').on('submit', function(event) {
+	$('.chief-group-adduser').on('submit', function(event) {
 		event.preventDefault();
 		addUserToGroup(this);
 	});
 });
+
+function viewGroup(id) {
+	$(location).attr('href', '?page=chief-group&id=' + id);
+}
 
 function addGroup(form) {
 	$.getJSON('../api/json/group/addGroup.php' + '?' + $(form).serialize(), function(data) {
@@ -92,4 +96,8 @@ function removeUsersFromGroup(id) {
 			error(data.message);
 		}
 	});
+}
+
+function viewTeam(id) {
+	$(location).attr('href', '?page=chief-team&id=' + id);
 }

@@ -67,15 +67,14 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 					$user->equals($team->getLeader())) {
 					$group = $team->getGroup();
 
-				  	$content .= '<div class="row">';
+					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
 							$content .= '<div class="box">';
 								$content .= '<div class="box-header">';
 							  		$content .= '<h3 class="box-title">Medlemmer i ' . $group->getTitle() . ':' . $team->getTitle() . '</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
-
-						  			$memberList = $team->getMembers();
+						  		$memberList = $team->getMembers();
 
 									if (!empty($memberList)) {
 										$content .= '<ul class="list-group">';
@@ -99,7 +98,7 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 						$content .= '<div class="col-md-6">';
 							$content .= '<div class="box">';
 								$content .= '<div class="box-header">';
-							  		$content .= '<h3 class="box-title">Legg til medlemmer</h3>';
+							  	$content .= '<h3 class="box-title">Legg til medlemmer</h3>';
 								$content .= '</div><!-- /.box-header -->';
 								$content .= '<div class="box-body">';
 
@@ -109,19 +108,19 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 										$content .= '<form class="chief-team-adduser" method="post">';
 											$content .= '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
 											$content .= '<div class="form-group">';
-									  			$content .= '<label>Velg bruker</label>';
-									  			$content .= '<div class="input-group">';
-													$content .= '<select class="form-control" name="userId" required>';
+								  			$content .= '<label>Velg bruker</label>';
+								  			$content .= '<div class="input-group">';
+												$content .= '<select class="form-control" name="userId" required>';
 
-										  				foreach ($freeUserList as $userValue) {
-															$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-														}
+									  			foreach ($freeUserList as $userValue) {
+														$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+													}
 
-													$content .= '</select>';
-													$content .= '<span class="input-group-btn">';
-												  		$content .= '<button type="submit" class="btn btn-primary btn-flat">Legg til</button>';
-													$content .= '</span>';
-											  	$content .= '</div>';
+												$content .= '</select>';
+												$content .= '<span class="input-group-btn">';
+											  	$content .= '<button type="submit" class="btn btn-primary btn-flat">Legg til</button>';
+												$content .= '</span>';
+										  	$content .= '</div>';
 											$content .= '</div>';
 										$content .= '</form>';
 									} else {
@@ -150,68 +149,41 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 
 					$content .= '<div class="row">';
 						$content .= '<div class="col-md-6">';
+							$content .= '<div class="box">';
+								$content .= '<div class="box-header">';
+									$content .= '<h3 class="box-title">Putt et crewmedlem i et lag</h3>';
+								$content .= '</div><!-- /.box-header -->';
+								$content .= '<div class="box-body">';
+									$content .= self::getAddUserToTeamForm($group);
+								$content .= '</div><!-- /.box-body -->';
+							$content .= '</div><!-- /.box -->';
 
-							$teamList = $group->getTeams();
+							foreach ($group->getTeams() as $team) {
+								$content .= '<div class="box">';
+									$content .= '<div class="box-header">';
+										$content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+									$content .= '</div><!-- /.box-header -->';
+									$content .= '<div class="box-body">';
+										$memberList = $team->getMembers();
 
-							if (!empty($teamList)) {
-								$userList = UserHandler::getMemberUsers();
+										if (!empty($memberList)) {
+											$content .= '<ul>';
 
-								foreach ($teamList as $team) {
-								  	$content .= '<div class="box">';
-										$content .= '<div class="box-header">';
-									  		$content .= '<h3 class="box-title">' . $group->getTitle() . ':' . $team->getTitle() . '</h3>';
-										$content .= '</div><!-- /.box-header -->';
-										$content .= '<div class="box-body">';
-											$content .= '<form class="chief-team-edit" method="post">';
-												$content .= '<input type="hidden" name="teamId" value="' . $team->getId() . '">';
-												$content .= '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
-												$content .= '<div class="form-group">';
-										  			$content .= '<label>Navn</label>';
-													$content .= '<input type="text" class="form-control" name="title" value="' . $team->getTitle() . '" required>';
-												$content .= '</div>';
-												$content .= '<div class="form-group">';
-										  			$content .= '<label>Antall medlemmer <span class="badge">' . count($team->getMembers()) . '</span></label>';
-												$content .= '</div>';
-												$content .= '<div class="form-group">';
-												  	$content .= '<label>Beskrivelse</label>';
-												  	$content .= '<textarea class="form-control" rows="3" name="content" placeholder="Skriv inn en beskrivese her..." required>';
-												  		$content .= $team->getDescription();
-												  	$content .='</textarea>';
-												$content .= '</div>';
-												$content .= '<div class="form-group">';
-										  			$content .= '<label>Chief</label>';
-										  			$content .= '<select class="form-control" name="leader" required>';
-										  				$content .= '<option value="0"></option>';
+												foreach ($memberList as $member) {
+													$content .= '<li></li>';
+												}
 
-														foreach ($userList as $userValue) {
-															if ($userValue->equals($team->getLeader())) {
-																$content .= '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
-															} else {
-																$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-															}
-														}
+											$content .= '<ul>';
+										} else {
+											$content .= '<p>Det er ingen medlemmer i dette laget.</p>';
+										}
 
-													$content .= '</select>';
-												$content .= '</div>';
-
-												$content .= '<div class="btn-group" role="group" aria-label="...">';
-													$content .= '<button type="button" class="btn btn-primary" onClick="viewTeam(' . $team->getId() . ')">Vis</button>';
-													$content .= '<button type="button" class="btn btn-primary" onClick="viewGroup(' . $group->getId() . ')">Vis crew</button>';
-										  			$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
-													/*
-													$content .= '<button type="button" class="btn btn-primary" onClick="removeTeam(' . $team->getId() . ')">Slett</button>';
-													*/
-												$content .= '</div>';
-								  			$content .= '</form>';
-										$content .= '</div><!-- /.box-body -->';
-									$content .= '</div><!-- /.box -->';
-								}
-							} else {
-								$content .= '<p>Det finnes ikke noen lag i denne gruppen.</p>';
+									$content .= '</div><!-- /.box-body -->';
+								$content .= '</div><!-- /.box -->';
 							}
 
-						$content .= '</div><!-- ./col -->';
-				  	$content .= '</div><!-- /.row -->';
+						$content .= '</div><!-- ./col (right) -->';
+					$content .= '</div><!-- /.row -->';
 				} else {
 					$content .= '<div class="box">';
 						$content .= '<div class="box-body">';
@@ -249,6 +221,38 @@ class ChiefTeamPage extends ChiefPage implements IPage {
 		}
 
 		return $freeUserList;
+	}
+
+	private function getAddUserToTeamForm(Group $group) {
+		$content = null;
+
+		$content .= '<form class="chief-team-adduser" method="post">';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Bruker</label>';
+				$content .= '<select class="form-control" name="userId">';
+					$content .= '<option value="0">Ingen</option>';
+
+					foreach (self::getFreeUsers($group) as $userValue) {
+						$content .= '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+					}
+
+				$content .= '</select>';
+			$content .= '</div><!-- /.form group -->';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Lag</label>';
+				$content .= '<select class="form-control" name="teamId">';
+					$content .= '<option value="0">Ingen</option>';
+
+					foreach ($group->getTeams() as $team) {
+						$content .= '<option value="' . $team->getId() . '">' . $team->getTitle() . '</option>';
+					}
+
+				$content .= '</select>';
+			$content .= '</div><!-- /.form group -->';
+			$content .= '<button type="submit" class="btn btn-primary">Putt i lag</button>';
+		$content .= '</form>';
+
+		return $content;
 	}
 }
 ?>
