@@ -250,12 +250,19 @@ class Site {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
 								} else if ($this->pageName == 'developer' ||
-									$this->pageName == 'developer-change-user') {
+									$this->pageName == 'developer-change-user' ||
+									$this->pageName == 'developer-syslog') {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.change-user')) {
 										echo '<li><a' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . ' href="index.php?page=developer-change-user">Logg inn som en annan</a></li>';
 									}
+									
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('developer.syslog')) {
+										echo '<li><a' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . ' href="index.php?page=developer-syslog">Systemlogg</a></li>';
+									}
+									
 								}
 							}
 						echo '</ul>';
@@ -379,7 +386,8 @@ class Site {
 
 								if ($user->hasPermission('developer')) {
 									if ($this->pageName == 'developer' ||
-										$this->pageName == 'developer-change-user') {
+										$this->pageName == 'developer-change-user' ||
+									        $this->pageName == 'developer-syslog') {
 										echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
