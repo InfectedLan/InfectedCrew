@@ -28,9 +28,35 @@ function editSeatmap() {
 	window.location = "index.php?page=admin-seatmap&id=" + seatmapId;
 }
 
+function cloneSeatmap() {
+    var seatmapId = $("#seatmapSelect").val();
+    $.getJSON('../api/json/seatmap/cloneSeatmap.php?id=' + encodeURIComponent(seatmapId), function(data) {
+	if (data.result) {
+	    window.location = "index.php?page=admin-seatmap&id=" + data.id;
+	} else {
+	    error(data.message);
+	}
+    });
+}
+
 function copySeatmap() {
-	var seatmapId = $("#seatmapSelect").val();
-	alert("Copying seatmap " + seatmapId);
+    var copyTarget = $("#copySeatmapSourceSelect").val();
+    $.getJSON('../api/json/seatmap/copySeatmap.php?to=' + encodeURIComponent(seatmapId) + '&from=' + encodeURIComponent(copyTarget), function(data) {
+	if (data.result) {
+	    renderSeatmap();
+	} else {
+	    error(data.message);
+	}
+	$("#copySeatmapDiv").fadeOut(200, function() {
+	    $("#btnInitCopy").fadeIn(200);
+	});	    
+    });
+}
+
+function initCopy() {
+    $("#btnInitCopy").fadeOut(200, function() {
+	$("#copySeatmapDiv").fadeIn(200);
+    });
 }
 
 function newSeatmapName() {

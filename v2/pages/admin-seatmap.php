@@ -56,6 +56,21 @@ if (Session::isAuthenticated()) {
 					//Buttons
 					echo '<input type="button" id="btnNewRow" value="Legg til rad på [0,0]" onclick="addRow()" /> | ';
 					echo '<input type="button" id="btnSetCoords" value="Skriv inn kordinater selv" onclick="promptPosition()" /> | ';
+					echo '<input type="button" id="btnInitCopy" value="Kopier fra et annet seatmap" onClick="initCopy()" />';
+					echo '<div id="copySeatmapDiv" style="display: none;">';
+					echo '<select id="copySeatmapSourceSelect">';
+					$event = EventHandler::getCurrentEvent();
+
+					foreach (SeatmapHandler::getSeatmaps() as $seatmapElement) {
+					    if ($seatmapElement->equals($event->getSeatmap())) {
+						echo '<option value="' . $seatmapElement->getId() . '" selected>' . $seatmapElement->getHumanName() . '</option>';
+					    } else {
+						echo '<option value="' . $seatmapElement->getId() . '">' . $seatmapElement->getHumanName() . '</option>';
+					    }
+					}
+					echo '</select>';
+					echo '<input type="button" id="btnCopy" value="Kopier!" onClick="copySeatmap()" />';
+					echo '</div> | ';
 					//echo '<input type="button" id="btnUploadImage" value="Last opp ny bakgrunn" onclick="uploadBackground()" /> | ';
 					//Context sensitive buttons
 					echo '<span id="seatmapEditorContextButtons">';
@@ -93,7 +108,7 @@ if (Session::isAuthenticated()) {
 						}
 					echo '</select>';
 					echo '<input type="button" value="Edit" onclick="editSeatmap()" />';
-					echo '<input type="button" value="Lag kopi" onclick="copySeatmap()" />';
+					echo '<input type="button" value="Lag kopi" onclick="cloneSeatmap()" />';
 					echo '&nbsp;...eller...&nbsp;';
 					echo '<input type="button" value="Lag nytt seatmap" onclick="newSeatmapName()" />';
 				echo '</div>';
