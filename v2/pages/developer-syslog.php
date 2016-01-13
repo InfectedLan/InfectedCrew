@@ -43,15 +43,15 @@ if (Session::isAuthenticated()) {
 		    echo '<td>' . SyslogHandler::getSeverityString($entry->getSeverity()) . '</td>';
 		    echo '<td>' . $entry->getMessage() . '</td>';
 		    echo '<td><textarea rows="1">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
-		    echo '<td>' . $entry->getTimestamp() . '</td>';
+		    echo '<td>' . date('Y-m-d H:i:s', $entry->getTimestamp()) . '</td>';
 		    $causingUser = $entry->getUser();
 		    if($causingUser == null) {
 			echo '<td><b>Ingen</b></td>';
 		    } else {
 			if($user->hasPermission('user.search')) {
-			    echo '<td><a href="index.php?page=user-profile&id=' . $user->getId() . '">' . $user->getUsername() . '(' . $user->getId() . ')</a></td>';
+			    echo '<td><a href="index.php?page=user-profile&id=' . $causingUser->getId() . '">' . $causingUser->getUsername() . '(' . $causingUser->getId() . ')</a></td>';
 			} else {
-			    echo '<td>' . $user->getDisplayName() . '</td>';
+			    echo '<td>' . $causindUser->getDisplayName() . '</td>';
 			}
 		    }
 		    echo '</tr>';
