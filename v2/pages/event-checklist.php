@@ -104,6 +104,7 @@ function getNotelist(array $noteList) {
 					$content .= '<th>Detaljer</th>';
 				$content .= '</tr>';
 
+				$i = 0;
 				foreach ($noteList as $note) {
 					$color = "#ffffff";
 
@@ -120,23 +121,23 @@ function getNotelist(array $noteList) {
 					}
 
 					$content .= '<tr style="background: ' . $color . ';">';
-						$content .= '<form class="event-checklist-check" method="post">';
-							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
-							$content .= '<td style="padding-left: 16px;"><input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '></td>';
-							$content .= '<td>' . $note->getTitle() . '</td>';
-							$content .= '<td>';
-								$secondsOffset = $note->getSecondsOffset();
+						$content .= '<td style="padding-left: 16px;">';
+							$content .= '<form class="event-checklist-check" id="checklistForm' . $i++ . '" method="post">';
+							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '" />';
+							$content .= '<input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '>';
+							$content .= '</form>';
+						$content .= '</td>';
+						$content .= '<td>' . $note->getTitle() . '</td>';
+						$content .= '<td>';
+							$secondsOffset = $note->getSecondsOffset();
 
-								if ($secondsOffset >= -86400 && $secondsOffset <= 172800) {
-									$content .= DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime());
-								} else {
-									$week = abs(round($secondsOffset / 604800));
-
-									$content .= $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før';
-								}
-
-							$content .= '</td>';
-						$content .= '</form>';
+							if ($secondsOffset >= -86400 && $secondsOffset <= 172800) {
+								$content .= DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime());
+							} else {
+								$week = abs(round($secondsOffset / 604800));
+								$content .= $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før';
+							}
+						$content .= '</td>';
 						$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
 						$content .= '<td>';
 							$content .= '<div class="slidingBox">';
