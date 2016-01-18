@@ -30,25 +30,25 @@ $(document).ready(function() {
     });
     $('.event-checklist-check').on('submit', function(event) {
 	event.preventDefault();
-	
-	console.log($(this));
-	checkNote($(this));
+
+	    console.log($(this));
+	    checkNote($(this));
     });
 
     validatePrivate();
     validateSecondsOffset();
 
     $('.event-checklist-add-private').on('change', function() {
-	validatePrivate();
+	     validatePrivate();
     });
 
     $('.event-checklist-add-secondsOffset').on('change', function() {
-	validateSecondsOffset();
+	     validateSecondsOffset();
     });
 
     $('.event-checklist-add').on('submit', function(event) {
-	event.preventDefault();
-	addNote(this);
+	     event.preventDefault();
+	     addNote(this);
     });
 });
 
@@ -101,11 +101,11 @@ function validateSecondsOffset(value, time) {
 }
 
 function addNote(form) {
-    $.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
-	if (data.result) {
-	    location.reload();
-	} else {
-	    error(data.message);
-	}
-    });
+  $.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
+  	if (data.result) {
+  	    location.reload();
+  	} else {
+  	    error(data.message);
+  	}
+  });
 }
