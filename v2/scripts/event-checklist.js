@@ -30,13 +30,39 @@ $(document).ready(function() {
     });
     $('.event-checklist-check').on('submit', function(event) {
 	event.preventDefault();
-	
-	console.log($(this));
-	checkNote($(this));
+
+	 console.log($(this));
+	  checkNote($(this));
     });
 
-    validatePrivate();
-    validateSecondsOffset();
+  validatePrivate();
+  validateSecondsOffset();
+
+	$('.slidingBox .show_hide').on('click', function() {
+		$(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
+
+		$(this).next('.details').slideToggle();
+	});
+
+	/* How this should be done, but this somehow doesn't work.
+	$('form').on('click', 'input:checkbox', function() {
+    $(this).closest('form').trigger('submit');
+  });
+
+  $('form').on('submit', function(event) {
+    event.preventDefault();
+    alert('submitting');
+  });
+	*/
+
+	$(this).on('change', 'input:checkbox', function() {
+		$('.event-checklist-check').trigger('submit');
+	})
+
+	$('.event-checklist-check').on('submit', function(event) {
+	    event.preventDefault();
+	    checkNote(this);
+	});
 
     $('.event-checklist-add-private').on('change', function() {
 	validatePrivate();

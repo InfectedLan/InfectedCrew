@@ -61,32 +61,6 @@ function editNote(Note $note) {
 			$content .= '<table>';
 				$content .= '<form class="edit-note" method="post">';
 					$content .= '<input type="hidden" name="id" value="' . $note->getId() . '">';
-
-					if (!$note->isPrivate()) {
-						$content .= '<tr>';
-							$content .= '<td><b>Eier</b></td>';
-							$content .= '<td>';
-
-								if ($note->isWatching($user)) {
-									$content .= 'Tilskuer';
-								} else {
-									if ($note->isDelegated()) {
-										if ($note->isOwner($user)) {
-											$content .= 'Delegert til ' . $note->getUser()->getFirstname();
-										} else if ($note->isUser($user)) {
-											$content .= 'Delegert til deg';
-										} else {
-											$content .= 'Delegert';
-										}
-									} else {
-										$content .= 'Din';
-									}
-								}
-
-							$content .= '</td>';
-						$content .= '</tr>';
-					}
-
 					$content .= '<tr>';
 						$content .= '<td><b>Oppgave</b></td>';
 						$content .= '<td><input type="text" name="title" value="' . $note->getTitle() . '" placeholder="Skriv inn et gjøremål her..." style="width: 250px;" required></td>';
@@ -126,7 +100,7 @@ function editNote(Note $note) {
 					$content .= '<tr>';
 						$content .= '<td><b>Tidspunkt</b></td>';
 						$content .= '<td>';
-							$content .= '<input type="time" name="time" class="edit-note-time" placeholder="00:00" value="' . date('H:i', $note->getTime()) . '">';
+							$content .= '<input type="time" name="time" class="edit-note-time" placeholder="00:00" value="' . gmdate('H:i', $note->getTime()) . '">';
 						$content .= '</td>';
 					$content .= '</tr>';
 

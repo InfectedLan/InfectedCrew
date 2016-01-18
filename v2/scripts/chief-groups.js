@@ -7,29 +7,29 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 3.0 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 $(document).ready(function() {
-	$('.chief-groups-add').submit(function(e) {
-		e.preventDefault();
+	$('.chief-groups-add').on('submit', function(event) {
+		event.preventDefault();
 		addGroup(this);
 	});
-	
-	$('.chief-groups-edit').submit(function(e) {
-		e.preventDefault();
+
+	$('.chief-groups-edit').on('submit', function(event) {
+		event.preventDefault();
 	    editGroup(this);
 	});
-	
-	$('.chief-groups-adduser').submit(function(e) {
-		e.preventDefault();
+
+	$('.chief-groups-adduser').on('submit', function(event) {
+		event.preventDefault();
 		addUserToGroup(this);
 	});
 });
@@ -39,7 +39,7 @@ function addGroup(form) {
 		if (data.result) {
 			location.reload();
 		} else {
-			error(data.message); 
+			error(data.message);
 		}
 	});
 }
@@ -49,7 +49,7 @@ function editGroup(form) {
 		if (data.result) {
 			location.reload();
 		} else {
-			error(data.message); 
+			error(data.message);
 		}
 	});
 }
@@ -69,7 +69,7 @@ function addUserToGroup(form) {
 		if (data.result) {
 			location.reload();
 		} else {
-			error(data.message); 
+			error(data.message);
 		}
 	});
 }

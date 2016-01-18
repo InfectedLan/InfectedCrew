@@ -102,6 +102,7 @@ function getNotelist(array $noteList) {
 					$content .= '<th>Tidspunkt</th>';
 					$content .= '<th>Ansvarlig</th>';
 					$content .= '<th>Detaljer</th>';
+					$content .= '<th>Tilskuere</th>';
 				$content .= '</tr>';
 
 				$i = 0;
@@ -145,6 +146,26 @@ function getNotelist(array $noteList) {
 								$content .= '<div class="details">' . $note->getContent() . '</div>';
 							$content .= '</div>';
 						$content .= '</td>';
+						$content .= '<td>';
+							$watchingUserList = $note->getWatchingUsers();
+
+							if (count($watchingUserList) > 0) {
+								$content .= '<div class="slidingBox">';
+									$content .= '<a href="#" class="show_hide">Vis</a>';
+									$content .= '<div class="details">';
+
+										foreach ($watchingUserList as $watchingUser) {
+											$content .= $watchingUser->getFirstname();
+
+											$content .= (!end($watchingUserList)->equals($watchingUser) ? ', ' : '');
+										}
+
+									$content .= '</div>';
+								$content .= '</div>';
+							}
+
+						$content .= '</td>';
+
 						$content .= '<td><input type="button" value="Endre" onClick="editNote(' . $note->getId() . ')"></td>';
 
 						if ($user->hasPermission('*') ||

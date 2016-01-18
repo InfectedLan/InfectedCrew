@@ -279,3 +279,13 @@ tr {
     margin: 0px;
     padding: 0px;
 }
+.toolbar {
+    background-color: #EEEEEE;
+    width: 100%;
+    height: 40px;
+    padding: 3px;
+}
+.compoChat {
+    width: 100%;
+    border: 1px black solid;
+}
