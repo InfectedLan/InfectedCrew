@@ -51,7 +51,7 @@ if (Session::isAuthenticated()) {
 
 			if (!empty($commonNoteList)) {
 				echo '<h3>Sjekkliste for din stilling</h3>';
-				echo getNotelist($commonNoteList);
+				echo getNotelist($commonNoteList, false);
 			}
 		}
 
@@ -59,7 +59,7 @@ if (Session::isAuthenticated()) {
 
 		if (!empty($privateNoteList)) {
 			echo '<h3>Din private sjekkliste</h3>';
-			echo getNotelist($privateNoteList);
+			echo getNotelist($privateNoteList, false);
 		}
 
 		if (empty($commonNoteList) && empty($privateNoteList)) {
@@ -76,7 +76,7 @@ if (Session::isAuthenticated()) {
 
 			if (!empty($noteList)) {
 				echo '<h3>Oversikt over alle gjøremål for hele crewet</h3>';
-				echo getNotelist($noteList);
+				echo getNotelist($noteList, true);
 			}
 		}
 	} else {
@@ -86,7 +86,7 @@ if (Session::isAuthenticated()) {
 	echo '<p>Du er ikke logget inn!</p>';
 }
 
-function getNotelist(array $noteList) {
+function getNotelist(array $noteList, $showAdditionalInfo) {
 	$content = null;
 
 	if (Session::isAuthenticated()) {
@@ -98,6 +98,15 @@ function getNotelist(array $noteList) {
 			$content .= '<table>';
 				$content .= '<tr>';
 					$content .= '<th>Ferdig?</th>';
+
+					if ($note->hasGroup()) {
+						$content .= '<th>Crew</th>';
+
+						if ($note->hasTeam()) {
+							$content .= '<th>Lag</th>';
+						}
+					}
+
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Tidspunkt</th>';
 					$content .= '<th>Ansvarlig</th>';
@@ -105,7 +114,6 @@ function getNotelist(array $noteList) {
 					$content .= '<th>Tilskuere</th>';
 				$content .= '</tr>';
 
-				$i = 0;
 				foreach ($noteList as $note) {
 					$color = "#ffffff";
 
@@ -123,11 +131,20 @@ function getNotelist(array $noteList) {
 
 					$content .= '<tr style="background: ' . $color . ';">';
 						$content .= '<td style="padding-left: 16px;">';
-							$content .= '<form class="event-checklist-check" id="checklistForm' . $i++ . '" method="post">';
+							$content .= '<form class="event-checklist-check" method="post">';
 							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '" />';
 							$content .= '<input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '>';
 							$content .= '</form>';
 						$content .= '</td>';
+
+						if ($note->hasGroup()) {
+							$content .= '<td>' . $note->getGroup()->getTitle() . '</td>';
+
+							if ($note->hasTeam()) {
+								$content .= '<td>' . $note->getTeam()->getTitle() . '</td>';
+							}
+						}
+
 						$content .= '<td>' . $note->getTitle() . '</td>';
 						$content .= '<td>';
 							$secondsOffset = $note->getSecondsOffset();
