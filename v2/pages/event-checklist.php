@@ -98,15 +98,8 @@ function getNotelist(array $noteList, $showAdditionalInfo) {
 			$content .= '<table>';
 				$content .= '<tr>';
 					$content .= '<th>Ferdig?</th>';
-
-					if ($note->hasGroup()) {
-						$content .= '<th>Crew</th>';
-
-						if ($note->hasTeam()) {
-							$content .= '<th>Lag</th>';
-						}
-					}
-
+					$content .= '<th>Crew</th>';
+					$content .= '<th>Lag</th>';
 					$content .= '<th>Oppgave</th>';
 					$content .= '<th>Tidspunkt</th>';
 					$content .= '<th>Ansvarlig</th>';
@@ -139,10 +132,14 @@ function getNotelist(array $noteList, $showAdditionalInfo) {
 
 						if ($note->hasGroup()) {
 							$content .= '<td>' . $note->getGroup()->getTitle() . '</td>';
+						} else {
+							$content .= '<td>Ingen</td>';
+						}
 
-							if ($note->hasTeam()) {
-								$content .= '<td>' . $note->getTeam()->getTitle() . '</td>';
-							}
+						if ($note->hasTeam()) {
+							$content .= '<td>' . $note->getTeam()->getTitle() . '</td>';
+						} else {
+							$content .= '<td>Ingen</td>';
 						}
 
 						$content .= '<td>' . $note->getTitle() . '</td>';
