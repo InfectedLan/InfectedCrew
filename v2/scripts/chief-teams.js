@@ -67,7 +67,7 @@ function removeTeam(id) {
 }
 
 function removeUserFromTeam(id) {
-	$.getJSON('../api/json/team/removeUserFromTeam.php?id=' + id, function(data){
+	$.getJSON('../api/json/team/removeUserFromTeam.php?teamId=' + id, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
@@ -77,7 +77,7 @@ function removeUserFromTeam(id) {
 }
 
 function removeUsersFromTeam(id) {
-	$.getJSON('../api/json/team/removeUsersFromTeam.php?id=' + id, function(data) {
+	$.getJSON('../api/json/team/removeUsersFromTeam.php?teamId=' + id, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
