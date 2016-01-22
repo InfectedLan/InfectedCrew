@@ -57,7 +57,7 @@ function viewGroup(id) {
 }
 
 function removeTeam(id) {
-	$.getJSON('../api/json/team/removeTeam.php?id=' + id, function(data){
+	$.getJSON('../api/json/team/removeTeam.php?teamId=' + id, function(data){
 		if (data.result) {
 			location.reload();
 		} else {
