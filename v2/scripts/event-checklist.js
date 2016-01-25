@@ -26,6 +26,7 @@ $(document).ready(function() {
 	$(this).next('.details').slideToggle();
     });
     $('.event-checklist-check').on('change', function() {
+	console.log($(this));
 	$(this).submit();
     });
     $('.event-checklist-check').on('submit', function(event) {
