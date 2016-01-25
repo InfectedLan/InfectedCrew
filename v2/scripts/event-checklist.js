@@ -18,27 +18,23 @@
  */
 
 $(document).ready(function() {
-  $('.slidingBox .details').hide();
+    $('.slidingBox .details').hide();
 
-  $('.slidingBox .show_hide').on('click', function() {
-    $(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
+    $('.slidingBox .show_hide').on('click', function() {
+	$(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
 
-    $(this).next('.details').slideToggle();
-  });
-
-  $('.event-checklist-check').on('change', function() {
-    $(this).submit();
-  });
-
-  $('.event-checklist-check').on('submit', function(event) {
-    event.preventDefault();
-
-    console.log($(this));
-    checkNote($(this));
-  });
-
-  validatePrivate();
-  validateSecondsOffset();
+	$(this).next('.details').slideToggle();
+    });
+    $('.event-checklist-check').on('change', function() {
+	console.log($(this));
+	$(this).submit();
+    });
+    $('.event-checklist-check').on('submit', function(event) {
+	event.preventDefault();
+	
+	console.log($(this));
+	checkNote($(this));
+    });
 
   $('.slidingBox .show_hide').on('click', function() {
     $(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
@@ -57,14 +53,6 @@ $(document).ready(function() {
   });
 	*/
 
-  $(this).on('change', 'input:checkbox', function() {
-    $('.event-checklist-check').trigger('submit');
-  })
-
-  $('.event-checklist-check').on('submit', function(event) {
-    event.preventDefault();
-    checkNote(this);
-  });
 
   $('.event-checklist-add-private').on('change', function() {
     validatePrivate();
