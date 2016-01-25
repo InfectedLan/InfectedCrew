@@ -24,6 +24,7 @@ require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
 require_once 'handlers/applicationhandler.php';
 require_once 'handlers/avatarhandler.php';
+require_once 'handlers/compohandler.php';
 
 class Site {
 	private $pageName;
@@ -47,7 +48,8 @@ class Site {
 				echo '<link rel="stylesheet" href="styles/topmenu.css">';
 				echo '<link rel="stylesheet" href="styles/menu.css">';
 				echo '<link rel="stylesheet" href="../api/libraries/chosen/chosen.css">';
-				echo '<script src="../api/scripts/jquery-1.11.1.min.js"></script>';
+                echo '<link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">';
+				echo '<script src="../api/scripts/jquery-1.11.3.min.js"></script>';
 				echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 				echo '<script src="../api/scripts/login.js"></script>';
 				echo '<script src="../api/scripts/logout.js"></script>';
@@ -76,7 +78,35 @@ class Site {
 								                  url(\'images/hello-kitty-edition.jpg\') left top;';
 								echo 'background-repeat: repeat-y;';
 								echo 'background-size: 350px;';
-							echo '};';
+							echo '}';
+							echo '.main .content {';
+								echo 'box-shadow: 0px 0px 0px 7px rgba(230, 14, 99, 0.30);';
+							echo '}';
+
+							echo '.information {';
+								echo 'background-color: rgba(230, 14, 99, 0.30);';
+								echo 'border-color: rgba(230, 14, 99, 0.40);';
+							echo '}';
+
+							echo '.topmenu ul .active, .topmenu ul li a:hover {';
+								echo 'border-bottom: 3px solid rgba(230, 14, 99, 0.50);';
+							echo '}';
+
+							echo '.menu ul .active {';
+								echo 'background: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:hover {';
+								echo 'background: rgba(230, 14, 99, 0.5);';
+							echo '}';
+
+							echo '.menu ul .active:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 1);';
+							echo '}';
+
+							echo '.menu ul li a:after {';
+								echo 'border-left-color: rgba(230, 14, 99, 0.3);';
+							echo '}';
 						echo '</style>';
 					}
 				}
@@ -109,19 +139,19 @@ class Site {
 										$pageList = RestrictedPageHandler::getPagesForGroup($group);
 									}
 
-									$pageNameList = array();
+									$pageNameList = [];
 
 									foreach ($pageList as $page) {
-										array_push($pageNameList, strtolower($page->getName()));
+										$pageNameList[] = strtolower($page->getName());
 									}
 
 									if ($this->pageName == 'my-crew' ||
 										in_array($this->pageName, $pageNameList)) {
 										$teamList = $group->getTeams();
-										$teamNameList = array();
+										$teamNameList = [];
 
 										foreach ($teamList as $team) {
-											array_push($teamNameList, strtolower($team->getName()));
+											$teamNameList[] = strtolower($team->getName());
 										}
 
 										// Only show pages for that group.
@@ -158,7 +188,7 @@ class Site {
 								} else if ($this->pageName == 'event' ||
 										   $this->pageName == 'event-checkin' ||
 											 $this->pageName == 'event-checklist' ||
-											 $this->pageName == 'edit-checklist' ||
+											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
 										   $this->pageName == 'event-agenda' ||
@@ -169,7 +199,7 @@ class Site {
 									}
 
 									if ($user->hasPermission('event.checklist')) {
-										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-checklist' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
+										echo '<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist">Sjekkliste</a></li>';
 									}
 
 									if ($user->hasPermission('event.seatmap')) {
@@ -249,6 +279,30 @@ class Site {
 									if ($user->hasPermission('admin.website')) {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
+
+                                } else if($this->pageName=='compo-overview' ||
+                                $this->pageName=='compo-new' ||
+                                $this->pageName=='compo-view' ||
+                                $this->pageName=='compo-clans' ||
+                                $this->pageName=='compo-matches' ||
+                                $this->pageName=='compo-clan') {
+                                    if($user->hasPermission('compo.management')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.edit')) {
+                                        echo '<li><a ' . ($this->pageName == 'compo-new' ? ' class="active"' : null) . ' href="index.php?page=compo-new">Ny compo</a></li>';
+                                    }
+                                    if($user->hasPermission('compo.management')) {
+                                        $compos = CompoHandler::getCompos();
+                                        if(count($compos) > 0) {
+                                            echo "<li>|</li>";
+                                            foreach($compos as $compo) {
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                            }
+                                            echo "<li>|</li>";
+                                        }
+                                    }
+                                            
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
 									$this->pageName == 'developer-syslog') {
@@ -298,12 +352,12 @@ class Site {
 								// View the page specified by "pageName" variable.
 								$this->viewPage($this->pageName);
 							} else {
-								$publicPages = array('apply',
-													 'all-crew',
-													 'user-profile',
-													 'edit-profile',
-													 'edit-password',
-													 'edit-avatar');
+								$publicPages = ['apply',
+															  'all-crew',
+															  'user-profile',
+															  'edit-profile',
+															  'edit-password',
+															  'edit-avatar'];
 
 								if (in_array($this->pageName, $publicPages)) {
 									$this->viewPage($this->pageName);
@@ -312,9 +366,9 @@ class Site {
 								}
 							}
 						} else {
-							$publicPages = array('register',
-												 'activation',
-												 'reset-password');
+							$publicPages = ['register',
+															'activation',
+															'reset-password'];
 
 							if (in_array($this->pageName, $publicPages)) {
 								$this->viewPage($this->pageName);
@@ -345,7 +399,7 @@ class Site {
 									if ($this->pageName == 'event' ||
 										$this->pageName == 'event-checkin' ||
 										$this->pageName == 'event-checklist' ||
-										$this->pageName == 'edit-checklist' ||
+										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
 										$this->pageName == 'event-agenda' ||
@@ -381,6 +435,14 @@ class Site {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
+									}
+								}
+
+                                if ($user->hasPermission('compo.management')) {
+									if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
+										echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
 									}
 								}
 
@@ -493,9 +555,9 @@ class Site {
 				echo 'Du har ikke tilgang til dette.';
 			}
 		} else {
-			$directoryList = array(Settings::api_path . 'pages',
-								   'pages');
-			$includedPages = array();
+			$directoryList = [Settings::api_path . 'pages',
+								   			'pages'];
+			$includedPages = [];
 			$found = false;
 
 			foreach ($directoryList as $directory) {
@@ -505,7 +567,7 @@ class Site {
 					in_array($filePath, glob($directory . '/*.php'))) {
 					// Make sure we don't include pages with same name twice,
 					// and set the found varialbe so that we don't have to display the not found message.
-					array_push($includedPages, $pageName);
+					$includedPages[] = $pageName;
 					$found = true;
 
 					include_once $filePath;
