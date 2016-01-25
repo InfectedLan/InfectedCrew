@@ -27,7 +27,7 @@ if (Session::isAuthenticated()) {
 
 	if ($user->hasPermission('developer.syslog')) {
 		echo '<h1>Systemlogg</h1>';
-		$entries = SyslogHandler::getLastEntries(30);
+		$entries = SyslogHandler::getLastEntries(100);
 		echo '<table>';
 		echo '<tr>';
 		echo '<td>Kilde</td>';
