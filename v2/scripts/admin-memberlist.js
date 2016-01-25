@@ -18,8 +18,8 @@
  */
 
 $(document).ready(function() {
-	$('.memberlist').submit(function(e) {
-		e.preventDefault();
+	$('.memberlist').on('submit', function(event) {
+		event.preventDefault();
 		window.open('/api/pages/utils/memberList.php' + '?' + $(this).serialize());
 	});
 });

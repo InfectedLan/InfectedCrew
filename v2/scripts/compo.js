@@ -18,13 +18,13 @@
  */
 
 $(document).ready(function() {
-	$('.compo-add').submit(function(e) {
-		e.preventDefault();
+	$('.compo-add').on('submit', function(event) {
+		event.preventDefault();
 		addCompo(this);
 	});
 
-	$('.compo-edit').submit(function(e) {
-		e.preventDefault();
+	$('.compo-edit').on('submit', function(event) {
+		event.preventDefault();
 		editCompo(this);
 	});
 });
@@ -32,7 +32,7 @@ $(document).ready(function() {
 function addCompo(form) {
 	$.getJSON('../api/json/compo/addCompo.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
-			location.reload();
+			window.location.replace("index.php?page=compo-view&id=" + data.id);
 		} else {
 			error(data.message);
 		}
@@ -47,4 +47,34 @@ function editCompo(form) {
 			error(data.message);
 		}
 	});
+}
+
+function disqualifyClan(clanid) {
+    $.getJSON('../api/json/compo/disqualifyClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+	if (data.result) {
+	    location.reload();
+	} else {
+	    error(data.message);
+	}
+    });
+}
+function deleteClan(clanid, shouldask) {
+    if(!shouldask || !confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
+	$.getJSON('../api/json/compo/deleteClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+    }
+}
+function qualifyClan(clanid) {
+    $.getJSON('../api/json/compo/qualifyClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
+	if (data.result) {
+	    location.reload();
+	} else {
+	    error(data.message);
+	}
+    });
 }

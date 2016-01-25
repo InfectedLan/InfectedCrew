@@ -42,7 +42,11 @@ if (Session::isAuthenticated()) {
 		    echo '<td>' . $entry->getSource() . '</td>';
 		    echo '<td>' . SyslogHandler::getSeverityString($entry->getSeverity()) . '</td>';
 		    echo '<td>' . $entry->getMessage() . '</td>';
-		    echo '<td><textarea rows="1">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
+		    if(count($entry->getMetadata())>0) {
+			echo '<td><textarea rows="10" cols="50">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
+		    } else {
+			echo '<td><i>Ingen metadata</i></td>';
+		    }
 		    echo '<td>' . date('Y-m-d H:i:s', $entry->getTimestamp()) . '</td>';
 		    $causingUser = $entry->getUser();
 		    if($causingUser == null) {
