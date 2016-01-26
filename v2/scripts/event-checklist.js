@@ -17,42 +17,37 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ /* How this should be done, but this somehow doesn't work.
+ $('form').on('click', 'input:checkbox', function() {
+   $(this).closest('form').trigger('submit');
+ });
+
+ $('form').on('submit', function(event) {
+   event.preventDefault();
+   alert('submitting');
+ });
+ */
+
 $(document).ready(function() {
-    $('.slidingBox .details').hide();
+  $('.slidingBox .details').hide();
+  $('.slidingBox .show_hide').on('click', function() {
+	  $(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
+	  $(this).next('.details').slideToggle();
+  });
 
-    $('.slidingBox .show_hide').on('click', function() {
-	$(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
+  $('.event-checklist-check').on('change', function() {
+	  $(this).submit();
+  });
 
-	$(this).next('.details').slideToggle();
-    });
-    $('.event-checklist-check').on('change', function() {
-	console.log($(this));
-	$(this).submit();
-    });
-    $('.event-checklist-check').on('submit', function(event) {
-	event.preventDefault();
-	
-	console.log($(this));
-	checkNote($(this));
-    });
+  $('.event-checklist-check').on('submit', function(event) {
+	  event.preventDefault();
+	  checkNote($(this));
+  });
 
   $('.slidingBox .show_hide').on('click', function() {
     $(this).text($(this).next('.details').is(':visible') ? 'Vis' : 'Skjul');
-
     $(this).next('.details').slideToggle();
   });
-
-  /* How this should be done, but this somehow doesn't work.
-	$('form').on('click', 'input:checkbox', function() {
-    $(this).closest('form').trigger('submit');
-  });
-
-  $('form').on('submit', function(event) {
-    event.preventDefault();
-    alert('submitting');
-  });
-	*/
-
 
   $('.event-checklist-add-private').on('change', function() {
     validatePrivate();
@@ -69,7 +64,17 @@ $(document).ready(function() {
 });
 
 function checkNote(form) {
-  $.getJSON('../api/json/note/editNoteDone.php' + '?' + $(form).serialize(), function(data) {
+  $.getJSON('../api/json/note/editNoteState.php' + '?' + $(form).serialize(), function(data) {
+    if (data.result) {
+      location.reload();
+    } else {
+      error(data.message);
+    }
+  });
+}
+
+function addNote(form) {
+  $.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
     if (data.result) {
       location.reload();
     } else {
@@ -114,14 +119,4 @@ function validateSecondsOffset(value, time) {
   } else {
     time.prop('disabled', true);
   }
-}
-
-function addNote(form) {
-  $.getJSON('../api/json/note/addNote.php' + '?' + $(form).serialize(), function(data) {
-    if (data.result) {
-      location.reload();
-    } else {
-      error(data.message);
-    }
-  });
 }
