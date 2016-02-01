@@ -59,7 +59,7 @@ function disqualifyClan(clanid) {
     });
 }
 function deleteClan(clanid, shouldask) {
-    if(!shouldask || !confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
+    if(!shouldask || confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
 	$.getJSON('../api/json/compo/deleteClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
 		if (data.result) {
 			location.reload();

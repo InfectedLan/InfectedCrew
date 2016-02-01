@@ -31,6 +31,7 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
+	    echo '<script src="scripts/compo.js"></script>';
             //echo '<h1>' . $compo->getTitle() . '</h1>';
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';

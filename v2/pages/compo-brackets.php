@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
             echo '<script src="../api/scripts/bracket.js"></script>';
             echo '<script src="scripts/compo-bracketeditor.js"></script>';
             echo '<link rel="stylesheet" type="text/css" href="../api/styles/bracket-editor.css" />';
-            echo "<script>var compoId = " . $compo->getId() . ";$(document).ready(function(){initBracketEditor();});</script>";
+            echo "<script>var compoId = " . $compo->getId() . ';$(document).ready(function(){console.log("init bracket editor");initBracketEditor();});</script>';
             echo '<script>';
             echo 'var participant_type_clan = ' . Settings::compo_match_participant_type_clan . ';';
             echo 'var participant_type_winner = ' . Settings::compo_match_participant_type_match_winner . ';';
