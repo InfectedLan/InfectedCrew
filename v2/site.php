@@ -253,7 +253,8 @@ class Site {
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
 									$this->pageName == 'admin-website' ||
-									$this->pageName == 'admin-memberlist') {
+									$this->pageName == 'admin-memberlist' ||
+									$this->pageName == 'admin-wsconsole') {
 
 									if ($user->hasPermission('admin.events')) {
 										echo '<li><a' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . ' href="index.php?page=admin-events">Arrangementer</a></li>';
@@ -273,6 +274,10 @@ class Site {
 
 									if ($user->hasPermission('admin.website')) {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
+									}
+
+									if ($user->hasPermission('admin.websocket')) {
+									    echo '<li><a' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . ' href="index.php?page=admin-wsconsole">Websocket-konsoll</a></li>';
 									}
 
                                 } else if($this->pageName=='compo-overview' ||
@@ -425,7 +430,8 @@ class Site {
 										$this->pageName == 'admin-permissions' ||
 										$this->pageName == 'admin-seatmap' ||
 										$this->pageName == 'admin-website' ||
-										$this->pageName == 'admin-memberlist') {
+										$this->pageName == 'admin-memberlist' ||
+									        $this->pageName == 'admin-wsconsole') {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
