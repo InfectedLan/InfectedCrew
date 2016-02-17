@@ -21,6 +21,7 @@
 require_once 'session.php';
 require_once 'handlers/compohandler.php';
 require_once 'handlers/eventhandler.php';
+require_once 'objects/compo.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -41,6 +42,9 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
+	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+	    }
             echo '<hr>';
             echo '<p>Under construction.</p>';
         } else {

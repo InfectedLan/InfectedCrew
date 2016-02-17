@@ -285,6 +285,9 @@ class Site {
                                 $this->pageName=='compo-view' ||
                                 $this->pageName=='compo-clans' ||
                                 $this->pageName=='compo-matches' ||
+					  $this->pageName=='compo-brackets' ||
+					  $this->pageName=='compo-chat' ||
+					  $this->pageName=='compo-servers' ||
                                 $this->pageName=='compo-clan') {
                                     if($user->hasPermission('compo.management')) {
                                         echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
@@ -297,7 +300,7 @@ class Site {
                                         if(count($compos) > 0) {
                                             echo "<li>|</li>";
                                             foreach($compos as $compo) {
-                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
                                             }
                                             echo "<li>|</li>";
                                         }

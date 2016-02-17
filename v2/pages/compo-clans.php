@@ -43,6 +43,9 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
+	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+	    }
             echo '<hr>';
             $clans = ClanHandler::getClansByCompo($compo);
 
