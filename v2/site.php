@@ -300,10 +300,14 @@ class Site {
                                         if(count($compos) > 0) {
                                             echo "<li>|</li>";
                                             foreach($compos as $compo) {
-                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTag() . '</a></li>';
                                             }
                                             echo "<li>|</li>";
                                         }
+                                    }
+                                    if($user->hasPermission('compo.casting')) {
+                                                                            
+                                        echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
                                     }
 
 								} else if ($this->pageName == 'developer' ||
