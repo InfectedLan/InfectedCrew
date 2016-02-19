@@ -61,8 +61,8 @@ if (Session::isAuthenticated()) {
 
 
 				echo '<script>';
-					echo '$(function() {';
-						echo '$(\'#cropbox\').Jcrop({';
+					echo '$(document).ready(function() {';
+						echo '$(\'#cropCanvas\').Jcrop({';
 							//Calculate size factor. The crop pane is 800 wide.
 							$temp = explode('.', $avatar->getTemp());
 							$extension = strtolower(end($temp));
@@ -84,6 +84,13 @@ if (Session::isAuthenticated()) {
 							echo 'onSelect: updateCoords';
 						echo '});';
 					echo '});';
+
+					echo 'var base_image = new Image();';
+					echo 'base_image.src=\'' . $avatar->getTemp() . '\';';
+					echo 'base_image.onload = function() {';
+					echo 'var canvas = document.getElementById(\'cropCanvas\').getContext(\'2d\'); ';
+					echo 'canvas.drawImage(base_image, 0, 0, 800, ' . (imagesy($image) * $scaleFactor) . ');';
+					echo '};';
 
 					echo 'function updateCoords(c) {';
 						echo '$(\'#x\').val(c.x);';
@@ -115,7 +122,8 @@ if (Session::isAuthenticated()) {
             echo '</td>';
             echo '</tr>';
             echo '</table>';
-			echo '<img src="' . $avatar->getTemp() . '" id="cropbox"  width="800">';
+	    echo '<canvas width="800" height="' . (imagesy($image) * $scaleFactor) . '" id="cropCanvas"></canvas>';
+	    //echo '<img src="' . $avatar->getTemp() . '" id="cropbox"  width="800">';
 			echo '<form action="../api/json/avatar/cropAvatar.php" method="get" id="cropform" onsubmit="return checkCoords();">';
 				echo '<input type="hidden" id="x" name="x">';
 				echo '<input type="hidden" id="y" name="y">';

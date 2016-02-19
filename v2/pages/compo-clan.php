@@ -24,11 +24,13 @@ require_once 'handlers/eventhandler.php';
 require_once 'handlers/clanhandler.php';
 
 if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
+    $user = Session::getCurrentUser();
 
-	if ($user->hasPermission('compo.management')) {
+    if ($user->hasPermission('compo.management')) {
+	echo '<script src="scripts/compo.js"></script>';
         $id = $_GET["id"];
         $clan = ClanHandler::getClan($id);
+	$compo = $clan->getCompo();
 
         $playingMembers = ClanHandler::getPlayingClanMembers($clan);
         $stepins = ClanHandler::getStepInClanMembers($clan);
@@ -51,10 +53,18 @@ if (Session::isAuthenticated()) {
         }
         echo '</ul>';
 
+	echo '<h3>Admin-valg</h3>';
+	if($clan->isQualified($compo)) {
+	    echo '<input type="button" value="Diskvalifiser" onClick="disqualifyClan(' . $clan->getId() . ')" />';
 	} else {
-		echo '<p>Du har ikke rettigheter til dette!</p>';
+	    echo '<input type="button" value="Kvalifiser" onClick="qualifyClan(' . $clan->getId() . ')" />';
 	}
+	echo '<input type="button" value="Slett" onClick="deleteClan(' . $clan->getId() . ', ' . (ClanHandler::getClanMemberCount($clan) > 0 ? 'true' : 'false') . ')" />';
+
+    } else {
+	echo '<p>Du har ikke rettigheter til dette!</p>';
+    }
 } else {
-	echo '<p>Du er ikke logget inn!</p>';
+    echo '<p>Du er ikke logget inn!</p>';
 }
 ?>

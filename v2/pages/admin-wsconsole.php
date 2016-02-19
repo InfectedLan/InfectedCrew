@@ -19,29 +19,24 @@
  */
 
 require_once 'session.php';
-require_once 'settings.php';
-require_once 'handlers/eventhandler.php';
+require_once 'handlers/pagehandler.php';
+
+$site = 'http://infected.no/v7/';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('event.checkin')) {
-		echo '<script src="../api/scripts/event-checkin.js"></script>';
-		echo '<h3>Sjekk inn billett</h3>';
-
-		$event = EventHandler::getCurrentEvent();
-		$season = date('m', $event->getStartTime()) == 2 ? 'VINTER' : 'HØST';
-		$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season;
-
-		echo strtoupper(Settings::name . '_' . $eventName . '_' . date('Y', $event->getStartTime()) . '_') . '<input id="ticketId" type="text" autofocus>';
-		echo '<br>';
-		echo '<input type="button" value="Sjekk inn" onClick="loadData()"/>';
-		echo '<br>';
-		echo '<div id="ticketDetails"></div>';
+	if ($user->hasPermission('admin.websocket')) {
+	    echo '<h1>Websocket-konsoll</h1>';
+	    echo '<script src="../api/scripts/websocket.js"></script>';
+	    echo '<script src="scripts/admin-wsconsole.js"></script>';
+	    echo '<div id="consoleArea">Vennligst vent...<br /></div>';
+	    echo '<div id="inputArea"><input type="text" style="width: 100%;" placeholder="Skriv kommandoer her" /></div>';
+	    
 	} else {
-		echo '<p>Du har ikke rettigheter til dette!</p>';
+		echo 'Du har ikke rettigheter til dette!';
 	}
 } else {
-	echo '<p>Du er ikke logget inn!</p>';
+	echo 'Du er ikke logget inn!';
 }
 ?>

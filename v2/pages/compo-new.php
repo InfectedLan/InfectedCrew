@@ -42,8 +42,8 @@ if (Session::isAuthenticated()) {
 					echo '<td><input type="text" name="tag" placeholder="Skriv inn en tag her..." required></td>';
 				echo '</tr>';
 				echo '<tr>';
-					echo '<td>Spill-modus:</td>';
-					echo '<td><input type="text" name="mode" placeholder="Skriv inn et spill-modus her..."></td>';
+					echo '<td>Plugin:</td>';
+					echo '<td><input type="text" name="compoPlugin" placeholder="Skriv inn et spill-modus her..."></td>';
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>Beskrivelse:</td>';

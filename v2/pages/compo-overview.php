@@ -43,6 +43,20 @@ if(Session::isAuthenticated()) {
         $totalCount = (count($pendingMatches) + count($currentMatches) + count($finishedMatches));
 
         echo '<p>Matcher: ' . $totalCount . ' (' . count($pendingMatches) . ' vendende matcher, ' . count($currentMatches) . ' nåværende matcher, ' . count($finishedMatches) . ' ferdige matcher)</p>';
+
+	echo '<p>Tilkoblings-type: ';
+	switch($compo->getConnectionType()) {
+	case Compo::CONNECTION_TYPE_NONE:
+	    echo "<b>Ingen</b>";
+	    break;
+	case Compo::CONNECTION_TYPE_SERVER:
+	    echo '<b>Server</b>';
+	    break;
+	case Compo::CONNECTION_TYPE_CUSTOM:
+	    echo '<b>Egen(Håndtert av compo-plugin)</b>';
+	    break;
+	}
+	echo '</p>';
     }
 
     //Register the timers
