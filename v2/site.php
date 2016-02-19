@@ -288,6 +288,7 @@ class Site {
 					  $this->pageName=='compo-brackets' ||
 					  $this->pageName=='compo-chat' ||
 					  $this->pageName=='compo-servers' ||
+                                          $this->pageName == 'compo-casting' ||
                                 $this->pageName=='compo-clan') {
                                     if($user->hasPermission('compo.management')) {
                                         echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
