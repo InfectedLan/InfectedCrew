@@ -68,7 +68,7 @@ if (Session::isAuthenticated()) {
 		echo '</table>';
 
 		echo '<h1>Lag en ny server</h1>';
-		echo '<form class="server-add" method="get">';
+		echo '<form id="server-add" method="post">';
 		echo '<input type="hidden" name="compoId" value="' . $compo->getId() . '" />';
 		echo '<table>';
 

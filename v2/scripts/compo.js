@@ -22,9 +22,9 @@ $(document).ready(function() {
 	event.preventDefault();
 	addCompo(this);
     });
-    $('.server-add').on('submit', function(event) {
+    $('#server-add').on('submit', function(event) {
 	event.preventDefault();
-	addServer(this);
+	//addServer(this);
     });
 
     $('.compo-edit').on('submit', function(event) {
