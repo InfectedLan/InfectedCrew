@@ -18,23 +18,46 @@
  */
 
 $(document).ready(function() {
-	$('.compo-add').on('submit', function(event) {
-		event.preventDefault();
-		addCompo(this);
-	});
+    $('.compo-add').on('submit', function(event) {
+	event.preventDefault();
+	addCompo(this);
+    });
+    $('#server-add').on('submit', function(event) {
+	event.preventDefault();
+	//addServer(this);
+    });
 
-	$('.compo-edit').on('submit', function(event) {
-		event.preventDefault();
-		editCompo(this);
-	});
+    $('.compo-edit').on('submit', function(event) {
+	event.preventDefault();
+	editCompo(this);
+    });
 });
 
 function addCompo(form) {
 	$.getJSON('../api/json/compo/addCompo.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
-			window.location.replace("index.php?page=compo-view&id=" + data.id);
+		    location.reload();
 		} else {
 			error(data.message);
+		}
+	});
+}
+
+function addServer(form) {
+	$.getJSON('../api/json/compo/addServer.php' + '?' + $(form).serialize(), function(data) {
+		if (data.result) {
+		    location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+function deleteServer(serverId) {
+	$.getJSON('../api/json/compo/removeServer.php?id=' + serverId, function(data) {
+		if (data.result) {
+		    location.reload();
+		} else {
+		    error(data.message);
 		}
 	});
 }
@@ -59,7 +82,7 @@ function disqualifyClan(clanid) {
     });
 }
 function deleteClan(clanid, shouldask) {
-    if(!shouldask || !confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
+    if(!shouldask || confirm('Er du sikker på at du vil slette clanen? Når den er slettet, kan du ikke angre!')) {
 	$.getJSON('../api/json/compo/deleteClan.php' + '?id=' + encodeURIComponent(clanid), function(data) {
 		if (data.result) {
 			location.reload();

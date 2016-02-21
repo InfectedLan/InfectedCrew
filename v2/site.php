@@ -191,8 +191,7 @@ class Site {
 											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
 										   $this->pageName == 'event-screen' ||
-										   $this->pageName == 'event-agenda' ||
-										   $this->pageName == 'event-compo') {
+										   $this->pageName == 'event-agenda') {
 
 									if ($user->hasPermission('event.checkin')) {
 										echo '<li><a' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . ' href="index.php?page=event-checkin">Innsjekk</a></li>';
@@ -212,10 +211,6 @@ class Site {
 
 									if ($user->hasPermission('event.agenda')) {
 										echo '<li><a' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . ' href="index.php?page=event-agenda">Agenda</a></li>';
-									}
-
-									if ($user->hasPermission('event.compo')) {
-										echo '<li><a' . ($this->pageName == 'event-compo' ? ' class="active"' : null) . ' href="index.php?page=event-compo">Compo</a></li>';
 									}
 
 									if ($user->hasPermission('event.table-labels')) {
@@ -258,7 +253,8 @@ class Site {
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
 									$this->pageName == 'admin-website' ||
-									$this->pageName == 'admin-memberlist') {
+									$this->pageName == 'admin-memberlist' ||
+									$this->pageName == 'admin-wsconsole') {
 
 									if ($user->hasPermission('admin.events')) {
 										echo '<li><a' . ($this->pageName == 'admin-events' ? ' class="active"' : null) . ' href="index.php?page=admin-events">Arrangementer</a></li>';
@@ -280,11 +276,19 @@ class Site {
 										echo '<li><a' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . ' href="index.php?page=admin-website">Endre hovedsiden</a></li>';
 									}
 
+									if ($user->hasPermission('admin.websocket')) {
+									    echo '<li><a' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . ' href="index.php?page=admin-wsconsole">Websocket-konsoll</a></li>';
+									}
+
                                 } else if($this->pageName=='compo-overview' ||
                                 $this->pageName=='compo-new' ||
                                 $this->pageName=='compo-view' ||
                                 $this->pageName=='compo-clans' ||
                                 $this->pageName=='compo-matches' ||
+					  $this->pageName=='compo-brackets' ||
+					  $this->pageName=='compo-chat' ||
+					  $this->pageName=='compo-servers' ||
+                                          $this->pageName == 'compo-casting' ||
                                 $this->pageName=='compo-clan') {
                                     if($user->hasPermission('compo.management')) {
                                         echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
@@ -297,12 +301,16 @@ class Site {
                                         if(count($compos) > 0) {
                                             echo "<li>|</li>";
                                             foreach($compos as $compo) {
-                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTitle() . '</a></li>';
+                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTag() . '</a></li>';
                                             }
                                             echo "<li>|</li>";
                                         }
                                     }
-                                            
+                                    if($user->hasPermission('compo.casting')) {
+                                                                            
+                                        echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
+                                    }
+
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
 									$this->pageName == 'developer-syslog') {
@@ -311,12 +319,12 @@ class Site {
 										$user->hasPermission('developer.change-user')) {
 										echo '<li><a' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . ' href="index.php?page=developer-change-user">Logg inn som en annan</a></li>';
 									}
-									
+
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.syslog')) {
 										echo '<li><a' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . ' href="index.php?page=developer-syslog">Systemlogg</a></li>';
 									}
-									
+
 								}
 							}
 						echo '</ul>';
@@ -402,8 +410,7 @@ class Site {
 										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
 										$this->pageName == 'event-screen' ||
-										$this->pageName == 'event-agenda' ||
-										$this->pageName == 'event-compo') {
+										$this->pageName == 'event-agenda') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
@@ -431,7 +438,8 @@ class Site {
 										$this->pageName == 'admin-permissions' ||
 										$this->pageName == 'admin-seatmap' ||
 										$this->pageName == 'admin-website' ||
-										$this->pageName == 'admin-memberlist') {
+										$this->pageName == 'admin-memberlist' ||
+									        $this->pageName == 'admin-wsconsole') {
 										echo '<li class="active"><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=admin"><img src="images/admin.png"></a></li>';

@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
             echo '<script src="../api/scripts/bracket.js"></script>';
             echo '<script src="scripts/compo-bracketeditor.js"></script>';
             echo '<link rel="stylesheet" type="text/css" href="../api/styles/bracket-editor.css" />';
-            echo "<script>var compoId = " . $compo->getId() . ";$(document).ready(function(){initBracketEditor();});</script>";
+            echo "<script>var compoId = " . $compo->getId() . ';$(document).ready(function(){console.log("init bracket editor");initBracketEditor();});</script>';
             echo '<script>';
             echo 'var participant_type_clan = ' . Settings::compo_match_participant_type_clan . ';';
             echo 'var participant_type_winner = ' . Settings::compo_match_participant_type_match_winner . ';';
@@ -53,6 +53,9 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
+	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+	    }
             echo '<hr>';
             echo '<div class="toolbar">';
 	            echo '<input type="button" class="fa fa-2x" value="&#xf0c7;" onClick="save()" ></input>';
@@ -75,13 +78,13 @@ if (Session::isAuthenticated()) {
                 echo '<input type="radio" id="participantTypeWalkover" name="participantType" class="participantType" value="' . Settings::compo_match_participant_type_match_walkover . '" /> Walkover<br />';
 
                 echo '<div id="participantMatchSelector">';
-                echo '<h1>Velg clan</h1>';
+                /*echo '<h1>Velg clan</h1>';
                 $participants = ClanHandler::getClansByCompo($compo);
                 foreach($participants as $clan) {
                     if($clan->isQualified($compo)) {
                         echo '<input type="radio" name="participantClan" class="participantClan" value="' .$clan->getId()  . '" /> ' . $clan->getName() . '<br />';
                     }
-                }
+		    }*/
                 echo '</div>';
                 echo '<div id="participantIdSelector">';
                 echo '<h1>Skriv inn match-id</h1>';

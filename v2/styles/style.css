@@ -289,3 +289,13 @@ tr {
     width: 100%;
     border: 1px black solid;
 }
+#consoleArea {
+    width: 100%;
+    height: 500px;
+    font-family: "Courier New", Courier, monospace;
+    color: rgb(0,255,0);
+    background-color: rgb(1,0,0);
+    padding: 5px;
+    overflow: scroll;
+    font-size: 13px;
+}

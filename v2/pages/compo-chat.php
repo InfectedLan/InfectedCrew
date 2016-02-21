@@ -41,8 +41,13 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
+	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+	    }
             echo '<hr>';
 
+	    echo '<script src="../api/scripts/websocket.js"></script>';
+	    echo '<link rel="stylesheet" href="../api/styles/chat.css">';
             echo '<script src="../api/scripts/chat.js"></script>';
             echo '<script>Chat.init();</script>';
             echo '<h1>Hovedchat</h1>';

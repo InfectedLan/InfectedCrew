@@ -105,6 +105,7 @@ function getNotelist(array $noteList, $showAdditionalInfo) {
 					$content .= '<th>Ansvarlig</th>';
 					$content .= '<th>Detaljer</th>';
 					$content .= '<th>Tilskuere</th>';
+					$content .= '<th>Påbegynt</th>';
 				$content .= '</tr>';
 
 				foreach ($noteList as $note) {
@@ -112,6 +113,8 @@ function getNotelist(array $noteList, $showAdditionalInfo) {
 
 					if ($note->isDone()) { // Punker som er ferdig: Teskten blir grønn
 						$color = "#44ce44"; // Green
+					} else if ($note->isInProgress()) { // Punker som er påbegynt: Teskten blir orange
+						$color = "#ff6600"; // Orange
 					} else if ($note->isExpired()) { // Punkter som er over tiden: Tesksten blir rød
 						$color = "#ff5151"; // Red
 					} else if ($note->isDelegated() && $note->isUser($user)) { // Punkter du har fått delegert: En annen blåtone bakgrunn
@@ -123,63 +126,67 @@ function getNotelist(array $noteList, $showAdditionalInfo) {
 					}
 
 					$content .= '<tr style="background: ' . $color . ';">';
-						$content .= '<td style="padding-left: 16px;">';
-							$content .= '<form class="event-checklist-check" method="post">';
-							$content .= '<input type="hidden" name="id" value="' . $note->getId() . '" />';
-							$content .= '<input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '>';
-							$content .= '</form>';
-						$content .= '</td>';
+							$content .= '<td style="padding-left: 16px;">';
+								$content .= '<form class="event-checklist-check" method="post">';
+									$content .= '<input type="hidden" name="id" value="' . $note->getId() . '" />';
+									$content .= '<input type="checkbox" name="done" value="1"' . ($note->isDone() ? ' checked' : null) . '>';
+								$content .= '</form>';
+							$content .= '</td>';
 
-						if ($note->hasGroup()) {
-							$content .= '<td>' . $note->getGroup()->getTitle() . '</td>';
-						} else {
-							$content .= '<td>Ingen</td>';
-						}
-
-						if ($note->hasTeam()) {
-							$content .= '<td>' . $note->getTeam()->getTitle() . '</td>';
-						} else {
-							$content .= '<td>Ingen</td>';
-						}
-
-						$content .= '<td>' . $note->getTitle() . '</td>';
-						$content .= '<td>';
-							$secondsOffset = $note->getSecondsOffset();
-
-							if ($secondsOffset >= -86400 && $secondsOffset <= 172800) {
-								$content .= DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime());
+							if ($note->hasGroup()) {
+								$content .= '<td>' . $note->getGroup()->getTitle() . '</td>';
 							} else {
-								$week = abs(round($secondsOffset / 604800));
-								$content .= $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før';
+								$content .= '<td>Ingen</td>';
 							}
-						$content .= '</td>';
-						$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
-						$content .= '<td>';
-							$content .= '<div class="slidingBox">';
-								$content .= '<a href="#" class="show_hide">Vis</a>';
-								$content .= '<div class="details">' . $note->getContent() . '</div>';
-							$content .= '</div>';
-						$content .= '</td>';
-						$content .= '<td>';
-							$watchingUserList = $note->getWatchingUsers();
 
-							if (count($watchingUserList) > 0) {
+							if ($note->hasTeam()) {
+								$content .= '<td>' . $note->getTeam()->getTitle() . '</td>';
+							} else {
+								$content .= '<td>Ingen</td>';
+							}
+
+							$content .= '<td>' . $note->getTitle() . '</td>';
+							$content .= '<td>';
+								$secondsOffset = $note->getSecondsOffset();
+
+								if ($secondsOffset >= -86400 && $secondsOffset <= 172800) {
+									$content .= DateUtils::getDayFromInt(date('w', $note->getAbsoluteTime())) . ' ' . date('H:i', $note->getAbsoluteTime());
+								} else {
+									$week = abs(round($secondsOffset / 604800));
+									$content .= $week . ' ' . ($week > 1 ? 'uker' : 'uke') . ' før';
+								}
+							$content .= '</td>';
+							$content .= '<td>' . ($note->hasOwner() || $note->hasUser($user) ? $note->getUser()->getFirstname() : 'Ingen') . '</td>';
+							$content .= '<td>';
 								$content .= '<div class="slidingBox">';
 									$content .= '<a href="#" class="show_hide">Vis</a>';
-									$content .= '<div class="details">';
-
-										foreach ($watchingUserList as $watchingUser) {
-											$content .= $watchingUser->getFirstname();
-
-											$content .= (!end($watchingUserList)->equals($watchingUser) ? ', ' : '');
-										}
-
-									$content .= '</div>';
+									$content .= '<div class="details">' . $note->getContent() . '</div>';
 								$content .= '</div>';
-							}
+							$content .= '</td>';
+							$content .= '<td>';
+								$watchingUserList = $note->getWatchingUsers();
 
-						$content .= '</td>';
+								if (count($watchingUserList) > 0) {
+									$content .= '<div class="slidingBox">';
+										$content .= '<a href="#" class="show_hide">Vis</a>';
+										$content .= '<div class="details">';
 
+											foreach ($watchingUserList as $watchingUser) {
+												$content .= $watchingUser->getFirstname();
+
+												$content .= (!end($watchingUserList)->equals($watchingUser) ? ', ' : '');
+											}
+
+										$content .= '</div>';
+									$content .= '</div>';
+								}
+
+							$content .= '</td>';
+							$content .= '<td>';
+							$content .= '<form class="event-checklist-check" method="post">';
+								$content .= '<input type="hidden" name="id" value="' . $note->getId() . '" />';
+								$content .= '<input type="checkbox" name="inProgress" value="1" onClick="testNote(' . $note->getId() . ')"' . ($note->isInProgress() ? ' checked' : null) . '>';
+							$content .= '</form>';
 						$content .= '<td><input type="button" value="Endre" onClick="editNote(' . $note->getId() . ')"></td>';
 
 						if ($user->hasPermission('*') ||

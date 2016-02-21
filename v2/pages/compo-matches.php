@@ -27,8 +27,10 @@ require_once 'handlers/compopluginhandler.php';
 
 function renderMatch($match, $plugin) {
     $participants = MatchHandler::getParticipantsJsonByMatch($match);
+    echo '<pre>' . json_encode($participants) . '</pre>';
+    //echo '<script src="scripts/compo.js"></script>';
 	echo '<table>';
-    echo '<script src="../api/scripts/compo-bracketeditor.js"></script>';
+     echo '<script src="scripts/compo-bracketeditor.js"></script>';
     $first = true;
     $isReady = true;
     echo '<tr>';
@@ -40,9 +42,9 @@ function renderMatch($match, $plugin) {
             echo '<td><i>' . $participant["value"] . '</i></td>';
             $isReady = false;
         } else {
-            echo '<td>' . $participant["value"] . '</td>';
-            if($match->getWinner() == null && $match->getScheduledTime() < time()) {
-                echo '<td><input type="button" value="Sett vinner" onClick="setWinner(' . $match->getId() . ', ' . $participant["id"] . ')" /></td>';
+            echo '<td>' . $participant["value"] . '(' . $participant["id"] . ')' . ($match->getWinnerId() == $participant["id"] ? ' <b>(Vinner)</b>' : '') . '</td>';
+            if($match->getWinnerId() == 0 && $match->getScheduledTime() < time()) {
+                echo '<td><input type="button" value="Sett vinner(' . $participant["id"] . ')" onClick="setWinner(' . $match->getId() . ', ' . $participant["id"] . ')" /></td>';
             }
         }
         $first = false;
@@ -58,21 +60,31 @@ function renderMatch($match, $plugin) {
             echo '<td>';
                	echo 'Status: ';
             echo '</td>';
+	    
             echo '<td>';
-               	if($isReady) {
-               		if($match->getState() == Match::STATE_READYCHECK) {
-                       	echo '<b>Venter på spillere</b>';
-               		} elseif ($match->getState() == Match::STATE_CUSTOM_PREGAME) {
-                        echo '<b>Pregame</b>';
-                    } elseif ($match->getState() == Match::STATE_JOIN_GAME) {
-                        echo '<b>Spiller</b>';
-                    }
-                } else {
-                    echo '<b>Venter på tidligere match</b>';
-                }
+	    if($isReady) {
+		if($match->getWinnerId() != 0) {
+		    echo '<b>Ferdig</b>';
+		}
+		elseif ($match->getState() == Match::STATE_CUSTOM_PREGAME) {
+		    echo '<b>Pregame</b>';
+		} elseif ($match->getState() == Match::STATE_JOIN_GAME) {
+		    echo '<b>Spiller</b>';
+		} elseif($match->getState() == Match::STATE_READYCHECK) {
+		    echo '<b>Venter på spillere</b>';
+		}
+	    } else {
+		echo '<b>Venter på tidligere match</b>';
+	    }
             echo '</td>';
-        echo '</tr>';
-        echo '<tr>';
+	    echo '<td>';
+	    echo 'Winnerid: ' . $match->getWinnerId();
+            echo '</td>';
+	    echo '</tr>';
+	    echo '<tr>';
+	    echo '<td><a href="../api/pages/spectate.php?id=' . $match->getId() . '">Spectate</a></td>';
+	    echo '</tr>';
+	    echo '<tr>';
            	echo '<td>';
                	echo 'Matchid: ';
            	echo '</td>';
@@ -112,6 +124,9 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
+	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+	    }
             echo '<hr>';
 
             $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
