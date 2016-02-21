@@ -78,13 +78,13 @@ if (Session::isAuthenticated()) {
                 echo '<input type="radio" id="participantTypeWalkover" name="participantType" class="participantType" value="' . Settings::compo_match_participant_type_match_walkover . '" /> Walkover<br />';
 
                 echo '<div id="participantMatchSelector">';
-                echo '<h1>Velg clan</h1>';
+                /*echo '<h1>Velg clan</h1>';
                 $participants = ClanHandler::getClansByCompo($compo);
                 foreach($participants as $clan) {
                     if($clan->isQualified($compo)) {
                         echo '<input type="radio" name="participantClan" class="participantClan" value="' .$clan->getId()  . '" /> ' . $clan->getName() . '<br />';
                     }
-                }
+		    }*/
                 echo '</div>';
                 echo '<div id="participantIdSelector">';
                 echo '<h1>Skriv inn match-id</h1>';

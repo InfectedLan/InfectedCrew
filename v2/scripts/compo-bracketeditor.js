@@ -103,8 +103,39 @@ $(document).ready(function() {
 	    $("#participantMatchSelector").fadeOut();
 	}
     });
-    
+    renderClanSelector();
 });
+function renderClanSelector() {
+    $.getJSON("../api/json/compo/getCompoData.php?id=" + compoId, function(jsonData) {
+	console.log("Data: " );
+	console.log(jsonData);
+	if(jsonData.result == true) {
+	    var selectorData = [];
+	    selectorData.push("<h1>Hva slags deltager vil du legge til?</h1>");
+	    for(var i = 0; i < jsonData.data.clans.length; i++) {
+		if(jsonData.data.clans[i].qualified) {
+		    var isInMatchList = false;
+		    for(var a = 0; a < bracketSource.data.length; a++) {
+			var m = bracketSource.data[a];
+			for(var b = 0; b < m.participants.length; b++) {
+			    if(m.participants[b].type==0 && m.participants[b].participantId==jsonData.data.clans[i].id) {
+				isInMatchList = true;
+			    }
+			}
+			break;
+		    }
+		    if(!isInMatchList) {
+			selectorData.push('<input type="radio" name="participantClan" class="participantClan" value="' + jsonData.data.clans[i].id + '" /> ' + jsonData.data.clans[i].name + '<br />');
+		    }
+		}
+	    }
+	    $("#participantMatchSelector").html(selectorData.join(""));
+	} else {
+	    error(data.message);
+	}
+    });
+}
+
 var matchParticipantTarget = 0;
 function addParticipant(matchId) {
     $("#participantPrompt").fadeIn();
@@ -167,6 +198,7 @@ function api_addParticipant(matchType, id, targetMatchId) {
     $.getJSON('../api/json/match/addParticipant.php?match=' + encodeURIComponent(targetMatchId) + "&type=" + encodeURIComponent(matchType) + "&id=" + encodeURIComponent(id), function(data){
 	if(data.result) {
 	    bracketSource.refresh();
+	    renderClanSelector();
 	} else {
 	    error(data.message);
 	}

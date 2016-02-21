@@ -56,6 +56,7 @@ if (Session::isAuthenticated()) {
         echo '<option value="default">Default</option selected>';
         echo '<option value="csgoUserTemplate">CS:GO User</option>';
         echo '<option value="csgoTeamTemplate">CS:GO Team</option>';
+	echo '<option value="castingCamTemplate">Casting camera template</option>';
         echo '</select></td>';
         echo '</tr>';
         echo '</table>';

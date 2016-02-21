@@ -49,7 +49,11 @@ if (Session::isAuthenticated()) {
             echo '<hr>';
             $clans = ClanHandler::getClansByCompo($compo);
 
-            echo '<h1>Kvalifiserte lag:</h1><br>';
+	    /*	    if($compo->getParticipantLimit() != 0) {
+		echo '<h1>Kvalifiserte lag(' . count($clans)/2) . ' av ' . $compo->getParticipantLimit() . '):</h1><br>';
+		} else {*/
+		echo '<h1>Kvalifiserte lag:</h1><br>';
+		//}
             echo '<table>';
             foreach($clans as $clan) {
                 if($clan->isQualified($compo)) {
