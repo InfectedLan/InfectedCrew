@@ -138,8 +138,13 @@ class EditAvatarPage implements IPage {
 						break;
 				}
 			} else {
+                $content .= '<script src="../api/scripts/jquery.form.min.js"></script>';
 				$content .= '<script>';
 					$content .= '$(document).ready(function() {';
+                    $content .= '$("#file").change(function() {';
+                	$content .= '$("#uploadForm").submit();';
+                    $content .= '$("#uploadForm").fadeOut();';
+                    $content .= '});';
 						$content .= 'var options = {';
 							$content .= 'success: function(responseText, statusText, xhr, $form) {';
 								$content .= 'var data = jQuery.parseJSON(responseText);';
@@ -153,7 +158,13 @@ class EditAvatarPage implements IPage {
 						$content .= '$("#uploadForm").ajaxForm(options);';
 					$content .= '});';
 				$content .= '</script>';
-				$content .= '<b>Last opp profilbilde: </b>';
+                $content .= '<div class="row">';
+                $content .= '<div class="col-md-12">';
+                $content .= '<div class="box box-primary">';
+                $content .= '<div class="box-header with-border">';
+                $content .= '<h3 class="box-title">Last opp avatar</h3>';
+                $content .= '</div><!-- box-header with-border-->';
+                $content .= '<div class="box-body">';
 				$content .= '<form action="../api/json/avatar/uploadAvatar.php" method="post" id="uploadForm" enctype="multipart/form-data">';
 					$content .= '<input type="hidden" name="MAX_FILE_SIZE" value="7340032" />';
 					$content .= '<label for="file">Filnavn:</label>';
@@ -161,6 +172,11 @@ class EditAvatarPage implements IPage {
 					$content .= '<br>';
 					$content .= '<input type="submit" name="submit" value="Last opp!">';
 				$content .= '</form>';
+                $content .= '</div><!-- box-body -->';
+                $content .= '</div><!-- box -->';
+
+                $content .= '</div><!-- col-md-12 -->';
+                $content .= '</div><!-- row -->';
 			}
 		} else {
 			$content .= '<p>Du er ikke logget inn!</p>';
