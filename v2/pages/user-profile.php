@@ -255,7 +255,7 @@ if (Session::isAuthenticated()) {
 					}
 				}
 
-				echo '<script src="scripts/edit-user-note.js"></script>';
+                //                echo '<script src="scripts/edit-user-note.js"></script>';
 
 				if ($user->hasPermission('user.note')) {
 
