@@ -202,7 +202,7 @@ function renderSeatmap() {
 
 			for (var i = 0; i < data.rows.length; i++) {
 				var returnData = [];
-				returnData.push('<div class="editorRow" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
+			    returnData.push('<div class="' + (data.rows[i].horizontal ? 'horizontalE' : 'e') + 'ditorRow" style="top: ' + data.rows[i].y + 'px; left: ' + data.rows[i].x + 'px;" id="row' + data.rows[i].id + '">');
 
 				for (var s = 0; s < data.rows[i].seats.length; s++) {
 					returnData.push('<div class="editorSeat" id="seat' + data.rows[i].seats[s].id + '">');

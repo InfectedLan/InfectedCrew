@@ -126,9 +126,19 @@ body {
 	position: absolute;
 	background-image: url('../images/stripe.png');
 	padding: 1px;
-	min-height: 27px;
-	min-width: 27px;
+	min-height: 33px;
+	width: 33px;
 	cursor: pointer;
+}
+
+.horizontalEditorRow {
+	position: absolute;
+	background-image: url('../images/stripe.png');
+	padding: 1px;
+	height: 33px;
+	min-width: 33px;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .selectedRow {
@@ -136,7 +146,16 @@ body {
 }
 
 .editorSeat {
-	background: green;
+	/*background: green;
+	width: 27px;
+	height: 27px;
+	padding: 2px;
+	margin: 1px;
+	color: rgb(255, 255, 255);
+	font-size: 10px;
+	text-align: center;*/
+    white-space: normal;
+    background: green;
 	width: 27px;
 	height: 27px;
 	padding: 2px;
@@ -144,6 +163,8 @@ body {
 	color: rgb(255, 255, 255);
 	font-size: 10px;
 	text-align: center;
+	font-family: arial;
+	display: inline-block;
 }
 
 /* Crew entries */
