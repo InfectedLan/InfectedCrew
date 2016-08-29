@@ -36,6 +36,8 @@ if (Session::isAuthenticated()) {
 				echo '<th>Navn:</th>';
 				echo '<th>Sted/Deltakere:</th>';
 				echo '<th>Booking:</th>';
+				echo '<th>Prioritets-seating:</th>';
+				echo '<th>Vanelig seating:</th>';
 				echo '<th>Start:</th>';
 				echo '<th>Slutt:</th>';
 			echo '</tr>';
@@ -55,6 +57,14 @@ if (Session::isAuthenticated()) {
 						echo '<td>';
 							echo '<input type="date" name="bookingDate" value="' . date('Y-m-d', $event->getBookingTime()) . '" required>';
 							echo '<input type="time" name="bookingTime" value="' . date('H:i', $event->getBookingTime()) . '" required>';
+						echo '</td>';
+						echo '<td>';
+							echo '<input type="date" name="prioritySeatingDate" value="' . date('Y-m-d', $event->getPrioritySeatingTime()) . '" required>';
+							echo '<input type="time" name="prioritySeatingTime" value="' . date('H:i', $event->getPrioritySeatingTime()) . '" required>';
+						echo '</td>';
+						echo '<td>';
+							echo '<input type="date" name="seatingDate" value="' . date('Y-m-d', $event->getSeatingTime()) . '" required>';
+							echo '<input type="time" name="seatingTime" value="' . date('H:i', $event->getSeatingTime()) . '" required>';
 						echo '</td>';
 						echo '<td>';
 							echo '<input type="date" name="startDate" value="' . date('Y-m-d', $event->getStartTime()) . '" required>';
