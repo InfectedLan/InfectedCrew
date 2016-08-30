@@ -130,7 +130,7 @@ if (Session::isAuthenticated()) {
 
 				echo '<tr>';
 					echo '<td>Deltatt tidligere:</td>';
-					echo '<td>' . $historyEventCount . ' ' . ($historyEventCount > 1 ? 'ganger' : 'gang') . '</td>';
+					echo '<td>' . ($historyEventCount <= 0 ? 'Nei' : $historyEventCount . ' ' . ($historyEventCount > 1 ? 'ganger' : 'gang')) . '</td>';
 				echo '</tr>';
 
 				if ($editUser->isGroupMember()) {
