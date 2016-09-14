@@ -169,6 +169,20 @@ if (Session::isAuthenticated()) {
 						echo '<td>' . $ticket->getSeat()->getString() . '</td>';
 					echo '</tr>';
 				}
+				if($user->hasPermission('compo.management')) {
+				    $steamId = $editUser->getSteamId();
+				    if($steamId !== null) {
+					echo '<tr>';
+						echo '<td>Steam id</td>';
+						echo '<td><a href="https://steamcommunity.com/profiles/' . $steamId . '">' . $steamId . '</a></td>';
+					echo '</tr>';
+				    } else {
+					echo '<tr>';
+						echo '<td>Steam id</td>';
+						echo '<td><i>Ingen</i></td>';
+					echo '</tr>';
+				    }
+				}
 
 				if ($user->hasPermission('user.profile')) {
 					echo '<tr>';
