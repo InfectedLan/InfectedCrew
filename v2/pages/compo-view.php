@@ -32,7 +32,7 @@ if (Session::isAuthenticated()) {
 
         if($compo != null) {
             //echo '<h1>' . $compo->getTitle() . '</h1>';
-            $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
+	    $pluginMeta = CompoPluginHandler::getPluginMetadataOrDefault($compo->getPluginName());
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
@@ -46,8 +46,8 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
                 echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
             }
-            foreach($plugin->getAdminHeaderEntries() as $headerKey => $headerEntry) {
-                echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $headerEntry . '">' . $headerKey . '</a>';
+            foreach($pluginMeta["pages"] as $pageObj) {
+                echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $pageObj["urlName"] . '">' . $pageObj["title"] . '</a>';
             }
             echo '<hr>';
             echo '<h1>' . $compo->getTag() . ' - ' . $compo->getTitle() . '(<i>' . $compo->getName() . '</i>)</h1>';
@@ -95,7 +95,7 @@ if (Session::isAuthenticated()) {
             }
             echo '</p>';
             echo '<h1>Plugin info</h1>';
-            $pluginMeta = CompoPluginHandler::getPluginMetadata($compo->getPluginName());
+	    $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
             echo '<p>Internt navn: ' . $compo->getPluginName() . (CompoPluginHandler::pluginExists($compo->getPluginName()) ? '' : '<b>(finnes ikke)</b>') . '</p>';
             echo '<p>Fullt navn: ' . $pluginMeta["name"] . '</p>';
             echo '<p>Beskrivelse: <i>' . $pluginMeta["description"] . '</i></p>'; 

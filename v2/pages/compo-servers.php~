@@ -21,7 +21,6 @@
 require_once 'session.php';
 require_once 'handlers/compohandler.php';
 require_once 'handlers/eventhandler.php';
-require_once 'handlers/serverhandler.php';
 require_once 'objects/compo.php';
 
 if (Session::isAuthenticated()) {
@@ -32,8 +31,7 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
-	    if($compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
-		$pluginMeta = CompoPluginHandler::getPluginMetadata($compo->getPluginName());
+	    if($compo->getConnectionType() != Compo::CONNECTION_TYPE_SERVER) {
 		//echo '<h1>' . $compo->getTitle() . '</h1>';
 		echo '<hr>';
 		echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
@@ -48,56 +46,8 @@ if (Session::isAuthenticated()) {
 		if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
 		    echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
 		}
-		foreach($pluginMeta["pages"] as $pageObj) {
-		    echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $pageObj["urlName"] . '">' . $pageObj["title"] . '</a>';
-		}
 		echo '<hr>';
-		echo '<script scr="scripts/compo.js"></script>';
-		echo '<h1>Servere</h1>';
-
-		$servers = ServerHandler::getServersByCompo($compo);
-
-		echo '<table>';
-		echo '<tr>';
-		echo '<td><b>Navn</b></td>';
-		echo '<td><b>Tilkoblings-data</b></td>';
-		echo '</tr>';
-		foreach($servers as $server) {
-		    echo '<tr>';
-		    echo '<td>' . $server->getHumanName() . '</td>';
-		    echo '<td><pre>' . $server->getConnectionData() . '</pre></td>';
-		    echo '<td><input type="button" Value="Slett" onClick="deleteServer(' . $server->getId() . ')" /></td>';
-		    echo '</tr>';
-		}
-		echo '</table>';
-
-		echo '<h1>Lag en ny server</h1>';
-		echo '<form id="server-add" method="post">';
-		echo '<input type="hidden" name="compoId" value="' . $compo->getId() . '" />';
-		echo '<table>';
-
-		echo '<tr>';
-		echo '<td>Navn: </td>';
-		echo '<td><input type="text" name="humanName" placeholder="Skriv noe menneske-forståelig her..." /></td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<td>Server-data:</td>';
-		echo '<td><input type="text" name="connectionData" placeholder="La stå blank om usikker" /></td>';
-		echo '</tr>';
-		
-		echo '<tr>';
-		echo '<td></td>';
-		echo '<td><i>Håndtert av compo-plugin</i></td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<td><input type="submit" value="Legg til"></td>';
-		echo '</tr>';
-		
-		echo '</table>';
-		echo '</form>';
-		echo '<i>Husk at serverne må settes opp slik at de fungerer med valgt compo-plugin</i>';
+		echo '<p>Under construction.</p>';
 	    } else {
 		echo '<b>Denne compoen har ikke servere</b>';
 	    }
