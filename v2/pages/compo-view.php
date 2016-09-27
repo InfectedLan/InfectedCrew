@@ -32,6 +32,7 @@ if (Session::isAuthenticated()) {
 
         if($compo != null) {
             //echo '<h1>' . $compo->getTitle() . '</h1>';
+            $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
             echo '<hr>';
             echo '<a href="index.php?page=compo-view&id=' . $compo->getId() . '">Oversikt</a> ';
             echo '<a href="index.php?page=compo-clans&id=' . $compo->getId() . '">Påmeldte klaner</a> ';
@@ -42,11 +43,62 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
-	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+            if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
                 echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
-	    }
+            }
+            foreach($plugin->getAdminHeaderEntries() as $headerKey => $headerEntry) {
+                echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $headerEntry . '">' . $headerKey . '</a>';
+            }
             echo '<hr>';
-            echo '<p>Under construction.</p>';
+            echo '<h1>' . $compo->getTag() . ' - ' . $compo->getTitle() . '(<i>' . $compo->getName() . '</i>)</h1>';
+            echo '<p>Registrering ender ' . date('Y-m-d H:m:s', $compo->getRegistrationEndTime()) . ' (<span class="compoTimer' . 0 . '"></span>)</p>';
+            $timerList[] = array("id" => 0, "when" => $compo->getRegistrationEndTime());
+        
+            echo '<p>Compoen starter ' . date('Y-m-d H:m:s', $compo->getStartTime()) . ' (<span class="compoTimer' . 1 . '"></span>)</p>';
+            $timerList[] = array("id" => 1, "when" => $compo->getStartTime());
+
+            $participants = ClanHandler::getClansByCompo($compo);
+            $qualified = 0;
+            $notQualified = 0;
+            $queued = 0;
+            foreach($participants as $participant) {
+                if($participant->isQualified($compo)) {
+                    $qualified++;
+                } else {
+                    if(ClanHandler::isInQualificationQueue($participant)) {
+                        $queued++;
+                    } else {
+                        $notQualified++;
+                    }
+                }
+            }
+            echo '<p>Deltagere: ' . $qualified . ($compo->getParticipantLimit() != 0 ? '/' . $compo->getParticipantLimit() : '') . ' (' . $qualified . ' kvalifiserte, ' . $queued . ' i kø, ' . $notQualified . ' uferdige)</p>';
+
+            $pendingMatches = MatchHandler::getPendingMatchesByCompo($compo);
+            $currentMatches = MatchHandler::getCurrentMatchesByCompo($compo);
+            $finishedMatches = MatchHandler::getFinishedMatchesByCompo($compo);
+            $totalCount = (count($pendingMatches) + count($currentMatches) + count($finishedMatches));
+
+            echo '<p>Matcher: ' . $totalCount . ' (' . count($pendingMatches) . ' vendende matcher, ' . count($currentMatches) . ' nåværende matcher, ' . count($finishedMatches) . ' ferdige matcher)</p>';
+
+            echo '<p>Tilkoblings-type: ';
+            switch($compo->getConnectionType()) {
+            case Compo::CONNECTION_TYPE_NONE:
+                echo "<b>Ingen</b>";
+                break;
+            case Compo::CONNECTION_TYPE_SERVER:
+                echo '<b>Server</b>';
+                break;
+            case Compo::CONNECTION_TYPE_CUSTOM:
+                echo '<b>Egen(Håndtert av compo-plugin)</b>';
+                break;
+            }
+            echo '</p>';
+            echo '<h1>Plugin info</h1>';
+            $pluginMeta = CompoPluginHandler::getPluginMetadata($compo->getPluginName());
+            echo '<p>Internt navn: ' . $compo->getPluginName() . (CompoPluginHandler::pluginExists($compo->getPluginName()) ? '' : '<b>(finnes ikke)</b>') . '</p>';
+            echo '<p>Fullt navn: ' . $pluginMeta["name"] . '</p>';
+            echo '<p>Beskrivelse: <i>' . $pluginMeta["description"] . '</i></p>'; 
         } else {
             echo '<p>Compoen eksisterer ikke!</p>';
         }

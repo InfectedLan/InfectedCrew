@@ -4,6 +4,7 @@ require_once 'session.php';
 require_once 'handlers/compohandler.php';
 require_once 'handlers/clanhandler.php';
 require_once 'handlers/matchhandler.php';
+require_once 'handlers/compopluginhandler.php';
 
 if(Session::isAuthenticated()) {
     $compos = CompoHandler::getCompos();
@@ -57,6 +58,7 @@ if(Session::isAuthenticated()) {
 	    break;
 	}
 	echo '</p>';
+    echo '<p>Plugin: ' . $compo->getPluginName() . '</p>';
     }
 
     //Register the timers

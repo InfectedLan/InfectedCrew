@@ -31,6 +31,7 @@ if (Session::isAuthenticated()) {
         $compo = CompoHandler::getCompo($id);
 
         if($compo != null) {
+            $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
 	    echo '<script src="scripts/compo.js"></script>';
             //echo '<h1>' . $compo->getTitle() . '</h1>';
             echo '<hr>';
@@ -43,9 +44,12 @@ if (Session::isAuthenticated()) {
             if($user->hasPermission('compo.chat')) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
-	    if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
+            if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
                 echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
-	    }
+            }
+            foreach($plugin->getAdminHeaderEntries() as $headerKey => $headerEntry) {
+                echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $headerEntry . '">' . $headerKey . '</a>';
+            }
             echo '<hr>';
             $clans = ClanHandler::getClansByCompo($compo);
 
