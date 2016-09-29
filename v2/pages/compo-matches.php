@@ -94,14 +94,16 @@ function renderMatch($match, $plugin) {
         echo '</tr>';
 	    $customData = $plugin->getCustomMatchInformation($match);
         if($customData != null) {
-        	echo '<tr>';
-        		echo '<td>';
-            		echo $customData["key"];
-        		echo '</td>';
-    	    	echo '<td>';
-            		echo $customData["value"];
-                echo '</td>';
-            echo '</tr>';
+            foreach($customData as $key => $value) {
+                echo '<tr>';
+        			echo '<td>';
+                		echo $key;
+        			echo '</td>';
+    	    		echo '<td>';
+                		echo $value;
+                	echo '</td>';
+                echo '</tr>';
+            }	
         }
     echo '</table>';
 }
