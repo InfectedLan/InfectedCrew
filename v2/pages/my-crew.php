@@ -21,6 +21,7 @@
 require_once 'session.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'pages/crew.php';
+require_once 'handlers/eventhandler.php';
 
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
@@ -35,22 +36,28 @@ if (Session::isAuthenticated()) {
 				echo '<p>Dette laget finnes ikke!</p>';
 			}
 		} else {
+			$currEvent = EventHandler::getCurrentEvent();
+
 			$group = $user->getGroup();
 
-			if ($group != null) {
-				echo '<h3>' . $group->getTitle() . '</h3>';
+			if($currEvent == $group->getEvent()) {
+				if ($group != null) {
+					echo '<h3>' . $group->getTitle() . '</h3>';
 
-				$page = RestrictedPageHandler::getPageByName($group->getName());
+					$page = RestrictedPageHandler::getPageByName($group->getName());
 
-				if ($page != null) {
-					echo $page->getContent();
+					if ($page != null) {
+						echo $page->getContent();
+					}
+
+					echo  $group->getDescription();
+
+					displayGroup($group);
+				} else {
+					echo '<p>Dette crewet finnes ikke!</p>';
 				}
-
-				echo  $group->getDescription();
-
-				displayGroup($group);
 			} else {
-				echo '<p>Dette crewet finnes ikke!</p>';
+				echo '<b>Feil: Du er satt opp i et gammelt crew. Kontakt utvikler</b>';
 			}
 		}
 	} else {
