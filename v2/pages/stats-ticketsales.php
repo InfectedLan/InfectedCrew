@@ -42,7 +42,7 @@ if (Session::isAuthenticated()) {
         			echo '$.getJSON("../api/json/stats/ticketSaleHistory.php?id=' . $i . '", function(data) {
 						if (data.result) {
 						    console.log(data);
-						    charts[' . ($currEvent->getId()-$i) . '] = {label: "' . ($i == $currEvent->getId() ? "Nå" : EventHandler::getEvent($i)->getTitle()) . '", data: data.result.list, borderColor: palettes[' . floor($i/5) . '][' . ($i%5) . ']};
+						    charts[' . ($currEvent->getId()-$i) . '] = {label: "' . ($i == $currEvent->getId() ? "Nå" : EventHandler::getEvent($i)->getTitle()) . '", data: data.data.list, borderColor: palettes[' . floor($i/5) . '][' . ($i%5) . ']};
 						} else {
 						    error(data.message);
 						}
