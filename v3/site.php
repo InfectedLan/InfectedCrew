@@ -74,7 +74,10 @@ class Site {
 
 				/* Custom */
 				// Select2
-    		echo '<link rel="stylesheet" href="plugins/select2/select2.min.css">';
+    			echo '<link rel="stylesheet" href="plugins/select2/select2.min.css">';
+				/* Custom */
+				// crew-style
+				echo '<link rel="stylesheet" href="css/crew-style.css">';
 
 		    //<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		    //<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -119,7 +122,7 @@ class Site {
 
 				/* Custom */
 				// Select2
-    		echo '<link rel="stylesheet" href="../../plugins/select2/select2.min.css">';
+    		echo '<link rel="stylesheet" href="plugins/select2/select2.min.css">';
 
 
 				if (Session::isAuthenticated()) {
@@ -391,7 +394,7 @@ class Site {
 											echo '<ul class="dropdown-menu">';
 												// <!-- User image -->
 										 		echo '<li class="user-header">';
-													echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
+													echo '<div class="avatar-circle" style="background-image: url(\'' . $avatarFile . '\'); " alt="' . htmlentities($user->getFullName()) . '\'s profilbilde"></div>';
 													echo '<p>';
 											  		echo $user->getFullName();
 											  		echo '<small>' . $user->getRole() . '</small>';
@@ -841,26 +844,26 @@ class Site {
 			      	echo '<div class="login-box-body">';
 			        	echo '<p class="login-box-msg">Du bruker den samme brukeren overalt på <b>' . Settings::name . '</b> sine nettsider.</p>';
 				        echo '<form class="login" method="post">';
-			          	echo '<div class="form-group has-feedback">';
-			            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post">';
-			            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-			          	echo '</div>';
-			          	echo '<div class="form-group has-feedback">';
-			            	echo '<input type="password" name="password" class="form-control" placeholder="Passord">';
-			            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-			          	echo '</div>';
-			          	echo '<div class="row">';
-			            	echo '<div class="col-xs-8">';
-			            		/*
-		              		echo '<div class="checkbox icheck">';
-		                		echo '<label><input type="checkbox"> Husk meg</label>';
-		              		echo '</div>';
-		              		*/
-			            	echo '</div><!-- /.col -->';
-			           		echo '<div class="col-xs-4">';
-			              		echo '<button type="submit" class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-			            	echo '</div><!-- /.col -->';
-			          	echo '</div>';
+				          	echo '<div class="form-group has-feedback">';
+				            	echo '<input type="text" name="identifier" class="form-control" placeholder="E-post">';
+				            	echo '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+				          	echo '</div>';
+				          	echo '<div class="form-group has-feedback">';
+				            	echo '<input type="password" name="password" class="form-control" placeholder="Passord">';
+				            	echo '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+				          	echo '</div>';
+				          	echo '<div class="row">';
+				            	echo '<div class="col-xs-8">';
+				            		/*
+			              		echo '<div class="checkbox icheck">';
+			                		echo '<label><input type="checkbox"> Husk meg</label>';
+			              		echo '</div>';
+			              		*/
+				            	echo '</div><!-- /.col -->';
+				           		echo '<div class="col-xs-4">';
+				              		echo '<button class="btn btn-primary btn-block btn-flat">Logg inn</button>';
+				            	echo '</div><!-- /.col -->';
+				          	echo '</div>';
 				        echo '</form>';
 				        echo '<a href="?page=reset-password">Har du glemt passordet ditt?</a><br>';
 				        echo '<a href="?page=register">Register deg</a>';
