@@ -98,7 +98,8 @@ if (Session::isAuthenticated()) {
 	    $plugin = CompoPluginHandler::getPluginObjectOrDefault($compo->getPluginName());
             echo '<p>Internt navn: ' . $compo->getPluginName() . (CompoPluginHandler::pluginExists($compo->getPluginName()) ? '' : '<b>(finnes ikke)</b>') . '</p>';
             echo '<p>Fullt navn: ' . $pluginMeta["name"] . '</p>';
-            echo '<p>Beskrivelse: <i>' . $pluginMeta["description"] . '</i></p>'; 
+            echo '<p>Beskrivelse: <i>' . $pluginMeta["description"] . '</i></p>';
+	    echo '<p>Custom voting? ' . ($plugin->hasVoteScreen()?"ja":"nei") . '</p>';
         } else {
             echo '<p>Compoen eksisterer ikke!</p>';
         }

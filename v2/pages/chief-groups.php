@@ -31,6 +31,8 @@ if (Session::isAuthenticated()) {
 		echo '<script src="scripts/chief-groups.js"></script>';
 		echo '<h3>Crewene</h3>';
 
+        $userList = UserHandler::getMemberUsers();
+
 		if (!empty($groupList)) {
 			echo '<table>';
 				echo '<tr>';
@@ -39,8 +41,6 @@ if (Session::isAuthenticated()) {
 					echo '<th>Beskrivelse</th>';
 					echo '<th>Chief/Co-chief</th>';
 				echo '</tr>';
-
-				$userList = UserHandler::getMemberUsers();
 
 				foreach ($groupList as $group) {
 					echo '<tr>';
@@ -120,7 +120,7 @@ if (Session::isAuthenticated()) {
 							echo '</select>';
 						echo '</td>';
 					echo '</tr>';
-					echo '<tr>';
+					echo '<ptr>';
 						echo '<td><input type="submit" value="Legg til"></td>';
 					echo '</tr>';
 				echo '</table>';
@@ -181,6 +181,46 @@ if (Session::isAuthenticated()) {
 			}
 		} else {
 			echo '<p>Det finnes ingen grupper enda!</p>';
+            echo '<h3>Legg til et nytt crew</h3>';
+			echo '<form class="chief-groups-add" method="post">';
+				echo '<table>';
+					echo '<tr>';
+						echo '<td>Navn:</td>';
+						echo '<td><input type="text" name="title" required></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Beskrivelse:</td>';
+						echo '<td><input type="text" name="description" required></td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Chief:</td>';
+						echo '<td>';
+							echo '<select class="chosen-select" name="leader" data-placeholder="Velg en chief...">';
+								echo '<option value="0"></option>';
+
+								foreach ($userList as $userValue) {
+									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+								}
+							echo '</select>';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td>Co-chief:</td>';
+						echo '<td>';
+							echo '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
+								echo '<option value="0"></option>';
+
+								foreach ($userList as $userValue) {
+									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
+								}
+							echo '</select>';
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+						echo '<td><input type="submit" value="Legg til"></td>';
+					echo '</tr>';
+				echo '</table>';
+			echo '</form>';
 		}
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';

@@ -25,6 +25,7 @@ require_once 'handlers/grouphandler.php';
 require_once 'handlers/applicationhandler.php';
 require_once 'handlers/avatarhandler.php';
 require_once 'handlers/compohandler.php';
+require_once 'database.php';
 
 class Site {
 	private $pageName;
@@ -35,6 +36,7 @@ class Site {
 
 	// Execute the site.
 	public function execute() {
+	    $start = explode(' ', microtime())[0] + explode(' ', microtime())[1];
 		echo '<!DOCTYPE html>';
 		echo '<html>';
 			echo '<head>';
@@ -279,6 +281,12 @@ class Site {
 									if ($user->hasPermission('admin.websocket')) {
 									    echo '<li><a' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . ' href="index.php?page=admin-wsconsole">Websocket-konsoll</a></li>';
 									}
+								} else if ($this->pageName == 'stats' ||
+										   $this->pageName == 'stats-ticketsales') {
+
+									if ($user->hasPermission('stats')) {
+										echo '<li><a' . ($this->pageName == 'stats-ticketsales' ? ' class="active"' : null) . ' href="index.php?page=stats-ticketsales">Billettsalg-statistikk</a></li>';
+									}
 
                                 } else if($this->pageName=='compo-overview' ||
                                 $this->pageName=='compo-new' ||
@@ -416,6 +424,14 @@ class Site {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									}
 								}
+								if ($user->hasPermission('stats')) {
+									if ($this->pageName == 'stats' ||
+										$this->pageName == 'stats-ticketsales' ) {
+										echo '<li class="active"><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+									}
+								}
 
 								if ($user->hasPermission('chief')) {
 									if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
@@ -479,6 +495,7 @@ class Site {
 					echo '</nav>';
 				echo '</section>';
 			echo '</body>';
+			echo('<!-- Page generated in '.round((explode(' ', microtime())[0] + explode(' ', microtime())[1]) - $start, 4).' seconds.-->');
 		echo '</html>';
 	}
 
@@ -590,4 +607,5 @@ class Site {
 		}
 	}
 }
+Database::cleanup();
 ?>
