@@ -1,7 +1,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 	$('.chief-teams-adduser').on('submit', function(event) {
 		event.preventDefault();
-		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data){
+		$.getJSON('../api/json/team/addUserToTeam.php' + '?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				location.reload();
 			} else {
@@ -52,12 +52,12 @@ $(document).ready(function() {
 	});
 });
 
-function viewGroup(id) {
-	$(location).attr('href', 'index.php?page=chief-teams&groupId=' + id);
+function viewGroup(groupId) {
+	$(location).attr('href', 'index.php?page=chief-teams&groupId=' + groupId);
 }
 
-function removeTeam(id) {
-	$.getJSON('../api/json/team/removeTeam.php?teamId=' + id, function(data){
+function removeTeam(teamId) {
+	$.getJSON('../api/json/team/removeTeam.php?teamId=' + teamId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -66,8 +66,8 @@ function removeTeam(id) {
 	});
 }
 
-function removeUserFromTeam(id) {
-	$.getJSON('../api/json/team/removeUserFromTeam.php?teamId=' + id, function(data){
+function removeUserFromTeam(userId, teamId) {
+	$.getJSON('../api/json/team/removeUserFromTeam.php?userId=' + userId + '&teamId=' + teamId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -76,8 +76,8 @@ function removeUserFromTeam(id) {
 	});
 }
 
-function removeUsersFromTeam(id) {
-	$.getJSON('../api/json/team/removeUsersFromTeam.php?teamId=' + id, function(data) {
+function removeUsersFromTeam(teamId) {
+	$.getJSON('../api/json/team/removeUsersFromTeam.php?teamId=' + teamId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

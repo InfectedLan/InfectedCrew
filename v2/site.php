@@ -315,7 +315,7 @@ class Site {
                                         }
                                     }
                                     if($user->hasPermission('compo.casting')) {
-                                                                            
+
                                         echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
                                     }
 

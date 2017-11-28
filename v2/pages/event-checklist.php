@@ -218,7 +218,6 @@ function addNote() {
 
 					if ($user->hasPermission('*') ||
 						$user->isGroupLeader() ||
-						$user->isGroupCoLeader() ||
 						($user->isTeamMember() && $user->isTeamLeader())) {
 						$content .= '<tr>';
 							$content .= '<td>Er dette privat?</td>';
@@ -263,8 +262,7 @@ function addNote() {
 					$content .= '</tr>';
 					$content .= '<div class="edit-checklist-add-nonPrivate">';
 
-						if ($user->isGroupLeader() ||
-							$user->isGroupCoLeader()) {
+						if ($user->isGroupLeader()) {
 							$content .= '<tr>';
 								$content .= '<td>Deleger til lag-leder</td>';
 								$content .= '<td>';
@@ -281,7 +279,6 @@ function addNote() {
 						}
 
 						if ($user->isGroupLeader() ||
-							$user->isGroupCoLeader() ||
 							($user->isTeamMember() && $user->isTeamLeader())) {
 							$content .= '<tr>';
 								$content .= '<td>Deleger til medlem</td>';
