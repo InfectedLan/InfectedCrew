@@ -107,7 +107,6 @@ function editNote(Note $note) {
 					if (!$note->isPrivate()) {
 						if ($user->hasPermission('*') ||
 							$user->isGroupLeader() ||
-							$user->isGroupCoLeader() ||
 							$note->isOwner($user)) {
 							$content .= '<tr>';
 								$content .= '<td><b>Delegert til</b></td>';
@@ -124,7 +123,7 @@ function editNote(Note $note) {
 									}
 
 									if ($user->hasPermission('event.checklist.delegate') ||
-										($note->hasGroup() && ($user->isGroupLeader() || $user->isGroupCoLeader()))) {
+										($note->hasGroup() && $user->isGroupLeader())) {
 										$content .= '<select class="chosen-select" name="teamId">';
 											$content .= '<option value="0">Ingen</option>';
 

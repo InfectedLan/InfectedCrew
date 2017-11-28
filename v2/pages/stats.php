@@ -26,8 +26,9 @@ require_once 'objects/compo.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('compo.edit')) {
-	    echo "<h1>Under construction</h1>";
+	if ($user->hasPermission('stats')) {
+        echo "<p>Velg statistikk fra menyen ovenfor</p>";
+
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';
 	}

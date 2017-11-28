@@ -27,13 +27,20 @@ require_once 'handlers/compopluginhandler.php';
 
 function renderMatch($match, $plugin) {
     $participants = MatchHandler::getParticipantsJsonByMatch($match);
-    echo '<pre>' . json_encode($participants) . '</pre>';
+    //echo '<pre>' . json_encode($participants) . '</pre>';
     //echo '<script src="scripts/compo.js"></script>';
+    echo '<br /><br />';
+    if(count($participants) != 2) {
+	echo "<p><i>Rart participant-antall</i></p>";
+    } else {
+	echo "<p><b>" . $participants[0]["value"] . "(" . $participants[0]["id"] . ") vs " . $participants[1]["value"] . "(" . $participants[1]["id"] . ")</b></p>";
+    }
 	echo '<table>';
      echo '<script src="scripts/compo-bracketeditor.js"></script>';
     $first = true;
     $isReady = true;
-    echo '<tr>';
+    
+    /*
     foreach($participants as $participant) {
         if(!$first) {
             echo " </tr><tr> ";
@@ -48,8 +55,7 @@ function renderMatch($match, $plugin) {
             }
         }
         $first = false;
-    }
-    echo '</tr>';
+	}*/
         echo '<tr>';
         	echo '<td>';
             	echo "Starttid: ";
@@ -81,9 +87,9 @@ function renderMatch($match, $plugin) {
 	    echo 'Winnerid: ' . $match->getWinnerId();
             echo '</td>';
 	    echo '</tr>';
-	    echo '<tr>';
+	    /*echo '<tr>';
 	    echo '<td><a href="../api/pages/spectate.php?id=' . $match->getId() . '">Spectate</a></td>';
-	    echo '</tr>';
+	    echo '</tr>';*/
 	    echo '<tr>';
            	echo '<td>';
                	echo 'Matchid: ';

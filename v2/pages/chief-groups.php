@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ if (Session::isAuthenticated()) {
 					echo '<th>Navn</th>';
 					echo '<th>Medlemmer</th>';
 					echo '<th>Beskrivelse</th>';
-					echo '<th>Chief/Co-chief</th>';
+					echo '<th>Chief</th>';
 				echo '</tr>';
 
 				$userList = UserHandler::getMemberUsers();
@@ -45,7 +45,7 @@ if (Session::isAuthenticated()) {
 				foreach ($groupList as $group) {
 					echo '<tr>';
 						echo '<form class="chief-groups-edit" method="post">';
-							echo '<input type="hidden" name="id" value="' . $group->getId() . '">';
+							echo '<input type="hidden" name="groupId" value="' . $group->getId() . '">';
 							echo '<td><input type="text" name="title" value="' . $group->getTitle() . '" required></td>';
 							echo '<td>' . count($group->getMembers()) . '</td>';
 							echo '<td><input type="text" name="description" value="' . $group->getDescription() . '" required></td>';
@@ -54,19 +54,7 @@ if (Session::isAuthenticated()) {
 									echo '<option value="0"></option>';
 
 									foreach ($userList as $userValue) {
-										if ($group->hasLeader() && $userValue->equals($group->getLeader())) {
-											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
-										} else {
-											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-										}
-									}
-								echo '</select>';
-								echo '<br>';
-								echo '<select class="chosen-select select" name="coleader" data-placeholder="Velg en co-chief...">';
-									echo '<option value="0"></option>';
-
-									foreach ($userList as $userValue) {
-										if ($group->hasCoLeader() && $userValue->equals($group->getCoLeader())) {
+										if ($group->isLeader($userValue)) {
 											echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 										} else {
 											echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -109,18 +97,6 @@ if (Session::isAuthenticated()) {
 						echo '</td>';
 					echo '</tr>';
 					echo '<tr>';
-						echo '<td>Co-chief:</td>';
-						echo '<td>';
-							echo '<select class="chosen-select" name="coleader" data-placeholder="Velg en co-chief...">';
-								echo '<option value="0"></option>';
-
-								foreach ($userList as $userValue) {
-									echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
-								}
-							echo '</select>';
-						echo '</td>';
-					echo '</tr>';
-					echo '<tr>';
 						echo '<td><input type="submit" value="Legg til"></td>';
 					echo '</tr>';
 				echo '</table>';
@@ -128,7 +104,7 @@ if (Session::isAuthenticated()) {
 
 			echo '<h3>Medlemmer</h3>';
 
-			$freeUserList = UserHandler::getNonMemberUsers();
+			$freeUserList = UserHandler::getMemberUsers(); // TODO: Verify this, used to be UserHandler::getMemberUsers(); but removed for multi-group support.
 
 			if (!empty($freeUserList)) {
 				echo '<table>';
@@ -165,7 +141,7 @@ if (Session::isAuthenticated()) {
 						foreach ($memberList as $userValue) {
 							echo '<tr>';
 								echo '<td>' . $userValue->getDisplayName(). '</td>';
-								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $userValue->getId() . ')"></td>';
+								echo '<td><input type="button" value="Fjern" onClick="removeUserFromGroup(' . $userValue->getId() . ', ' . $group->getId() . ')"></td>';
 							echo '</tr>';
 						}
 

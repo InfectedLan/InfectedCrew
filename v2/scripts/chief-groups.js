@@ -54,8 +54,8 @@ function editGroup(form) {
 	});
 }
 
-function removeGroup(id) {
-	$.getJSON('../api/json/group/removeGroup.php?id=' + id, function(data) {
+function removeGroup(groupId) {
+	$.getJSON('../api/json/group/removeGroup.php?groupId=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -74,8 +74,8 @@ function addUserToGroup(form) {
 	});
 }
 
-function removeUserFromGroup(id) {
-	$.getJSON('../api/json/group/removeUserFromGroup.php?id=' + id, function(data) {
+function removeUserFromGroup(userId, groupId) {
+	$.getJSON('../api/json/group/removeUserFromGroup.php?userId=' + userId + '&groupId=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -84,8 +84,8 @@ function removeUserFromGroup(id) {
 	});
 }
 
-function removeUsersFromGroup(id) {
-	$.getJSON('../api/json/group/removeUsersFromGroup.php?id=' + id, function(data) {
+function removeUsersFromGroup(groupId) {
+	$.getJSON('../api/json/group/removeUsersFromGroup.php?groupId=' + groupId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

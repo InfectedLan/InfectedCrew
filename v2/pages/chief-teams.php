@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,7 +51,7 @@ if (Session::isAuthenticated()) {
 				} else {
 					echo '<p>Det finnes ingen grupper for dette arrangementet.</p>';
 				}
-			} else if ($user->isGroupMember()) {
+			} else {
 				$group = isset($_GET['groupId']) ? GroupHandler::getGroup($_GET['groupId']) : $user->getGroup();
 
 				if ($group != null) {
@@ -82,7 +82,7 @@ if (Session::isAuthenticated()) {
 												echo '<option value="0"></option>';
 
 												foreach ($userList as $userValue) {
-													if ($team->hasLeader() && $userValue->equals($team->getLeader())) {
+													if ($team->isLeader($userValue)) {
 														echo '<option value="' . $userValue->getId() . '" selected>' . $userValue->getDisplayName() . '</option>';
 													} else {
 														echo '<option value="' . $userValue->getId() . '">' . $userValue->getDisplayName() . '</option>';
@@ -132,7 +132,7 @@ if (Session::isAuthenticated()) {
 					if (!empty($teamList)) {
 						echo '<h3>Medlemmer</h3>';
 
-						$freeUserList = getFreeUsers($group);
+						$freeUserList = $group->getMembers(); // TODO: Verify this, removed getFreeUsers($group); here to support multi-teams.
 
 						if (!empty($freeUserList)) {
 							echo '<table>';
@@ -169,7 +169,7 @@ if (Session::isAuthenticated()) {
 									foreach ($memberList as $userValue) {
 										echo '<tr>';
 											echo '<td>' . $userValue->getDisplayName() . '</td>';
-											echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ')"></td>';
+											echo '<td><input type="button" value="Fjern" onClick="removeUserFromTeam(' . $userValue->getId() . ', ' . $team->getId() . ')"></td>';
 										echo '</tr>';
 									}
 
