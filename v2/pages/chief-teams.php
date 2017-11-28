@@ -132,7 +132,7 @@ if (Session::isAuthenticated()) {
 					if (!empty($teamList)) {
 						echo '<h3>Medlemmer</h3>';
 
-						$freeUserList = $team->getMembers(); // TODO: Verify this, removed getFreeUsers($group); here to support multi-teams.
+						$freeUserList = $group->getMembers(); // TODO: Verify this, removed getFreeUsers($group); here to support multi-teams.
 
 						if (!empty($freeUserList)) {
 							echo '<table>';
