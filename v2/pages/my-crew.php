@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,28 +36,22 @@ if (Session::isAuthenticated()) {
 				echo '<p>Dette laget finnes ikke!</p>';
 			}
 		} else {
-			$currEvent = EventHandler::getCurrentEvent();
-
 			$group = $user->getGroup();
 
-			if($currEvent == $group->getEvent()) {
-				if ($group != null) {
-					echo '<h3>' . $group->getTitle() . '</h3>';
+			if ($group != null) {
+				echo '<h3>' . $group->getTitle() . '</h3>';
 
-					$page = RestrictedPageHandler::getPageByName($group->getName());
+				$page = RestrictedPageHandler::getPageByName($group->getName());
 
-					if ($page != null) {
-						echo $page->getContent();
-					}
-
-					echo  $group->getDescription();
-
-					displayGroup($group);
-				} else {
-					echo '<p>Dette crewet finnes ikke!</p>';
+				if ($page != null) {
+					echo $page->getContent();
 				}
+
+				echo  $group->getDescription();
+
+				displayGroup($group);
 			} else {
-				echo '<b>Feil: Du er satt opp i et gammelt crew. Kontakt utvikler</b>';
+				echo '<p>Dette crewet finnes ikke!</p>';
 			}
 		}
 	} else {
