@@ -30,7 +30,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('compo.casting')) {
 	    echo "<h1>Casting-sider</h1>";
         echo '<script src="../api/scripts/casting.js"></script>';
-        $castingPages = CastingPageHandler::getCastingPagesByEvent(EventHandler::getCurrentEvent());
+        $castingPages = CastingPageHandler::getCastingPages();
         echo '<table>';
         echo '<tr>';
         echo '<td><b>Navn</b></td>';
@@ -41,7 +41,7 @@ if (Session::isAuthenticated()) {
             echo '<td><b>' . $castingPage->getName() . '</b></td>';
             echo '<td>' . $castingPage->getTemplate() . '</td>';
             echo '<td><a href="../api/pages/cast.php?id=' . $castingPage->getId() . '" target="_blank">Cast</a></td>';
-            echo '</tr>';            
+            echo '</tr>';
         }
         echo '</table>';
         echo '<h1>Ny casting-side</h1>';
