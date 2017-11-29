@@ -27,7 +27,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('stats')) {
-        echo "<p>Velg statistikk fra menyen ovenfor</p>";
+    echo "<p>Velg statistikk fra menyen ovenfor</p>";
 
 	} else {
 		echo '<p>Du har ikke rettigheter til dette!</p>';

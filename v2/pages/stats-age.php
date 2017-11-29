@@ -26,12 +26,12 @@ require_once 'objects/compo.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('stats')) {
+	if ($user->hasPermission('stats.age')) {
 		$colorList = [];
         echo '<script src="../api/scripts/Chart.min.js"></script>';
-        echo '<h1>Billetter solgt (i dager)</h1><canvas id="ticketsale-chart" width="500" height="400"></canvas>';
+        echo '<h1>Alder på medlemmer(Normalisert)</h1><canvas id="age-chart" width="500" height="400"></canvas>';
         echo '<script>
-        	var ctx = document.getElementById("ticketsale-chart");
+        	var ctx = document.getElementById("age-chart");
         	$(document).ready(function() {
         		var charts = [];
         		//From here: https://github.com/Jam3/nice-color-palettes
@@ -39,10 +39,26 @@ if (Session::isAuthenticated()) {
         		$.when(';
         		$currEvent = EventHandler::getCurrentEvent();
         		for($i = $currEvent->getId(); $i>=1; $i--) {
-        			echo '$.getJSON("../api/json/stats/ticketSaleHistory.php?id=' . $i . '", function(data) {
+        			echo '$.getJSON("../api/json/stats/eventAgeDistribution.php?id=' . $i . '", function(data) {
 						if (data.result) {
 						    console.log(data);
-						    charts[' . ($currEvent->getId()-$i) . '] = {label: "' . ($i == $currEvent->getId() ? "Nå" : EventHandler::getEvent($i)->getTitle()) . '", data: data.data.list, borderColor: palettes[' . floor($i/5) . '][' . ($i%5) . ']};
+						    var participantCount = 0;
+						    var crewCount = 0;
+						    for(var i = 0; i < data.data.crew.length; i++) {
+						    	crewCount += data.data.crew[i];
+						    }
+						    for(var i = 0; i < data.data.participants.length; i++) {
+						    	participantCount += data.data.participants[i];
+						    }
+						    //Normalize it
+						    for(var i = 0; i < data.data.crew.length; i++) {
+						    	data.data.crew[i] = (data.data.crew[i]/crewCount)*100;
+						    }
+						    for(var i = 0; i < data.data.participants.length; i++) {
+						    	data.data.participants[i] = (data.data.participants[i]/participantCount)*100;
+						    }
+						    charts[' . (($currEvent->getId()-$i)*2) . '] = {label: "' . ($i == $currEvent->getId() ? "Nå" : EventHandler::getEvent($i)->getTitle()) . '(Crew)", data: data.data.crew.slice(10,60), borderColor: palettes[' . floor(($i*2+0)/5) . '][' . (($i*2+0)%5) . ']};
+						    charts[' . ((($currEvent->getId()-$i)*2)+1) . '] = {label: "' . ($i == $currEvent->getId() ? "Nå" : EventHandler::getEvent($i)->getTitle()) . '(Deltagere)", data: data.data.participants.slice(10,60), borderColor: palettes[' . floor(($i*2+1)/5) . '][' . (($i*2+1)%5) . ']};
 						} else {
 						    error(data.message);
 						}
@@ -52,23 +68,9 @@ if (Session::isAuthenticated()) {
 				   }
         		}
 				echo ').then(function() {
-					console.log("Creating charts from: " + JSON.stringify(charts));
-					var maxlen = 0;
-					for(var i = 0; i < charts.length; i++) {
-						if(charts[i].data.length>maxlen) {
-							maxlen = charts[i].data.length;
-						}
-					}
-					for(var i = 0; i < charts.length; i++) {
-						var t = charts[i].data.length;
-						for(var a = charts[i].data.length; a < maxlen; a++) {
-							charts[i].data.push(charts[i].data[t-1]);
-						}
-					}
-					console.log("Re-adjust: " + JSON.stringify(charts));
 					var labels = [];
-					for(var i = 0; i < maxlen; i++) {
-						labels.push(i+1);
+					for(var i = 10; i < 60; i++) {
+						labels.push(i);
 					}
 					var myLineChart = new Chart(ctx, {
 					    type: "line",

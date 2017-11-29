@@ -26,7 +26,7 @@ require_once 'objects/compo.php';
 if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
-	if ($user->hasPermission('stats')) {
+	if ($user->hasPermission('stats.gender')) {
 		$colorList = [];
         echo '<script src="../api/scripts/Chart.min.js"></script>';
         echo '<h1>Kjønnsfordeling(%)</h1><canvas id="gender-chart" width="500" height="400"></canvas>';

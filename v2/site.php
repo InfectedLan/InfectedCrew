@@ -282,43 +282,55 @@ class Site {
 									    echo '<li><a' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . ' href="index.php?page=admin-wsconsole">Websocket-konsoll</a></li>';
 									}
 								} else if ($this->pageName == 'stats' ||
-										   $this->pageName == 'stats-ticketsales') {
+													 $this->pageName == 'stats-age' ||
+													 $this->pageName == 'stats-gender' ||
+													 $this->pageName == 'stats-ticketsale') {
+									if ($user->hasPermission('stats.age')) {
+ 										echo '<li><a' . ($this->pageName == 'stats-age' ? ' class="active"' : null) . ' href="index.php?page=stats-age">Alders-statistikk</a></li>';
+ 									}
 
-									if ($user->hasPermission('stats')) {
-										echo '<li><a' . ($this->pageName == 'stats-ticketsales' ? ' class="active"' : null) . ' href="index.php?page=stats-ticketsales">Billettsalg-statistikk</a></li>';
+									if ($user->hasPermission('stats.gender')) {
+										echo '<li><a' . ($this->pageName == 'stats-gender' ? ' class="active"' : null) . ' href="index.php?page=stats-gender">Kjønns-statistikk</a></li>';
 									}
 
-                                } else if($this->pageName=='compo-overview' ||
-                                $this->pageName=='compo-new' ||
-                                $this->pageName=='compo-view' ||
-                                $this->pageName=='compo-clans' ||
-                                $this->pageName=='compo-matches' ||
-					  $this->pageName=='compo-brackets' ||
-					  $this->pageName=='compo-chat' ||
-					  $this->pageName=='compo-servers' ||
-                                          $this->pageName == 'compo-casting' ||
-                                $this->pageName=='compo-clan') {
-                                    if($user->hasPermission('compo.management')) {
-                                        echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
-                                    }
-                                    if($user->hasPermission('compo.edit')) {
-                                        echo '<li><a ' . ($this->pageName == 'compo-new' ? ' class="active"' : null) . ' href="index.php?page=compo-new">Ny compo</a></li>';
-                                    }
-                                    if($user->hasPermission('compo.management')) {
-                                        $compos = CompoHandler::getCompos();
-                                        if(count($compos) > 0) {
-                                            echo "<li>|</li>";
-                                            foreach($compos as $compo) {
-                                                echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTag() . '</a></li>';
-                                            }
-                                            echo "<li>|</li>";
-                                        }
-                                    }
-                                    if($user->hasPermission('compo.casting')) {
+									if ($user->hasPermission('stats.ticketsale')) {
+										echo '<li><a' . ($this->pageName == 'stats-ticketsale' ? ' class="active"' : null) . ' href="index.php?page=stats-ticketsale">Billettsalg-statistikk</a></li>';
+									}
+                } else if ($this->pageName=='compo-overview' ||
+                          $this->pageName=='compo-new' ||
+                          $this->pageName=='compo-view' ||
+                          $this->pageName=='compo-clans' ||
+                          $this->pageName=='compo-matches' ||
+												  $this->pageName=='compo-brackets' ||
+												  $this->pageName=='compo-chat' ||
+												  $this->pageName=='compo-servers' ||
+                          $this->pageName == 'compo-casting' ||
+                          $this->pageName=='compo-clan') {
+	                if ($user->hasPermission('compo.management')) {
+	                    echo '<li><a ' . ($this->pageName == 'compo-overview' ? ' class="active"' : null) . ' href="index.php?page=compo-overview">Oversikt</a></li>';
+	                }
 
-                                        echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
-                                    }
+	                if ($user->hasPermission('compo.edit')) {
+	                    echo '<li><a ' . ($this->pageName == 'compo-new' ? ' class="active"' : null) . ' href="index.php?page=compo-new">Ny compo</a></li>';
+	                }
 
+	                if ($user->hasPermission('compo.management')) {
+                    $compos = CompoHandler::getCompos();
+
+										if (count($compos) > 0) {
+                      echo "<li>|</li>";
+
+											foreach($compos as $compo) {
+                          echo '<li><a ' . ( ( $this->pageName == 'compo-view' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches' || $this->pageName == 'compo-brackets' || $this->pageName == 'compo-chat' || $this->pageName == 'compo-servers' ) && isset($_GET["id"]) && $_GET["id"] == $compo->getId() ? ' class="active"' : '') . ' href="index.php?page=compo-view&id=' . $compo->getId() . '">' . $compo->getTag() . '</a></li>';
+                      }
+
+											echo "<li>|</li>";
+                    }
+	                }
+
+                  if($user->hasPermission('compo.casting')) {
+                    echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
+                  }
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
 									$this->pageName == 'developer-syslog') {
