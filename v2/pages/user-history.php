@@ -45,17 +45,17 @@ if (Session::isAuthenticated()) {
 				foreach ($eventList as $event) {
 					echo '<tr>';
 						echo '<td>' . $event->getTitle() . '</td>';
-						echo '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
+						echo '<td>' . $historyUser->getRole($event) . '</td>';
 
-						if ($historyUser->isGroupMemberByEvent($event)) {
-							$group = $historyUser->getGroupByEvent($event);
+						if ($historyUser->isGroupMember($event)) {
+							$group = $historyUser->getGroup($event);
 
 							echo '<td><a href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></td>';
 							echo '<td>Ingen</td>';
-						} else if ($historyUser->hasTicketByEvent($event)) {
+						} else if ($historyUser->hasTicket($event)) {
 							echo '<td>Ingen</td>';
 							echo '<td>';
-								$ticketList = $historyUser->getTicketsByEvent($event);
+								$ticketList = $historyUser->getTickets($event);
 
 								foreach ($ticketList as $ticket) {
 									echo '<a href="index.php?page=ticket&id=' . $ticket->getId() . '">#' . $ticket->getId() . '</a>';
