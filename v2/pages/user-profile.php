@@ -184,16 +184,6 @@ if (Session::isAuthenticated()) {
 				    }
 				}
 
-				if ($user->hasPermission('user.profile')) {
-					echo '<tr>';
-						echo '<td>Svømming:</td>';
-						echo '<td>';
-							echo $editUser->isSwimming() ? 'Ja' : 'Nei';
-							echo '<input type="button" value="Endre" onClick="setUserSwimming(' . $editUser->getId() . ', ' . ($editUser->isSwimming() ? '0' : '1') . ')">';
-						echo '</td>';
-					echo '</tr>';
-				}
-
 				if ($user->hasPermission('user.history') ||
 					$user->equals($editUser)) {
 					echo '<tr>';
