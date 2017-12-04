@@ -23,7 +23,7 @@ require_once 'handlers/userhandler.php';
 require_once 'handlers/userhistoryhandler.php';
 require_once 'page.php';
 
-class UserHistoryPage implements IPage {
+class UserHistoryPage extends Page {
 	public function getTitle(): string {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();

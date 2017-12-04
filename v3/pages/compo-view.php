@@ -44,7 +44,7 @@ if (Session::isAuthenticated()) {
                 echo '<a href="index.php?page=compo-chat&id=' . $compo->getId() . '">Chatter</a> ';
             }
             if($user->hasPermission('compo.edit') && $compo->getConnectionType() == Compo::CONNECTION_TYPE_SERVER) {
-                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';		
+                echo '<a href="index.php?page=compo-servers&id=' . $compo->getId() . '">Servere</a> ';
             }
             foreach($pluginMeta["pages"] as $pageObj) {
                 echo '<a href="index.php?page=compo-pluginpage&id=' . $compo->getId() . '&pluginPage=' . $pageObj["urlName"] . '">' . $pageObj["title"] . '</a>';
@@ -53,7 +53,7 @@ if (Session::isAuthenticated()) {
             echo '<h1>' . $compo->getTag() . ' - ' . $compo->getTitle() . '(<i>' . $compo->getName() . '</i>)</h1>';
             echo '<p>Registrering ender ' . date('Y-m-d H:m:s', $compo->getRegistrationEndTime()) . ' (<span class="compoTimer' . 0 . '"></span>)</p>';
             $timerList[] = array("id" => 0, "when" => $compo->getRegistrationEndTime());
-        
+
             echo '<p>Compoen starter ' . date('Y-m-d H:m:s', $compo->getStartTime()) . ' (<span class="compoTimer' . 1 . '"></span>)</p>';
             $timerList[] = array("id" => 1, "when" => $compo->getStartTime());
 

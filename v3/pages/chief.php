@@ -21,7 +21,7 @@
 require_once 'session.php';
 require_once 'page.php';
 
-class ChiefPage implements Page {
+class ChiefPage extends Page {
 	public function getTitle(): string {
 		return 'Chief';
 	}

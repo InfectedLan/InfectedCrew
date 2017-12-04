@@ -217,6 +217,9 @@ class Site {
 												<li class="footer"><a href="#">See All Messages</a></li>
 											</ul>
 										</li>
+EOD;
+
+										/*
 										<!-- Notifications: style can be found in dropdown.less -->
 										<li class="dropdown notifications-menu">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -259,6 +262,9 @@ class Site {
 												<li class="footer"><a href="#">View all</a></li>
 											</ul>
 										</li>
+										*/
+
+echo <<< EOD
 										<!-- Tasks: style can be found in dropdown.less -->
 										<li class="dropdown tasks-menu">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -337,23 +343,35 @@ class Site {
 												</li>
 											</ul>
 										</li>
-										<!-- User Account: style can be found in dropdown.less -->
-										<li class="dropdown user user-menu">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-												<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-												<span class="hidden-xs">Alexander Pierce</span>
-											</a>
-											<ul class="dropdown-menu">
-												<!-- User image -->
-												<li class="user-header">
-													<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+EOD;
 
-													<p>
-														Alexander Pierce - Web Developer
-														<small>Member since Nov. 2012</small>
-													</p>
-												</li>
-												<!-- Menu Body -->
+										// User Account: style can be found in dropdown.less
+										echo '<li class="dropdown user user-menu">';
+
+											if ($user->hasValidAvatar()) {
+												$avatarFile = $user->getAvatar()->getThumbnail();
+											} else {
+												$avatarFile = $user->getDefaultAvatar();
+											}
+
+											echo '<a href="" class="dropdown-toggle" data-toggle="dropdown">';
+												echo '<img src="' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
+												echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
+											echo '</a>';
+
+											echo '<ul class="dropdown-menu">';
+												// User image
+												echo '<li class="user-header">';
+													echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
+													echo '<p>';
+														echo $user->getFullName();
+														echo '<small>' . $user->getRole() . '</small>';
+														echo '<small>Registret den ' . date('d', $user->getRegisteredDate()) . ' ' . DateUtils::getMonthFromInt(date('m', $user->getRegisteredDate())) . ' ' . date('Y', $user->getRegisteredDate()) . '</small>';
+													echo '</p>';
+												echo '</li>';
+
+												/*
+												// Menu Body
 												<li class="user-body">
 													<div class="row">
 														<div class="col-xs-4 text-center">
@@ -368,15 +386,19 @@ class Site {
 													</div>
 													<!-- /.row -->
 												</li>
-												<!-- Menu Footer-->
-												<li class="user-footer">
-													<div class="pull-left">
-														<a href="#" class="btn btn-default btn-flat">Profile</a>
-													</div>
-													<div class="pull-right">
-														<a href="#" class="btn btn-default btn-flat">Sign out</a>
-													</div>
-												</li>
+												*/
+
+												// Menu Footer
+												echo '<li class="user-footer">';
+													echo '<div class="pull-left">';
+														echo '<a href="?page=user-profile" class="btn btn-default btn-flat">Min profil</a>';
+													echo '</div>';
+													echo '<div class="pull-right">';
+														echo '<button class="btn btn-default btn-flat" onClick="logout()>Logg ut</a>';
+													echo '</div>';
+												echo '</li>';
+
+echo <<< EOD
 											</ul>
 										</li>
 										<!-- Control Sidebar Toggle Button -->
@@ -597,18 +619,34 @@ EOD;
 						// Content Wrapper. Contains page content
 						echo '<div class="content-wrapper">';
 
-							$this->getPage($this->pageName);
+							if ($user->hasPermission('*') ||
+								$user->isGroupMember()) {
+								// View the page specified by "pageName" variable.
+								echo $this->getPage($this->pageName);
+							} else {
+								$publicPages = ['apply',
+																'all-crew',
+																'my-profile',
+																'edit-profile',
+																'edit-password',
+																'edit-avatar'];
+
+								if (in_array($this->pageName, $publicPages)) {
+									echo $this->getPage($this->pageName);
+								} else {
+									echo $this->getPage('all-crew');
+								}
+							}
 
 						echo '</div>'; // .content-wrapper
+						echo '<footer class="main-footer">';
+							echo '<div class="pull-right hidden-xs">';
+								echo '<b>Version</b> 2.4.0';
+							echo '</div>';
+							echo '<strong>Copyright &copy; 2017' . (date('Y') > 2017 ? '-' . date('Y') : null) . ' <a href="//' . Settings::domain . '/">' . Settings::name . '</a>.</strong> All rights reserved.';
+						echo '</footer>';
 
 echo <<< EOD
-						<footer class="main-footer">
-							<div class="pull-right hidden-xs">
-								<b>Version</b> 2.4.0
-							</div>
-							<strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-							reserved.
-						</footer>
 
 						<!-- Control Sidebar -->
 						<aside class="control-sidebar control-sidebar-dark">
@@ -868,57 +906,57 @@ EOD;
 	}
 
 	private function getLoginForm() {
-		$result = null;
+		$content = null;
 
-		$result .= '<body class="hold-transition login-page">';
-			$result .= '<div class="login-box">';
-				$result .= '<div class="login-logo">';
-					$result .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-				$result .= '</div>'; // .login-logo';
-				$result .= '<div class="login-box-body">';
-					$result .= '<p class="login-box-msg">Du kan bruke samme bruker overalt hos <b>' . Settings::name . '</b>.</p>';
-					$result .= '<form class="login" method="post">';
-						$result .= '<div class="form-group has-feedback">';
-							$result .= '<input type="text" name="identifier" class="form-control" placeholder="Brukernavn eller e-post">';
-							$result .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-						$result .= '</div>';
-						$result .= '<div class="form-group has-feedback">';
-							$result .= '<input type="password" name="password" class="form-control" placeholder="Passord">';
-							$result .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-						$result .= '</div>';
-						$result .= '<div class="row">';
-							$result .= '<div class="col-xs-8">';
+		$content .= '<body class="hold-transition login-page">';
+			$content .= '<div class="login-box">';
+				$content .= '<div class="login-logo">';
+					$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+				$content .= '</div>'; // .login-logo';
+				$content .= '<div class="login-box-body">';
+					$content .= '<p class="login-box-msg">Du kan bruke samme bruker overalt hos <b>' . Settings::name . '</b>.</p>';
+					$content .= '<form class="login" method="post">';
+						$content .= '<div class="form-group has-feedback">';
+							$content .= '<input type="text" name="identifier" class="form-control" placeholder="Brukernavn eller e-post">';
+							$content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+						$content .= '</div>';
+						$content .= '<div class="form-group has-feedback">';
+							$content .= '<input type="password" name="password" class="form-control" placeholder="Passord">';
+							$content .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+						$content .= '</div>';
+						$content .= '<div class="row">';
+							$content .= '<div class="col-xs-8">';
 								/*
-								$result .= '<div class="checkbox icheck">';
-									$result .= '<label><input type="checkbox"> Husk meg</label>';
-								$result .= '</div>';
+								$content .= '<div class="checkbox icheck">';
+									$content .= '<label><input type="checkbox"> Husk meg</label>';
+								$content .= '</div>';
 								*/
-							$result .= '</div>'; // .col-xs-8
-							$result .= '<div class="col-xs-4">';
-									$result .= '<button class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-							$result .= '</div>'; // .col-xs-4
-						$result .= '</div>';
-					$result .= '</form>';
-					$result .= '<a href="?page=reset-password">Jeg har glemt passordet mitt!</a><br>';
-					$result .= '<a href="?page=register">Register ny bruker</a>';
-				$result .= '</div><!-- /.login-box-body -->';
-			$result .= '</div><!-- /.login-box -->';
+							$content .= '</div>'; // .col-xs-8
+							$content .= '<div class="col-xs-4">';
+									$content .= '<button class="btn btn-primary btn-block btn-flat">Logg inn</button>';
+							$content .= '</div>'; // .col-xs-4
+						$content .= '</div>';
+					$content .= '</form>';
+					$content .= '<a href="?page=reset-password">Jeg har glemt passordet mitt!</a><br>';
+					$content .= '<a href="?page=register">Register ny bruker</a>';
+				$content .= '</div><!-- /.login-box-body -->';
+			$content .= '</div><!-- /.login-box -->';
 			// iCheck
 			/*
-			$result .= '<script src="../../plugins/iCheck/icheck.min.js"></script>';
-			$result .= '<script>';
-				$result .= '$(function () {';
-					$result .= '$(\'input\').iCheck({';
-						$result .= 'checkboxClass: \'icheckbox_square-blue\',';
-						$result .= 'radioClass: \'iradio_square-blue\',';
-						$result .= 'increaseArea: \'20%\''; // Optional
-					$result .= '});';
-				$result .= '});';
-			$result .= '</script>';
+			$content .= '<script src="../../plugins/iCheck/icheck.min.js"></script>';
+			$content .= '<script>';
+				$content .= '$(function () {';
+					$content .= '$(\'input\').iCheck({';
+						$content .= 'checkboxClass: \'icheckbox_square-blue\',';
+						$content .= 'radioClass: \'iradio_square-blue\',';
+						$content .= 'increaseArea: \'20%\''; // Optional
+					$content .= '});';
+				$content .= '});';
+			$content .= '</script>';
 			*/
-		$result .= '</body>';
+		$content .= '</body>';
 
-		return $result;
+		return $content;
 	}
 
 	private function getMessages() {
@@ -926,35 +964,64 @@ EOD;
 	}
 
 	private function getNotifications() {
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-			$pendingApplicationList = null;
-			$pendingAvatarList = null;
+		$applications = null;
+		$avatars = null;
 
-			if ($user->hasPermission('*')) {
-				$pendingApplicationList = ApplicationHandler::getPendingApplications();
-
-				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> søknader som venter på svar.</div>';
-				}
-			} else if ($user->hasPermission('chief.applications') &&
-					   $user->isGroupMember()) {
-				$group = $user->getGroup();
-				$pendingApplicationList = ApplicationHandler::getPendingApplicationsByGroup($group);
-
-				if (!empty($pendingApplicationList)) {
-					echo '<div class="information">Det er <b>' . count($pendingApplicationList) . '</b> nye søknader til ' . $group->getTitle() . ', de venter på svar fra deg.</div>';
-				}
-			}
-
-			if ($user->hasPermission('chief.applications') && $user->isGroupMember()) {
-				$pendingAvatarList = AvatarHandler::getPendingAvatars();
-
-				if (!empty($pendingAvatarList)) {
-					echo '<div class="information">Det er <b>' . count($pendingAvatarList) . '</b> ' . (count($pendingAvatarList) == 1 ? 'profilbilde' : 'profilbilder') . ' som venter på godkjenning.</div>';
-				}
-			}
+		// Check for group applications.
+		if ($user->hasPermission('*')) {
+			$applications = ApplicationHandler::getPendingApplications();
+		} else if ($user->isGroupMember() && $user->hasPermission('chief.application')) {
+			$applications = ApplicationHandler::getPendingApplicationsByGroup($user->getGroup());
 		}
+
+		// Check for avatars.
+		if ($user->hasPermission('*') || $user->hasPermission('chief.application') && $user->isGroupMember()) {
+			$avatars = AvatarHandler::getPendingAvatars();
+		}
+
+		$notificationsCount = count($applications) + count($avatars);
+
+		// Notifications: style can be found in dropdown.less
+		echo '<li class="dropdown notifications-menu">';
+			echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+				echo '<i class="fa fa-bell-o"></i>';
+
+				if ($notificationsCount > 0) {
+					echo '<span class="label label-warning">' . $notificationsCount . '</span>';
+				}
+
+			echo '</a>';
+			echo '<ul class="dropdown-menu">';
+
+				if ($notificationsCount > 0) {
+					echo '<li class="header">Du har ' . $notificationsCount . ' varsler.</li>';
+					echo '<li>';
+						//<!-- inner menu: contains the actual data -->';
+						echo '<ul class="menu">';
+
+							if (!empty($applications)) {
+								foreach ($applications as $application) {
+									echo '<li><a href="?page=application&id=' . $application->getId() . '"><i class="fa fa-paperclip text-aqua"></i>Søknaden til ' . $application->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+								}
+							}
+
+							if (!empty($avatars)) {
+								foreach ($avatars as $avatar) {
+									echo '<li><a href="?page=chief-avatars"><i class="fa fa-image-fila text-aqua"></i>Profilbilde til ' . $avatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+								}
+							}
+
+						echo '</ul>';
+					echo '</li>';
+					/*
+					echo '<li class="footer"><a href="#">View all</a></li>';
+					*/
+				} else {
+					echo '<li class="header">Du har for øyeblikket ingen varsler.</li>';
+				}
+
+			echo '</ul>';
+		echo '</li>';
 	}
 
 	private function getTasks() {
@@ -962,10 +1029,10 @@ EOD;
 	}
 
 	private function getMenu(User $user) {
-		$result = null;
+		$content = null;
 
-		$result .= '<ul class="sidebar-menu" data-widget="tree">';
-			$result .='<li class="header">Hovedmeny</li>';
+		$content .= '<ul class="sidebar-menu" data-widget="tree">';
+			$content .='<li class="header">Hovedmeny</li>';
 
 			if ($user->isGroupMember()) {
 				$group = $user->getGroup();
@@ -992,17 +1059,17 @@ EOD;
 
 				// Only show pages for that group.
 				if (empty($pageList) && empty($teamList)) {
-					$result .='<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
+					$content .='<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
 				} else {
-					$result .='<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
-						$result .='<a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i></a>';
-						$result .='<ul class="treeview-menu">';
-							$result .='<li><a href="?page=my-crew"><i class="fa fa-circle-o"></i>' . $group->getTitle() . '</a></li>';
+					$content .='<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
+						$content .='<a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span><i class="fa fa-angle-left pull-right"></i></a>';
+						$content .='<ul class="treeview-menu">';
+							$content .='<li><a href="?page=my-crew"><i class="fa fa-circle-o"></i>' . $group->getTitle() . '</a></li>';
 
 							// Only create link for groups that actually contain teams.
 							if (!empty($teamList)) {
 								foreach ($teamList as $team) {
-									$result .='<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i>' . $team->getTitle() . '</a></li>';
+									$content .='<li' . (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] ? ' class="active"' : null) .'><a href="?page=my-crew&teamId=' . $team->getId() . '"><i class="fa fa-circle-o"></i>' . $team->getTitle() . '</a></li>';
 								}
 							}
 
@@ -1010,167 +1077,167 @@ EOD;
 								foreach ($pageList as $page) {
 									if (strtolower($page->getName()) != strtolower($group->getName())) {
 										if (!in_array(strtolower($page->getName()), $teamNameList)) {
-											$result .='<li><a href="?page=' . $page->getName() . '"><i class="fa fa-circle-o"></i>' . $page->getTitle() . '</a></li>';
+											$content .='<li><a href="?page=' . $page->getName() . '"><i class="fa fa-circle-o"></i>' . $page->getTitle() . '</a></li>';
 										}
 									}
 								}
 							}
 
-						$result .='</ul>';
-					$result .='</li>';
+						$content .='</ul>';
+					$content .='</li>';
 				}
 			}
 
 			$groupList = GroupHandler::getGroups();
 
 			if (!empty($groupList)) {
-				$result .='<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
-					$result .='<a href="?page=all-crew"><i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
+					$content .='<a href="?page=all-crew"><i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						foreach ($groupList as $group) {
-							$result .='<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
+							$content .='<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			if ($user->hasPermission('chief')) {
-				$result .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'chief') ? ' active' : null) . '">';
-					$result .='<a href="?page=chief"><i class="fa fa-gavel"></i><span>Chief</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'chief') ? ' active' : null) . '">';
+					$content .='<a href="?page=chief"><i class="fa fa-gavel"></i><span>Chief</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						if ($user->hasPermission('chief.group')) {
-							$result .='<li' . ($this->pageName == 'chief-group' ? ' class="active"' : null) . '><a href="?page=chief-group"><i class="fa fa-circle-o"></i>Crew</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-group' ? ' class="active"' : null) . '><a href="?page=chief-group"><i class="fa fa-circle-o"></i>Crew</a></li>';
 						}
 
 						if ($user->hasPermission('chief.team')) {
-							$result .='<li' . ($this->pageName == 'chief-team' ? ' class="active"' : null) . '><a href="?page=chief-team"><i class="fa fa-circle-o"></i>Lag</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-team' ? ' class="active"' : null) . '><a href="?page=chief-team"><i class="fa fa-circle-o"></i>Lag</a></li>';
 						}
 
 						if ($user->hasPermission('chief.avatar')) {
-							$result .='<li' . ($this->pageName == 'chief-avatar' ? ' class="active"' : null) . '><a href="?page=chief-avatar"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-avatar' ? ' class="active"' : null) . '><a href="?page=chief-avatar"><i class="fa fa-circle-o"></i>Profilbilder</a></li>';
 						}
 
 						if ($user->hasPermission('chief.application')) {
-							$result .='<li' . ($this->pageName == 'chief-application' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-application"><i class="fa fa-circle-o"></i>Søknader</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-application' || $this->pageName == 'application' ? ' class="active"' : null) . '><a href="?page=chief-application"><i class="fa fa-circle-o"></i>Søknader</a></li>';
 						}
 
 						if ($user->hasPermission('chief.my-crew')) {
-							$result .='<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=chief-my-crew"><i class="fa fa-circle-o"></i>My crew</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page' ? ' class="active"' : null) . '><a href="?page=chief-my-crew"><i class="fa fa-circle-o"></i>My crew</a></li>';
 						}
 
 						if ($user->hasPermission('chief.email')) {
-							$result .='<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-send"></i>Send e-post</a></li>';
+							$content .='<li' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . '><a href="?page=chief-email"><i class="fa fa-send"></i>Send e-post</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			if ($user->hasPermission('event')) {
-				$result .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
-					$result .='<a href="?page=event"><i class="fa fa-calendar"></i><span>Arrangement</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'event') ? ' active' : null) . '">';
+					$content .='<a href="?page=event"><i class="fa fa-calendar"></i><span>Arrangement</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						if ($user->hasPermission('event.checkin')) {
-							$result .='<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-check"></i>Innsjekk</a></li>';
+							$content .='<li' . ($this->pageName == 'event-checkin' ? ' class="active"' : null) . '><a href="?page=event-checkin"><i class="fa fa-check"></i>Innsjekk</a></li>';
 						}
 
 						if ($user->hasPermission('event.checklist')) {
-							$result .='<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist"><i class="fa fa-check"></i>Sjekkliste</a></li>';
+							$content .='<li><a' . ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note' ? ' class="active"' : null) . ' href="index.php?page=event-checklist"><i class="fa fa-check"></i>Sjekkliste</a></li>';
 						}
 
 						if ($user->hasPermission('event.seatmap')) {
-							$result .='<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-map-marker"></i>Setekart</a></li>';
+							$content .='<li' . ($this->pageName == 'event-seatmap' ? ' class="active"' : null) . '><a href="?page=event-seatmap"><i class="fa fa-map-marker"></i>Setekart</a></li>';
 						}
 
 						if ($user->hasPermission('event.screen')) {
-							$result .='<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-desktop"></i>Skjerm</a></li>';
+							$content .='<li' . ($this->pageName == 'event-screen' ? ' class="active"' : null) . '><a href="?page=event-screen"><i class="fa fa-desktop"></i>Skjerm</a></li>';
 						}
 
 						if ($user->hasPermission('event.agenda')) {
-							$result .='<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-clock-o"></i>Agenda</a></li>';
+							$content .='<li' . ($this->pageName == 'event-agenda' ? ' class="active"' : null) . '><a href="?page=event-agenda"><i class="fa fa-clock-o"></i>Agenda</a></li>';
 						}
 
 						if ($user->hasPermission('event.table-labels')) {
-							$result .='<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-external-link"></i>Print bordlapper</a></li>';
+							$content .='<li><a href="../api/pages/utils/printTableLabels.php"><i class="fa fa-external-link"></i>Print bordlapper</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			if ($user->hasPermission('admin')) {
-				$result .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';
-					$result .='<a href="?page=admin"><i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';
+					$content .='<a href="?page=admin"><i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						if ($user->hasPermission('admin.event')) {
-							$result .='<li' . ($this->pageName == 'admin-event' ? ' class="active"' : null) . '><a href="?page=admin-event"><i class="fa fa-calendar"></i>Arrangementer</a></li>';
+							$content .='<li' . ($this->pageName == 'admin-event' ? ' class="active"' : null) . '><a href="?page=admin-event"><i class="fa fa-calendar"></i>Arrangementer</a></li>';
 						}
 
 						if ($user->hasPermission('admin.permission')) {
-							$result .='<li' . ($this->pageName == 'admin-permission' ? ' class="active"' : null) . '><a href="?page=admin-permission"><i class="fa fa-check-square-o"></i>Rettigheter</a></li>';
+							$content .='<li' . ($this->pageName == 'admin-permission' ? ' class="active"' : null) . '><a href="?page=admin-permission"><i class="fa fa-check-square-o"></i>Rettigheter</a></li>';
 						}
 
 						if ($user->hasPermission('admin.memberlist')) {
-							$result .='<li><a' . ($this->pageName == 'admin-memberlist' ? ' class="active"' : null) . ' href="index.php?page=admin-memberlist"><i class="fa fa-check-square-o"></i>Medlemsliste</a></li>';
+							$content .='<li><a' . ($this->pageName == 'admin-memberlist' ? ' class="active"' : null) . ' href="index.php?page=admin-memberlist"><i class="fa fa-check-square-o"></i>Medlemsliste</a></li>';
 						}
 
 						if ($user->hasPermission('admin.seatmap')) {
-							$result .='<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-map-marker"></i>Endre setekart</a></li>';
+							$content .='<li' . ($this->pageName == 'admin-seatmap' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-map-marker"></i>Endre setekart</a></li>';
 						}
 
 						if ($user->hasPermission('admin.websocket')) {
-							$result .='<li' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . '><a href="?page=admin-seatmap"><i class="fa fa-terminal"></i>Websocket-konsoll</a></li>';
+							$content .='<li' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . '><a href="?page=admin-wsconsole"><i class="fa fa-terminal"></i>Websocket-konsoll</a></li>';
 						}
 
 						if ($user->hasPermission('admin.website')) {
-							$result .='<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-edit"></i>Endre hovedsiden</a></li>';
+							$content .='<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-edit"></i>Endre hovedsiden</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			if ($user->hasPermission('stats')) {
-				$result .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'stats') ? ' active' : null) . '">';
-					$result .='<a href="?page=stats"><i class="fa fa-line-chart"></i><span>Statistikk</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'stats') ? ' active' : null) . '">';
+					$content .='<a href="?page=stats"><i class="fa fa-line-chart"></i><span>Statistikk</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						if ($user->hasPermission('stats.age')) {
-							$result .='<li' . ($this->pageName == 'stats-age' ? ' class="active"' : null) . '><a href="?page=stats-age"><i class="fa fa-birthday-cake"></i>Alder</a></li>';
+							$content .='<li' . ($this->pageName == 'stats-age' ? ' class="active"' : null) . '><a href="?page=stats-age"><i class="fa fa-birthday-cake"></i>Alder</a></li>';
 						}
 
 						if ($user->hasPermission('stats.gender')) {
-							$result .='<li' . ($this->pageName == 'stats-gender' ? ' class="active"' : null) . '><a href="?page=stats-gender"><i class="fa fa-venus-mars"></i>Kjønn</a></li>';
+							$content .='<li' . ($this->pageName == 'stats-gender' ? ' class="active"' : null) . '><a href="?page=stats-gender"><i class="fa fa-venus-mars"></i>Kjønn</a></li>';
 						}
 
 						if ($user->hasPermission('stats.ticketsale')) {
-							$result .='<li' . ($this->pageName == 'stats-ticketsale' ? ' class="active"' : null) . '><a href="?page=stats-ticketsale"><i class="fa fa-ticket"></i>Billetsalg</a></li>';
+							$content .='<li' . ($this->pageName == 'stats-ticketsale' ? ' class="active"' : null) . '><a href="?page=stats-ticketsale"><i class="fa fa-ticket"></i>Billetsalg</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			if ($user->hasPermission('developer')) {
-				$result .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'developer') ? ' active' : null) . '">';
-					$result .='<a href="?page=developer"><i class="fa fa-rocket"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$result .='<ul class="treeview-menu">';
+				$content .='<li class="treeview' . (StringUtils::startsWith($this->pageName, 'developer') ? ' active' : null) . '">';
+					$content .='<a href="?page=developer"><i class="fa fa-rocket"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i></a>';
+					$content .='<ul class="treeview-menu">';
 
 						if ($user->hasPermission('developer.change-user')) {
-							$result .='<li' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . '><a href="?page=developer-change-user"><i class="fa fa-users"></i>Bytt bruker</a></li>';
+							$content .='<li' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . '><a href="?page=developer-change-user"><i class="fa fa-users"></i>Bytt bruker</a></li>';
 						}
 
 						if ($user->hasPermission('developer.syslog')) {
-							$result .='<li' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . '><a href="?page=developer-syslog"><i class="fa fa-tv"></i>Systemlogg</a></li>';
+							$content .='<li' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . '><a href="?page=developer-syslog"><i class="fa fa-tv"></i>Systemlogg</a></li>';
 						}
 
-					$result .='</ul>';
-				$result .='</li>';
+					$content .='</ul>';
+				$content .='</li>';
 			}
 
 			/* TODO: Implement compo stuff.
@@ -1211,12 +1278,14 @@ EOD;
                   }
 			*/
 
-			$result .= '</ul>';
+			$content .= '</ul>';
 
-			return $result;
+			return $content;
 	}
 
 	private function getPage($pageName) {
+		$content = null;
+
 		// Fetch the page object from the database and display it.
 		$page = RestrictedPageHandler::getPageByName($pageName);
 
@@ -1225,24 +1294,24 @@ EOD;
 				$user = Session::getCurrentUser();
 
 				// Content Header (Page header)
-				echo '<section class="content-header">';
-						echo '<h1>';
-							echo $page->getTitle();
-							echo '<small>' . $page->getTitle() . '</small>';
-						echo '</h1>';
+				$content .= '<section class="content-header">';
+						$content .= '<h1>';
+							$content .= $page->getTitle();
+							$content .= '<small>' . $page->getTitle() . '</small>';
+						$content .= '</h1>';
 						/*
-						echo '<ol class="breadcrumb">';
-						echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-						echo '<li class="active">Dashboard</li>';
-						echo '</ol>';
+						$content .= '<ol class="breadcrumb">';
+						$content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+						$content .= '<li class="active">Dashboard</li>';
+						$content .= '</ol>';
 						*/
-				echo '</section>';
+				$content .= '</section>';
 				// Main content
-				echo '<section class="content">';
-					echo $page->getContent();
-				echo '</section>'; // .content
+				$content .= '<section class="content">';
+					$content .= $page->getContent();
+				$content .= '</section>'; // .content
 			} else {
-				echo 'Du har ikke tilgang til dette.'; // TODO: Improve this with a nice error box. 404?
+				$content .= 'Du har ikke tilgang til dette.'; // TODO: Improve this with a nice error box. 404?
 			}
 		} else {
 			$directoryList = ['pages',
@@ -1266,34 +1335,34 @@ EOD;
 						$page = new $class();
 
 						if (Session::isAuthenticated()) {
-							// Print the page.
-							//<!-- Content Header (Page header) -->';
-							echo '<section class="content-header">';
-									echo '<h1>';
+							// Content Header (Page header)
+							$content .= '<section class="content-header">';
+									$content .= '<h1>';
 
 										// Check if this page as a parent or not, and decide what to show.
 										if ($page->hasParent()) {
-											echo $page->getParent()->getTitle();
-											echo '<small>' . $page->getTitle() . '</small>';
+											$content .= $page->getParent()->getTitle();
+											$content .= '<small>' . $page->getTitle() . '</small>';
 										} else {
-											echo $page->getTitle();
+											$content .= $page->getTitle();
 										}
 
-									echo '</h1>';
+									$content .= '</h1>';
 
 									/*
-									echo '<ol class="breadcrumb">';
-									echo '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-									echo '<li class="active">Dashboard</li>';
-									echo '</ol>';
+									$content .= '<ol class="breadcrumb">';
+									$content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+									$content .= '<li class="active">Dashboard</li>';
+									$content .= '</ol>';
 									*/
-							echo '</section>';
+							$content .= '</section>';
+
 							// Main content
-							echo '<section class="content">';
-								echo $page->getContent();
-							echo '</section><!-- /.content -->';
+							$content .= '<section class="content">';
+								$content .= $page->getContent();
+							$content .= '</section><!-- /.content -->';
 						} else {
-							echo $page->getContent();
+							$content .= $page->getContent();
 						}
 
 						// The page is valid and should not be included twice.
@@ -1305,20 +1374,22 @@ EOD;
 
 			if (!$found) {
 				// Main content
-				echo '<section class="content">';
-					echo '<div class="error-page">';
-						echo '<h2 class="headline text-yellow">404</h2>';
-						echo '<div class="error-content">';
-							echo '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
-							echo '<p>';
-								echo 'We could not find the page you were looking for.';
-								echo 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
-							echo '</p>';
-						echo '</div><!-- /.error-content -->';
-					echo '</div><!-- /.error-page -->';
-				echo '</section><!-- /.content -->';
+				$content .= '<section class="content">';
+					$content .= '<div class="error-page">';
+						$content .= '<h2 class="headline text-yellow">404</h2>';
+						$content .= '<div class="error-content">';
+							$content .= '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
+							$content .= '<p>';
+								$content .= 'We could not find the page you were looking for.';
+								$content .= 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
+							$content .= '</p>';
+						$content .= '</div><!-- /.error-content -->';
+					$content .= '</div><!-- /.error-page -->';
+				$content .= '</section><!-- /.content -->';
 			}
 		}
+
+		return $content;
 	}
 }
 

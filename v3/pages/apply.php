@@ -23,7 +23,7 @@ require_once 'settings.php';
 require_once 'handlers/grouphandler.php';
 require_once 'page.php';
 
-class ApplyPage implements Page {
+class ApplyPage extends Page {
 	public function getTitle(): string {
 		return 'Søk';
 	}

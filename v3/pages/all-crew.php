@@ -24,7 +24,7 @@ require_once 'handlers/grouphandler.php';
 require_once 'utils/crewutils.php';
 require_once 'page.php';
 
-class AllCrewPage implements Page {
+class AllCrewPage extends Page {
 	public function getTitle(): string {
 		return 'Crew';
 	}
