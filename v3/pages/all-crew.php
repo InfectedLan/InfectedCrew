@@ -49,8 +49,8 @@ class AllCrewPage extends Page {
 
 									$content .= $team->getDescription();
 
-								$content .= '</div><!-- /.box-body -->';
-							$content .= '</div><!-- /.box -->';
+								$content .= '</div>';
+							$content .= '</div>';
 
 							$content .= CrewUtils::displayTeam($team);
 						}
@@ -66,8 +66,8 @@ class AllCrewPage extends Page {
 
 									$content .= $group->getDescription();
 
-								$content .= '</div><!-- /.box-body -->';
-							$content .= '</div><!-- /.box -->';
+								$content .= '</div>';
+							$content .= '</div>';
 
 							$content .= CrewUtils::displayGroup($group);
 						}
@@ -87,14 +87,18 @@ class AllCrewPage extends Page {
 
 							$content .= $group->getDescription();
 
-						$content .= '</div><!-- /.box-body -->';
-					$content .= '</div><!-- /.box -->';
+						$content .= '</div>';
+					$content .= '</div>';
 
 					$content .= CrewUtils::displayGroup($group);
 				}
 			}
 		} else {
-			$content .= '<p>Du er ikke logget inn!</p>';
+			$content .= '<div class="box">';
+				$content .= '<div class="box-body">';
+					$content .= '<p>Du er ikke logget inn!</p>';
+				$content .= '</div>';
+			$content .= '</div>';
 		}
 
 		return $content;

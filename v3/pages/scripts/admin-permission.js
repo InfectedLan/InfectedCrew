@@ -18,22 +18,11 @@
  */
 
 $(document).ready(function() {
-	$('.admin-events-add').on('submit', function(event) {
+	$('.admin-permission-edit').on('submit', function(event) {
 		event.preventDefault();
-		$.getJSON('../api/json/event/addEvent.php' + '?' + $(this).serialize(), function(data) {
+		$.getJSON('../api/json/permissions/editUserPermissions.php?' + $(this).serialize(), function(data) {
 			if (data.result) {
-				location.reload();
-			} else {
-				error(data.message);
-			}
-		});
-	});
-
-	$('.admin-events-edit').on('submit', function(event) {
-		event.preventDefault();
-		$.getJSON('../api/json/event/editEvent.php' + '?' + $(this).serialize(), function(data) {
-			if (data.result) {
-				location.reload();
+				$(location).attr('href', 'index.php?page=admin-permission');
 			} else {
 				error(data.message);
 			}
@@ -41,22 +30,12 @@ $(document).ready(function() {
 	});
 });
 
-function viewSeatmap(id) {
-	$(location).attr('href', 'index.php?page=event-seatmap&id=' + id);
+function editUserPermissions(userId) {
+	$(location).attr('href', 'index.php?page=admin-permission&id=' + userId);
 }
 
-function copyMembers(id) {
-	$.getJSON('../api/json/event/copyMembers.php?id=' + id, function(data) {
-		if (data.result) {
-			location.reload();
-		} else {
-			error(data.message);
-		}
-	});
-}
-
-function removeEvent(id) {
-	$.getJSON('../api/json/event/removeEvent.php?id=' + id, function(data) {
+function removeUserPermissions(userId) {
+	$.getJSON('../api/json/permissions/removeUserPermissions.php?id=' + userId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

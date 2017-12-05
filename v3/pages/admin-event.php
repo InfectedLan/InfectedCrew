@@ -39,76 +39,132 @@ class AdminEventPage extends AdminPage {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('admin.event')) {
-				$content .= '<script src="scripts/admin-event.js"></script>';
-
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-6">';
-						$eventList = EventHandler::getEvents();
+						$eventList = EventHandler::getEvents(); // TODO: Change this function to sort event by newest first in SQL.
 
 						// Sort this array so that we show newest events first.
 						rsort($eventList);
 
 						if (!empty($eventList)) {
 							foreach ($eventList as $event) {
-							  	$content .= '<div class="box">';
+						  	$content .= '<div class="box">';
 									$content .= '<div class="box-header">';
 								  	$content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
-									$content .= '</div><!-- /.box-header -->';
+									$content .= '</div>';
 									$content .= '<div class="box-body">';
 										$content .= $this->getEditForm($event, $user);
-									$content .= '</div><!-- /.box-body -->';
-								$content .= '</div><!-- /.box -->';
+									$content .= '</div>';
+								$content .= '</div>';
 							}
 						} else {
 							$content .= '<div class="box">';
 								$content .= '<div class="box-body">';
 									$content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
-								$content .= '</div><!-- /.box-body -->';
-							$content .= '</div><!-- /.box -->';
+								$content .= '</div>';
+							$content .= '</div>';
 						}
 
-					$content .= '</div><!--/.col (left) -->';
+					$content .= '</div>';
 					$content .= '<div class="col-md-6">';
 					  $content .= '<div class="box">';
 							$content .= '<div class="box-header">';
 						  	$content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
-							$content .= '</div><!-- /.box-header -->';
+							$content .= '</div>';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
 								$content .= $this->getAddForm(EventHandler::getCurrentEvent());
-							$content .= '</div><!-- /.box-body -->';
-					  $content .= '</div><!-- /.box -->';
-					$content .= '</div><!--/.col (right) -->';
-				$content .= '</div><!-- /.row -->';
+							$content .= '</div>';
+					  $content .= '</div>';
+					$content .= '</div>';
+				$content .= '</div>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
 						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
+					$content .= '</div>';
+				$content .= '</div>';
 			}
 		} else {
 			$content .= '<div class="box">';
 				$content .= '<div class="box-body">';
 					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
+				$content .= '</div>';
+			$content .= '</div>';
 		}
+
+		$content .= '<script src="scripts/admin-event.js"></script>';
 
 		return $content;
 	}
 
-	private function getAddForm(Event $event) {
+	private function getAddForm(Event $event): string {
 		$content = null;
 
-		$content .= '<form class="admin-events-add" method="post">';
+		$content .= '<form class="admin-event-add" method="post">';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Sted</label>';
 				$content .= '<select class="form-control" name="location" required>';
 
 					foreach (LocationHandler::getLocations() as $location) {
-					$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
-				}
+						$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
+					}
+
+				$content .= '</select>';
+			$content .= '</div>';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Anstall deltakere</label>';
+				$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
+			$content .= '</div>';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Billetsalgs dato og tid</label>';
+				$content .= '<div class="input-group">';
+					$content .= '<div class="input-group-addon">';
+					$content .= '<i class="fa fa-clock-o"></i>';
+					$content .= '</div>';
+					$content .= '<input type="text" class="form-control pull-right" name="bookingTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Startdato og tid</label>';
+				$content .= '<div class="input-group">';
+					$content .= '<div class="input-group-addon">';
+						$content .= '<i class="fa fa-clock-o"></i>';
+					$content .= '</div>';
+					$content .= '<input type="text" class="form-control pull-right" name="startTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getStartTime()) . '" required>';
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Startdato og tid</label>';
+				$content .= '<div class="input-group">';
+					$content .= '<div class="input-group-addon">';
+						$content .= '<i class="fa fa-clock-o"></i>';
+					$content .= '</div>';
+					$content .= '<input type="text" class="form-control pull-right" name="endTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getEndTime()) . '" required>';
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+		$content .= '</form>';
+
+		return $content;
+	}
+
+	private function getEditForm(Event $event, User $user): string {
+		$content = null;
+
+		$content .= '<form class="admin-event-edit" method="post">';
+			$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
+			$content .= '<div class="form-group">';
+				$content .= '<label>Sted</label>';
+				$content .= '<select class="form-control" name="location" required>';
+
+					foreach (LocationHandler::getLocations() as $location) {
+						if ($location->equals($event->getLocation())) {
+							$content .= '<option value="' . $location->getId() . '" selected>' . $location->getTitle() . '</option>';
+						} else {
+							$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
+						}
+					}
 
 				$content .= '</select>';
 			$content .= '</div>';
@@ -122,85 +178,29 @@ class AdminEventPage extends AdminPage {
 					$content .= '<div class="input-group-addon">';
 					$content .= '<i class="fa fa-clock-o"></i>';
 					$content .= '</div>';
-					$content .= '<input type="text" class="form-control pull-right" name="bookingTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-				$content .= '</div><!-- /.form group -->';
-			$content .= '<div class="form-group">';
-				$content .= '<label>Startdato og tid</label>';
-				$content .= '<div class="input-group">';
-					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
-					$content .= '</div>';
-					$content .= '<input type="text" class="form-control pull-right" name="startTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getStartTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-				$content .= '</div><!-- /.form group -->';
-				$content .= '<div class="form-group">';
-				$content .= '<label>Startdato og tid</label>';
-				$content .= '<div class="input-group">';
-					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
-					$content .= '</div>';
-					$content .= '<input type="text" class="form-control pull-right" name="endTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getEndTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-			$content .= '</div><!-- /.form group -->';
-			$content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
-		$content .= '</form>';
-
-		return $content;
-	}
-
-	private function getEditForm(Event $event, User $user) {
-		$content = null;
-
-		$content .= '<form class="admin-events-edit" method="post">';
-			$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
-			$content .= '<div class="form-group">';
-				$content .= '<label>Sted</label>';
-				$content .= '<select class="form-control" name="location" required>';
-
-					foreach (LocationHandler::getLocations() as $location) {
-						if ($location->equals($event->getLocation())) {
-							$content .= '<option value="' . $location->getId() . '" selected>' . $location->getTitle() . '</option>';
-						} else {
-						$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
-					}
-				}
-
-				$content .= '</select>';
-			$content .= '</div>';
-				$content .= '<div class="form-group">';
-					$content .= '<label>Anstall deltakere</label>';
-				$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
-			$content .= '</div>';
-			$content .= '<div class="form-group">';
-				$content .= '<label>Billetsalgsdato og tid</label>';
-				$content .= '<div class="input-group">';
-					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
-					$content .= '</div>';
 					$content .= '<input type="text" class="form-control pull-right" name="bookingTime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-				$content .= '</div><!-- /.form group -->';
+				$content .= '</div>';
+				$content .= '</div>';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Startdato og tid</label>';
 				$content .= '<div class="input-group">';
 					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
+						$content .= '<i class="fa fa-clock-o"></i>';
 					$content .= '</div>';
 					$content .= '<input type="text" class="form-control pull-right" name="startTime" value="' . date('Y-m-d H:i:s', $event->getStartTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-				$content .= '</div><!-- /.form group -->';
-				$content .= '<div class="form-group">';
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<div class="form-group">';
 				$content .= '<label>Startdato og tid</label>';
 				$content .= '<div class="input-group">';
 					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
+						$content .= '<i class="fa fa-clock-o"></i>';
 					$content .= '</div>';
 					$content .= '<input type="text" class="form-control pull-right" name="endTime" value="' . date('Y-m-d H:i:s', $event->getEndTime()) . '" required>';
-				$content .= '</div><!-- /.input group -->';
-				$content .= '</div><!-- /.form group -->';
-				$content .= '<div class="btn-group" role="group" aria-label="...">';
-					$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<div class="btn-group" role="group" aria-label="...">';
+				$content .= '<button type="submit" class="btn btn-primary">Endre</button>';
 
 				if ($user->hasPermission('*')) {
 					$currentEvent = EventHandler::getCurrentEvent();

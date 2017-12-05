@@ -1,7 +1,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,14 +18,19 @@
  */
 
 $(document).ready(function() {
-	$('.admin-website-add').on('submit', function(event) {
+	$('.admin-event-add').on('submit', function(event) {
 		event.preventDefault();
-		addPage(this);
+		addEvent(this);
+	});
+
+	$('.admin-event-edit').on('submit', function(event) {
+		event.preventDefault();
+		editEvent(this);
 	});
 });
 
-function addPage(form) {
-	$.getJSON('../api/json/page/addPage.php' + '?' + $(form).serialize(), function(data) {
+function addEvent(form) {
+	$.getJSON('../api/json/event/addEvent.php' + '?' + $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
@@ -34,12 +39,32 @@ function addPage(form) {
 	});
 }
 
-function editPage(id) {
-	$(location).attr('href', 'index.php?page=edit-page&id=' + id);
+function editEvent(form) {
+	$.getJSON('../api/json/event/editEvent.php?' + $(form).serialize(), function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
 }
 
-function removePage(id) {
-	$.getJSON('../api/json/page/removePage.php?id=' + id, function(data) {
+function removeEvent(eventId) {
+	$.getJSON('../api/json/event/removeEvent.php?id=' + eventId, function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+			error(data.message);
+		}
+	});
+}
+
+function viewSeatmap(eventId) {
+	$(location).attr('href', 'index.php?page=event-seatmap&id=' + eventId);
+}
+
+function copyMembers(eventId) {
+	$.getJSON('../api/json/event/copyMembers.php?id=' + eventId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

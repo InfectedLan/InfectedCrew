@@ -29,8 +29,8 @@ class AdminPermissionPage extends AdminPage {
 	}
 
 	public function getTitle(): string {
-		if (isset($_GET['id'])) {
-			$permissionUser = UserHandler::getUser($_GET['id']);
+		if (isset($_GET['userId'])) {
+			$permissionUser = UserHandler::getUser($_GET['userId']);
 
 			if ($permissionUser != null) {
 				return $permissionUser->getFullName() . '\'s rettigheter</h3>';
@@ -46,11 +46,9 @@ class AdminPermissionPage extends AdminPage {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
 
-			if ($user->hasPermission('admin.permissions')) {
-				$content .= '<script src="scripts/admin-permissions.js"></script>';
-
-				if (isset($_GET['id'])) {
-					$permissionUser = UserHandler::getUser($_GET['id']);
+			if ($user->hasPermission('admin.permission')) {
+				if (isset($_GET['userId'])) {
+					$permissionUser = UserHandler::getUser($_GET['userId']);
 
 					if ($permissionUser != null) {
 						$content .= '<div class="box">';
@@ -88,14 +86,14 @@ class AdminPermissionPage extends AdminPage {
 									$content .= '</table>';
 									$content .= '<button type="submit" class="btn btn-primary">Lagre</button>';
 								$content .= '</form>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
+							$content .= '</div>';
+						$content .= '</div>';
 					} else {
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Brukeren finnes ikke.</p>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
+							$content .= '</div>';
+						$content .= '</div>';
 					}
 				} else {
 				  $permissionUserList = UserHandler::getPermissionUsers();
@@ -104,8 +102,8 @@ class AdminPermissionPage extends AdminPage {
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Under ser du en liste med alle brukere som har spesielle rettigheter.</p>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
+							$content .= '</div>';
+						$content .= '</div>';
 
 						$content .= '<div class="row">';
 							$content .= '<div class="col-md-4">';
@@ -124,35 +122,37 @@ class AdminPermissionPage extends AdminPage {
 													$content .= '<button class="btn btn-primary" onClick="editUserPermissions(' . $permissionUser->getId() . ')">Endre</button>';
 													$content .= '<button class="btn btn-primary" onClick="removeUserPermissions(' . $permissionUser->getId() . ')">Inndra rettigheter</button>';
 												$content .= '</div>';
-											$content .= '</div><!-- /.box-body -->';
-										$content .= '</div><!-- /.box -->';
+											$content .= '</div>';
+										$content .= '</div>';
 									}
 								}
 							} else {
 								$content .= '<div class="box">';
 									$content .= '<div class="box-body">';
 										$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
-									$content .= '</div><!-- /.box-body -->';
-								$content .= '</div><!-- /.box -->';
+									$content .= '</div>';
+								$content .= '</div>';
 							}
 
-						$content .= '</div><!--/.col (left) -->';
-					$content .= '</div><!-- /.row -->';
+						$content .= '</div>';
+					$content .= '</div>';
 				}
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
 						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
+					$content .= '</div>';
+				$content .= '</div>';
 			}
 		} else {
 			$content .= '<div class="box">';
 				$content .= '<div class="box-body">';
 					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
+				$content .= '</div>';
+			$content .= '</div>';
 		}
+
+		$content .= '<script src="scripts/admin-permission.js"></script>';
 
 		return $content;
 	}

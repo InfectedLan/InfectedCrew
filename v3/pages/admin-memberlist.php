@@ -38,8 +38,6 @@ class AdminMemberListPage extends AdminPage {
  			$user = Session::getCurrentUser();
 
  			if ($user->hasPermission('admin.memberlist')) {
-				$content .= '<script src="scripts/admin-memberlist.js"></script>';
-
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-4">';
 						$content .= '<div class="box">';
@@ -49,9 +47,9 @@ class AdminMemberListPage extends AdminPage {
 									$content .= '<div class="form-group">';
 										$content .= '<label>År</label>';
 										$content .= '<select class="form-control" name="year">';
-											$eventList = EventHandler::getEvents();
+											$events = EventHandler::getEvents();
 
-											for ($year = date('Y', reset($eventList)->getStartTime()); $year <= date('Y'); $year++) {
+											for ($year = date('Y', reset($events)->getStartTime()); $year <= date('Y'); $year++) {
 												if ($year == date('Y')) {
 													$content .= '<option value="' . $year . '" selected>' . $year . '</option>';
 												} else {
@@ -81,27 +79,29 @@ class AdminMemberListPage extends AdminPage {
 											$content .= '<option value="html" selected>Tekst (.html)</option>';
 											$content .= '<option value="csv">Regneark (.csv)</option>';
 										$content .= '</select>';
-									$content .= '</div><!-- /.form group -->';
+									$content .= '</div>';
 									$content .= '<button type="submit" class="btn btn-primary">Hent</button>';
 								$content .= '</form>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
-					$content .= '</div><!--/.col (left) -->';
-				$content .= '</div><!-- /.row -->';
+							$content .= '</div>';
+						$content .= '</div>';
+					$content .= '</div>';
+				$content .= '</div>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
 						$content .= '<p>Du har ikke rettigheter til dette.</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
+					$content .= '</div>';
+				$content .= '</div>';
 			}
 		} else {
 			$content .= '<div class="box">';
 				$content .= '<div class="box-body">';
 					$content .= '<p>Du er ikke logget inn.</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
+				$content .= '</div>';
+			$content .= '</div>';
 		}
+
+    $content .= '<script src="scripts/admin-memberlist.js"></script>';
 
 		return $content;
 	}

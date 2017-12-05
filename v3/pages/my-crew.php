@@ -35,6 +35,30 @@ class MyCrewPage extends Page {
 			$user = Session::getCurrentUser();
 
 			if ($user->isGroupMember()) {
+				$event = EventHandler::getCurrentEvent();
+
+				// Info boxes
+	      $content .= '<div class="row">';
+					$content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
+						$content .= '<div class="info-box">';
+							$content .= '<span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>';
+							$content .= '<div class="info-box-content">';
+								$content .= '<span class="info-box-text">Deltakere</span>';
+								$content .= '<span class="info-box-number">' . $event->getTicketCount() . '</span>';
+							$content .= '</div>';
+						$content .= '</div>';
+					$content .= '</div>';
+	        $content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
+	          $content .= '<div class="info-box">';
+	            $content .= '<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>';
+	            $content .= '<div class="info-box-content">';
+	              $content .= '<span class="info-box-text">Crew</span>';
+	              $content .= '<span class="info-box-number">' . count(UserHandler::getMemberUsers($event)) . '</span>';
+	            $content .= '</div>';
+	          $content .= '</div>';
+	        $content .= '</div>';
+	      $content .= '</div>';
+
 				if (isset($_GET['teamId'])) {
 					$team = TeamHandler::getTeam($_GET['teamId']);
 

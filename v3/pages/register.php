@@ -25,7 +25,7 @@ require_once 'page.php';
 
 class RegisterPage extends Page {
 	public function getTitle(): string {
-		return null;
+		return 'Register';
 	}
 
 	public function getContent(): string {
@@ -75,12 +75,12 @@ class RegisterPage extends Page {
                     $content .= '<div class="radio">';
                       $content .= '<label><input type="radio" name="gender" value="0" checked> Mann</label>';
                     $content .= '</div>';
-                  $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
                   $content .= '<div class="col-md-4">';
                     $content .= '<div class="radio">';
                       $content .= '<label><input type="radio" name="gender" value="1"> Kvinne</label>';
                     $content .= '</div>';
-                  $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
                 $content .= '</div>';
                 $content .= '<div class="form-group">';
                   $content .= '<label>Fødselsdato</label>';
@@ -93,7 +93,7 @@ class RegisterPage extends Page {
                         }
 
                       $content .= '</select>';
-                    $content .= '</div><!-- /.col -->';
+                    $content .= '</div>';
                     $content .= '<div class="col-md-4">';
                       $content .= '<select class="form-control" name="birthmonth">';
 
@@ -102,7 +102,7 @@ class RegisterPage extends Page {
                         }
 
                       $content .= '</select>';
-                    $content .= '</div><!-- /.col -->';
+                    $content .= '</div>';
                      $content .= '<div class="col-md-4">';
                       $content .= '<select class="form-control" name="birthyear">';
 
@@ -115,7 +115,7 @@ class RegisterPage extends Page {
                         }
 
                       $content .= '</select>';
-                    $content .= '</div><!-- /.col -->';
+                    $content .= '</div>';
                   $content .= '</div>';
                 $content .= '</div>';
   						$content .= '<div class="form-group has-feedback">';
@@ -131,10 +131,10 @@ class RegisterPage extends Page {
                   $content .= '<div class="col-md-8">';
                     $content .= '<input type="number" class="form-control postalcode" name="postalcode" min="1" max="10000" placeholder="Postnummer" required>';
                     $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
-                  $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
                   $content .= '<div class="col-md-4">';
                     $content .= '<label class="city">Hvalstad</label>';
-                  $content .= '</div><!-- /.col -->';
+                  $content .= '</div>';
                 $content .= '</div>';
   						$content .= '</div>';
   						$content .= '<div class="form-group has-feedback">';
@@ -150,15 +150,15 @@ class RegisterPage extends Page {
   								$content .= '<div class="checkbox icheck">';
   									$content .= '<label><input type="checkbox"> Jeg godtar <a href="#">vilkårene</a></label>';
   								$content .= '</div>';
-  							$content .= '</div><!-- /.col -->';
+  							$content .= '</div>';
   							$content .= '<div class="col-xs-4">';
   								$content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">Register deg</button>';
-  							$content .= '</div><!-- /.col -->';
+  							$content .= '</div>';
   						$content .= '</div>';
   					$content .= '</form>';
   					$content .= '<a href="." class="text-center">Tilbake til innlogging</a>';
-  				$content .= '</div><!-- /.form-box -->';
-  			$content .= '</div><!-- /.register-box -->';
+  				$content .= '</div>';
+  			$content .= '</div>';
 
   			$content .= '<!-- jQuery 2.1.4 -->';
   			$content .= '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
