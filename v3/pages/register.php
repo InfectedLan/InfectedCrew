@@ -126,7 +126,9 @@ class RegisterPage extends Page {
                                     $content .= '</div>';
                                 $content .= '</div>';
                                 $content .= '<div class="col-md-6">';
-                                    $content .= '<span class="form-control city"></span>';
+                                    $content .= '<div class="form-group has-feedback">';
+                                        $content .= '<span class="form-control city"></span>';
+                                    $content .= '</div>';
                                 $content .= '</div>';
                             $content .= '</div>';
                             $content .= '<div class="form-group has-feedback">';

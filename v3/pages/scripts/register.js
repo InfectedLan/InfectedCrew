@@ -25,7 +25,7 @@ $(document).ready(function() {
 });
 
 function createUser(form) {
-	$.post('../api/rest/user/createUser.php', $(form).serialize(), function(data) {
+	$.post('../api/rest/user/create.php', $(form).serialize(), function(data) {
 		if (data.result) {
             $('.modal-success .modal-body').text(data.message);
 		    $('.modal-success').modal('show');

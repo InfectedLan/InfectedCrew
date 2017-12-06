@@ -20,6 +20,6 @@
 $(document).ready(function() {
 	$('.memberlist').on('submit', function(event) {
 		event.preventDefault();
-		window.open('/api/pages/utils/memberList.php' + '?' + $(this).serialize());
+		window.open('../api/pages/utils/memberList.php' + '?' + $(this).serialize());
 	});
 });

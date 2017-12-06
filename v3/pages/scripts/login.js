@@ -25,7 +25,7 @@ $(document).ready(function() {
 });
 
 function authenticateUser(form) {
-    $.post('../api/rest/user/authenticateUser.php', $(form).serialize(), function(data) {
+    $.post('../api/rest/user/authenticate.php', $(form).serialize(), function(data) {
         if (data.result) {
             location.reload();
         } else {
