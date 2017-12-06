@@ -28,7 +28,12 @@ class AdminPermissionPage extends AdminPage {
 		return true;
 	}
 
-	public function getTitle(): string {
+    /**
+	 *
+	 *
+     * @return string
+     */
+    public function getTitle(): string {
 		if (isset($_GET['userId'])) {
 			$permissionUser = UserHandler::getUser($_GET['userId']);
 
@@ -114,7 +119,7 @@ class AdminPermissionPage extends AdminPage {
 
 										$content .= '<div class="box">';
 											$content .= '<div class="box-header with-border">';
-												$content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
+											    $content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
 											$content .= '</div>';
 											$content .= '<div class="box-body">';
 												$content .= '<p class="pull-left">Denne brukeren har ' . $permissionCount . ' ' . ($permissionCount > 1 ? 'tilganger' : 'tilgang') . '.</p>';

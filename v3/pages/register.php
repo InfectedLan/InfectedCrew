@@ -29,166 +29,144 @@ class RegisterPage extends Page {
 	}
 
 	public function getContent(): string {
-    $content = null;
+		$content = null;
 
 		if (!Session::isAuthenticated()) {
-      $content .= '<body class="register-page">';
-  			$content .= '<div class="register-box">';
-  				$content .= '<div class="register-logo">';
-  					$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-  				$content .= '</div>';
-
-  				$content .= '<div class="register-box-body">';
-  					$content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
-
-  					$content .= '<form class="register" method="post">';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="text" class="form-control" name="firstname" placeholder="Fornavn" required>';
-  							$content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="text" class="form-control" name="lastname" placeholder="Etternavn" required>';
-  							$content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="text" class="form-control" name="username" placeholder="Brukernavn" required>';
-  							$content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="email" class="form-control" name="email" placeholder="E-post" required>';
-  							$content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="email" class="form-control" name="confirmemail" placeholder="Bekreft e-post" required>';
-  							$content .= '<span class="glyphicon glyphicon-repeat form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="password" class="form-control" name="password" placeholder="Passord" required>';
-  							$content .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="password" class="form-control" name="confirmpassword" placeholder="Bekreft passord" required>';
-  							$content .= '<span class="glyphicon glyphicon-repeat form-control-feedback"></span>';
-  						$content .= '</div>';
-                $content .= '<div class="row">';
-                  $content .= '<div class="col-md-4">';
-                    $content .= '<div class="radio">';
-                      $content .= '<label><input type="radio" name="gender" value="0" checked> Mann</label>';
+			$content .= '<body class="register-page">';
+                $content .= '<div class="modal modal-danger fade">';
+                    $content .= '<div class="modal-dialog">';
+                        $content .= '<div class="modal-content">';
+                            $content .= '<div class="modal-header">';
+                                $content .= '<h4 class="modal-title">Feilmelding</h4>';
+                            $content .= '</div>';
+                            $content .= '<div class="modal-body"></div>';
+                            $content .= '<div class="modal-footer">';
+                                $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Gå tilbake</button>';
+                            $content .= '</div>';
+                        $content .= '</div>';
                     $content .= '</div>';
-                  $content .= '</div>';
-                  $content .= '<div class="col-md-4">';
-                    $content .= '<div class="radio">';
-                      $content .= '<label><input type="radio" name="gender" value="1"> Kvinne</label>';
-                    $content .= '</div>';
-                  $content .= '</div>';
                 $content .= '</div>';
-                $content .= '<div class="form-group">';
-                  $content .= '<label>Fødselsdato</label>';
-                  $content .= '<div class="row">';
-                    $content .= '<div class="col-md-4">';
-                      $content .= '<select class="form-control" name="birthday">';
-
-                        for ($day = 1; $day <= 31; $day++) {
-                            $content .= '<option value="' . $day . '">' . $day . '</option>';
-                        }
-
-                      $content .= '</select>';
-                    $content .= '</div>';
-                    $content .= '<div class="col-md-4">';
-                      $content .= '<select class="form-control" name="birthmonth">';
-
-                        for ($month = 1; $month <= 12; $month++) {
-                            $content .= '<option value="' . $month . '">' . DateUtils::getMonthFromInt($month) . '</option>';
-                        }
-
-                      $content .= '</select>';
-                    $content .= '</div>';
-                     $content .= '<div class="col-md-4">';
-                      $content .= '<select class="form-control" name="birthyear">';
-
-                        for ($year = date('Y') - 100; $year <= date('Y'); $year++) {
-                            if ($year == date('Y') - 18) {
-                              $content .= '<option value="' . $year . '" selected>' . $year . '</option>';
-                            } else {
-                              $content .= '<option value="' . $year . '">' . $year . '</option>';
-                            }
-                        }
-
-                      $content .= '</select>';
-                    $content .= '</div>';
-                  $content .= '</div>';
                 $content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="tel" class="form-control" data-inputmask="\'mask\': \'99 99 99 99\'" name="phone" placeholder="Telefon" data-mask required>';
-  							$content .= '<span class="glyphicon glyphicon-earphone form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="text" class="form-control" name="address" placeholder="Adresse" required>';
-  							$content .= '<span class="glyphicon glyphicon-map-marker form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-                $content .= '<div class="row">';
-                  $content .= '<div class="col-md-8">';
-                    $content .= '<input type="number" class="form-control postalcode" name="postalcode" min="1" max="10000" placeholder="Postnummer" required>';
-                    $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
-                  $content .= '</div>';
-                  $content .= '<div class="col-md-4">';
-                    $content .= '<label class="city">Hvalstad</label>';
-                  $content .= '</div>';
+                $content .= '<div class="modal modal-success fade">';
+                    $content .= '<div class="modal-dialog">';
+                        $content .= '<div class="modal-content">';
+                            $content .= '<div class="modal-header">';
+                                $content .= '<h4 class="modal-title">Registrering fullført</h4>';
+                            $content .= '</div>';
+                            $content .= '<div class="modal-body"></div>';
+                            $content .= '<div class="modal-footer">';
+                                $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="$(location).attr(\'href\', \'.\')">Gå tilbake</button>';
+                            $content .= '</div>';
+                        $content .= '</div>';
+                    $content .= '</div>';
                 $content .= '</div>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="text" class="form-control" name="nickname" placeholder="Kallenavn (Valgfritt)">';
-  							$content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="form-group has-feedback">';
-  							$content .= '<input type="tel" class="form-control" data-inputmask="\'mask\': \'99 99 99 99\'" name="emergencycontactphone" placeholder="Foresatte\'s telefon" data-mask required>';
-  							$content .= '<span class="glyphicon glyphicon-phone-alt form-control-feedback"></span>';
-  						$content .= '</div>';
-  						$content .= '<div class="row">';
-  							$content .= '<div class="col-xs-8">';
-  								$content .= '<div class="checkbox icheck">';
-  									$content .= '<label><input type="checkbox"> Jeg godtar <a href="#">vilkårene</a></label>';
-  								$content .= '</div>';
-  							$content .= '</div>';
-  							$content .= '<div class="col-xs-4">';
-  								$content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">Register deg</button>';
-  							$content .= '</div>';
-  						$content .= '</div>';
-  					$content .= '</form>';
-  					$content .= '<a href="." class="text-center">Tilbake til innlogging</a>';
-  				$content .= '</div>';
-  			$content .= '</div>';
+				$content .= '<div class="register-box">';
+					$content .= '<div class="register-logo">';
+						$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+					$content .= '</div>';
+					$content .= '<div class="register-box-body">';
+						$content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
+						$content .= '<form class="register">';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="text" class="form-control" name="firstname" placeholder="Fornavn" required>';
+                                $content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="text" class="form-control" name="lastname" placeholder="Etternavn" required>';
+                                $content .= '<span class="glyphicon glyphicon-user form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="text" class="form-control" name="username" placeholder="Brukernavn" required>';
+                                $content .= '<span class="glyphicon glyphicon-tag form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="email" class="form-control" name="email" placeholder="E-post" required>';
+                                $content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="password" class="form-control" name="password" placeholder="Passord" required>';
+                                $content .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="password" class="form-control" name="confirm-password" placeholder="Bekreft passord" required>';
+                                $content .= '<span class="glyphicon glyphicon-repeat form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<div class="row">';
+                                    $content .= '<div class="col-md-4">';
+                                        $content .= '<div class="radio">';
+                                            $content .= '<label><input type="radio" name="gender" value="0" checked> Mann</label>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                    $content .= '<div class="col-md-4">';
+                                        $content .= '<div class="radio">';
+                                            $content .= '<label><input type="radio" name="gender" value="1"> Kvinne</label>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="date" class="form-control" name="birthdate" placeholder="Fødselsdato" required>';
+                                $content .= '<span class="glyphicon glyphicon-calendar form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="tel" class="form-control" data-inputmask="\'mask\': \'99 99 99 99\'" name="phone" placeholder="Telefon" data-mask required>';
+                                $content .= '<span class="glyphicon glyphicon-earphone form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="text" class="form-control" name="address" placeholder="Adresse" required>';
+                                $content .= '<span class="glyphicon glyphicon-map-marker form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="row">';
+                                $content .= '<div class="col-md-6">';
+                                    $content .= '<div class="form-group has-feedback">';
+                                        $content .= '<input type="number" class="form-control postalcode" name="postal-code" min="1" max="9999" placeholder="Sted" required>';
+                                        $content .= '<span class="glyphicon glyphicon-globe form-control-feedback"></span>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                                $content .= '<div class="col-md-6">';
+                                    $content .= '<span class="form-control city"></span>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                            $content .= '<div class="form-group has-feedback">';
+                                $content .= '<input type="tel" class="form-control" data-inputmask="\'mask\': \'99 99 99 99\'" name="emergency-contact-phone" placeholder="Foresatte\'s telefon" data-mask>';
+                                $content .= '<span class="glyphicon glyphicon-phone-alt form-control-feedback"></span>';
+                            $content .= '</div>';
+                            $content .= '<div class="row">';
+                                $content .= '<div class="col-md-8">';
+                                    // TODO: Add legal stuff here that the user have to accept.
+                                    /*
+                                    $content .= '<div class="checkbox">';
+                                        $content .= '<label><input type="checkbox"> Jeg godtar <a href="#">vilkårene</a></label>';
+                                    $content .= '</div>';
+                                    */
+                                $content .= '</div>';
+                                $content .= '<div class="col-md-4">';
+                                    $content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">Registrer</button>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                        $content .= '</form>';
+                        $content .= '<a href="." class="text-center">Tilbake til innlogging</a>';
+                    $content .= '</div>';
+                $content .= '</div>';
 
-  			$content .= '<!-- jQuery 2.1.4 -->';
-  			$content .= '<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>';
-  			$content .= '<!-- Bootstrap 3.3.2 JS -->';
-  			$content .= '<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>';
-  			$content .= '<!-- iCheck -->';
-  			$content .= '<script src="plugins/iCheck/icheck.min.js" type="text/javascript"></script>';
-  			$content .= '<!-- InputMask -->';
-  			$content .= '<script src="plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>';
-  			$content .= '<script src="plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>';
-  			$content .= '<script src="plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>';
-  			$content .= '<script>';
-  				$content .= '$(function () {';
-  					$content .= '$(\'input\').iCheck({';
-  						$content .= 'checkboxClass: \'icheckbox_square-blue\',';
-  						$content .= 'radioClass: \'iradio_square-blue\',';
-  						$content .= 'increaseArea: \'20%\''; // optional
-  					$content .= '});';
-  					$content .= '$(\'[data-mask]\').inputmask();';
-  				$content .= '});';
-  			$content .= '</script>';
-
-  			$content .= '<script src="../api/scripts/register.js"></script>';
-  			$content .= '<script src="../api/scripts/lookupCity.js"></script>';
-      $content .= '</body>';
-		} else {
-      $content .= '<p>Du er allerde registrert.</p>';
+				// InputMask
+				$content .= '<script src="plugins/input-mask/jquery.inputmask.js"></script>';
+				$content .= '<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>';
+				$content .= '<script>';
+					$content .= '$(function () {';
+						$content .= '$(\'input\').iCheck({';
+							$content .= 'checkboxClass: \'icheckbox_square-blue\',';
+							$content .= 'radioClass: \'iradio_square-blue\',';
+						$content .= '});';
+						$content .= '$(\'[data-mask]\').inputmask();';
+					$content .= '});';
+				$content .= '</script>';
+                $content .= '<script src="pages/scripts/register.js"></script>';
+                $content .= '<script src="../api/scripts/lookupCity.js"></script>';
+		  	$content .= '</body>';
 		}
 
-    return $content;
+    	return $content;
 	}
 }
-?>
