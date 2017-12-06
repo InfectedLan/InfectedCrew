@@ -40,12 +40,12 @@ class RegisterPage extends Page {
                                 $content .= '<h4 class="modal-title">Feilmelding</h4>';
                             $content .= '</div>';
                             $content .= '<div class="modal-body"></div>';
-                            $content .= '<div class="modal-footer">';
-                                $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Gå tilbake</button>';
+                                $content .= '<div class="modal-footer">';
+                                    $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Gå tilbake</button>';
+                                $content .= '</div>';
                             $content .= '</div>';
                         $content .= '</div>';
                     $content .= '</div>';
-                $content .= '</div>';
                 $content .= '</div>';
                 $content .= '<div class="modal modal-success fade">';
                     $content .= '<div class="modal-dialog">';
@@ -54,8 +54,9 @@ class RegisterPage extends Page {
                                 $content .= '<h4 class="modal-title">Registrering fullført</h4>';
                             $content .= '</div>';
                             $content .= '<div class="modal-body"></div>';
-                            $content .= '<div class="modal-footer">';
-                                $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="$(location).attr(\'href\', \'.\')">Gå tilbake</button>';
+                                $content .= '<div class="modal-footer">';
+                                    $content .= '<button type="button" class="btn btn-outline pull-left" data-dismiss="modal" onclick="$(location).attr(\'href\', \'.\')">Gå tilbake</button>';
+                                $content .= '</div>';
                             $content .= '</div>';
                         $content .= '</div>';
                     $content .= '</div>';

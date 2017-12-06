@@ -30,7 +30,7 @@ class Site {
 	private $pageName;
 
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? strtolower($_GET['page']) : 'my-crew';
+		$this->pageName = isset($_GET['page']) ? $_GET['page'] : (Session::isAuthenticated() ? 'my-crew' : 'login');
 	}
 
 	// Execute the site.
@@ -98,17 +98,9 @@ class Site {
                     // iCheck
                     echo '<script src="plugins/iCheck/icheck.min.js"></script>';
 
-                    if (!Session::isAuthenticated()) {
-                        echo '<script src="../api/scripts/login.js"></script>';
-                    } else {
+                    if (Session::isAuthenticated()) {
                         echo '<script src="../api/scripts/logout.js"></script>';
                     }
-
-                    //echo '<script src="../api/libraries/chosen/chosen.jquery.js"></script>';
-                    //echo '<script src="../api/libraries/ckeditor/ckeditor.js"></script>';
-                    //echo '<script src="../api/libraries/ckeditor/adapters/jquery.js"></script>';
-                    //echo '<script src="scripts/site.js"></script>';
-                    //echo '<script src="scripts/common.js"></script>';
 
                     // Google analytics
                     echo '<script>';
@@ -415,7 +407,7 @@ EOD;
                             echo '</header>';
 
     echo <<< EOD
-    
+
                             <!-- Left side column. contains the logo and sidebar -->
                             <aside class="main-sidebar">
                                 <!-- sidebar: style can be found in sidebar.less -->
@@ -480,7 +472,7 @@ EOD;
                             echo '</footer>';
 
     echo <<< EOD
-    
+
                             <!-- Control Sidebar -->
                             <aside class="control-sidebar control-sidebar-dark">
                                 <!-- Create the tabs -->
@@ -497,10 +489,10 @@ EOD;
                                             <li>
                                                 <a href="javascript:void(0)">
                                                     <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-    
+
                                                     <div class="menu-info">
                                                         <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-    
+
                                                         <p>Will be 23 on April 24th</p>
                                                     </div>
                                                 </a>
@@ -508,10 +500,10 @@ EOD;
                                             <li>
                                                 <a href="javascript:void(0)">
                                                     <i class="menu-icon fa fa-user bg-yellow"></i>
-    
+
                                                     <div class="menu-info">
                                                         <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-    
+
                                                         <p>New phone +1(800)555-1234</p>
                                                     </div>
                                                 </a>
@@ -519,10 +511,10 @@ EOD;
                                             <li>
                                                 <a href="javascript:void(0)">
                                                     <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-    
+
                                                     <div class="menu-info">
                                                         <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-    
+
                                                         <p>nora@example.com</p>
                                                     </div>
                                                 </a>
@@ -530,17 +522,17 @@ EOD;
                                             <li>
                                                 <a href="javascript:void(0)">
                                                     <i class="menu-icon fa fa-file-code-o bg-green"></i>
-    
+
                                                     <div class="menu-info">
                                                         <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-    
+
                                                         <p>Execution time 5 seconds</p>
                                                     </div>
                                                 </a>
                                             </li>
                                         </ul>
                                         <!-- /.control-sidebar-menu -->
-    
+
                                         <h3 class="control-sidebar-heading">Tasks Progress</h3>
                                         <ul class="control-sidebar-menu">
                                             <li>
@@ -549,7 +541,7 @@ EOD;
                                                         Custom Template Design
                                                         <span class="label label-danger pull-right">70%</span>
                                                     </h4>
-    
+
                                                     <div class="progress progress-xxs">
                                                         <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
                                                     </div>
@@ -561,7 +553,7 @@ EOD;
                                                         Update Resume
                                                         <span class="label label-success pull-right">95%</span>
                                                     </h4>
-    
+
                                                     <div class="progress progress-xxs">
                                                         <div class="progress-bar progress-bar-success" style="width: 95%"></div>
                                                     </div>
@@ -573,7 +565,7 @@ EOD;
                                                         Laravel Integration
                                                         <span class="label label-warning pull-right">50%</span>
                                                     </h4>
-    
+
                                                     <div class="progress progress-xxs">
                                                         <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
                                                     </div>
@@ -585,7 +577,7 @@ EOD;
                                                         Back End Framework
                                                         <span class="label label-primary pull-right">68%</span>
                                                     </h4>
-    
+
                                                     <div class="progress progress-xxs">
                                                         <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
                                                     </div>
@@ -593,7 +585,7 @@ EOD;
                                             </li>
                                         </ul>
                                         <!-- /.control-sidebar-menu -->
-    
+
                                     </div>
                                     <!-- /.tab-pane -->
                                     <!-- Stats tab content -->
@@ -603,45 +595,45 @@ EOD;
                                     <div class="tab-pane" id="control-sidebar-settings-tab">
                                         <form method="post">
                                             <h3 class="control-sidebar-heading">General Settings</h3>
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Report panel usage
                                                     <input type="checkbox" class="pull-right" checked>
                                                 </label>
-    
+
                                                 <p>
                                                     Some information about this general settings option
                                                 </p>
                                             </div>
                                             <!-- /.form-group -->
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Allow mail redirect
                                                     <input type="checkbox" class="pull-right" checked>
                                                 </label>
-    
+
                                                 <p>
                                                     Other sets of options are available
                                                 </p>
                                             </div>
                                             <!-- /.form-group -->
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Expose author name in posts
                                                     <input type="checkbox" class="pull-right" checked>
                                                 </label>
-    
+
                                                 <p>
                                                     Allow the user to show his name in blog posts
                                                 </p>
                                             </div>
                                             <!-- /.form-group -->
-    
+
                                             <h3 class="control-sidebar-heading">Chat Settings</h3>
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Show me as online
@@ -649,7 +641,7 @@ EOD;
                                                 </label>
                                             </div>
                                             <!-- /.form-group -->
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Turn off notifications
@@ -657,7 +649,7 @@ EOD;
                                                 </label>
                                             </div>
                                             <!-- /.form-group -->
-    
+
                                             <div class="form-group">
                                                 <label class="control-sidebar-subheading">
                                                     Delete chat history
@@ -672,18 +664,17 @@ EOD;
                                      immediately after the control sidebar -->
                             <div class="control-sidebar-bg"></div>
                             </div>
-                        
+
 EOD;
                 } else {
-                    $publicPages = ['register',
-                                    'activation',
+                    $publicPages = ['login',
+                    				'register',
+                        			'activation',
                                     'reset-password'];
 
                     // Show page if whitelisted.
                     if (in_array($this->pageName, $publicPages)) {
                         echo $this->getPage($this->pageName);
-                    } else {
-                        echo $this->getLoginForm();
                     }
                 }
 
@@ -734,60 +725,6 @@ EOD;
 	// Generates title based on current page / article.
 	private function getTitle(): string {
 		return Settings::name . ' Crew';
-	}
-
-	private function getLoginForm(): string {
-		$content = null;
-
-		$content .= '<body class="hold-transition login-page">';
-			$content .= '<div class="login-box">';
-				$content .= '<div class="login-logo">';
-					$content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-				$content .= '</div>';
-				$content .= '<div class="login-box-body">';
-					$content .= '<p class="login-box-msg">Du kan bruke samme bruker overalt hos <b>' . Settings::name . '</b>.</p>';
-					$content .= '<form class="login" method="post">';
-						$content .= '<div class="form-group has-feedback">';
-							$content .= '<input type="text" name="identifier" class="form-control" placeholder="Brukernavn eller e-post">';
-							$content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-						$content .= '</div>';
-						$content .= '<div class="form-group has-feedback">';
-							$content .= '<input type="password" name="password" class="form-control" placeholder="Passord">';
-							$content .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
-						$content .= '</div>';
-						$content .= '<div class="row">';
-							$content .= '<div class="col-xs-8">';
-								/*
-								$content .= '<div class="checkbox icheck">';
-									$content .= '<label><input type="checkbox"> Husk meg</label>';
-								$content .= '</div>';
-								*/
-							$content .= '</div>'; // .col-xs-8
-							$content .= '<div class="col-xs-4">';
-									$content .= '<button class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-							$content .= '</div>'; // .col-xs-4
-						$content .= '</div>';
-					$content .= '</form>';
-					$content .= '<a href="?page=reset-password">Jeg har glemt passordet mitt!</a><br>';
-					$content .= '<a href="?page=register">Register ny bruker</a>';
-				$content .= '</div>';
-			$content .= '</div>';
-			// iCheck
-			/*
-			$content .= '<script src="../../plugins/iCheck/icheck.min.js"></script>';
-			$content .= '<script>';
-				$content .= '$(function () {';
-					$content .= '$(\'input\').iCheck({';
-						$content .= 'checkboxClass: \'icheckbox_square-blue\',';
-						$content .= 'radioClass: \'iradio_square-blue\',';
-						$content .= 'increaseArea: \'20%\''; // Optional
-					$content .= '});';
-				$content .= '});';
-			$content .= '</script>';
-			*/
-		$content .= '</body>';
-
-		return $content;
 	}
 
 	private function getMessages() {
@@ -1229,4 +1166,3 @@ EOD;
 }
 
 Database::cleanup();
-?>
