@@ -759,7 +759,7 @@ EOD;
 			$avatars = AvatarHandler::getPendingAvatars();
 		}
 
-		$notificationsCount = count($applications) + count($avatars);
+		$notificationsCount = count($applications) . count($avatars);
 
 		// Notifications: style can be found in dropdown.less
 		$content .= '<li class="dropdown notifications-menu">';
@@ -951,6 +951,27 @@ EOD;
 				$content .= '</li>';
 			}
 
+            if ($user->hasPermission('stats')) {
+                $content .= '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'stats') ? ' active' : null) . '">';
+                $content .= '<a href="?page=stats"><i class="fa fa-line-chart"></i><span>Statistikk</span><i class="fa fa-angle-left pull-right"></i></a>';
+                $content .= '<ul class="treeview-menu">';
+
+                if ($user->hasPermission('stats.age')) {
+                    $content .= '<li' . ($this->pageName == 'stats-age' ? ' class="active"' : null) . '><a href="?page=stats-age"><i class="fa fa-birthday-cake"></i>Alder</a></li>';
+                }
+
+                if ($user->hasPermission('stats.gender')) {
+                    $content .= '<li' . ($this->pageName == 'stats-gender' ? ' class="active"' : null) . '><a href="?page=stats-gender"><i class="fa fa-venus-mars"></i>Kjønn</a></li>';
+                }
+
+                if ($user->hasPermission('stats.ticketsale')) {
+                    $content .= '<li' . ($this->pageName == 'stats-ticketsale' ? ' class="active"' : null) . '><a href="?page=stats-ticketsale"><i class="fa fa-ticket"></i>Billetsalg</a></li>';
+                }
+
+                $content .= '</ul>';
+                $content .= '</li>';
+            }
+
 			if ($user->hasPermission('admin')) {
 				$content .= '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'admin') ? ' active' : null) . '">';
 					$content .= '<a href="?page=admin"><i class="fa fa-wrench"></i><span>Administrator</span><i class="fa fa-angle-left pull-right"></i></a>';
@@ -961,7 +982,7 @@ EOD;
 						}
 
 						if ($user->hasPermission('admin.permission')) {
-							$content .= '<li' . ($this->pageName == 'admin-permission' ? ' class="active"' : null) . '><a href="?page=admin-permission"><i class="fa fa-check-square-o"></i>Rettigheter</a></li>';
+							$content .= '<li' . ($this->pageName == 'admin-permission' ? ' class="active"' : null) . '><a href="?page=admin-permission"><i class="fa fa-check-square-o"></i>Tilganger</a></li>';
 						}
 
 						if ($user->hasPermission('admin.memberlist')) {
@@ -974,31 +995,6 @@ EOD;
 
 						if ($user->hasPermission('admin.websocket')) {
 							$content .= '<li' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . '><a href="?page=admin-wsconsole"><i class="fa fa-terminal"></i>Websocket-konsoll</a></li>';
-						}
-
-						if ($user->hasPermission('admin.website')) {
-							$content .= '<li' . ($this->pageName == 'admin-website' || $this->pageName == 'edit-page' ? ' class="active"' : null) . '><a href="?page=admin-website"><i class="fa fa-edit"></i>Endre hovedsiden</a></li>';
-						}
-
-					$content .= '</ul>';
-				$content .= '</li>';
-			}
-
-			if ($user->hasPermission('stats')) {
-				$content .= '<li class="treeview' . (StringUtils::startsWith($this->pageName, 'stats') ? ' active' : null) . '">';
-					$content .= '<a href="?page=stats"><i class="fa fa-line-chart"></i><span>Statistikk</span><i class="fa fa-angle-left pull-right"></i></a>';
-					$content .= '<ul class="treeview-menu">';
-
-						if ($user->hasPermission('stats.age')) {
-							$content .= '<li' . ($this->pageName == 'stats-age' ? ' class="active"' : null) . '><a href="?page=stats-age"><i class="fa fa-birthday-cake"></i>Alder</a></li>';
-						}
-
-						if ($user->hasPermission('stats.gender')) {
-							$content .= '<li' . ($this->pageName == 'stats-gender' ? ' class="active"' : null) . '><a href="?page=stats-gender"><i class="fa fa-venus-mars"></i>Kjønn</a></li>';
-						}
-
-						if ($user->hasPermission('stats.ticketsale')) {
-							$content .= '<li' . ($this->pageName == 'stats-ticketsale' ? ' class="active"' : null) . '><a href="?page=stats-ticketsale"><i class="fa fa-ticket"></i>Billetsalg</a></li>';
 						}
 
 					$content .= '</ul>';
