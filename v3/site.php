@@ -30,7 +30,7 @@ class Site {
 	private $pageName;
 
 	public function __construct() {
-		$this->pageName = isset($_GET['page']) ? $_GET['page'] : (Session::isAuthenticated() ? 'my-crew' : 'login');
+		$this->pageName = $_GET['page'] ?? 'my-crew';
 	}
 
 	// Execute the site.
@@ -82,6 +82,9 @@ class Site {
 
                     // Google Font
                     echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">';
+
+                    // Select2
+                    echo '<link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">';
                     /* AdminLTE end */
 
                     /* AdminLTE - Login begin */
@@ -675,6 +678,8 @@ EOD;
                     // Show page if whitelisted.
                     if (in_array($this->pageName, $publicPages)) {
                         echo $this->getPage($this->pageName);
+                    } else {
+                        echo $this->getPage('login');
                     }
                 }
 
@@ -716,8 +721,14 @@ EOD;
 				// FastClick
 				echo '<script src="bower_components/fastclick/lib/fastclick.js"></script>';
 
+                // Select2
+                echo '<script src="bower_components/select2/dist/js/select2.full.min.js"></script>';
+
+                // ChartJS
+                echo '<script src="bower_components/chart.js/Chart.js"></script>';
+
 				// AdminLTE App
-				echo '<script src="dist/js/adminlte.min.js"></script>';
+                echo '<script src="dist/js/adminlte.min.js"></script>';
 			echo '</body>';
 		echo '</html>';
 	}
@@ -999,8 +1010,8 @@ EOD;
 					$content .= '<a href="?page=developer"><i class="fa fa-rocket"></i><span>Utvikler</span><i class="fa fa-angle-left pull-right"></i></a>';
 					$content .= '<ul class="treeview-menu">';
 
-						if ($user->hasPermission('developer.change-user')) {
-							$content .= '<li' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . '><a href="?page=developer-change-user"><i class="fa fa-users"></i>Bytt bruker</a></li>';
+						if ($user->hasPermission('developer.switch-user')) {
+							$content .= '<li' . ($this->pageName == 'developer-switch-user' ? ' class="active"' : null) . '><a href="?page=developer-switch-user"><i class="fa fa-users"></i>Bytt bruker</a></li>';
 						}
 
 						if ($user->hasPermission('developer.syslog')) {
@@ -1145,16 +1156,19 @@ EOD;
 			}
 
 			if (!$found) {
+                // Content Header (Page header)
+                $content .= '<section class="content-header">';
+                    $content .= '<h1>Page not found</h1>';
+                $content .= '</section>';
+
 				// Main content
 				$content .= '<section class="content">';
 					$content .= '<div class="error-page">';
 						$content .= '<h2 class="headline text-yellow">404</h2>';
 						$content .= '<div class="error-content">';
 							$content .= '<h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>';
-							$content .= '<p>';
-								$content .= 'We could not find the page you were looking for.';
-								$content .= 'Meanwhile, you may <a href=".">return to last page</a> or try using the search form.';
-							$content .= '</p>';
+							$content .= '<p>We could not find the page you were looking for.<br>';
+								$content .= 'Meanwhile, you may <a onClick="history.back()">return to last page</a> or try using the search form.</p>';
 						$content .= '</div>';
 					$content .= '</div>';
 				$content .= '</section>';

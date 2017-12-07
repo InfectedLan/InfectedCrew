@@ -43,7 +43,7 @@ class AdminMemberListPage extends AdminPage {
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
 								$content .= '<p>Velg år du vil hente ut medlemsliste for, maksimal alder på medlemmene du vil ha med og et format du vil ha listen i.</p>';
-								$content .= '<form class="memberlist" method="post">';
+								$content .= '<form class="memberlist">';
 									$content .= '<div class="form-group">';
 										$content .= '<label>År</label>';
 										$content .= '<select class="form-control" name="year">';
@@ -93,17 +93,10 @@ class AdminMemberListPage extends AdminPage {
 					$content .= '</div>';
 				$content .= '</div>';
 			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn.</p>';
-				$content .= '</div>';
-			$content .= '</div>';
 		}
 
-    $content .= '<script src="scripts/admin-memberlist.js"></script>';
+    	$content .= '<script src="pages/scripts/admin-memberlist.js"></script>';
 
 		return $content;
 	}
 }
-?>

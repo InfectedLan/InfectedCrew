@@ -28,11 +28,6 @@ class AdminPermissionPage extends AdminPage {
 		return true;
 	}
 
-    /**
-	 *
-	 *
-     * @return string
-     */
     public function getTitle(): string {
 		if (isset($_GET['userId'])) {
 			$permissionUser = UserHandler::getUser($_GET['userId']);

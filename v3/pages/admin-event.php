@@ -40,71 +40,80 @@ class AdminEventPage extends AdminPage {
 
 			if ($user->hasPermission('admin.event')) {
 				$content .= '<div class="row">';
-					$content .= '<div class="col-md-6">';
-						$eventList = EventHandler::getEvents(); // TODO: Change this function to sort event by newest first in SQL.
+                    $content .= '<div class="col-md-6">';
+                        $content .= '<div class="box box-default">';
+                            $content .= ' <div class="box-header with-border">';
+                                $content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
+                            $content .= '</div>';
+                            $content .= '<div class="box-body">';
+                                $content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
+                                $content .= $this->getCreateForm(EventHandler::getCurrentEvent());
+                            $content .= '</div>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                    $content .= '<div class="col-md-6">';
+                        $content .= '<div class="box box-primary">';
+                           $content .= ' <div class="box-header with-border">';
+                              $content .= '<h3 class="box-title">Deltakere per arrangement</h3>';
+                              $content .= '<div class="box-tools pull-right">';
+                                $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                                $content .= '<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>';
+                              $content .= '</div>';
+                            $content .= '</div>';
+                            $content .= '<div class="box-body">';
+                              $content .= '<div class="chart">';
+                                $content .= '<canvas id="areaChart" style="height:250px"></canvas>';
+                              $content .= '</div>';
+                            $content .= '</div>';
+                          $content .= '</div>';
+                    $content .= '</div>';
+                $content .= '</div>';
+                $content .= '<div class="row">';
 
-						// Sort this array so that we show newest events first.
-						rsort($eventList);
+                    $events = EventHandler::getEvents();
 
-						if (!empty($eventList)) {
-							foreach ($eventList as $event) {
-						  	$content .= '<div class="box">';
-									$content .= '<div class="box-header">';
-								  	$content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
-									$content .= '</div>';
-									$content .= '<div class="box-body">';
-										$content .= $this->getEditForm($event, $user);
-									$content .= '</div>';
-								$content .= '</div>';
-							}
-						} else {
-							$content .= '<div class="box">';
-								$content .= '<div class="box-body">';
-									$content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
-								$content .= '</div>';
-							$content .= '</div>';
-						}
+                    // Sort this array so that we show newest events first.
+                    rsort($events);
 
-					$content .= '</div>';
-					$content .= '<div class="col-md-6">';
-					  $content .= '<div class="box">';
-							$content .= '<div class="box-header">';
-						  	$content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
-							$content .= '</div>';
-							$content .= '<div class="box-body">';
-								$content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
-								$content .= $this->getAddForm(EventHandler::getCurrentEvent());
-							$content .= '</div>';
-					  $content .= '</div>';
-					$content .= '</div>';
-				$content .= '</div>';
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div>';
+                    if (!empty($events)) {
+                        foreach ($events as $event) {
+                            $content .= '<div class="col-md-6">';
+                                $content .= '<div class="' . ($event->equals(EventHandler::getCurrentEvent()) ? 'box box-success' : 'box box-primary') . '">';
+                                    $content .= '<div class="box-header">';
+                                        $content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
+                                    $content .= '</div>';
+                                    $content .= '<div class="box-body">';
+                                        $content .= $this->getEditForm($event, $user);
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                        }
+                    } else {
+                        $content .= '<div class="col-md-6">';
+                            $content .= '<div class="box">';
+                                $content .= '<div class="box-body">';
+                                    $content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                        $content .= '</div>';
+                    }
+
 				$content .= '</div>';
 			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div>';
-			$content .= '</div>';
 		}
 
-		$content .= '<script src="scripts/admin-event.js"></script>';
+		$content .= '<script src="pages/scripts/admin-event.js"></script>';
 
 		return $content;
 	}
 
-	private function getAddForm(Event $event): string {
+	private function getCreateForm(Event $event): string {
 		$content = null;
 
-		$content .= '<form class="admin-event-add" method="post">';
+		$content .= '<form class="admin-event-create">';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Sted</label>';
-				$content .= '<select class="form-control" name="location" required>';
+				$content .= '<select class="form-control select2" name="locationId" required>';
 
 					foreach (LocationHandler::getLocations() as $location) {
 						$content .= '<option value="' . $location->getId() . '">' . $location->getTitle() . '</option>';
@@ -114,13 +123,13 @@ class AdminEventPage extends AdminPage {
 			$content .= '</div>';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Anstall deltakere</label>';
-				$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
+				$content .= '<input type="number" class="form-control" name="participantCount" value="' . $event->getParticipants() . '" required>';
 			$content .= '</div>';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Billetsalgs dato og tid</label>';
 				$content .= '<div class="input-group">';
 					$content .= '<div class="input-group-addon">';
-					$content .= '<i class="fa fa-clock-o"></i>';
+					    $content .= '<i class="fa fa-clock-o"></i>';
 					$content .= '</div>';
 					$content .= '<input type="text" class="form-control pull-right" name="bookingTime" id="datetime" value="' . date('Y-m-d H:i:s', $event->getBookingTime()) . '" required>';
 				$content .= '</div>';
@@ -152,11 +161,11 @@ class AdminEventPage extends AdminPage {
 	private function getEditForm(Event $event, User $user): string {
 		$content = null;
 
-		$content .= '<form class="admin-event-edit" method="post">';
+		$content .= '<form class="admin-event-edit">';
 			$content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Sted</label>';
-				$content .= '<select class="form-control" name="location" required>';
+				$content .= '<select class="form-control" name="locationId" required>';
 
 					foreach (LocationHandler::getLocations() as $location) {
 						if ($location->equals($event->getLocation())) {
@@ -170,7 +179,7 @@ class AdminEventPage extends AdminPage {
 			$content .= '</div>';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Anstall deltakere</label>';
-				$content .= '<input type="number" class="form-control" name="participants" value="' . $event->getParticipants() . '" required>';
+				$content .= '<input type="number" class="form-control" name="participantCount" value="' . $event->getParticipants() . '" required>';
 			$content .= '</div>';
 			$content .= '<div class="form-group">';
 				$content .= '<label>Billetsalgsdato og tid</label>';
@@ -207,7 +216,7 @@ class AdminEventPage extends AdminPage {
 
 					// Prevent users from removing events that have already started, we don't want to delete old tickets etc.
 					if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
-						$content .= '<button type="button" class="btn btn-primary" onClick="removeEvent(' . $event->getId() . ')">Fjern</button>';
+						$content .= '<button type="button" class="btn btn-primary" onClick="deleteEvent(' . $event->getId() . ')">Fjern</button>';
 					}
 
 					// Allow user to transfer members from previus event if this event is the current one.
@@ -218,11 +227,13 @@ class AdminEventPage extends AdminPage {
 					}
 				}
 
-				$content .= '<button type="button" class="btn btn-primary" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">Vis setekart</button>';
-			$content .= '</div>';
+				if ($event->getSeatmap() != null) {
+                    $content .= '<button type="button" class="btn btn-primary" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">Vis setekart</button>';
+                }
+
+            $content .= '</div>';
 		$content .= '</form>';
 
 		return $content;
 	}
 }
-?>

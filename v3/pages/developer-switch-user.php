@@ -38,18 +38,16 @@ class DeveloperSwitchUserPage extends DeveloperPage {
 			$user = Session::getCurrentUser();
 
 			if ($user->hasPermission('developer.change-user')) {
-				$content .= '<script src="scripts/developer-change-user.js"></script>';
-
 				$content .= '<div class="row">';
 					$content .= '<div class="col-md-4">';
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
-								$content .= '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker.</p>';
-								$content .= '<p>Dette er en funksjon som <b>ikke</b> skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';
+								$content .= '<p>Funksjonalitet for utviklere, lar deg logge inn som en annen bruker.</p>';
+								$content .= '<p>Denne skal <b>ikke</b> skal misbrukes, kun i debug- eller feilsøkings sammenheng. Alt vil bli loggført.</p>';
 
 								$content .= '<form class="developer-change-user" method="post">';
 									$content .= '<div class="input-group">';
-										$content .= '<select class="form-control" name="userId" autofocus>';
+										$content .= '<select class="form-control select2" name="userId" autofocus>';
 											$userList = UserHandler::getUsers();
 
 											foreach ($userList as $user) {
@@ -57,31 +55,26 @@ class DeveloperSwitchUserPage extends DeveloperPage {
 											}
 
 										$content .= '</select>';
-                  	$content .= '<span class="input-group-btn">';
-                    	$content .= '<button type="submit" class="btn btn-info btn-flat">Bytt</button>';
-                  	$content .= '</span>';
-                 	$content .= '</div><!-- /input-group -->';
-                $content .= '</form>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
-					$content .= '</div><!--/.col (left) -->';
-				$content .= '</div><!-- /.row -->';
+                                        $content .= '<span class="input-group-btn">';
+                                            $content .= '<button type="submit" class="btn btn-info btn-flat">Bytt</button>';
+                                        $content .= '</span>';
+                                    $content .= '</div>';
+                                $content .= '</form>';
+							$content .= '</div>';
+						$content .= '</div>';
+					$content .= '</div>';
+				$content .= '</div>';
+
+                $content .= '<script src="pages/scripts/developer-switch-user.js"></script>';
 			} else {
 				$content .= '<div class="box">';
 					$content .= '<div class="box-body">';
 						$content .= '<p>Du har ikke rettigheter til dette.</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
+					$content .= '</div>';
+				$content .= '</div>';
 			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn.</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
 		}
 
 		return $content;
 	}
 }
-?>

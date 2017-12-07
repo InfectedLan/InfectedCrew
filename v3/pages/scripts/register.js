@@ -1,5 +1,5 @@
 ﻿/*
- * This file is part of InfectedAPI.
+ * This file is part of InfectedCrew.
  *
  * Copyright (C) 2017 Infected <http://infected.no/>.
  *
@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready(function() {
+$(function() {
 	$('.register').on('submit', function(event) {
 		event.preventDefault();
 		createUser(this);

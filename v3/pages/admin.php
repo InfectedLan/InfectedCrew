@@ -18,7 +18,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
 require_once 'page.php';
 
 class AdminPage extends Page {
@@ -26,4 +25,3 @@ class AdminPage extends Page {
 		return 'Administrator';
 	}
 }
-?>

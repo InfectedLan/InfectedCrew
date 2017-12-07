@@ -18,42 +18,10 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
 require_once 'page.php';
 
 class EventPage extends Page {
 	public function getTitle(): string {
 		return 'Arrangement';
 	}
-
-	public function getContent(): string {
-		$content = null;
-
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-
-			if ($user->hasPermission('event')) {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Arrangement inneholder alle funskjoner som er knyttet til et arrangement.</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
-			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
-		}
-
-		return $content;
-	}
 }
-?>

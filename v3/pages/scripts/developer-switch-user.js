@@ -1,4 +1,3 @@
-<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -18,10 +17,17 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'page.php';
+$(function() {
+	$('.developer-switch-user').on('submit', function(event) {
+		event.preventDefault();
+		switchUser(this);
+	});
+});
 
-class DeveloperPage extends Page {
-	public function getTitle(): string {
-		return 'Utvikler';
-	}
+function switchUser(form) {
+    $.get('../api/rest/user/switch.php' + '?' + $(this).serialize(), function(data){
+        if (data.result) {
+            $(location).attr('href', 'index.php?page=user-profile');
+        }
+    });
 }

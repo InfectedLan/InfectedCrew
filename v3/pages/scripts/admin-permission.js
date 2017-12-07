@@ -17,10 +17,10 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready(function() {
+$(function() {
 	$('.admin-permission-edit').on('submit', function(event) {
 		event.preventDefault();
-		$.getJSON('../api/json/permissions/editUserPermissions.php?' + $(this).serialize(), function(data) {
+		$.get('../api/json/permissions/editUserPermissions.php?' + $(this).serialize(), function(data) {
 			if (data.result) {
 				$(location).attr('href', 'index.php?page=admin-permission');
 			} else {
@@ -35,7 +35,7 @@ function editUserPermissions(userId) {
 }
 
 function removeUserPermissions(userId) {
-	$.getJSON('../api/json/permissions/removeUserPermissions.php?id=' + userId, function(data) {
+	$.get('../api/json/permissions/removeUserPermissions.php?id=' + userId, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {

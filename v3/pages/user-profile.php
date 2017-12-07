@@ -34,11 +34,7 @@ class UserProfilePage extends Page {
 			$profileUser = UserHandler::getUser($id);
 
 			if ($profileUser != null) {
-				if ($user->equals($profileUser)) {
-					return 'Min profil';
-				} else {
-					return $profileUser->getFullName() . '\'s profil';
-				}
+                return $user->equals($profileUser) ? 'Min profil' : $profileUser->getFullName() . '\'s profil';
 			}
 		}
 
@@ -105,8 +101,8 @@ class UserProfilePage extends Page {
                 $content .= '</div><!-- /.box-body -->';
               $content .= '</div><!-- /.box -->';
               }
+
               if ($user->hasPermission('user.note')) {
-              $content .= '<!-- Notes -->';
               $content .= '<div class="box box-primary">';
                 $content .= '<div class="box-header with-border">';
                   $content .= '<h3 class="box-title">Notater</h3>';
@@ -272,16 +268,6 @@ class UserProfilePage extends Page {
 												$content .= '<tr>';
 													$content .= '<td>Plass:</td>';
 													$content .= '<td>' . $ticket->getSeat()->getString() . '</td>';
-												$content .= '</tr>';
-											}
-
-											if ($user->hasPermission('user.profile')) {
-												$content .= '<tr>';
-													$content .= '<td>Svømming:</td>';
-													$content .= '<td>';
-														$content .= $profileUser->isSwimming() ? 'Ja' : 'Nei';
-														$content .= '<input type="button" value="Endre" onClick="setUserSwimming(' . $profileUser->getId() . ', ' . ($profileUser->isSwimming() ? '0' : '1') . ')">';
-													$content .= '</td>';
 												$content .= '</tr>';
 											}
 
