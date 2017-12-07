@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,10 +51,13 @@ if (Session::isAuthenticated()) {
 							$group = $historyUser->getGroup($event);
 
 							echo '<td><a href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></td>';
+						} else {
 							echo '<td>Ingen</td>';
-						} else if ($historyUser->hasTicket($event)) {
-							echo '<td>Ingen</td>';
+						}
+
+						if ($historyUser->hasTicket($event)) {
 							echo '<td>';
+
 								$ticketList = $historyUser->getTickets($event);
 
 								foreach ($ticketList as $ticket) {
@@ -63,8 +66,12 @@ if (Session::isAuthenticated()) {
 									// Only print comma if this is not the last ticket in the array.
 									echo $ticket !== end($ticketList) ? ', ' : null;
 								}
+
 							echo '</td>';
+						} else {
+							echo '<td>Ingen</td>';
 						}
+
 					echo '</tr>';
 				}
 			echo '</table>';
