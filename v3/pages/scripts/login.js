@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of InfectedCrew.
  *
  * Copyright (C) 2017 Infected <http://infected.no/>.

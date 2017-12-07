@@ -1,4 +1,4 @@
-﻿/*
+﻿/**
  * This file is part of InfectedCrew.
  *
  * Copyright (C) 2017 Infected <http://infected.no/>.
@@ -18,6 +18,13 @@
  */
 
 $(function() {
+    $('input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+    });
+
+    $('[data-mask]').inputmask();
+
 	$('.register').on('submit', function(event) {
 		event.preventDefault();
 		createUser(this);

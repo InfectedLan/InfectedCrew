@@ -156,15 +156,6 @@ class RegisterPage extends Page {
 				// InputMask
 				$content .= '<script src="plugins/input-mask/jquery.inputmask.js"></script>';
 				$content .= '<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>';
-				$content .= '<script>';
-					$content .= '$(function () {';
-						$content .= '$(\'input\').iCheck({';
-							$content .= 'checkboxClass: \'icheckbox_square-blue\',';
-							$content .= 'radioClass: \'iradio_square-blue\',';
-						$content .= '});';
-						$content .= '$(\'[data-mask]\').inputmask();';
-					$content .= '});';
-				$content .= '</script>';
                 $content .= '<script src="pages/scripts/register.js"></script>';
                 $content .= '<script src="../api/scripts/lookupCity.js"></script>';
 		  	$content .= '</body>';

@@ -85,6 +85,12 @@ class AdminEventPage extends AdminPage {
                                         $content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
                                         $content .= '<div class="box-tools pull-right">';
                                             $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>';
+                                            $content .= '<div class="btn-group">';
+                                                $content .= '<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>';
+                                                $content .= '<ul class="dropdown-menu" role="menu">';
+                                                    $content .= '<li><a onClick="deleteEvent(' . $event->getId() . ')">Delete</a></li>';
+                                                $content .= '</ul>';
+                                            $content .= '</div>';
                                         $content .= '</div>';
                                     $content .= '</div>';
                                     $content .= '<div class="box-body">';
