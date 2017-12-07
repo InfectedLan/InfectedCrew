@@ -30,21 +30,17 @@ $(function() {
 });
 
 function createEvent(form) {
-	$.post('../api/rest/event/create.php' + '?' + $(form).serialize(), function(data) {
+	$.post('../api/rest/event/create.php', $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
-		} else {
-			error(data.message);
 		}
 	});
 }
 
 function editEvent(form) {
-	$.post('../api/rest/event/edit.php?' + $(form).serialize(), function(data) {
+	$.post('../api/rest/event/edit.php', $(form).serialize(), function(data) {
 		if (data.result) {
 			location.reload();
-		} else {
-			error(data.message);
 		}
 	});
 }
@@ -53,8 +49,6 @@ function deleteEvent(eventId) {
 	$.get('../api/rest/event/delete.php?id=' + eventId, function(data) {
 		if (data.result) {
 			location.reload();
-		} else {
-			error(data.message);
 		}
 	});
 }
@@ -67,8 +61,6 @@ function copyMembers(eventId) {
 	$.get('../api/rest/event/copyMembers.php?id=' + eventId, function(data) {
 		if (data.result) {
 			location.reload();
-		} else {
-			error(data.message);
 		}
 	});
 }
