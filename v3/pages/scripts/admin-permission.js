@@ -1,7 +1,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,28 +18,40 @@
  */
 
 $(function() {
-	$('.admin-permission-edit').on('submit', function(event) {
-		event.preventDefault();
-		$.get('../api/json/permissions/editUserPermissions.php?' + $(this).serialize(), function(data) {
-			if (data.result) {
-				$(location).attr('href', 'index.php?page=admin-permission');
-			} else {
-				error(data.message);
-			}
-		});
-	});
+    $('input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_square-blue'
+    });
+
+    $('.admin-permission-create').on('submit', function(event) {
+        event.preventDefault();
+        createPermission(this);
+    });
 });
 
-function editUserPermissions(userId) {
-	$(location).attr('href', 'index.php?page=admin-permission&id=' + userId);
+function createPermission(form) {
+    $.post('../api/rest/user/permission/create.php', $(form).serialize(), function(data) {
+        if (data.result) {
+            location.reload();
+        }
+    });
 }
 
-function removeUserPermissions(userId) {
-	$.get('../api/json/permissions/removeUserPermissions.php?id=' + userId, function(data) {
-		if (data.result) {
-			location.reload();
-		} else {
-			error(data.message);
-		}
-	});
+function removePermission(userId, permissionId) {
+    $.get('../api/rest/user/permission/delete.php?userId=' + userId + '&permissionId=' + permissionId, function(data) {
+        if (data.result) {
+            location.reload();
+        }
+    });
+}
+
+function removePermissions(userId) {
+    $.get('../api/rest/user/permission/delete.php?userId=' + userId, function(data) {
+        if (data.result) {
+            location.reload();
+        }
+    });
+}
+
+function redirectToUser(userId) {
+    $(location).attr('href', 'index.php?page=admin-permission&userId=' + userId);
 }

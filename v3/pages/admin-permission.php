@@ -29,15 +29,17 @@ class AdminPermissionPage extends AdminPage {
 	}
 
     public function getTitle(): string {
+	    $title = 'Tilganger';
+
 		if (isset($_GET['userId'])) {
 			$permissionUser = UserHandler::getUser($_GET['userId']);
 
 			if ($permissionUser != null) {
-				return $permissionUser->getFullName() . '\'s rettigheter</h3>';
+				$title .= ' for ' . $permissionUser->getFullName();
 			}
 		}
 
-		return 'Rettigheter';
+		return $title;
 	}
 
 	public function getContent(): string {
@@ -51,52 +53,98 @@ class AdminPermissionPage extends AdminPage {
 					$permissionUser = UserHandler::getUser($_GET['userId']);
 
 					if ($permissionUser != null) {
-						$content .= '<div class="box">';
-							$content .= '<div class="box-body">';
-								$content .= '<p>Du velger rettigheter for denne brukeren ved å huke av rettighetene under, og klikke på "Lagre" knappen.</p>';
+                        $content .= '<div class="row">';
+                            $content .= '<div class="col-md-6">';
+                                $content .= '<div class="box box-default">';
+                                    $content .= '<div class="box-header with-border">';
+                                        $content .= '<h3 class="box-title">Gi ny tilgang</h3>';
+                                        $content .= '<div class="box-tools pull-right">';
+                                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                    $content .= '<div class="box-body">';
+                                        $content .= '<div class="row">';
+                                            $content .= '<div class="col-md-6">';
+                                                $content .= '<form class="admin-permission-create">';
+                                                    $content .= '<input type="hidden" name="userId" value="' . $permissionUser->getId() . '">';
+                                                    $content .= '<div class="form-group">';
+                                                        $content .= '<label>Tilgang</label>';
+                                                        $content .= '<div class="input-group">';
+                                                            $content .= '<select class="form-control" name="permissionId" required>';
 
-								$content .= '<form class="admin-permissions-edit" method="post">';
-									$content .= '<input type="hidden" name="id" value="' . $permissionUser->getId() . '">';
-									$content .= '<table class="table table-bordered">';
-										$content .= '<tr>';
-											$content .= '<th>Valg</th>';
-											$content .= '<th>Verdi</th>';
-											$content .= '<th>Beskrivelse</th>';
-										$content .= '</tr>';
+                                                                foreach (PermissionHandler::getPermissions() as $permission) {
+                                                                    $content .= '<option value="' . $permission->getId() . '">' . $permission->getValue() . '</option>';
+                                                                }
 
-										foreach (PermissionHandler::getPermissions() as $permission) {
-											if ($user->hasPermission('*') ||
-												$user->hasPermission($permission->getValue())) {
-												$content .= '<tr>';
-													$content .= '<td>';
+                                                                $content .= '</select>';
+                                                            $content .= '<span class="input-group-btn">';
+                                                                $content .= '<button type="submit" class="btn btn-primary">Gi tilgang</button>';
+                                                            $content .= '</span>';
+                                                        $content .= '</div>';
+                                                    $content .= '</div>';
+                                                $content .= '</form>';
+                                            $content .= '</div>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                            $content .= '<div class="col-md-6">';
+                                /*
+                                $content .= '<div class="box box-default">';
+                                    $content .= '<div class="box-header with-border">';
+                                        $content .= '<h3 class="box-title">Tidligere rettigheter</h3>';
+                                        $content .= '<div class="box-tools pull-right">';
+                                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                    $content .= '<div class="box-body">';
+                                        // TODO: Draw graph here.
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                                */
+                            $content .= '</div>';
+                        $content .= '</div>';
+                        $content .= '<div class="row">';
+                            $content .= '<div class="col-md-6">';
+                                $content .= '<div class="box box-default">';
+                                    $content .= '<div class="box-header with-border">';
+                                        $content .= '<h3 class="box-title">Nåværende tilganger</h3>';
+                                        $content .= '<div class="box-tools pull-right">';
+                                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                    $content .= '<div class="box-body">';
+                                        $content .= '<table class="table table-bordered">';
+                                            $content .= '<tr>';
+                                                $content .= '<th>Verdi</th>';
+                                                $content .= '<th>Beskrivelse</th>';
+                                            $content .= '</tr>';
 
-														if (in_array($permission, $permissionUser->getPermissions())) {
-															$content .= '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getId() . '" checked>';
-														} else {
-															$content .= '<input type="checkbox" name="checkbox_' . $permission->getId() . '" value="' . $permission->getId() . '">';
-														}
+                                            foreach ($permissionUser->getPermissions() as $permission) {
+                                                if ($user->hasPermission('*') ||
+                                                    $user->hasPermission($permission->getValue())) {
+                                                    $content .= '<tr>';
+                                                        $content .= '<td>' . $permission->getValue() . '</td>';
+                                                        $content .= '<td>' . wordwrap($permission->getDescription(), 100, '<br>') . '</td>';
+                                                        $content .= '<td><button type="submit" class="btn btn-primary" onClick="removePermission(' . $permissionUser->getId() . ', ' . $permission->getId() . ')">Inndra</button></td>';
+                                                    $content .= '</tr>';
+                                                }
+                                            }
 
-													$content .= '</td>';
-													$content .= '<td>' . $permission->getValue() . '</td>';
-													$content .= '<td>' . wordwrap($permission->getDescription(), 100, '<br>') . '</td>';
-												$content .= '</tr>';
-											}
-										}
-
-									$content .= '</table>';
-									$content .= '<button type="submit" class="btn btn-primary">Lagre</button>';
-								$content .= '</form>';
-							$content .= '</div>';
-						$content .= '</div>';
+                                        $content .= '</table>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                        $content .= '</div>';
 					} else {
 						$content .= '<div class="box">';
 							$content .= '<div class="box-body">';
-								$content .= '<p>Brukeren finnes ikke.</p>';
+								$content .= '<p>' . Localization::getLocale('this_user_does_not_exist') . '</p>';
 							$content .= '</div>';
 						$content .= '</div>';
 					}
 				} else {
-				  $permissionUserList = UserHandler::getPermissionUsers();
+					$permissionUserList = UserHandler::getPermissionUsers();
 
 					if (!empty($permissionUserList)) {
 						$content .= '<div class="box">';
@@ -112,49 +160,35 @@ class AdminPermissionPage extends AdminPage {
 									if ($permissionUser != null) {
 										$permissionCount = count($permissionUser->getPermissions());
 
-										$content .= '<div class="box">';
+										$content .= '<div class="box box-primary">';
 											$content .= '<div class="box-header with-border">';
-											    $content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
+												$content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
 											$content .= '</div>';
 											$content .= '<div class="box-body">';
 												$content .= '<p class="pull-left">Denne brukeren har ' . $permissionCount . ' ' . ($permissionCount > 1 ? 'tilganger' : 'tilgang') . '.</p>';
 												$content .= '<div class="btn-group pull-right" role="group" aria-label="...">';
-													$content .= '<button class="btn btn-primary" onClick="editUserPermissions(' . $permissionUser->getId() . ')">Endre</button>';
-													$content .= '<button class="btn btn-primary" onClick="removeUserPermissions(' . $permissionUser->getId() . ')">Inndra rettigheter</button>';
+													$content .= '<button class="btn btn-primary" onClick="redirectToUser(' . $permissionUser->getId() . ')">Endre</button>';
+													$content .= '<button class="btn btn-primary" onClick="removePermissions(' . $permissionUser->getId() . ')">Inndra alle tilganger</button>';
 												$content .= '</div>';
 											$content .= '</div>';
 										$content .= '</div>';
 									}
 								}
-							} else {
-								$content .= '<div class="box">';
-									$content .= '<div class="box-body">';
-										$content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
-									$content .= '</div>';
-								$content .= '</div>';
-							}
-
+                            $content .= '</div>';
+                        $content .= '</div>';
+					} else {
+						$content .= '<div class="box">';
+							$content .= '<div class="box-body">';
+							    $content .= '<p>Det finnes ingen brukere med rettigheter.</p>';
+							$content .= '</div>';
 						$content .= '</div>';
-					$content .= '</div>';
+					}
 				}
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div>';
-				$content .= '</div>';
 			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div>';
-			$content .= '</div>';
 		}
 
-		$content .= '<script src="scripts/admin-permission.js"></script>';
+		$content .= '<script src="pages/scripts/admin-permission.js"></script>';
 
 		return $content;
 	}
 }
-?>
