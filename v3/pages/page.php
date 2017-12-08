@@ -21,6 +21,10 @@
 require_once 'interfaces/ipage.php';
 
 class Page implements IPage {
+    public function isPublic(): bool {
+        return false;
+    }
+
     public function canAccess(User $user): bool {
         return false;
     }

@@ -24,71 +24,68 @@ require_once 'localization.php';
 require_once 'page.php';
 
 class ResetPasswordPage extends Page {
+    public function isPublic(): bool {
+        return !Session::isAuthenticated();
+    }
+    
     public function getTitle(): ?string {
         return 'Tilbakestill passord';
     }
 
     public function getContent(User $user = null): string {
 		$content = null;
-		$content .= '<script src="scripts/seatmapEditor.js"></script>';
+        $content .= '<body class="register-page">';
+            $content .= '<div class="register-box">';
+                $content .= '<div class="register-logo">';
+                    $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+                $content .= '</div>';
 
-        if (!Session::isAuthenticated()) {
+                $content .= '<div class="register-box-body">';
+                    $content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
+
+                    $content .= '<form class="request-reset-password" method="post">';
+                        $content .= '<div class="form-group has-feedback">';
+                            $content .= '<input type="text" class="form-control" name="identifier" placeholder="E-post" required>';
+                            $content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
+                        $content .= '</div>';
+                        $content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">' . Localization::getLocale('reset_password') . '</button>';
+                    $content .= '</form>';
+                $content .= '</div>';
+            $content .= '</div>';
+
             $content .= '<script src="../api/scripts/reset-password.js"></script>';
+            $content .= '<script src="scripts/seatmapEditor.js"></script>';
+        $content .= '</body>';
 
-            $content .= '<body class="register-page">';
-                $content .= '<div class="register-box">';
-                    $content .= '<div class="register-logo">';
-                        $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
-                    $content .= '</div>';
-
-                    $content .= '<div class="register-box-body">';
-                        $content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';
-
-                        $content .= '<form class="request-reset-password" method="post">';
-                            $content .= '<div class="form-group has-feedback">';
-                                $content .= '<input type="text" class="form-control" name="identifier" placeholder="E-post" required>';
-                                $content .= '<span class="glyphicon glyphicon-envelope form-control-feedback"></span>';
-                            $content .= '</div>';
-                            $content .= '<button type="submit" class="btn btn-primary btn-block btn-flat">' . Localization::getLocale('reset_password') . '</button>';
-                        $content .= '</form>';
-                    $content .= '</div><!-- /.form-box -->';
-                $content .= '</div><!-- /.register-box -->';
-
-                $content .= '<script src="../api/scripts/register.js"></script>';
-            $content .= '</body>';
-
-            /*
-            if (!isset($_GET['code'])) {
-                $content .= '<h2>' . Localization::getLocale('forgot_password') . '?</h2>';
-                $content .= '<form class="request-reset-password" method="post">';
-                    $content .= '<p>' . Localization::getLocale('enter_your_username_or_email_in_order_to_reset_your_password') . ': <input type="text" name="identifier"></p>';
-                    $content .= '<input type="submit" value="' . Localization::getLocale('reset_password') . '">';
-                $content .= '</form>';
-            } else {
-                $content .= '<h2>' . Localization::getLocale('reset_password') . '</h2>';
-                $content .= '<p>' . Localization::getLocale('enter_a_new_password') . '</p>';
-
-                $content .= '<form class="reset-password" method="post">';
-                    $content .= '<input type="hidden" name="code" value="' . $_GET['code'] . '">';
-                    $content .= '<table>';
-                        $content .= '<tr>';
-                            $content .= '<td>' . Localization::getLocale('new_password') . ':</td>';
-                            $content .= '<td><input type="password" name="password"></td>';
-                        $content .= '</tr>';
-                        $content .= '<tr>';
-                            $content .= '<td>' . Localization::getLocale('repeat_password') . ':</td>';
-                            $content .= '<td><input type="password" name="confirmpassword"></td>';
-                        $content .= '</tr>';
-                        $content .= '<tr>';
-                            $content .= '<td><input type="submit" value="' . Localization::getLocale('change') . '"></td>';
-                        $content .= '</tr>';
-                    $content .= '</table>';
-                $content .= '</form>';
-            }
-            */
+        /*
+        if (!isset($_GET['code'])) {
+            $content .= '<h2>' . Localization::getLocale('forgot_password') . '?</h2>';
+            $content .= '<form class="request-reset-password" method="post">';
+                $content .= '<p>' . Localization::getLocale('enter_your_username_or_email_in_order_to_reset_your_password') . ': <input type="text" name="identifier"></p>';
+                $content .= '<input type="submit" value="' . Localization::getLocale('reset_password') . '">';
+            $content .= '</form>';
         } else {
-            $content .= Localization::getLocale('since_you_are_already_logged_in_you_it_seems_like_you_remember_your_password_after_all');
+            $content .= '<h2>' . Localization::getLocale('reset_password') . '</h2>';
+            $content .= '<p>' . Localization::getLocale('enter_a_new_password') . '</p>';
+
+            $content .= '<form class="reset-password" method="post">';
+                $content .= '<input type="hidden" name="code" value="' . $_GET['code'] . '">';
+                $content .= '<table>';
+                    $content .= '<tr>';
+                        $content .= '<td>' . Localization::getLocale('new_password') . ':</td>';
+                        $content .= '<td><input type="password" name="password"></td>';
+                    $content .= '</tr>';
+                    $content .= '<tr>';
+                        $content .= '<td>' . Localization::getLocale('repeat_password') . ':</td>';
+                        $content .= '<td><input type="password" name="confirmpassword"></td>';
+                    $content .= '</tr>';
+                    $content .= '<tr>';
+                        $content .= '<td><input type="submit" value="' . Localization::getLocale('change') . '"></td>';
+                    $content .= '</tr>';
+                $content .= '</table>';
+            $content .= '</form>';
         }
+        */
 
 		return $content;
 	}

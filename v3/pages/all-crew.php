@@ -26,7 +26,7 @@ require_once 'page.php';
 
 class AllCrewPage extends Page {
     public function canAccess(User $user): bool{
-        return true; // TODO: Change this to be more specific?
+        return $user->isGroupMember();
     }
 
 	public function getTitle(): ?string {
@@ -37,44 +37,40 @@ class AllCrewPage extends Page {
 		$content = null;
 
         if (isset($_GET['id'])) {
-            if ($user->isGroupMember()) {
-                if (isset($_GET['teamId'])) {
-                    $team = TeamHandler::getTeam($_GET['teamId']);
+            if (isset($_GET['teamId'])) {
+                $team = TeamHandler::getTeam($_GET['teamId']);
 
-                    if ($team != null) {
-                        $content .= '<div class="box">';
-                            $content .= '<div class="box-header with-border">';
-                                $content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
-                            $content .= '</div>';
-                            $content .= '<div class="box-body">';
-
-                                $content .= $team->getDescription();
-
-                            $content .= '</div>';
+                if ($team != null) {
+                    $content .= '<div class="box">';
+                        $content .= '<div class="box-header with-border">';
+                            $content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
                         $content .= '</div>';
+                        $content .= '<div class="box-body">';
 
-                        $content .= CrewUtils::displayTeam($team);
-                    }
-                } else {
-                    $group = GroupHandler::getGroup($_GET['id']);
+                            $content .= $team->getDescription();
 
-                    if ($group != null) {
-                        $content .= '<div class="box">';
-                            $content .= '<div class="box-header with-border">';
-                                $content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
-                            $content .= '</div>';
-                            $content .= '<div class="box-body">';
-
-                                $content .= $group->getDescription();
-
-                            $content .= '</div>';
                         $content .= '</div>';
+                    $content .= '</div>';
 
-                        $content .= CrewUtils::displayGroup($group);
-                    }
+                    $content .= CrewUtils::displayTeam($team);
                 }
             } else {
-                $content .= '<p>Du er ikke i crew.</p>';
+                $group = GroupHandler::getGroup($_GET['id']);
+
+                if ($group != null) {
+                    $content .= '<div class="box">';
+                        $content .= '<div class="box-header with-border">';
+                            $content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+                        $content .= '</div>';
+                        $content .= '<div class="box-body">';
+
+                            $content .= $group->getDescription();
+
+                        $content .= '</div>';
+                    $content .= '</div>';
+
+                    $content .= CrewUtils::displayGroup($group);
+                }
             }
         } else {
             $groupList = GroupHandler::getGroups();

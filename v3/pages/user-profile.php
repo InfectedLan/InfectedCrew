@@ -26,15 +26,22 @@ require_once 'handlers/userhistoryhandler.php';
 require_once 'page.php';
 
 class UserProfilePage extends Page {
-	public function getTitle(): ?string {
-		$id = isset($_GET['id']) ?? Session::getCurrentUser()->getId();
+    private $profileUser;
 
+    public function __construct() {
+        $this->profileUser = isset($_GET['userId']) ? UserHandler::getUser($_GET['userId']) : Session::getCurrentUser();
+    }
+
+    public function canAccess(User $user): bool {
+        return true;
+    }
+
+	public function getTitle(): ?string {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			$profileUser = UserHandler::getUser($id);
 
-			if ($profileUser != null) {
-                return $user->equals($profileUser) ? 'Min profil' : $profileUser->getFullName() . '\'s profil';
+			if ($this->profileUser != null) {
+                return $user->equals($this->profileUser) ? 'Min profil' : $this->profileUser->getFullName() . '\'s profil';
 			}
 		}
 
@@ -43,22 +50,20 @@ class UserProfilePage extends Page {
 
     public function getContent(User $user = null): string {
 		$content = null;
-		$id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
 		if (Session::isAuthenticated()) {
             echo '<script src="scripts/user-profile.js"></script>';
 			$user = Session::getCurrentUser();
-			$profileUser = UserHandler::getUser($id);
 
-			if ($profileUser != null) {
+			if ($this->profileUser != null) {
 				if ($user->hasPermission('user.search') ||
-					$user->equals($profileUser)) {
+					$user->equals($this->profileUser)) {
 					$avatarFile = null;
 
-					if ($profileUser->hasValidAvatar()) {
-						$avatarFile = $profileUser->getAvatar()->getHd();
+					if ($this->profileUser->hasValidAvatar()) {
+						$avatarFile = $this->profileUser->getAvatar()->getHd();
 					} else {
-						$avatarFile = $profileUser->getDefaultAvatar();
+						$avatarFile = $this->profileUser->getDefaultAvatar();
 					}
 
 
@@ -68,13 +73,13 @@ class UserProfilePage extends Page {
               //<!-- Profile Image -->
               $content .= '<div class="box box-primary">';
                 $content .= '<div class="box-body box-profile">';
-                  $content .= '<img class="profile-user-img img-responsive img-circle" src="../api/' . $avatarFile . '" alt="' . $profileUser->getFullName() . '\'s profilbilde">';
-									//$content .= '<img class="profile-user-img img-responsive img-circle" src="https://crew.test.infected.no/v3/demo/dist/img/user4-128x128.jpg" alt="' . $profileUser->getFullName() . '\'s profilbilde">';
-									$content .= '<h3 class="profile-username text-center">' . $profileUser->getFullName() . '</h3>';
-									$content .= '<p class="text-muted text-center">' . $profileUser->getRole() . '</p>';
+                  $content .= '<img class="profile-user-img img-responsive img-circle" src="../api/' . $avatarFile . '" alt="' . $this->profileUser->getFullName() . '\'s profilbilde">';
+									//$content .= '<img class="profile-user-img img-responsive img-circle" src="https://crew.test.infected.no/v3/demo/dist/img/user4-128x128.jpg" alt="' . $this->profileUser->getFullName() . '\'s profilbilde">';
+									$content .= '<h3 class="profile-username text-center">' . $this->profileUser->getFullName() . '</h3>';
+									$content .= '<p class="text-muted text-center">' . $this->profileUser->getRole() . '</p>';
                 $content .= '</div><!-- /.box-body -->';
               $content .= '</div><!-- /.box -->';
-              if ($user->equals($profileUser) ||
+              if ($user->equals($this->profileUser) ||
                   $user->hasPermission('user.relocate') ||
                   $user->hasPermission('user.edit') ||
                   $user->hasPermission('admin.permissions')) {
@@ -85,17 +90,17 @@ class UserProfilePage extends Page {
                 $content .= '</div><!-- /.box-header -->';
                 $content .= '<div class="box-body">';
                 if($user->hasPermission('user.edit') ||
-                   $user->equals($profileUser)) {
-                    $content .= '<p><a href="index.php?page=edit-profile&id=' . $profileUser->getId() . '">Endre bruker</a></p>';
+                   $user->equals($this->profileUser)) {
+                    $content .= '<p><a href="index.php?page=edit-profile&id=' . $this->profileUser->getId() . '">Endre bruker</a></p>';
                 }
                 if($user->hasPermission('user.relocate') ||
-                   $user->equals($profileUser)) {
+                   $user->equals($this->profileUser)) {
                     $content .= '<p><a href="index.php?page=edit-user-location">Endre plassering</a></p>';
                 }
                 if($user->hasPermission('admin.permissions')) {
-                    $content .= '<p><a href="index.php?page=admin-permissions&id=' . $profileUser->getId() . '">Endre rettigheter</a></p>';
+                    $content .= '<p><a href="index.php?page=admin-permissions&id=' . $this->profileUser->getId() . '">Endre rettigheter</a></p>';
                 }
-                if($user->equals($profileUser)) {
+                if($user->equals($this->profileUser)) {
                     $content .= '<p><a href="index.php?page=edit-avatar">Endre avatar</a></p>';
                 }
                 $content .= '</div><!-- /.box-body -->';
@@ -110,15 +115,15 @@ class UserProfilePage extends Page {
                 $content .= '<div class="box-body">';
 
 										$content .= '<form class="edit-user-note" method="post">';
-											$content .= '<input type="hidden" name="id" value="' . $profileUser->getId() . '">';
+											$content .= '<input type="hidden" name="id" value="' . $this->profileUser->getId() . '">';
 											$content .= '<div class="form-group">';
 												$content .= '<div class="col-sm-12">';
-													$content .= '<textarea name="content" class="form-control" placeholder="Skriv inn et notat her...">' . ($profileUser->hasNote() ? $profileUser->getNote() : null) . '</textarea>';
+													$content .= '<textarea name="content" class="form-control" placeholder="Skriv inn et notat her...">' . ($this->profileUser->hasNote() ? $this->profileUser->getNote() : null) . '</textarea>';
 												$content .= '</div>';
 											$content .= '</div>';
 											$content .= '<div class="form-group">';
                                             $content .= '<div class="col-sm-12">';
-											$content .= '<input type="submit" value="' . ($profileUser->hasNote() ? 'Lagre notat' : 'Legg til notat') . '">';
+											$content .= '<input type="submit" value="' . ($this->profileUser->hasNote() ? 'Lagre notat' : 'Legg til notat') . '">';
                                             $content .= '</div>';
                                             $content .= '</div>';
 										$content .= '</form>';
@@ -140,41 +145,41 @@ class UserProfilePage extends Page {
 											if ($user->hasPermission('*')) {
 												$content .= '<tr>';
 													$content .= '<td>Id:</td>';
-													$content .= '<td>' . $profileUser->getId() . '</td>';
+													$content .= '<td>' . $this->profileUser->getId() . '</td>';
 												$content .= '</tr>';
 											}
 
 											$content .= '<tr>';
 												$content .= '<td>Navn:</td>';
-												$content .= '<td>' . $profileUser->getFullName() . '</td>';
+												$content .= '<td>' . $this->profileUser->getFullName() . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Brukernavn:</td>';
-												$content .= '<td>' . $profileUser->getUsername() . '</td>';
+												$content .= '<td>' . $this->profileUser->getUsername() . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>E-post:</td>';
-												$content .= '<td><a href="mailto:' . $profileUser->getEmail() . '">' . $profileUser->getEmail() . '</a></td>';
+												$content .= '<td><a href="mailto:' . $this->profileUser->getEmail() . '">' . $this->profileUser->getEmail() . '</a></td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Fødselsdato</td>';
-												$content .= '<td>' . date('d.m.Y', $profileUser->getBirthdate()) . '</td>';
+												$content .= '<td>' . date('d.m.Y', $this->profileUser->getBirthdate()) . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Kjønn:</td>';
-												$content .= '<td>' . $profileUser->getGenderAsString() . '</td>';
+												$content .= '<td>' . $this->profileUser->getGenderAsString() . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Alder:</td>';
-												$content .= '<td>' . $profileUser->getAge() . ' år</td>';
+												$content .= '<td>' . $this->profileUser->getAge() . ' år</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Telefon:</td>';
-												$content .= '<td>' . $profileUser->getPhoneAsString() . '</td>';
+												$content .= '<td>' . $this->profileUser->getPhoneAsString() . '</td>';
 											$content .= '</tr>';
 											$content .= '<tr>';
 												$content .= '<td>Adresse:</td>';
-													$address = $profileUser->getAddress();
+													$address = $this->profileUser->getAddress();
 
 													if (!empty($address)) {
 														$content .= '<td>' . $address . '</td>';
@@ -183,32 +188,32 @@ class UserProfilePage extends Page {
 													}
 											$content .= '</tr>';
 
-											$postalCode = $profileUser->getPostalCode();
+											$postalCode = $this->profileUser->getPostalCode();
 
 											if ($postalCode != 0) {
 												$content .= '<tr>';
 													$content .= '<td></td>';
-													$content .= '<td>' . $postalCode . ' ' . $profileUser->getCity() . '</td>';
+													$content .= '<td>' . $postalCode . ' ' . $this->profileUser->getCity() . '</td>';
 												$content .= '</tr>';
 											}
 
 											$content .= '<tr>';
 												$content .= '<td>Kallenavn:</td>';
-												$content .= '<td>' . $profileUser->getNickname() . '</td>';
+												$content .= '<td>' . $this->profileUser->getNickname() . '</td>';
 											$content .= '</tr>';
 
-											if ($profileUser->hasEmergencyContact()) {
+											if ($this->profileUser->hasEmergencyContact()) {
 												$content .= '<tr>';
 													$content .= '<td>Foresatte\'s telefon:</td>';
-													$content .= '<td>' . $profileUser->getEmergencyContact()->getPhoneAsString() . '</td>';
+													$content .= '<td>' . $this->profileUser->getEmergencyContact()->getPhoneAsString() . '</td>';
 												$content .= '</tr>';
 											}
 
 											if ($user->hasPermission('*') ||
-												$user->equals($profileUser)) {
+												$user->equals($this->profileUser)) {
 												$content .= '<tr>';
 													$content .= '<td>Dato registrert:</td>';
-													$content .= '<td>' . date('d.m.Y', $profileUser->getRegisteredDate()) . '</td>';
+													$content .= '<td>' . date('d.m.Y', $this->profileUser->getRegisteredDate()) . '</td>';
 												$content .= '</tr>';
 											}
 
@@ -216,33 +221,33 @@ class UserProfilePage extends Page {
 												$content .= '<tr>';
 													$content .= '<td>Aktivert:</td>';
 													$content .= '<td>';
-														$content .= ($profileUser->isActivated() ? 'Ja' : 'Nei');
+														$content .= ($this->profileUser->isActivated() ? 'Ja' : 'Nei');
 
-														if (!$profileUser->isActivated()) {
-															$content .= '<input type="button" value="Aktiver" onClick="activateUser(' . $profileUser->getId() . ')">';
+														if (!$this->profileUser->isActivated()) {
+															$content .= '<input type="button" value="Aktiver" onClick="activateUser(' . $this->profileUser->getId() . ')">';
 														}
 													$content .= '</td>';
 												$content .= '</tr>';
 											}
 
-											$historyEventCount = count($profileUser->getParticipatedEvents());
+											$historyEventCount = count($this->profileUser->getParticipatedEvents());
 
 											$content .= '<tr>';
 												$content .= '<td>Deltatt tidligere:</td>';
 												$content .= '<td>' . $historyEventCount . ' ' . ($historyEventCount > 1 ? 'ganger' : 'gang') . '</td>';
 											$content .= '</tr>';
 
-											if ($profileUser->isGroupMember()) {
-												$group = $profileUser->getGroup();
+											if ($this->profileUser->isGroupMember()) {
+												$group = $this->profileUser->getGroup();
 
 												$content .= '<tr>';
-													$content .= '<td>' . ($profileUser->isTeamMember() ? 'Crew/Lag:' : 'Crew') . '</td>';
-													$content .= '<td>' . ($profileUser->isTeamMember() ? $group->getTitle() . ':' . $profileUser->getTeam()->getTitle() : $group->getTitle()) . '</td>';
+													$content .= '<td>' . ($this->profileUser->isTeamMember() ? 'Crew/Lag:' : 'Crew') . '</td>';
+													$content .= '<td>' . ($this->profileUser->isTeamMember() ? $group->getTitle() . ':' . $this->profileUser->getTeam()->getTitle() : $group->getTitle()) . '</td>';
 												$content .= '</tr>';
 											}
 
-											if ($profileUser->hasTicket()) {
-												$ticketList = $profileUser->getTickets();
+											if ($this->profileUser->hasTicket()) {
+												$ticketList = $this->profileUser->getTickets();
 												$ticketCount = count($ticketList);
 												sort($ticketList);
 
@@ -261,9 +266,9 @@ class UserProfilePage extends Page {
 												$content .= '</tr>';
 											}
 
-											if ($profileUser->hasTicket() &&
-												$profileUser->hasSeat()) {
-												$ticket = $profileUser->getTicket();
+											if ($this->profileUser->hasTicket() &&
+												$this->profileUser->hasSeat()) {
+												$ticket = $this->profileUser->getTicket();
 
 												$content .= '<tr>';
 													$content .= '<td>Plass:</td>';
@@ -277,8 +282,8 @@ class UserProfilePage extends Page {
 									$content .= '<div class="tab-pane" id="history">';
 
 										if ($user->hasPermission('user.history') ||
-											$user->equals($profileUser)) {
-											$eventList = $profileUser->getParticipatedEvents($profileUser);
+											$user->equals($this->profileUser)) {
+											$eventList = $this->profileUser->getParticipatedEvents($this->profileUser);
 
 											if (!empty($eventList)) {
 												$content .= '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
@@ -293,17 +298,17 @@ class UserProfilePage extends Page {
 													foreach ($eventList as $event) {
 														$content .= '<tr>';
 															$content .= '<td>' . $event->getTitle() . '</td>';
-															$content .= '<td>' . $profileUser->getRoleByEvent($event) . '</td>';
+															$content .= '<td>' . $this->profileUser->getRoleByEvent($event) . '</td>';
 
-															if ($profileUser->isGroupMemberByEvent($event)) {
-																$group = $profileUser->getGroupByEvent($event);
+															if ($this->profileUser->isGroupMemberByEvent($event)) {
+																$group = $this->profileUser->getGroupByEvent($event);
 
 																$content .= '<td><a href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></td>';
 																$content .= '<td>Ingen</td>';
-															} else if ($profileUser->hasTicketByEvent($event)) {
+															} else if ($this->profileUser->hasTicketByEvent($event)) {
 																$content .= '<td>Ingen</td>';
 																$content .= '<td>';
-																	$ticketList = $profileUser->getTicketsByEvent($event);
+																	$ticketList = $this->profileUser->getTicketsByEvent($event);
 
 																	foreach ($ticketList as $ticket) {
 																		$content .= '<a href="index.php?page=ticket&id=' . $ticket->getId() . '">#' . $ticket->getId() . '</a>';
@@ -351,4 +356,3 @@ class UserProfilePage extends Page {
 		return $content;
 	}
 }
-?>

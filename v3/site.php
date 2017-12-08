@@ -1076,8 +1076,6 @@ EOD;
 
 		if ($page != null) {
 			if (Session::isAuthenticated()) {
-				$user = Session::getCurrentUser();
-
 				// Content Header (Page header)
 				$content .= '<section class="content-header">';
 						$content .= '<h1>';
@@ -1120,21 +1118,24 @@ EOD;
 						// Create a new instance of this class.
 						$page = new $class();
 
-						if (Session::isAuthenticated()) {
-						    $user = Session::getCurrentUser();
+						if ($page->isPublic()) {
+                            $content .= $page->getContent();
+                        } else {
+						    if (Session::isAuthenticated()) {
+                                $user = Session::getCurrentUser();
 
-						    if ($page->canAccess($user)) {
-                                // Content Header (Page header)
-                                $content .= '<section class="content-header">';
+                                if ($page->canAccess($user)) {
+                                    // Content Header (Page header)
+                                    $content .= '<section class="content-header">';
                                     $content .= '<h1>';
 
-                                        // Check if this page as a parent or not, and decide what to show.
-                                        if ($page->hasParent()) {
-                                            $content .= $page->getParent()->getTitle();
-                                            $content .= '<small>' . $page->getTitle() . '</small>';
-                                        } else {
-                                            $content .= $page->getTitle();
-                                        }
+                                    // Check if this page as a parent or not, and decide what to show.
+                                    if ($page->hasParent()) {
+                                        $content .= $page->getParent()->getTitle();
+                                        $content .= '<small>' . $page->getTitle() . '</small>';
+                                    } else {
+                                        $content .= $page->getTitle();
+                                    }
 
                                     $content .= '</h1>';
 
@@ -1144,22 +1145,17 @@ EOD;
                                     $content .= '<li class="active">Dashboard</li>';
                                     $content .= '</ol>';
                                     */
-                                $content .= '</section>';
+                                    $content .= '</section>';
 
-                                // Main content
-                                $content .= '<section class="content">';
+                                    // Main content
+                                    $content .= '<section class="content">';
                                     $content .= $page->getContent($user);
-                                $content .= '</section>';
-                            } else {
-                                // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
+                                    $content .= '</section>';
+                                } else {
+                                    // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
+                                }
                             }
-						}
-
-						/* TODO: Handle not logged in users here?
-						else {
-							$content .= $page->getContent();
-						}
-						*/
+                        }
 
 						// The page is valid and should not be included twice.
 						$found = true;
