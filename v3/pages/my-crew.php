@@ -24,7 +24,7 @@ require_once 'utils/crewutils.php';
 require_once 'page.php';
 
 class MyCrewPage extends Page {
-    public function canAccess(User $user): bool{
+    public function canAccess(User $user): bool {
         return $user->isGroupMember();
     }
 
@@ -33,9 +33,9 @@ class MyCrewPage extends Page {
 	}
 
     public function getContent(User $user = null): string {
-        $event = EventHandler::getCurrentEvent();
-
         $content = null;
+
+        $event = EventHandler::getCurrentEvent();
         $content .= '<div class="row">';
             $content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
                 $content .= '<div class="info-box">';

@@ -30,7 +30,11 @@ class Site {
 	private $pageName;
 
 	public function __construct() {
-		$this->pageName = $_GET['page'] ?? 'my-crew';
+	    if (Session::isAuthenticated()) {
+	        $user = Session::getCurrentUser();
+
+            $this->pageName = $_GET['page'] ?? ($user->isGroupMember() ? 'my-crew' : 'crew');
+        }
 	}
 
 	// Execute the site.
@@ -1120,45 +1124,43 @@ EOD;
 
 						if ($page->isPublic()) {
                             $content .= $page->getContent();
-                        } else {
-						    if (Session::isAuthenticated()) {
-                                $user = Session::getCurrentUser();
+                        } else if (Session::isAuthenticated()) {
+                            $user = Session::getCurrentUser();
 
-                                if ($page->canAccess($user)) {
-                                    // Content Header (Page header)
-                                    $content .= '<section class="content-header">';
-                                    $content .= '<h1>';
+                            if ($page->canAccess($user)) {
+                                // Content Header (Page header)
+                                $content .= '<section class="content-header">';
+                                $content .= '<h1>';
 
-                                    // Check if this page as a parent or not, and decide what to show.
-                                    if ($page->hasParent()) {
-                                        $content .= $page->getParent()->getTitle();
-                                        $content .= '<small>' . $page->getTitle() . '</small>';
-                                    } else {
-                                        $content .= $page->getTitle();
-                                    }
-
-                                    $content .= '</h1>';
-
-                                    /*
-                                    $content .= '<ol class="breadcrumb">';
-                                    $content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-                                    $content .= '<li class="active">Dashboard</li>';
-                                    $content .= '</ol>';
-                                    */
-                                    $content .= '</section>';
-
-                                    // Main content
-                                    $content .= '<section class="content">';
-                                    $content .= $page->getContent($user);
-                                    $content .= '</section>';
+                                // Check if this page as a parent or not, and decide what to show.
+                                if ($page->hasParent()) {
+                                    $content .= $page->getParent()->getTitle();
+                                    $content .= '<small>' . $page->getTitle() . '</small>';
                                 } else {
-                                    // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
+                                    $content .= $page->getTitle();
                                 }
+
+                                $content .= '</h1>';
+
+                                /*
+                                $content .= '<ol class="breadcrumb">';
+                                $content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+                                $content .= '<li class="active">Dashboard</li>';
+                                $content .= '</ol>';
+                                */
+                                $content .= '</section>';
+
+                                // Main content
+                                $content .= '<section class="content">';
+                                    $content .= $page->getContent($user);
+                                $content .= '</section>';
+                            } else {
+                                // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
                             }
                         }
 
-						// The page is valid and should not be included twice.
-						$found = true;
+                        // The page is valid and should not be included twice.
+                        $found = true;
 						break;
 					}
 				}

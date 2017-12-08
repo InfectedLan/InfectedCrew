@@ -82,11 +82,12 @@ class DeveloperSyslogPage extends DeveloperPage {
                     $content .= '</tbody>';
                     $content .= '<tfoot>';
                         $content .= '<tr>';
-                            $content .= '<th>Rendering engine</th>';
-                            $content .= '<th>Browser</th>';
-                            $content .= '<th>Platform(s)</th>';
-                            $content .= '<th>Engine version</th>';
-                            $content .= '<th>CSS grade</th>';
+                            $content .= '<th>Alvorsgrad</th>';
+                            $content .= '<th>Kilde</th>';
+                            $content .= '<th>Melding</th>';
+                            $content .= '<th>Klokkeslett</th>';
+                            $content .= '<th>Bruker</th>';
+                            $content .= '<th>Metadata</th>';
                         $content .= '</tr>';
                     $content .= '</tfoot>';
                 $content .= '</table>';

@@ -26,7 +26,7 @@ require_once 'page.php';
 
 class AllCrewPage extends Page {
     public function canAccess(User $user): bool{
-        return $user->isGroupMember();
+        return $user->hasPermission('*') || $user->isGroupMember();
     }
 
 	public function getTitle(): ?string {
