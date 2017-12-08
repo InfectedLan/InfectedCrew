@@ -24,79 +24,67 @@ require_once 'handlers/userhistoryhandler.php';
 require_once 'page.php';
 
 class UserHistoryPage extends Page {
-	public function getTitle(): string {
+    private $historyUser;
+
+    public function __construct() {
+        $this->historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+    }
+
+    public function canAccess(User $user): bool {
+        return $user->hasPermission('*') || $user->equals($this->historyUser);
+    }
+
+	public function getTitle(): ?string {
 		if (Session::isAuthenticated()) {
 			$user = Session::getCurrentUser();
-			$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
 
-			if ($user->equals($historyUser)) {
+			if ($user->equals($this->historyUser)) {
 				return 'Min bruker historikk';
 			} else if ($user->hasPermission('*')) {
-				return $historyUser->getDisplayName() . '\'s historikk';
+				return $this->historyUser->getDisplayName() . '\'s historikk';
 			}
 		}
 
 		return 'Bruker historikk';
 	}
 
-	public function getContent(): string {
-		$content = null;
+    public function getContent(User $user = null): string {
+        $content = null;
 
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-			$historyUser = isset($_GET['id']) ? UserHandler::getUser($_GET['id']) : Session::getCurrentUser();
+        $eventList = UserHistoryHandler::getEventsByUser($this->historyUser);
 
-			if ($user->hasPermission('*') ||
-				$user->equals($historyUser)) {
-				$eventList = UserHistoryHandler::getEventsByUser($historyUser);
+        if (!empty($eventList)) {
+            $content .= '<div class="row">';
+                $content .= '<div class="col-md-6">';
+                    $content .= '<div class="box">';
+                        $content .= '<div class="box-body">';
+                            $content .= '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
+                            $content .= '<table class="table table-bordered">';
+                                $content .= '<tr>';
+                                    $content .= '<th>Arrangement</th>';
+                                    $content .= '<th>Rolle</th>';
+                                $content .= '</tr>';
 
-				if (!empty($eventList)) {
-					$content .= '<div class="row">';
-						$content .= '<div class="col-md-6">';
-						  	$content .= '<div class="box">';
-								$content .= '<div class="box-body">';
-									$content .= '<p>Denne brukeren har deltatt på følgende arrangementer:</p>';
-									$content .= '<table class="table table-bordered">';
-										$content .= '<tr>';
-											$content .= '<th>Arrangement</th>';
-											$content .= '<th>Rolle</th>';
-										$content .= '</tr>';
+                                foreach ($eventList as $event) {
+                                    $content .= '<tr>';
+                                        $content .= '<td>' . $event->getTitle() . '</td>';
+                                        $content .= '<td>' . $this->historyUser->getRoleByEvent($event) . '</td>';
+                                    $content .= '</tr>';
+                                }
 
-										foreach ($eventList as $event) {
-											$content .= '<tr>';
-												$content .= '<td>' . $event->getTitle() . '</td>';
-												$content .= '<td>' . $historyUser->getRoleByEvent($event) . '</td>';
-											$content .= '</tr>';
-										}
-
-									$content .= '</table>';
-								$content .= '</div><!-- /.box-body -->';
-						  	$content .= '</div><!-- /.box -->';
-						$content .= '</div><!--/.col (left) -->';
-					$content .= '</div><!-- /.row -->';
-				} else {
-					$content .= '<div class="box">';
-						$content .= '<div class="box-body">';
-							$content .= '<p>Denne brukeren har ikke noe historie enda.</p>';
-						$content .= '</div><!-- /.box-body -->';
-					$content .= '</div><!-- /.box -->';
-				}
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= 'Du har ikke rettigheter til dette.';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
-			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
-		}
+                            $content .= '</table>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+        } else {
+            $content .= '<div class="box">';
+                $content .= '<div class="box-body">';
+                    $content .= '<p>Denne brukeren har ikke noe historie enda.</p>';
+                $content .= '</div>';
+            $content .= '</div>';
+        }
 
 		return $content;
 	}
 }
-?>

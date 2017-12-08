@@ -23,11 +23,11 @@ require_once 'settings.php';
 require_once 'page.php';
 
 class LoginPage extends Page {
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Login';
 	}
 
-    public function getContent(): string {
+    public function getContent(User $user = null): string {
         $content = null;
 
         if (!Session::isAuthenticated()) {

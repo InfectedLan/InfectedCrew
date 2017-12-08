@@ -24,94 +24,91 @@ require_once 'handlers/locationhandler.php';
 require_once 'admin.php';
 
 class AdminEventPage extends AdminPage {
-	public function hasParent(): bool {
+    public function canAccess(User $user): bool{
+        return $user->hasPermission('admin.event');
+    }
+
+    public function hasParent(): bool {
 		return true;
 	}
 
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Arrangementer';
 	}
 
-	public function getContent(): string {
+	public function getContent(User $user = null): string {
 		$content = null;
-
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-
-			if ($user->hasPermission('admin.event')) {
-				$content .= '<div class="row">';
-                    $content .= '<div class="col-md-6">';
-                        $content .= '<div class="box box-default">';
-                            $content .= ' <div class="box-header with-border">';
-                                $content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
-                                $content .= '<div class="box-tools pull-right">';
-                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
-                                $content .= '</div>';
-                            $content .= '</div>';
-                            $content .= '<div class="box-body">';
-                                $content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
-                                $content .= $this->getCreateForm();
-                            $content .= '</div>';
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="box box-default">';
+                    $content .= ' <div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
+                        $content .= '<div class="box-tools pull-right">';
+                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
                         $content .= '</div>';
                     $content .= '</div>';
-                    $content .= '<div class="col-md-6">';
-                        $content .= '<div class="box box-default">';
-                            $content .= ' <div class="box-header with-border">';
-                                $content .= '<h3 class="box-title">Deltakere per arrangement</h3>';
-                                $content .= '<div class="box-tools pull-right">';
-                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
-                                $content .= '</div>';
-                            $content .= '</div>';
-                            $content .= '<div class="box-body">';
-                                $content .= '<div class="chart">';
-                                    $content .= '<canvas id="areaChart" style="height:250px"></canvas>';
-                                $content .= '</div>';
-                            $content .= '</div>';
+                    $content .= '<div class="box-body">';
+                        $content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
+                        $content .= $this->getCreateForm();
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="box box-default">';
+                    $content .= ' <div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Deltakere per arrangement</h3>';
+                        $content .= '<div class="box-tools pull-right">';
+                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
+                        $content .= '<div class="chart">';
+                            $content .= '<canvas id="areaChart" style="height:250px"></canvas>';
                         $content .= '</div>';
                     $content .= '</div>';
                 $content .= '</div>';
-                $content .= '<div class="row">';
+            $content .= '</div>';
+        $content .= '</div>';
+        $content .= '<div class="row">';
 
-                    $events = EventHandler::getEvents();
+            $events = EventHandler::getEvents();
 
-                    // Sort this array so that we show newest events first.
-                    rsort($events);
+            // Sort this array so that we show newest events first.
+            rsort($events);
 
-                    if (!empty($events)) {
-                        foreach ($events as $event) {
-                            $content .= '<div class="col-md-6">';
-                                $content .= '<div class="' . ($event->equals(EventHandler::getCurrentEvent()) ? 'box box-success' : 'box box-primary') . ' collapsed-box">';
-                                    $content .= '<div class="box-header">';
-                                        $content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
-                                        $content .= '<div class="box-tools pull-right">';
-                                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>';
-                                            $content .= '<div class="btn-group">';
-                                                $content .= '<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>';
-                                                $content .= '<ul class="dropdown-menu" role="menu">';
-                                                    $content .= '<li><a onClick="deleteEvent(' . $event->getId() . ')">Delete</a></li>';
-                                                $content .= '</ul>';
-                                            $content .= '</div>';
-                                        $content .= '</div>';
-                                    $content .= '</div>';
-                                    $content .= '<div class="box-body">';
-                                        $content .= $this->getEditForm($user, $event);
+            if (!empty($events)) {
+                foreach ($events as $event) {
+                    $content .= '<div class="col-md-6">';
+                        $content .= '<div class="' . ($event->equals(EventHandler::getCurrentEvent()) ? 'box box-success' : 'box box-primary') . ' collapsed-box">';
+                            $content .= '<div class="box-header">';
+                                $content .= '<h3 class="box-title">' . $event->getTitle() . '</h3>';
+                                $content .= '<div class="box-tools pull-right">';
+                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>';
+                                    $content .= '<div class="btn-group">';
+                                        $content .= '<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>';
+                                        $content .= '<ul class="dropdown-menu" role="menu">';
+                                            $content .= '<li><a onClick="deleteEvent(' . $event->getId() . ')">Delete</a></li>';
+                                        $content .= '</ul>';
                                     $content .= '</div>';
                                 $content .= '</div>';
                             $content .= '</div>';
-                        }
-                    } else {
-                        $content .= '<div class="col-md-6">';
-                            $content .= '<div class="box">';
-                                $content .= '<div class="box-body">';
-                                    $content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
-                                $content .= '</div>';
+                            $content .= '<div class="box-body">';
+                                $content .= $this->getEditForm($user, $event);
                             $content .= '</div>';
                         $content .= '</div>';
-                    }
+                    $content .= '</div>';
+                }
+            } else {
+                $content .= '<div class="col-md-6">';
+                    $content .= '<div class="box">';
+                        $content .= '<div class="box-body">';
+                            $content .= '<p>Det har ikke blitt opprettet noen arrangementer enda.</p>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            }
 
-				$content .= '</div>';
-			}
-		}
+        $content .= '</div>';
 
 		$content .= '<script src="pages/scripts/admin-event.js"></script>';
 

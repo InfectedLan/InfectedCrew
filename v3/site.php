@@ -101,6 +101,9 @@ class Site {
                     // iCheck
                     echo '<script src="plugins/iCheck/icheck.min.js"></script>';
 
+                    // DataTables
+                    echo '<link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">';
+
                     if (Session::isAuthenticated()) {
                         echo '<script src="../api/scripts/logout.js"></script>';
                     }
@@ -727,6 +730,10 @@ EOD;
                 // ChartJS
                 echo '<script src="bower_components/chart.js/Chart.js"></script>';
 
+                // DataTables
+                echo '<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>';
+                echo '<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>';
+
 				// AdminLTE App
                 echo '<script src="dist/js/adminlte.min.js"></script>';
 			echo '</body>';
@@ -1094,7 +1101,7 @@ EOD;
 			}
 		} else {
 			$directoryList = ['pages',
-                        Settings::api_path . 'pages'];
+                              Settings::api_path . 'pages'];
 			$found = false;
 
 			foreach ($directoryList as $directory) {
@@ -1114,35 +1121,45 @@ EOD;
 						$page = new $class();
 
 						if (Session::isAuthenticated()) {
-							// Content Header (Page header)
-							$content .= '<section class="content-header">';
-									$content .= '<h1>';
+						    $user = Session::getCurrentUser();
 
-										// Check if this page as a parent or not, and decide what to show.
-										if ($page->hasParent()) {
-											$content .= $page->getParent()->getTitle();
-											$content .= '<small>' . $page->getTitle() . '</small>';
-										} else {
-											$content .= $page->getTitle();
-										}
+						    if ($page->canAccess($user)) {
+                                // Content Header (Page header)
+                                $content .= '<section class="content-header">';
+                                    $content .= '<h1>';
 
-									$content .= '</h1>';
+                                        // Check if this page as a parent or not, and decide what to show.
+                                        if ($page->hasParent()) {
+                                            $content .= $page->getParent()->getTitle();
+                                            $content .= '<small>' . $page->getTitle() . '</small>';
+                                        } else {
+                                            $content .= $page->getTitle();
+                                        }
 
-									/*
-									$content .= '<ol class="breadcrumb">';
-									$content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
-									$content .= '<li class="active">Dashboard</li>';
-									$content .= '</ol>';
-									*/
-							$content .= '</section>';
+                                    $content .= '</h1>';
 
-							// Main content
-							$content .= '<section class="content">';
-								$content .= $page->getContent();
-							$content .= '</section>';
-						} else {
+                                    /*
+                                    $content .= '<ol class="breadcrumb">';
+                                    $content .= '<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>';
+                                    $content .= '<li class="active">Dashboard</li>';
+                                    $content .= '</ol>';
+                                    */
+                                $content .= '</section>';
+
+                                // Main content
+                                $content .= '<section class="content">';
+                                    $content .= $page->getContent($user);
+                                $content .= '</section>';
+                            } else {
+                                // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
+                            }
+						}
+
+						/* TODO: Handle not logged in users here?
+						else {
 							$content .= $page->getContent();
 						}
+						*/
 
 						// The page is valid and should not be included twice.
 						$found = true;

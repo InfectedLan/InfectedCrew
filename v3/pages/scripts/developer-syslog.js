@@ -1,4 +1,3 @@
-<?php
 /**
  * This file is part of InfectedCrew.
  *
@@ -18,32 +17,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'interfaces/ipage.php';
-
-class Page implements IPage {
-    public function canAccess(User $user): bool {
-        return false;
-    }
-
-    public function hasParent(): bool {
-		return false;
-	}
-
-	public function getParent(): IPage {
-		$class = get_parent_class($this);
-
-		if (!empty($class)) {
-			return new $class();
-		}
-
-		return $this;
-	}
-
-	public function getTitle(): ?string {
-		return null;
-	}
-
-	public function getContent(User $user = null): ?string {
-		return null;
-	}
-}
+$(function() {
+    $("[data-table]").DataTable();
+});

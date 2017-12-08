@@ -24,11 +24,11 @@ require_once 'localization.php';
 require_once 'page.php';
 
 class ResetPasswordPage extends Page {
-	public function getTitle(): string {
-		return null;
-	}
+    public function getTitle(): ?string {
+        return 'Tilbakestill passord';
+    }
 
-	public function getContent(): string {
+    public function getContent(User $user = null): string {
 		$content = null;
 		$content .= '<script src="scripts/seatmapEditor.js"></script>';
 

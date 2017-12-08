@@ -23,57 +23,48 @@ require_once 'handlers/userhandler.php';
 require_once 'developer.php';
 
 class DeveloperSwitchUserPage extends DeveloperPage {
-	public function hasParent(): bool {
+    public function canAccess(User $user): bool{
+        return $user->hasPermission('developer.switch-user');
+    }
+
+    public function hasParent(): bool {
 		return true;
 	}
 
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Bytt bruker';
 	}
 
-	public function getContent(): string {
+    public function getContent(User $user = null): string {
 		$content = null;
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-4">';
+                $content .= '<div class="box">';
+                    $content .= '<div class="box-body">';
+                        $content .= '<p>Funksjonalitet for utviklere, lar deg logge inn som en annen bruker.</p>';
+                        $content .= '<p>Denne skal <b>ikke</b> skal misbrukes, kun i debug- eller feilsøkings sammenheng. Alt vil bli loggført.</p>';
 
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
+                        $content .= '<form class="developer-change-user" method="post">';
+                            $content .= '<div class="input-group">';
+                                $content .= '<select class="form-control select2" name="userId" autofocus>';
+                                    $userList = UserHandler::getUsers();
 
-			if ($user->hasPermission('developer.change-user')) {
-				$content .= '<div class="row">';
-					$content .= '<div class="col-md-4">';
-						$content .= '<div class="box">';
-							$content .= '<div class="box-body">';
-								$content .= '<p>Funksjonalitet for utviklere, lar deg logge inn som en annen bruker.</p>';
-								$content .= '<p>Denne skal <b>ikke</b> skal misbrukes, kun i debug- eller feilsøkings sammenheng. Alt vil bli loggført.</p>';
+                                    foreach ($userList as $user) {
+                                        $content .= '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
+                                    }
 
-								$content .= '<form class="developer-change-user" method="post">';
-									$content .= '<div class="input-group">';
-										$content .= '<select class="form-control select2" name="userId" autofocus>';
-											$userList = UserHandler::getUsers();
+                                $content .= '</select>';
+                                $content .= '<span class="input-group-btn">';
+                                    $content .= '<button type="submit" class="btn btn-info btn-flat">Bytt</button>';
+                                $content .= '</span>';
+                            $content .= '</div>';
+                        $content .= '</form>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+        $content .= '</div>';
 
-											foreach ($userList as $user) {
-												$content .= '<option value="' . $user->getId() . '">' . $user->getDisplayName() . '</option>';
-											}
-
-										$content .= '</select>';
-                                        $content .= '<span class="input-group-btn">';
-                                            $content .= '<button type="submit" class="btn btn-info btn-flat">Bytt</button>';
-                                        $content .= '</span>';
-                                    $content .= '</div>';
-                                $content .= '</form>';
-							$content .= '</div>';
-						$content .= '</div>';
-					$content .= '</div>';
-				$content .= '</div>';
-
-                $content .= '<script src="pages/scripts/developer-switch-user.js"></script>';
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du har ikke rettigheter til dette.</p>';
-					$content .= '</div>';
-				$content .= '</div>';
-			}
-		}
+        $content .= '<script src="pages/scripts/developer-switch-user.js"></script>';
 
 		return $content;
 	}

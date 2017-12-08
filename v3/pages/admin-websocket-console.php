@@ -24,43 +24,38 @@ require_once 'handlers/permissionhandler.php';
 require_once 'admin.php';
 
 class AdminWebSocketConsolePage extends AdminPage {
+    public function canAccess(User $user): bool{
+        return $user->hasPermission('admin.websocket');
+    }
+
     public function hasParent(): bool {
         return true;
     }
 
-    public function getTitle(): string {
+    public function getTitle(): ?string {
         return 'Websocket-konsoll';
     }
 
-    public function getContent(): string {
+    public function getContent(User $user = null): string {
         $content = null;
-
-        if (Session::isAuthenticated()) {
-            $user = Session::getCurrentUser();
-
-            if ($user->hasPermission('admin.websocket')) {
-                $content .= '<div class="row">';
-                    $content .= '<div class="col-md-6">';
-                        $content .= '<div class="box box-default">';
-                            $content .= '<div class="box-header with-border">';
-                                $content .= '<h3 class="box-title">Console</h3>';
-                                $content .= '<div class="box-tools pull-right">';
-                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
-                                $content .= '</div>';
-                            $content .= '</div>';
-                            $content .= '<div class="box-body">';
-                                $content .= '<div class="consoleArea">Vennligst vent...<br></div>';
-                                $content .= '<div class="inputArea">';
-                                    $content .= '<input type="text" style="width: 100%;" placeholder="Skriv kommandoer her">';
-                                $content .= '</div>';
-                            $content .= '</div>';
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="box box-default">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Console</h3>';
+                        $content .= '<div class="box-tools pull-right">';
+                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
+                        $content .= '<div class="consoleArea">Vennligst vent...<br></div>';
+                        $content .= '<div class="inputArea">';
+                            $content .= '<input type="text" style="width: 100%;" placeholder="Skriv kommandoer her">';
                         $content .= '</div>';
                     $content .= '</div>';
                 $content .= '</div>';
-            } else {
-
-            }
-        }
+            $content .= '</div>';
+        $content .= '</div>';
 
         $content .= '<script src="../api/scripts/websocket.js"></script>';
         $content .= '<script src="pages/scripts/admin-websocket-console.js"></script>';

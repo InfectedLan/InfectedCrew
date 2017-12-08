@@ -21,7 +21,7 @@
 require_once 'page.php';
 
 class DeveloperPage extends Page {
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Utvikler';
 	}
 }

@@ -21,7 +21,7 @@
 require_once 'page.php';
 
 class StatsPage extends Page {
-    public function getTitle(): string {
+    public function getTitle(): ?string {
         return 'Statistikk';
     }
 }

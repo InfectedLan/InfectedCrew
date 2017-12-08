@@ -25,67 +25,51 @@ require_once 'handlers/eventhandler.php';
 require_once 'event.php';
 
 class EventCheckInPage extends EventPage {
+    public function canAccess(User $user): bool{
+        return $user->hasPermission('event.checkin');
+    }
+
 	public function hasParent(): bool {
 		return true;
 	}
 
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Innsjekk';
 	}
 
-	public function getContent(): string {
+    public function getContent(User $user = null): string {
 		$content = null;
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-4">';
+                $content .= '<div class="box">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Sjekk inn en billett</h3>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
 
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
+                        $event = EventHandler::getCurrentEvent();
+                        $season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
+                        $eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . '_' . date('Y', $event->getStartTime());
 
-			if ($user->hasPermission('event.checkin')) {
-				$content .= '<div class="row">';
-					$content .= '<div class="col-md-4">';
-						$content .= '<div class="box">';
-							$content .= '<div class="box-header with-border">';
-								$content .= '<h3 class="box-title">Sjekk inn en billett</h3>';
-							$content .= '</div>';
-							$content .= '<div class="box-body">';
+                        $content .= '<form class="navbar-form navbar-left">';
+                            $content .= '<div class="form-group">';
+                                $content .= '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
+                                $content .= '<div class="input-group">';
+                                    $content .= '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
+                                    $content .= '<span class="input-group-btn">';
+                                        $content .= '<button type="submit" class="btn btn-primary btn-flat" onClick="loadData()">Sjekk inn</button>';
+                                    $content .= '</span>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                        $content .= '</form>';
+                        $content .= '<div id="ticketDetails"></div>';
+                    $content .= '</div><!-- /.box-body -->';
+                $content .= '</div><!-- /.box -->';
+            $content .= '</div><!--/.col (left) -->';
+        $content .= '</div><!-- /.row -->';
 
-								$event = EventHandler::getCurrentEvent();
-								$season = date('m', $event->getStartTime()) == 2 ? 'Vinter' : 'Høst';
-								$eventName = !empty($event->getTheme()) ? $event->getTheme() : $season . '_' . date('Y', $event->getStartTime());
-
-								$content .= '<form class="navbar-form navbar-left">';
-									$content .= '<div class="form-group">';
-										$content .= '<label>' . Settings::name . '_' . $eventName . '_' . '</label>';
-										$content .= '<div class="input-group">';
-											$content .= '<input type="text" class="form-control" placeholder="Skriv inn billet id her...">';
-											$content .= '<span class="input-group-btn">';
-										  		$content .= '<button type="submit" class="btn btn-primary btn-flat" onClick="loadData()">Sjekk inn</button>';
-											$content .= '</span>';
-									  	$content .= '</div>';
-									$content .= '</div>';
-								$content .= '</form>';
-								$content .= '<div id="ticketDetails"></div>';
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
-					$content .= '</div><!--/.col (left) -->';
-				$content .= '</div><!-- /.row -->';
-
-				$content .= '<script src="scripts/event-checkin.js"></script>';
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du har ikke rettigheter til dette!</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
-			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
-		}
+        $content .= '<script src="scripts/event-checkin.js"></script>';
 
 		return $content;
 	}
 }
-?>

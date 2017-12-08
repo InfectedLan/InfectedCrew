@@ -24,11 +24,11 @@ require_once 'utils/dateutils.php';
 require_once 'page.php';
 
 class RegisterPage extends Page {
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		return 'Register';
 	}
 
-	public function getContent(): string {
+    public function getContent(User $user = null): string {
 		$content = null;
 
 		if (!Session::isAuthenticated()) {

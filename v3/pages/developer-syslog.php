@@ -2,7 +2,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,53 +21,80 @@
 require_once 'session.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/sysloghandler.php';
+require_once 'developer.php';
 
-if (Session::isAuthenticated()) {
-	$user = Session::getCurrentUser();
+class DeveloperSyslogPage extends DeveloperPage {
+    public function canAccess(User $user): bool{
+        return $user->hasPermission('developer.syslog');
+    }
 
-	if ($user->hasPermission('developer.syslog')) {
-		echo '<h1>Systemlogg</h1>';
-		$entries = SyslogHandler::getLastEntries(100);
-		echo '<table>';
-		echo '<tr>';
-		echo '<td>Kilde</td>';
-		echo '<td>Alvorsgrad</td>';
-		echo '<td>Melding</td>';
-		echo '<td>Metadata</td>';
-		echo '<td>Klokkeslett</td>';
-		echo '<td>Bruker</td>';
-		echo '</tr>';
-		foreach($entries as $entry) {
-		    echo '<tr>';
-		    echo '<td>' . $entry->getSource() . '</td>';
-		    echo '<td>' . SyslogHandler::getSeverityString($entry->getSeverity()) . '</td>';
-		    echo '<td>' . $entry->getMessage() . '</td>';
-		    if(count($entry->getMetadata())>0) {
-			echo '<td><textarea rows="10" cols="50">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
-		    } else {
-			echo '<td><i>Ingen metadata</i></td>';
-		    }
-		    echo '<td>' . date('Y-m-d H:i:s', $entry->getTimestamp()) . '</td>';
-		    $causingUser = $entry->getUser();
-		    if($causingUser == null) {
-			echo '<td><b>Ingen</b></td>';
-		    } else {
-			if($user->hasPermission('user.search')) {
-			    echo '<td><a href="index.php?page=user-profile&id=' . $causingUser->getId() . '">' . $causingUser->getUsername() . '(' . $causingUser->getId() . ')</a></td>';
-			} else {
-			    echo '<td>' . $causindUser->getDisplayName() . '</td>';
-			}
-		    }
-		    echo '</tr>';
-		}
+    public function hasParent(): bool {
+        return true;
+    }
 
-		echo '</table>';
+    public function getTitle(): ?string {
+        return 'Systemlogg';
+    }
 
-		echo '<i>Viser ' . count($entries) . ' logg-linjer</i>';
-	} else {
-		echo 'Du har ikke rettigheter til dette.';
-	}
-} else {
-	echo 'Du er ikke logget inn.';
+    public function getContent(User $user = null): string {
+        $lineCount = 100;
+
+        $content = null;
+        $content .= '<div class="box box-default">';
+            $content .= '<div class="box-header with-border">';
+                $content .= '<h3 class="box-title">Logg - siste ' . $lineCount . ' meldinger</h3>';
+                $content .= '<div class="box-tools pull-right">';
+                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<div class="box-body">';
+                $content .= '<table class="table table-bordered table-striped" data-table>';
+                    $content .= '<thead>';
+                        $content .= '<tr>';
+                            $content .= '<th>Alvorsgrad</th>';
+                            $content .= '<th>Kilde</th>';
+                            $content .= '<th>Melding</th>';
+                            $content .= '<th>Klokkeslett</th>';
+                            $content .= '<th>Bruker</th>';
+                            $content .= '<th>Metadata</th>';
+                        $content .= '</tr>';
+                    $content .= '</thead>';
+                    $content .= '<tbody>';
+
+                        foreach (SyslogHandler::getLastEntries($lineCount) as $entry) {
+                            $causingUser = $entry->getUser();
+
+                            $content .= '<tr>';
+                                $content .= '<td>' . SyslogHandler::getSeverityString($entry->getSeverity()) . '</td>';
+                                $content .= '<td>' . $entry->getSource() . '</td>';
+                                $content .= '<td>' . $entry->getMessage() . '</td>';
+                                $content .= '<td>' . date('Y-m-d H:i:s', $entry->getTimestamp()) . '</td>';
+                                $content .= '<td>' . ($causingUser != null ? '<a href="index.php?page=user-profile&userId=' . $causingUser->getId() . '">' . $causingUser->getUsername() . '(' . $causingUser->getId() . ')</a>' : 'Ingen') . '</td>';
+
+                                if (count($entry->getMetadata()) > 0) {
+                                    $content .= '<td><textarea rows="2" cols="25">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
+                                } else {
+                                    $content .= '<td><i>Ingen metadata</i></td>';
+                                }
+
+                            $content .= '</tr>';
+                        }
+                    $content .= '</tbody>';
+                    $content .= '<tfoot>';
+                        $content .= '<tr>';
+                            $content .= '<th>Rendering engine</th>';
+                            $content .= '<th>Browser</th>';
+                            $content .= '<th>Platform(s)</th>';
+                            $content .= '<th>Engine version</th>';
+                            $content .= '<th>CSS grade</th>';
+                        $content .= '</tr>';
+                    $content .= '</tfoot>';
+                $content .= '</table>';
+            $content .= '</div>';
+        $content .= '</div>';
+
+        $content .= '<script src="pages/scripts/developer-syslog.js"></script>';
+
+        return $content;
+    }
 }
-?>

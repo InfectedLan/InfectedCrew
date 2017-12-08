@@ -24,98 +24,81 @@ require_once 'utils/crewutils.php';
 require_once 'page.php';
 
 class MyCrewPage extends Page {
-	public function getTitle(): string {
+    public function canAccess(User $user): bool{
+        return $user->isGroupMember();
+    }
+
+	public function getTitle(): ?string {
 		return 'Mitt crew';
 	}
 
-	public function getContent(): string {
-		$content = null;
+    public function getContent(User $user = null): string {
+        $event = EventHandler::getCurrentEvent();
 
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
+        $content = null;
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
+                $content .= '<div class="info-box">';
+                    $content .= '<span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>';
+                    $content .= '<div class="info-box-content">';
+                        $content .= '<span class="info-box-text">Deltakere</span>';
+                        $content .= '<span class="info-box-number">' . $event->getTicketCount() . '</span>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
+                $content .= '<div class="info-box">';
+                    $content .= '<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>';
+                    $content .= '<div class="info-box-content">';
+                        $content .= '<span class="info-box-text">Crew</span>';
+                        $content .= '<span class="info-box-number">' . count(UserHandler::getMemberUsers($event)) . '</span>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+        $content .= '</div>';
 
-			if ($user->isGroupMember()) {
-				$event = EventHandler::getCurrentEvent();
+        if (isset($_GET['teamId'])) {
+            $team = TeamHandler::getTeam($_GET['teamId']);
 
-				// Info boxes
-	      $content .= '<div class="row">';
-					$content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
-						$content .= '<div class="info-box">';
-							$content .= '<span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>';
-							$content .= '<div class="info-box-content">';
-								$content .= '<span class="info-box-text">Deltakere</span>';
-								$content .= '<span class="info-box-number">' . $event->getTicketCount() . '</span>';
-							$content .= '</div>';
-						$content .= '</div>';
-					$content .= '</div>';
-	        $content .= '<div class="col-md-3 col-sm-6 col-xs-12">';
-	          $content .= '<div class="info-box">';
-	            $content .= '<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>';
-	            $content .= '<div class="info-box-content">';
-	              $content .= '<span class="info-box-text">Crew</span>';
-	              $content .= '<span class="info-box-number">' . count(UserHandler::getMemberUsers($event)) . '</span>';
-	            $content .= '</div>';
-	          $content .= '</div>';
-	        $content .= '</div>';
-	      $content .= '</div>';
+            if ($team != null) {
+                $content .= '<div class="box">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
 
-				if (isset($_GET['teamId'])) {
-					$team = TeamHandler::getTeam($_GET['teamId']);
+                        $content .= $team->getDescription();
 
-					if ($team != null) {
-						$content .= '<div class="box">';
-							$content .= '<div class="box-header with-border">';
-								$content .= '<h3 class="box-title">' . $team->getTitle() . '</h3>';
-							$content .= '</div>';
-							$content .= '<div class="box-body">';
+                    $content .= '</div>';
+                $content .= '</div>';
 
-								$content .= $team->getDescription();
+                $content .= CrewUtils::displayTeam($team);
+            }
+        } else {
+            $group = $user->getGroup();
 
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
+            if ($group != null) {
+                $content .= '<div class="box">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
 
-						$content .= CrewUtils::displayTeam($team);
-					}
-				} else {
-					$group = $user->getGroup();
+                        $page = RestrictedPageHandler::getPageByName($group->getName());
 
-					if ($group != null) {
-						$content .= '<div class="box">';
-							$content .= '<div class="box-header with-border">';
-								$content .= '<h3 class="box-title">' . $group->getTitle() . '</h3>';
-							$content .= '</div>';
-							$content .= '<div class="box-body">';
+                        if ($page != null) {
+                            $content .= $page->getContent();
+                        }
 
-								$page = RestrictedPageHandler::getPageByName($group->getName());
+                        $content .=  $group->getDescription();
 
-								if ($page != null) {
-									$content .= $page->getContent();
-								}
+                    $content .= '</div>';
+                $content .= '</div>';
 
-								$content .=  $group->getDescription();
-
-							$content .= '</div><!-- /.box-body -->';
-						$content .= '</div><!-- /.box -->';
-
-						$content .= CrewUtils::displayGroup($group);
-					}
-				}
-			} else {
-				$content .= '<div class="box">';
-					$content .= '<div class="box-body">';
-						$content .= '<p>Du er ikke i noe crew!</p>';
-					$content .= '</div><!-- /.box-body -->';
-				$content .= '</div><!-- /.box -->';
-			}
-		} else {
-			$content .= '<div class="box">';
-				$content .= '<div class="box-body">';
-					$content .= '<p>Du er ikke logget inn!</p>';
-				$content .= '</div><!-- /.box-body -->';
-			$content .= '</div><!-- /.box -->';
-		}
+                $content .= CrewUtils::displayGroup($group);
+            }
+        }
 
 		return $content;
 	}
 }
-?>

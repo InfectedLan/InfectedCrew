@@ -26,7 +26,7 @@ require_once 'handlers/userhistoryhandler.php';
 require_once 'page.php';
 
 class UserProfilePage extends Page {
-	public function getTitle(): string {
+	public function getTitle(): ?string {
 		$id = isset($_GET['id']) ?? Session::getCurrentUser()->getId();
 
 		if (Session::isAuthenticated()) {
@@ -41,7 +41,7 @@ class UserProfilePage extends Page {
 		return 'Profil';
 	}
 
-	public function getContent(): string {
+    public function getContent(User $user = null): string {
 		$content = null;
 		$id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -272,7 +272,7 @@ class UserProfilePage extends Page {
 											}
 
 										$content .= '</table>';
-                  $content .= '</div><!-- /.tab-pane -->';
+                                    $content .= '</div><!-- /.tab-pane -->';
 
 									$content .= '<div class="tab-pane" id="history">';
 
