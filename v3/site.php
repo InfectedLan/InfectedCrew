@@ -994,7 +994,7 @@ EOD;
 						}
 
 						if ($user->hasPermission('admin.websocket')) {
-							$content .= '<li' . ($this->pageName == 'admin-wsconsole' ? ' class="active"' : null) . '><a href="?page=admin-wsconsole"><i class="fa fa-terminal"></i>Websocket-konsoll</a></li>';
+							$content .= '<li' . ($this->pageName == 'admin-websocket-console' ? ' class="active"' : null) . '><a href="?page=admin-websocket-console"><i class="fa fa-terminal"></i>Websocket-konsoll</a></li>';
 						}
 
 					$content .= '</ul>';
