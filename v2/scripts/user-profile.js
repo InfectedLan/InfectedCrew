@@ -1,7 +1,7 @@
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,16 +51,6 @@ function addUserToGroup(form) {
 
 function activateUser(id) {
 	$.getJSON('../api/json/user/activateUser.php?id=' + id, function(data) {
-		if (data.result) {
-			location.reload();
-		} else {
-			error(data.message);
-		}
-	});
-}
-
-function setUserSwimming(id, swimming) {
-	$.getJSON('../api/json/user/editUserSwimming.php?id=' + id  + '&swimming=' + swimming, function(data) {
 		if (data.result) {
 			location.reload();
 		} else {
