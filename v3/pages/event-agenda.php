@@ -37,19 +37,22 @@ class EventAgendaPage extends EventPage {
 
     public function getContent(User $user = null): string {
 		$content = null;
-        $content .= '<div class="row">';
-            $content .= '<div class="col-md-6">';
+        //$content .= '<div class="row">';
+            //$content .= '<div class="col-md-6">';
 
+                /*
                 $agendaList = AgendaHandler::getAgendas();
 
                 if (!empty($agendaList)) {
                     foreach ($agendaList as $agenda) {
-                        $content .= '<div class="box">';
-                            $content .= '<div class="box-header">';
+                        $content .= '<div class="box box-default">';
+                            $content .= '<div class="box-header with-border">';
                                 $content .= '<h3 class="box-title">' . $agenda->getTitle() . '</h3>';
-                            $content .= '</div><!-- /.box-header -->';
+                                $content .= '<div class="box-tools pull-right">';
+                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                                $content .= '</div>';
+                            $content .= '</div>';
                             $content .= '<div class="box-body">';
-
                                 $content .= '<form class="agenda-edit" method="post">';
                                     $content .= '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
                                     $content .= '<div class="form-group">';
@@ -78,16 +81,18 @@ class EventAgendaPage extends EventPage {
                                         $content .= '<button type="button" class="btn btn-primary" onClick="removeAgenda(' . $agenda->getId() . ')">Fjern</button>';
                                     $content .= '</div>';
                                 $content .= '</form>';
-                            $content .= '</div><!-- /.box-body -->';
-                        $content .= '</div><!-- /.box -->';
+                            $content .= '</div>';
+                        $content .= '</div>';
                     }
                 } else {
                     $content .= '<div class="box">';
                         $content .= '<div class="box-body">';
                             $content .= '<p>Det har ikke blitt opprettet noen agenda\'er enda.</p>';
-                        $content .= '</div><!-- /.box-body -->';
-                    $content .= '</div><!-- /.box -->';
+                        $content .= '</div>';
+                    $content .= '</div>';
                 }
+
+            /*
 
             $content .= '</div><!--/.col (left) -->';
             $content .= '<div class="col-md-6">';
@@ -96,7 +101,8 @@ class EventAgendaPage extends EventPage {
                         $content .= '<h3 class="box-title">Legg til ny agenda</h3>';
                     $content .= '</div><!-- /.box-header -->';
                     $content .= '<div class="box-body">';
-                        $content .= '<form class="agenda-add" method="post">';
+
+                $content .= '<form class="agenda-add" method="post">';
                             $content .= '<div class="form-group">';
                                 $content .= '<label>Navn</label>';
                                 $content .= '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." required>';
@@ -119,22 +125,104 @@ class EventAgendaPage extends EventPage {
                     $content .= '</div><!-- /.box-body -->';
                 $content .= '</div><!-- /.box -->';
             $content .= '</div><!--/.col (right) -->';
-        $content .= '</div><!-- /.row -->';
+            */
 
-        $content .= '<script src="plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>';
-        //<!-- Page script -->
-        $content .= '<script type="text/javascript">';
-            $content .= '$(function() {';
-                //Date range picker with time picker
-                $content .= '$(\'#datetime\').daterangepicker({';
-                    $content .= 'timePicker: true,';
-                    $content .= 'timePickerSeconds: true,';
-                    $content .= 'format: \'YYYY-MM-DD HH:mm:ss\'';
-                $content .= '});';
-            $content .= '});';
-        $content .= '</script>';
-        $content .= '<script src="scripts/event-agenda.js"></script>';
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="box box-default">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Legg til ny agenda</h3>';
+                        $content .= '<div class="box-tools pull-right">';
+                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                    $content .= '<div class="box-body">';
+                        $content .= '<form class="event-agenda-create">';
+                            $content .= $this->getForm();
+                            $content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+                        $content .= '</form>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+
+            $agendas = AgendaHandler::getAgendas();
+
+            // Sort this array so that we show newest agendas first.
+            rsort($agendas);
+
+            if (!empty($agendas)) {
+                foreach ($agendas as $agenda) {
+                    $content .= '<div class="col-md-6">';
+                        $content .= '<div class="box box-default">';
+                            $content .= '<div class="box-header with-border">';
+                                $content .= '<h3 class="box-title">' . $agenda->getTitle() . '</h3>';
+                                $content .= '<div class="box-tools pull-right">';
+                                    $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>';
+                                    $content .= '<div class="btn-group">';
+                                        $content .= '<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>';
+                                        $content .= '<ul class="dropdown-menu" role="menu">';
+                                            $content .= '<li><a onClick="deleteAgenda(' . $agenda->getId() . ')">Delete</a></li>';
+                                        $content .= '</ul>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
+                            $content .= '</div>';
+                            $content .= '<div class="box-body">';
+                                $content .= '<form class="event-agenda-edit">';
+                                    $content .= '<input type="hidden" name="id" value="' . $agenda->getId() . '">';
+                                    $content .= $this->getForm();
+                                    $content .= '<div class="btn-group" role="group" aria-label="...">';
+                                        $content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+                                        $content .= '<button type="button" class="btn btn-primary" onClick="removeAgenda(' . $agenda->getId() . ')">Fjern</button>';
+                                    $content .= '</div>';
+                                $content .= '</form>';
+                            $content .= '</div>';
+                        $content .= '</div>';
+                    $content .= '</div>';
+                }
+            }
+
+        $content .= '</div>';
+
+        $content .= '<script src="pages/scripts/event-agenda.js"></script>';
 
 		return $content;
-	}
+    }
+
+    private function getForm(Agenda $agenda = null): string {
+        $content = null;
+        $content .= '<div class="form-group">';
+            $content .= '<label>Navn</label>';
+            $content .= '<input type="text" class="form-control" name="title" placeholder="Skriv inn et navn her..." ' . ($agenda != null ? $agenda->getTitle() : null) . ' required>';
+        $content .= '</div>';
+        $content .= '<div class="form-group">';
+            $content .= '<label>Beskrivelse</label>';
+            $content .= '<textarea class="form-control" rows="3" name="description" placeholder="Skriv inn en beskrivese her..." ' . ($agenda != null ? $agenda->getDescription() : null) . ' required></textarea>';
+        $content .= '</div>';
+        $content .= '<div class="row">';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="form-group">';
+                    $content .= '<label>Tid og dato:</label>';
+                    $content .= '<div class="input-group">';
+                        $content .= '<div class="input-group-addon">';
+                            $content .= '<i class="fa fa-calendar"></i>';
+                        $content .= '</div>';
+                        $content .= '<input type="date" class="form-control" name="date" value="' . date('Y-m-d', $agenda != null ? $agenda->getStartTime() : time()) . '" required>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<div class="col-md-6">';
+                $content .= '<div class="form-group">';
+                    $content .= '<label>Billetsalg tid</label>';
+                    $content .= '<div class="input-group">';
+                        $content .= '<div class="input-group-addon">';
+                            $content .= '<i class="fa fa-clock-o"></i>';
+                        $content .= '</div>';
+                        $content .= '<input type="time" class="form-control" name="time" value="' . date('H:i:s', $agenda != null ? $agenda->getStartTime() : time()) . '" required>';
+                    $content .= '</div>';
+                $content .= '</div>';
+            $content .= '</div>';
+        $content .= '</div>';
+
+        return $content;
+    }
 }

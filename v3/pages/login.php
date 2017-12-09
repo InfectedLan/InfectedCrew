@@ -27,10 +27,6 @@ class LoginPage extends Page {
         return !Session::isAuthenticated();
     }
 
-	public function getTitle(): ?string {
-		return 'Login';
-	}
-
     public function getContent(User $user = null): string {
         $content = null;
         $content .= '<body class="hold-transition login-page">';
@@ -56,17 +52,16 @@ class LoginPage extends Page {
                                     $content .= '<label><input type="checkbox"> Husk meg</label>';
                                 $content .= '</div>';
                                 */
-                            $content .= '</div>'; // .col-xs-8
+                            $content .= '</div>';
                             $content .= '<div class="col-xs-4">';
                                 $content .= '<button class="btn btn-primary btn-block btn-flat">Logg inn</button>';
-                            $content .= '</div>'; // .col-xs-4
+                            $content .= '</div>';
                         $content .= '</div>';
                     $content .= '</form>';
-                    $content .= '<a href="?page=reset-password">Jeg har glemt passordet mitt!</a><br>';
+                    $content .= '<a href="?page=password-reset">Jeg har glemt passordet mitt!</a><br>';
                     $content .= '<a href="?page=register">Register ny bruker</a>';
                 $content .= '</div>';
             $content .= '</div>';
-
             $content .= '<script>';
                 $content .= '$(function () {';
                     $content .= '$(\'input\').iCheck({';

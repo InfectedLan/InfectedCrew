@@ -28,10 +28,6 @@ class RegisterPage extends Page {
         return !Session::isAuthenticated();
     }
 
-	public function getTitle(): ?string {
-		return 'Register';
-	}
-
     public function getContent(User $user = null): string {
 		$content = null;
         $content .= '<body class="register-page">';
@@ -91,7 +87,7 @@ class RegisterPage extends Page {
                             $content .= '<span class="glyphicon glyphicon-lock form-control-feedback"></span>';
                         $content .= '</div>';
                         $content .= '<div class="form-group has-feedback">';
-                            $content .= '<input type="password" class="form-control" name="confirm-password" placeholder="Bekreft passord" required>';
+                            $content .= '<input type="password" class="form-control" name="confirm-password" placeholder="' . Localization::getLocale('repeat_password') . '" required>';
                             $content .= '<span class="glyphicon glyphicon-repeat form-control-feedback"></span>';
                         $content .= '</div>';
                         $content .= '<div class="form-group has-feedback">';
@@ -109,7 +105,7 @@ class RegisterPage extends Page {
                             $content .= '</div>';
                         $content .= '</div>';
                         $content .= '<div class="form-group has-feedback">';
-                            $content .= '<input type="date" class="form-control" name="birthdate" placeholder="Fødselsdato" required>';
+                            $content .= '<input type="date" class="form-control" name="birthdate" placeholder="Fødselsdato" value="' . date('Y-m-d') . '" required>';
                             $content .= '<span class="glyphicon glyphicon-calendar form-control-feedback"></span>';
                         $content .= '</div>';
                         $content .= '<div class="form-group has-feedback">';

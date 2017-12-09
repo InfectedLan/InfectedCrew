@@ -35,6 +35,8 @@ class Site {
 
             $this->pageName = $_GET['page'] ?? ($user->isGroupMember() ? 'my-crew' : 'crew');
         }
+
+        $this->pageName = $_GET['page'] ?? 'login';
 	}
 
 	// Execute the site.
@@ -680,7 +682,7 @@ EOD;
                     $publicPages = ['login',
                     				'register',
                         			'activation',
-                                    'reset-password'];
+                                    'password-reset'];
 
                     // Show page if whitelisted.
                     if (in_array($this->pageName, $publicPages)) {
