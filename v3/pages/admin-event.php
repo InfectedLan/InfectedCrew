@@ -49,7 +49,10 @@ class AdminEventPage extends AdminPage {
                     $content .= '</div>';
                     $content .= '<div class="box-body">';
                         $content .= '<p>Fyll ut feltene under for å legge til et nytt arrangement.</p>';
-                        $content .= $this->getCreateForm();
+                        $content .= '<form class="admin-event-create">';
+                            $content .= $this->getForm();
+                            $content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
+                        $content .= '</form>';
                     $content .= '</div>';
                 $content .= '</div>';
             $content .= '</div>';
@@ -93,7 +96,34 @@ class AdminEventPage extends AdminPage {
                                 $content .= '</div>';
                             $content .= '</div>';
                             $content .= '<div class="box-body">';
-                                $content .= $this->getEditForm($user, $event);
+                                $content .= '<form class="admin-event-edit">';
+                                    $content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
+                                    $content .= $this->getForm($event);
+                                    $content .= '<div class="btn-group" role="group" aria-label="...">';
+                                        $content .= '<button type="submit" class="btn btn-primary">Endre</button>';
+
+                                        if ($user->hasPermission('*')) {
+                                            $currentEvent = EventHandler::getCurrentEvent();
+
+                                            // Prevent users from removing events that have already started, we don't want to delete old tickets etc.
+                                            if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
+                                                $content .= '<button type="button" class="btn btn-primary" onClick="deleteEvent(' . $event->getId() . ')">Fjern</button>';
+                                            }
+
+                                            // Allow user to transfer members from previus event if this event is the current one.
+                                            if ($event->equals($currentEvent)) {
+                                                $previousEvent = EventHandler::getPreviousEvent();
+
+                                                $content .= '<button type="button" class="btn btn-primary" onClick="copyMembers(' . $previousEvent->getId() . ')">Kopier medlemmer fra forrige arrangement</button>';
+                                            }
+                                        }
+
+                                        if ($event->getSeatmap() != null) {
+                                            $content .= '<button type="button" class="btn btn-primary" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">Vis setekart</button>';
+                                        }
+
+                                    $content .= '</div>';
+                                $content .= '</form>';
                             $content .= '</div>';
                         $content .= '</div>';
                     $content .= '</div>';
@@ -114,52 +144,6 @@ class AdminEventPage extends AdminPage {
 
 		return $content;
 	}
-
-    private function getCreateForm(): string {
-        $content = null;
-
-        $content .= '<form class="admin-event-create">';
-            $content .= $this->getForm();
-            $content .= '<button type="submit" class="btn btn-primary">Legg til</button>';
-        $content .= '</form>';
-
-        return $content;
-    }
-
-    private function getEditForm(User $user, Event $event): string {
-        $content = null;
-
-        $content .= '<form class="admin-event-edit">';
-            $content .= '<input type="hidden" name="id" value="' . $event->getId() . '">';
-            $content .= $this->getForm($event);
-            $content .= '<div class="btn-group" role="group" aria-label="...">';
-                $content .= '<button type="submit" class="btn btn-primary">Endre</button>';
-
-                if ($user->hasPermission('*')) {
-                    $currentEvent = EventHandler::getCurrentEvent();
-
-                    // Prevent users from removing events that have already started, we don't want to delete old tickets etc.
-                    if ($event->getBookingTime() >= $currentEvent->getBookingTime()) {
-                        $content .= '<button type="button" class="btn btn-primary" onClick="deleteEvent(' . $event->getId() . ')">Fjern</button>';
-                    }
-
-                    // Allow user to transfer members from previus event if this event is the current one.
-                    if ($event->equals($currentEvent)) {
-                        $previousEvent = EventHandler::getPreviousEvent();
-
-                        $content .= '<button type="button" class="btn btn-primary" onClick="copyMembers(' . $previousEvent->getId() . ')">Kopier medlemmer fra forrige arrangement</button>';
-                    }
-                }
-
-                if ($event->getSeatmap() != null) {
-                    $content .= '<button type="button" class="btn btn-primary" onClick="viewSeatmap(' . $event->getSeatmap()->getId() . ')">Vis setekart</button>';
-                }
-
-            $content .= '</div>';
-        $content .= '</form>';
-
-        return $content;
-    }
 
 	private function getForm(Event $event = null): string {
 	    $event = $event ?? EventHandler::getCurrentEvent();

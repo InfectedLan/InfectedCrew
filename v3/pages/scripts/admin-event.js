@@ -58,7 +58,7 @@ function viewSeatmap(eventId) {
 }
 
 function copyMembers(eventId) {
-	$.get('../api/rest/event/copyMembers.php?id=' + eventId, function(data) {
+	$.get('../api/rest/event/user/copy.php?eventId=' + eventId, function(data) {
 		if (data.result) {
 			location.reload();
 		}

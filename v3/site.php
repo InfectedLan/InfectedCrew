@@ -374,7 +374,7 @@ EOD;
                                                         echo '<p>';
                                                             echo $user->getFullName();
                                                             echo '<small>' . $user->getRole() . '</small>';
-                                                            echo '<small>Registret den ' . date('d', $user->getRegisteredDate()) . ' ' . DateUtils::getMonthFromInt(date('m', $user->getRegisteredDate())) . ' ' . date('Y', $user->getRegisteredDate()) . '</small>';
+                                                            echo '<small>Registret den ' . date('d', $user->getRegisterDate()) . ' ' . DateUtils::getMonthFromInt(date('m', $user->getRegisterDate())) . ' ' . date('Y', $user->getRegisterDate()) . '</small>';
                                                         echo '</p>';
                                                     echo '</li>';
 
@@ -1098,8 +1098,6 @@ EOD;
 				$content .= '<section class="content">';
 					$content .= $page->getContent();
 				$content .= '</section>';
-			} else {
-				$content .= 'Du har ikke tilgang til dette.'; // TODO: Improve this with a nice error box. 404?
 			}
 		} else {
 			$directoryList = ['pages',
