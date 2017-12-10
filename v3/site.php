@@ -462,7 +462,7 @@ EOD;
                                     echo $this->getPage($this->pageName);
                                 } else {
                                     $publicPages = ['apply',
-                                                    'all-crew',
+                                                    'crew',
                                                     'my-profile',
                                                     'edit-profile',
                                                     'edit-password',
@@ -471,7 +471,7 @@ EOD;
                                     if (in_array($this->pageName, $publicPages)) {
                                         echo $this->getPage($this->pageName);
                                     } else {
-                                        echo $this->getPage('all-crew');
+                                        echo $this->getPage('crew');
                                     }
                                 }
 
@@ -886,12 +886,12 @@ EOD;
 			$groupList = GroupHandler::getGroups();
 
 			if (!empty($groupList)) {
-				$content .= '<li class="treeview' . ($this->pageName == 'all-crew' ? ' active' : null) . '">';
-					$content .= '<a href="?page=all-crew"><i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i></a>';
+				$content .= '<li class="treeview' . ($this->pageName == 'crew' ? ' active' : null) . '">';
+					$content .= '<a href="?page=crew"><i class="fa fa-users"></i><span>Crew</span><i class="fa fa-angle-left pull-right"></i></a>';
 					$content .= '<ul class="treeview-menu">';
 
 						foreach ($groupList as $group) {
-							$content .= '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=all-crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
+							$content .= '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
 						}
 
 					$content .= '</ul>';
