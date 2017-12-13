@@ -41,7 +41,7 @@ class AdminEventPage extends AdminPage {
         $content .= '<div class="row">';
             $content .= '<div class="col-md-6">';
                 $content .= '<div class="box box-default">';
-                    $content .= ' <div class="box-header with-border">';
+                    $content .= '<div class="box-header with-border">';
                         $content .= '<h3 class="box-title">Legg til et nytt arrangement</h3>';
                         $content .= '<div class="box-tools pull-right">';
                             $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
@@ -58,7 +58,7 @@ class AdminEventPage extends AdminPage {
             $content .= '</div>';
             $content .= '<div class="col-md-6">';
                 $content .= '<div class="box box-default">';
-                    $content .= ' <div class="box-header with-border">';
+                    $content .= '<div class="box-header with-border">';
                         $content .= '<h3 class="box-title">Deltakere per arrangement</h3>';
                         $content .= '<div class="box-tools pull-right">';
                             $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';

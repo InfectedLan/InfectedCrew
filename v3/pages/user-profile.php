@@ -213,7 +213,7 @@ class UserProfilePage extends Page {
 												$user->equals($this->profileUser)) {
 												$content .= '<tr>';
 													$content .= '<td>Dato registrert:</td>';
-													$content .= '<td>' . date('d.m.Y', $this->profileUser->getRegisteredDate()) . '</td>';
+													$content .= '<td>' . date('d.m.Y', $this->profileUser->getRegisterDate()) . '</td>';
 												$content .= '</tr>';
 											}
 
@@ -298,17 +298,17 @@ class UserProfilePage extends Page {
 													foreach ($eventList as $event) {
 														$content .= '<tr>';
 															$content .= '<td>' . $event->getTitle() . '</td>';
-															$content .= '<td>' . $this->profileUser->getRoleByEvent($event) . '</td>';
+															$content .= '<td>' . $this->profileUser->getRole($event) . '</td>';
 
-															if ($this->profileUser->isGroupMemberByEvent($event)) {
-																$group = $this->profileUser->getGroupByEvent($event);
+															if ($this->profileUser->isGroupMember($event)) {
+																$group = $this->profileUser->getGroup($event);
 
 																$content .= '<td><a href="index.php?page=all-crew&id=' . $group->getId() . '">' . $group->getTitle() . '</a></td>';
 																$content .= '<td>Ingen</td>';
-															} else if ($this->profileUser->hasTicketByEvent($event)) {
+															} else if ($this->profileUser->hasTicket($event)) {
 																$content .= '<td>Ingen</td>';
 																$content .= '<td>';
-																	$ticketList = $this->profileUser->getTicketsByEvent($event);
+																	$ticketList = $this->profileUser->getTickets($event);
 
 																	foreach ($ticketList as $ticket) {
 																		$content .= '<a href="index.php?page=ticket&id=' . $ticket->getId() . '">#' . $ticket->getId() . '</a>';
@@ -326,11 +326,11 @@ class UserProfilePage extends Page {
 											}
 										}
 
-                  $content .= '</div><!-- /.tab-pane -->';
-                $content .= '</div><!-- /.tab-content -->';
-              $content .= '</div><!-- /.nav-tabs-custom -->';
-            $content .= '</div><!-- /.col -->';
-          $content .= '</div><!-- /.row -->';
+                                  $content .= '</div><!-- /.tab-pane -->';
+                                $content .= '</div><!-- /.tab-content -->';
+                              $content .= '</div><!-- /.nav-tabs-custom -->';
+                            $content .= '</div><!-- /.col -->';
+                          $content .= '</div><!-- /.row -->';
 				} else {
 					$content .= '<div class="box">';
 						$content .= '<div class="box-body">';
