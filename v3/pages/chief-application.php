@@ -192,7 +192,7 @@ class ChiefApplicationPage extends ChiefPage {
                                         $applicationUser = $application->getUser();
 
                                         $content .= '<tr>';
-                                            $content .= '<td>' . $index . '</td>';
+                                            $content .= '<td>' . ($index + 1) . '</td>';
                                             $content .= '<td><a href="?page=user-profile&userId=' . $applicationUser->getId() . '">' . $applicationUser->getFullName() . '</a></td>';
                                             $content .= '<td>' . $application->getGroup()->getTitle() . '</td>';
                                             $content .= '<td>' . date('d.m.Y H:i', $application->getOpenedTime()) . '</td>';
