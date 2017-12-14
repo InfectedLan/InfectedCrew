@@ -25,7 +25,7 @@ if (Session::isAuthenticated()) {
 	$user = Session::getCurrentUser();
 
 	if ($user->hasPermission('developer.change-user')) {
-		echo '<script src="scripts/developer-change-user.js"></script>';
+		echo '<script src="scripts/developer-switch-user.js"></script>';
 		echo '<h1>Bytt bruker</h1>';
 		echo '<p>Dette er en utvikler-funksjon som lar deg være logget inn som en annen bruker. <br>';
 		echo 'Dette er en funksjon som ikke skal misbrukes, og må kun brukes i debug eller feilsøkings-sammenheng.</p>';

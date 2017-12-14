@@ -29,7 +29,7 @@ if (Session::isAuthenticated()) {
 	if ($user->hasPermission('admin.websocket')) {
 	    echo '<h1>Websocket-konsoll</h1>';
 	    echo '<script src="../api/scripts/websocket.js"></script>';
-	    echo '<script src="scripts/admin-wsconsole.js"></script>';
+	    echo '<script src="scripts/admin-websocket-console.js"></script>';
 	    echo '<div id="consoleArea">Vennligst vent...<br /></div>';
 	    echo '<div id="inputArea"><input type="text" style="width: 100%;" placeholder="Skriv kommandoer her" /></div>';
 	    
