@@ -1,8 +1,7 @@
-<?php
 /**
  * This file is part of InfectedCrew.
  *
- * Copyright (C) 2015 Infected <http://infected.no/>.
+ * Copyright (C) 2017 Infected <http://infected.no/>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,31 +17,29 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'session.php';
-require_once 'interfaces/page.php';
-require_once 'traits/page.php';
+$(function() {
+    $('.chief-application-reject').on('submit', function(event) {
+        event.preventDefault();
+        rejectApplication(this);
+    });
+});
 
-class CompoPage implements IPage {
-	use TPage;
-
-	public function getTitle() {
-		return 'Compo';
-	}
-
-	public function getContent() {
-		$content = null;
-
-		if (Session::isAuthenticated()) {
-			$user = Session::getCurrentUser();
-
-			if ($user->hasPermission('compo')) {
-				$content .= '<p>Du finner alle funksjonene øverst i menyen til høyre for Infected logoen.</p>';
-			} else {
-				$content .= '<p>Du har ikke tilgang til dette.</p>';
-			}
+function acceptApplication(applicationId) {
+	$.post('../api/rest/group/application/accept.php', { applicationId: applicationId } , function(data) {
+		if (data.result) {
+			location.reload();
+		} else {
+            //error(data.message);
 		}
-		
-		return $content;
-	}
+	});
 }
-?>
+
+function rejectApplication(form) {
+    $.post('../api/rest/group/application/reject.php', $(form).serialize(), function(data) {
+        if (data.result) {
+            location.reload();
+        } else {
+            //error(data.message);
+        }
+    });
+}

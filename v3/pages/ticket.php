@@ -26,7 +26,7 @@ class TicketPage extends Page {
     private $ticket;
 
     public function __construct() {
-        $this->ticket = isset($_GET['ticketId']) ? TicketHandler::getTicket($_GET['ticketId']) : null;
+        $this->ticket = isset($_GET['id']) ? TicketHandler::getTicket($_GET['id']) : null;
     }
 
 	public function canAccess(User $user): bool {
