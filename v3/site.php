@@ -1154,8 +1154,19 @@ EOD;
                                 $content .= '<section class="content">';
                                     $content .= $page->getContent($user);
                                 $content .= '</section>';
+
+
                             } else {
                                 // TODO: Show promt saying that user cannot access this page, maybe lacking permission?
+                                $content .= '<div class="row">';
+                                    $content .= '<div class="col-md-6">';
+                                        $content .= '<div class="box">';
+                                            $content .= '<div class="box-body">';
+                                                $content .= '<p>Du har ikke tilgang til dette!</p>';
+                                            $content .= '</div>';
+                                        $content .= '</div>';
+                                    $content .= '</div>';
+                                $content .= '</div>';
                             }
                         }
 

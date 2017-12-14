@@ -25,7 +25,7 @@ $(function() {
 });
 
 function switchUser(form) {
-    $.get('../api/rest/user/switch.php' + '?' + $(this).serialize(), function(data){
+    $.get('../api/rest/user/switch.php?' + $(form).serialize(), function(data) {
         if (data.result) {
             $(location).attr('href', '?page=user-profile');
         }

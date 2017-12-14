@@ -44,7 +44,7 @@ class DeveloperSwitchUserPage extends DeveloperPage {
                         $content .= '<p>Funksjonalitet for utviklere, lar deg logge inn som en annen bruker.</p>';
                         $content .= '<p>Denne skal <b>ikke</b> skal misbrukes, kun i debug- eller feilsøkings sammenheng. Alt vil bli loggført.</p>';
 
-                        $content .= '<form class="developer-change-user" method="post">';
+                        $content .= '<form class="developer-switch-user">';
                             $content .= '<div class="input-group">';
                                 $content .= '<select class="form-control select2" name="userId" autofocus>';
                                     $userList = UserHandler::getUsers();
