@@ -45,7 +45,7 @@ class EventAgendaPage extends EventPage implements IPage {
 							  	$content .= '<div class="box">';
 									$content .= '<div class="box-header">';
 								  		$content .= '<h3 class="box-title">' . $agenda->getTitle() . '</h3>';
-									$content .= '</div><!-- /.box-header -->';
+									$content .= '</div>';
 									$content .= '<div class="box-body">';
 
 										$content .= '<form class="agenda-edit" method="post">';

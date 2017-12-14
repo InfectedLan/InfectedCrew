@@ -99,6 +99,7 @@ class ApplicationPage extends Page {
 
                                     foreach ($applications as $application) {
                                         $content .= '<ul>';
+                                            // TODO: Users should be able to look at their own applications.
                                             //$content .= '<li><a href="?page=application&id=' . $application->getId() . '">' . $application->getGroup()->getTitle() . '</a></li>';
                                             $content .= '<li>' . $application->getGroup()->getTitle() . '</a></li>';
                                         $content .= '</ul>';

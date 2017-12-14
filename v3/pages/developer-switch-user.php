@@ -39,7 +39,13 @@ class DeveloperSwitchUserPage extends DeveloperPage {
 		$content = null;
         $content .= '<div class="row">';
             $content .= '<div class="col-md-4">';
-                $content .= '<div class="box">';
+                $content .= '<div class="box box-default">';
+                    $content .= '<div class="box-header with-border">';
+                        $content .= '<h3 class="box-title">Bytt bruker</h3>';
+                        $content .= '<div class="box-tools pull-right">';
+                            $content .= '<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>';
+                        $content .= '</div>';
+                    $content .= '</div>';
                     $content .= '<div class="box-body">';
                         $content .= '<p>Funksjonalitet for utviklere, lar deg logge inn som en annen bruker.</p>';
                         $content .= '<p>Denne skal <b>ikke</b> skal misbrukes, kun i debug- eller feilsøkings sammenheng. Alt vil bli loggført.</p>';
