@@ -109,7 +109,7 @@ if (Session::isAuthenticated()) {
 					$user->equals($editUser)) {
 					echo '<tr>';
 						echo '<td>Dato registrert:</td>';
-						echo '<td>' . date('d.m.Y', $editUser->getRegisteredDate()) . '</td>';
+						echo '<td>' . date('d.m.Y', $editUser->getRegisterDate()) . '</td>';
 					echo '</tr>';
 				}
 
