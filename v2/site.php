@@ -333,11 +333,17 @@ class Site {
                   }
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
-									$this->pageName == 'developer-syslog') {
+									$this->pageName == 'developer-syslog' ||
+									$this->pageName == 'developer-phpinfo') {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.change-user')) {
 										echo '<li><a' . ($this->pageName == 'developer-change-user' ? ' class="active"' : null) . ' href="index.php?page=developer-change-user">Logg inn som en annan</a></li>';
+									}
+
+									if ($user->hasPermission('*') ||
+										$user->hasPermission('developer.phpinfo')) {
+										echo '<li><a' . ($this->pageName == 'developer-phpinfo' ? ' class="active"' : null) . ' href="index.php?page=developer-phpinfo">Vis phpinfo</a></li>';
 									}
 
 									if ($user->hasPermission('*') ||
