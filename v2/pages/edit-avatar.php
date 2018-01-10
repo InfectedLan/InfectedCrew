@@ -47,7 +47,7 @@ if (Session::isAuthenticated()) {
 					echo '$(document).ready(function() {';
 						echo 'var options = {';
 							echo 'success: function(responseText, statusText, xhr, $form) {';
-								echo 'var data = jQuery.parseJSON(responseText);';
+								echo 'var data = responseText;';
 								echo 'if (data.result) {';
 									echo 'location.reload();';
 								echo '} else {';
@@ -86,7 +86,7 @@ if (Session::isAuthenticated()) {
 					echo '});';
 
 					echo 'var base_image = new Image();';
-					echo 'base_image.src=\'' . $avatar->getTemp() . '\';';
+					echo 'base_image.src=\'../api/' . $avatar->getTemp() . '\';';
 					echo 'base_image.onload = function() {';
 					echo 'var canvas = document.getElementById(\'cropCanvas\').getContext(\'2d\'); ';
 					echo 'canvas.drawImage(base_image, 0, 0, 800, ' . (imagesy($image) * $scaleFactor) . ');';
@@ -152,7 +152,7 @@ if (Session::isAuthenticated()) {
                 echo '</tr>';
                 echo '</table>';
 				echo '<h1>Ditt bilde venter på godkjenning</h1>';
-				echo '<img src="' . $avatar->getHd() . '" width="800">';
+				echo '<img src="../api/' . $avatar->getHd() . '" width="800">';
 				echo '<br>Ikke fornøyd? <input type="button" value="Slett bilde" onClick="deleteAvatar()">';
 				break;
 
@@ -178,7 +178,7 @@ if (Session::isAuthenticated()) {
                 echo '});';
 				echo 'var options = {';
 					echo 'success: function(responseText, statusText, xhr, $form) {';
-						echo 'var data = jQuery.parseJSON(responseText);';
+						echo 'var data = responseText;';
 						echo 'if (data.result) {';
 							echo 'location.reload();';
 						echo '} else {';
