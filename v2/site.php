@@ -513,7 +513,7 @@ class Site {
 					echo '</nav>';
 				echo '</section>';
 			echo '</body>';
-			echo('<!-- Page generated in '.round((explode(' ', microtime())[0] + explode(' ', microtime())[1]) - $start, 4).' seconds.-->');
+			echo('<!-- Page generated in '.round((explode(' ', microtime())[0] + explode(' ', microtime())[1]) - $start, 4).' seconds with a peak memory consumption of ' . (memory_get_peak_usage(true)/1024/1024) . ' MiB-->');
 		echo '</html>';
 	}
 
