@@ -224,7 +224,7 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
-				if ($user->hasPermission('*')) {
+				if ($user->hasPermission('chief.group')) {
 					if (!$editUser->isGroupMember()) {
 						echo '<tr>';
 							echo '<td></td>';
