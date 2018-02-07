@@ -498,6 +498,14 @@ class Site {
 									}
 								}
 
+								if($user->isGroupMember()) {
+									if ($this->pageName == 'wifi') {
+										echo '<li class="active"><a href="index.php?page=wifi"><img src="images/wifi.png"></a></li>';
+									} else {
+										echo '<li><a href="index.php?page=wifi"><img src="images/wifi.png"></a></li>';
+									}
+								}
+
 								if ($this->pageName == 'user-profile' ||
 									$this->pageName == 'user-history' ||
 									$this->pageName == 'edit-profile' ||
