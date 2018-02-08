@@ -18,6 +18,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//Maintenance trap
+require_once 'SiteMaintenanceTrap.php';
+
 require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
@@ -334,7 +337,8 @@ class Site {
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
 									$this->pageName == 'developer-syslog' ||
-									$this->pageName == 'developer-phpinfo') {
+                                    $this->pageName == 'developer-phpinfo' || 
+                                    $this->pageName == 'developer-maintenance') {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.change-user')) {
@@ -349,6 +353,11 @@ class Site {
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.syslog')) {
 										echo '<li><a' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . ' href="index.php?page=developer-syslog">Systemlogg</a></li>';
+                                    }
+                                    
+                                    if ($user->hasPermission('*') ||
+										$user->hasPermission('developer.maintenance')) {
+										echo '<li><a' . ($this->pageName == 'developer-maintenance' ? ' class="active"' : null) . ' href="index.php?page=developer-maintenance">Vedlikeholdsmodus</a></li>';
 									}
 
 								}
@@ -491,7 +500,8 @@ class Site {
 								if ($user->hasPermission('developer')) {
 									if ($this->pageName == 'developer' ||
 										$this->pageName == 'developer-change-user' ||
-									        $this->pageName == 'developer-syslog') {
+                                        $this->pageName == 'developer-syslog' ||
+                                        $this->pageName == 'developer-maintenance') {
 										echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
