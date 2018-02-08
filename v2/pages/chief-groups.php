@@ -104,7 +104,7 @@ if (Session::isAuthenticated()) {
 
 			echo '<h3>Medlemmer</h3>';
 
-			$freeUserList = UserHandler::getMemberUsers(); // TODO: Verify this, used to be UserHandler::getMemberUsers(); but removed for multi-group support.
+			$freeUserList = UserHandler::getUsers();
 
 			if (!empty($freeUserList)) {
 				echo '<table>';
