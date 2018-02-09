@@ -79,6 +79,7 @@ if (Session::isAuthenticated()) {
 		
 		// IOS
 		case "ios":
+            echo 'For å koble til det trådløse nettverket på IOS enheter, last ned <a href="files/network/Infected.mobileconfig">denne</a> og installer. <br> Deretter logg inn med din Infected-bruker.';
 			break;
 		
 		// Windows

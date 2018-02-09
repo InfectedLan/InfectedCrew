@@ -253,8 +253,9 @@ class Site {
                                 } else if ($this->pageName == 'network') {
                                     echo '<li><a' . ($this->pageName == 'network' && !isset($_GET['platform']) ? ' class="active"' : null) . ' href="index.php?page=network">Informasjon</a></li>';
                                     echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'android' ? ' class="active"' : null) . ' href="index.php?page=network&platform=android">Android</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'ios' ? ' class="active"' : null) . ' href="index.php?page=network&platform=ios">IOS</a></li>';
                                     echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'windows' ? ' class="active"' : null) . ' href="index.php?page=network&platform=windows">Windows</a></li>';
-								} else if ($this->pageName == 'admin' ||
+                                } else if ($this->pageName == 'admin' ||
 									$this->pageName == 'admin-events' ||
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
