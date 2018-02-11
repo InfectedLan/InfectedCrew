@@ -19,6 +19,7 @@
  */
 
 require_once 'session.php';
+require_once 'qr.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
@@ -273,7 +274,8 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($editUser);
 			}
 
-			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
+            echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
+            echo '<img src="../api/content/qrcache/' . QR::getCode('infected-user:' . $editUser->getId())  . '" width="50%" style="float: center;">';
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
