@@ -253,7 +253,12 @@ class Site {
 									if ($user->hasPermission('chief.email')) {
 										echo '<li><a' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . ' href="index.php?page=chief-email">Send e-post</a></li>';
 									}
-								} else if ($this->pageName == 'admin' ||
+                                } else if ($this->pageName == 'network') {
+                                    echo '<li><a' . ($this->pageName == 'network' && !isset($_GET['platform']) ? ' class="active"' : null) . ' href="index.php?page=network">Informasjon</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'android' ? ' class="active"' : null) . ' href="index.php?page=network&platform=android">Android</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'ios' ? ' class="active"' : null) . ' href="index.php?page=network&platform=ios">IOS</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'windows' ? ' class="active"' : null) . ' href="index.php?page=network&platform=windows">Windows</a></li>';
+                                } else if ($this->pageName == 'admin' ||
 									$this->pageName == 'admin-events' ||
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
@@ -331,7 +336,7 @@ class Site {
                     }
 	                }
 
-                  if($user->hasPermission('compo.casting')) {
+                  if ($user->hasPermission('compo.casting')) {
                     echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
                   }
 								} else if ($this->pageName == 'developer' ||
@@ -451,14 +456,6 @@ class Site {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									}
 								}
-								if ($user->hasPermission('stats')) {
-									if ($this->pageName == 'stats' ||
-										$this->pageName == 'stats-ticketsales' ) {
-										echo '<li class="active"><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
-									} else {
-										echo '<li><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
-									}
-								}
 
 								if ($user->hasPermission('chief')) {
 									if ($this->pageName == 'edit-restricted-page' && $_GET['id'] == 1 ||
@@ -475,6 +472,14 @@ class Site {
 									}
 								}
 
+                                if ($user->isGroupMember()) {
+                                    if ($this->pageName == 'network') {
+                                        echo '<li class="active"><a href="index.php?page=network"><img src="images/wifi.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=network"><img src="images/wifi.png"></a></li>';
+                                    }
+                                }
+
 								if ($user->hasPermission('admin')) {
 									if ($this->pageName == 'admin' ||
 										$this->pageName == 'admin-events' ||
@@ -489,14 +494,6 @@ class Site {
 									}
 								}
 
-                                if ($user->hasPermission('compo.management')) {
-									if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
-										echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
-									} else {
-										echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
-									}
-								}
-
 								if ($user->hasPermission('developer')) {
 									if ($this->pageName == 'developer' ||
 										$this->pageName == 'developer-change-user' ||
@@ -507,6 +504,23 @@ class Site {
 										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									}
 								}
+
+                                if ($user->hasPermission('compo.management')) {
+                                    if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
+                                        echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+                                    }
+                                }
+
+                                if ($user->hasPermission('stats')) {
+                                    if ($this->pageName == 'stats' ||
+                                        $this->pageName == 'stats-ticketsales' ) {
+                                        echo '<li class="active"><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+                                    }
+                                }
 
 								if ($this->pageName == 'user-profile' ||
 									$this->pageName == 'user-history' ||

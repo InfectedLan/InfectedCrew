@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>AutoJoin</key>
+			<true/>
+			<key>CaptiveBypass</key>
+			<false/>
+			<key>EAPClientConfiguration</key>
+			<dict>
+				<key>AcceptEAPTypes</key>
+				<array>
+					<integer>21</integer>
+				</array>
+				<key>OneTimeUserPassword</key>
+				<false/>
+				<key>TLSMaximumVersion</key>
+				<string>1.2</string>
+				<key>TLSMinimumVersion</key>
+				<string>1.0</string>
+				<key>TTLSInnerAuthentication</key>
+				<string>PAP</string>
+			</dict>
+			<key>EncryptionType</key>
+			<string>WPA2</string>
+			<key>HIDDEN_NETWORK</key>
+			<false/>
+			<key>IsHotspot</key>
+			<false/>
+			<key>PayloadDescription</key>
+			<string>Configures Wi-Fi settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Wi-Fi</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.wifi.managed.43374CE0-C264-4306-9B44-DA6E2808DD45</string>
+			<key>PayloadType</key>
+			<string>com.apple.wifi.managed</string>
+			<key>PayloadUUID</key>
+			<string>43374CE0-C264-4306-9B44-DA6E2808DD45</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>ProxyType</key>
+			<string>None</string>
+			<key>SSID_STR</key>
+			<string>Infected</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Provides wireless network configuration for the Infected network.</string>
+	<key>PayloadDisplayName</key>
+	<string>Infected</string>
+	<key>PayloadIdentifier</key>
+	<string>Infected</string>
+	<key>PayloadOrganization</key>
+	<string>Infected</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>F6576E3F-A1A4-4D94-93F3-F7F5AB533D8F</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
