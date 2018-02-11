@@ -31,7 +31,20 @@ if (Session::isAuthenticated()) {
         echo '<p>Dette vil sette nettsiden inn i en tidsbasert vedlikeholdsmodus, som for øyeblikket ikke kan avbrytes.</p>';
         echo '<form method="post" class="maintenance-submit"><input type="number" min="1" max="1800" name="duration"><i>sekunder</i><input type="submit" value="Vedlikehold!" ></form>';
 
-        echo '<script>$document.onReady(function(){$(".maintenance-submit").on("submit", function() {$.post("", $(".maintenance-submit").serialize(), function(result){ if(result.result) {location.reload();} else {error(result.message);} });})});</script>';
+        echo '<script>$(document).ready(function()
+            {
+                $(".maintenance-submit").on("submit", function(event) {
+                    event.preventDefault();
+                    $.post("../api/rest/developer/setMaintenance.php", $(".maintenance-submit").serialize(), function(result){ 
+                        if(result.result) {
+                            location.reload();
+                        } else {
+                            error(result.message);
+                        } 
+                    });
+                })
+            });
+            </script>';
         
 	} else {
 		echo 'Du har ikke rettigheter til dette.';
