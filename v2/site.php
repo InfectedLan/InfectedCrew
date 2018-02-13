@@ -195,7 +195,11 @@ class Site {
 											 $this->pageName == 'event-checklist' ||
 											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
-										   $this->pageName == 'event-screen' ||
+                                    		$this->pageName == 'event-screen' ||
+                                    $this->pageName == 'event-nfcoverview' ||
+                                    $this->pageName == 'event-bongtransactions' ||
+                                    $this->pageName == 'event-bongoverview' ||
+                                    $this->pageName == 'event-nfcassign' ||
 										   $this->pageName == 'event-agenda') {
 
 									if ($user->hasPermission('event.checkin')) {
@@ -221,6 +225,19 @@ class Site {
 									if ($user->hasPermission('event.table-labels')) {
 										echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 									}
+
+                                    if ($user->hasPermission('event.nfcmgmt')) {
+                                        echo '<li><a' . ($this->pageName == 'event-nfcoverview' ? ' class="active"' : null) . ' href="index.php?page=event-nfcoverview">NFC-oversikt</a></li>';
+                                    }
+                                    if ($user->hasPermission('event.bongmgmt')) {
+                                        echo '<li><a' . ($this->pageName == 'event-bongtransactions' ? ' class="active"' : null) . ' href="index.php?page=event-bongtransactions">Bong-transaksjoner</a></li>';
+                                    }
+                                    if ($user->hasPermission('event.bongmgmt')) {
+                                        echo '<li><a' . ($this->pageName == 'event-bongoverview' ? ' class="active"' : null) . ' href="index.php?page=event-bongoverview">Bong-oversikt</a></li>';
+                                    }
+                                    if ($user->hasPermission('event.nfcmgmt')) {
+                                        echo '<li><a' . ($this->pageName == 'event-nfcassign' ? ' class="active"' : null) . ' href="index.php?page=event-nfcassign">Bind NFC-kort til bruker</a></li>';
+                                    }
 								} else if ($this->pageName == 'chief' ||
 									$this->pageName == 'chief-groups' ||
 									$this->pageName == 'chief-teams' ||
@@ -449,7 +466,10 @@ class Site {
 										$this->pageName == 'event-checklist' ||
 										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
-										$this->pageName == 'event-screen' ||
+                                        $this->pageName == 'event-screen' ||
+                                        $this->pageName == 'event-bongoverview' ||
+                                        $this->pageName == 'event-nfcoverview' ||
+                                        $this->pageName == 'event-bongtransactions' ||
 										$this->pageName == 'event-agenda') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {

@@ -25,6 +25,9 @@ require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/nfccardhandler.php';
+require_once 'handlers/bongtransactionhandler.php';
+require_once 'handlers/bongtypehandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -183,6 +186,52 @@ if (Session::isAuthenticated()) {
 						echo '<td><i>Ingen</i></td>';
 					echo '</tr>';
 				    }
+				}
+
+				if($user->hasPermission('event.nfcmgmt')) {
+					$cards = NfcCardHandler::getCardsByUser($editUser);
+					if(count($cards) != 0) {
+						$first = true;
+						foreach ($cards as $card) {
+							echo '<tr>';
+							echo '<td>' . ($first ? 'Tilknyttede NFC-kort' : '') . '</td>';
+							echo '<td><code>' . $card->getNfcId() . '</code></td>';
+							echo '</tr>';
+							$first = false;
+						}
+					}
+
+				}
+				if($user->hasPermission('event.bongmgmt')) {
+                    $bongTypes = BongTypeHandler::getBongTypes();
+                    $bongList = [];
+                    foreach ($bongTypes as $bong) {
+                        $entitlement = BongEntitlementHandler::calculateBongEntitlementByUser($bong, $editUser);
+                        if($entitlement != 0) {
+                            $posession = BongTransactionHandler::getBongPosession($bong, $editUser);
+                            $bongList[] = ["bong" => [ "id" => $bong->getId(),
+                                "name" => $bong->getName()],
+                                "posession" => $posession];
+                        }
+                    }
+                    if(count($bongList)!= 0) {
+                        echo '<tr>';
+                        echo '<td>Gi bong</td>';
+                        echo '<td>';
+                        	echo '<form method="post" class="bong-submit">';
+                        	echo '<input type="hidden" name="userId" value="' . $editUser->getId() . '" >';
+                        	//echo '<input type="hidden" name="transactorUserId" value="' . $user->getId() . '" >';
+								echo '<select name="bongType"">';
+									foreach($bongList as $bong) {
+										echo '<option value="' . $bong["bong"]["id"] . '">' . $bong["bong"]["name"] . '(' . $bong["posession"] . ')</option>';
+									}
+								echo '</select>';
+								echo '<input type="number" min="1" max="1800" name="amount"><input type="submit" value="Gi bong" >';
+							echo '</form>';
+                        echo '</td>';
+                        echo '</tr>';
+					}
+
 				}
 
 				if ($user->hasPermission('user.history') ||
