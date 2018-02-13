@@ -188,7 +188,7 @@ if (Session::isAuthenticated()) {
 				    }
 				}
 
-				if($user->hasPermission('event.nfcmgmt')) {
+				if($user->hasPermission('nfc.card.management')) {
 					$cards = NfcCardHandler::getCardsByUser($editUser);
 					if(count($cards) != 0) {
 						$first = true;
@@ -202,7 +202,7 @@ if (Session::isAuthenticated()) {
 					}
 
 				}
-				if($user->hasPermission('event.bongmgmt')) {
+				if($user->hasPermission('nfc.bong.transaction')) {
                     $bongTypes = BongTypeHandler::getBongTypes();
                     $bongList = [];
                     foreach ($bongTypes as $bong) {

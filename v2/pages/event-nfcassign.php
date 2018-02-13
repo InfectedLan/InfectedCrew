@@ -25,7 +25,7 @@ require_once 'handlers/sysloghandler.php';
 if (Session::isAuthenticated()) {
     $user = Session::getCurrentUser();
 
-    if ($user->hasPermission('event.nfcmgmt')) {
+    if ($user->hasPermission('nfc.card.management')) {
         echo '<h1>Koble NFC-kort til bruker</h1>';
 
         echo '<p>Her kan du manuelt koble et NFC-kort til en bruker.</p>';

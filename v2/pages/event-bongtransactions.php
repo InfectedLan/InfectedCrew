@@ -25,7 +25,7 @@ require_once 'handlers/bongtypehandler.php';
 if (Session::isAuthenticated()) {
     $user = Session::getCurrentUser();
 
-    if ($user->hasPermission('event.nfcmgmt')) {
+    if ($user->hasPermission('nfc.bong.management')) {
         echo '<h3>Bongtransaksjoner</h3>';
         echo '<p>Liste over alle transaksjoner som har skjedd for dette eventet.</p>';
         $bongs = BongTypeHandler::getBongTypes();

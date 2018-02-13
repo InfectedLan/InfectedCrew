@@ -27,7 +27,7 @@ require_once 'objects/bongentitlement.php';
 if (Session::isAuthenticated()) {
     $user = Session::getCurrentUser();
 
-    if ($user->hasPermission('event.nfcmgmt')) {
+    if ($user->hasPermission('nfc.bong.management')) {
         echo '<h3>Bong-oversikt</h3>';
         echo '<p>Dette er en placeholder for et bedre system i v3, slik at du skal kunne ha oversikt over hva som skjer i bong-verden</p>';
 
@@ -36,6 +36,7 @@ if (Session::isAuthenticated()) {
         foreach($bongs as $bong) {
             $entitlements = BongEntitlementHandler::getBongEntitlements($bong);
             echo '<h4>' . $bong->getName() . '</h4>';
+            echo '<i>' . $bong->getDescription() . '</i>';
             echo "<table>";
             echo "<tr>";
             echo "<td>Type</td>";

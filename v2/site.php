@@ -226,16 +226,16 @@ class Site {
 										echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 									}
 
-                                    if ($user->hasPermission('event.nfcmgmt')) {
+                                    if ($user->hasPermission('nfc.management')) {
                                         echo '<li><a' . ($this->pageName == 'event-nfcoverview' ? ' class="active"' : null) . ' href="index.php?page=event-nfcoverview">NFC-oversikt</a></li>';
                                     }
-                                    if ($user->hasPermission('event.bongmgmt')) {
+                                    if ($user->hasPermission('nfc.bong.management')) {
                                         echo '<li><a' . ($this->pageName == 'event-bongtransactions' ? ' class="active"' : null) . ' href="index.php?page=event-bongtransactions">Bong-transaksjoner</a></li>';
                                     }
-                                    if ($user->hasPermission('event.bongmgmt')) {
+                                    if ($user->hasPermission('nfc.bong.management')) {
                                         echo '<li><a' . ($this->pageName == 'event-bongoverview' ? ' class="active"' : null) . ' href="index.php?page=event-bongoverview">Bong-oversikt</a></li>';
                                     }
-                                    if ($user->hasPermission('event.nfcmgmt')) {
+                                    if ($user->hasPermission('nfc.card.management')) {
                                         echo '<li><a' . ($this->pageName == 'event-nfcassign' ? ' class="active"' : null) . ' href="index.php?page=event-nfcassign">Bind NFC-kort til bruker</a></li>';
                                     }
 								} else if ($this->pageName == 'chief' ||

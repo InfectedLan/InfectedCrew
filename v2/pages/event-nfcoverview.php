@@ -25,7 +25,7 @@ require_once 'handlers/roomhandler.php';
 if (Session::isAuthenticated()) {
     $user = Session::getCurrentUser();
 
-    if ($user->hasPermission('event.nfcmgmt')) {
+    if ($user->hasPermission('nfc.management')) {
         echo '<h3>Nfc-oversikt</h3>';
         echo '<p>Dette er en placeholder for et bedre system i v3, slik at du skal kunne ha oversikt over hva som skjer i nfc-verden</p>';
 
