@@ -36,7 +36,7 @@ if (Session::isAuthenticated()) {
         foreach($bongs as $bong) {
             $entitlements = BongEntitlementHandler::getBongEntitlements($bong);
             echo '<h4>' . $bong->getName() . '</h4>';
-            echo '<i>' . $bong->getDescription() . '</i>';
+            echo '<i>' . $bong->getDescription() . '</i><br />';
             echo "<table>";
             echo "<tr>";
             echo "<td>Type</td>";
