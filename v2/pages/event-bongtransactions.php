@@ -32,7 +32,7 @@ if (Session::isAuthenticated()) {
         foreach($bongs as $bong) {
             echo "<h3>" . $bong->getName() . "</h3>";
             $transactions = BongTransactionHandler::getBongTransactions($bong);
-            echo "<table>";
+            echo "<table cellpadding='8'>";
             echo "<tr>";
                 echo "<td>Bruker</td>";
                 echo "<td>Mengde</td>";
@@ -42,7 +42,12 @@ if (Session::isAuthenticated()) {
             foreach($transactions as $transaction) {
                 echo "<tr>";
                     echo "<td>" . $transaction->getUser()->getDisplayName() . "</td>";
-                    echo "<td>" . $transaction->getTransactionAmount() . "</td>";
+                    $amt = $transaction->getTransactionAmount();
+                    if($amt < 0) {
+                        echo "<td>Tok " . abs($amt ). "</td>";
+                    } else {
+                        echo "<td>Fikk " . $amt . "</td>";
+                    }
                     echo "<td>" . date('Y-m-d H:i:s', $transaction->getTimestamp() ) . "</td>";
                     echo "<td>" . $transaction->getTransactionHandler()->getDisplayName() . "</td>";
                 echo "</tr>";

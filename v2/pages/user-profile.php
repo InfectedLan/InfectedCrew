@@ -57,6 +57,12 @@ if (Session::isAuthenticated()) {
 					echo '<td>Brukernavn:</td>';
 					echo '<td>' . $editUser->getUsername() . '</td>';
 				echo '</tr>';
+				if($editUser->hasCustomTitle()) {
+                    echo '<tr>';
+                    	echo '<td>Egendefinert tittel:</td>';
+                    	echo '<td>' . $editUser->getCustomTitle() . '</td>';
+                    echo '</tr>';
+				}
 				echo '<tr>';
 					echo '<td>E-post:</td>';
 					echo '<td><a href="mailto:' . $editUser->getEmail() . '">' . $editUser->getEmail() . '</a></td>';
@@ -202,6 +208,17 @@ if (Session::isAuthenticated()) {
 					}
 
 				}
+
+				if ($user->hasPermission('nfc.curfew') && $editUser->getAge() <= Settings::curfewLimit) {
+					echo '<tr>';
+						echo '<td>Portforbud</td>';
+						echo '<td>';
+							echo $editUser->getCurfew() ? 'Ja' : 'Nei';
+							echo '<input type="button" value="Endre" onClick="setUserCurfew(' . $editUser->getId() . ', ' . ($editUser->getCurfew() ? '0' : '1') . ')">';
+						echo '</td>';
+					echo '</tr>';
+				}
+
 				if($user->hasPermission('nfc.bong.transaction')) {
                     $bongTypes = BongTypeHandler::getBongTypes();
                     $bongList = [];
@@ -271,6 +288,13 @@ if (Session::isAuthenticated()) {
 					echo '<tr>';
 						echo '<td></td>';
 						echo '<td><a href="index.php?page=admin-permissions&id=' . $editUser->getId() . '">Endre rettigheter</a></td>';
+					echo '</tr>';
+				}
+
+				if ($user->hasPermission('nfc.card.management')) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="../api/pages/utils/printSingleCrewCard.php?id=' . $editUser->getId() . '">Print crewkort</a></td>';
 					echo '</tr>';
 				}
 

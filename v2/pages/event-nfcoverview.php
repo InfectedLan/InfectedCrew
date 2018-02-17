@@ -34,7 +34,7 @@ if (Session::isAuthenticated()) {
         foreach($rooms as $room) {
             echo '<h4>' . $room->getName() . '</h4>';
             $entries = RoomHandler::getLogEntriesInRoom($room);
-            echo "<table>";
+            echo "<table cellpadding='8'>";
             echo "<tr>";
             echo "<td>Bruker</td>";
             echo "<td>Tidspunkt</td>";

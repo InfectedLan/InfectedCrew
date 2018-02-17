@@ -45,6 +45,17 @@ function transactBong(form) {
     });
 }
 
+function setUserCurfew(userid, flag) {
+    $.post("../api/rest/user/curfew/set.php", "id=" + userid + "&curfew=" + flag, function(result){
+        location.reload();
+    	if(result.result) {
+
+        } else {
+            error(result.message);
+        }
+    });
+}
+
 function editUserNote(form) {
  	$.getJSON('../api/json/user/editUserNote.php' + '?' + $(form).serialize(), function(data) {
  		if (data.result) {

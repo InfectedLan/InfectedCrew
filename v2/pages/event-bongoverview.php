@@ -37,7 +37,7 @@ if (Session::isAuthenticated()) {
             $entitlements = BongEntitlementHandler::getBongEntitlements($bong);
             echo '<h4>' . $bong->getName() . '</h4>';
             echo '<i>' . $bong->getDescription() . '</i><br />';
-            echo "<table>";
+            echo "<table cellpadding='8'>";
             echo "<tr>";
             echo "<td>Type</td>";
             echo "<td>Argument</td>";
@@ -45,6 +45,9 @@ if (Session::isAuthenticated()) {
             echo "<td>Type</td>";
             echo "</tr>";
             foreach($entitlements as $entitlement) {
+                if($entitlement->getEntitlementType() == BongEntitlement::APPEND_TYPE_ADDITIVE) {
+                    continue;
+                }
                 echo "<tr>";
                 echo "<td>" . ($entitlement->getEntitlementType() == BongEntitlement::ENTITLEMENT_TYPE_USER ? "Bruker" : "Crew") . "</td>";
                 echo "<td>";
