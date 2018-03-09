@@ -23,11 +23,38 @@ $(document).ready(function() {
 		addUserToGroup(this);
 	});
 
-	$('.edit-user-note').on('submit', function(event) {
- 		event.preventDefault();
- 		editUserNote(this);
- 	});
+    $('.edit-user-note').on('submit', function(event) {
+        event.preventDefault();
+        editUserNote(this);
+    });
+
+    $('.bong-submit').on('submit', function(event) {
+        event.preventDefault();
+        transactBong(this);
+    });
+    console.log("added bong submit thing");
 });
+
+function transactBong(form) {
+    $.post("../api/rest/nfc/bong/transaction/create.php", $(form).serialize(), function(result){
+        if(result.result) {
+            location.reload();
+        } else {
+            error(result.message);
+        }
+    });
+}
+
+function setUserCurfew(userid, flag) {
+    $.post("../api/rest/user/curfew/set.php", "id=" + userid + "&curfew=" + flag, function(result){
+        location.reload();
+    	if(result.result) {
+
+        } else {
+            error(result.message);
+        }
+    });
+}
 
 function editUserNote(form) {
  	$.getJSON('../api/json/user/editUserNote.php' + '?' + $(form).serialize(), function(data) {

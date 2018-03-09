@@ -24,8 +24,12 @@ require_once 'objects/group.php';
 require_once 'objects/team.php';
 
 function displayGroupWithInfo(Group $group) {
+    $user = Session::getCurrentUser();
 	echo '<div class="crewParagraph">';
 		echo '<h3>' . $group->getTitle() . '</h3>';
+		if ($user->hasPermission('nfc.card.management')) {
+			echo '<a href="../api/pages/utils/printCardsForCrew.php?id=' . $group->getId() . '">Print crewkort for hele crewet</a><br />';
+		}
 		echo $group->getDescription();
 	echo '</div>';
 

@@ -278,7 +278,7 @@ function addNote() {
 							$content .= '</tr>';
 						}
 
-						if ($user->isGroupLeader() ||
+						if ($user->hasPermission('event.checklist.delegate') || $user->isGroupLeader() ||
 							($user->isTeamMember() && $user->isTeamLeader())) {
 							$content .= '<tr>';
 								$content .= '<td>Deleger til medlem</td>';

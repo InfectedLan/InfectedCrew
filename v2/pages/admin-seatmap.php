@@ -99,8 +99,10 @@ if (Session::isAuthenticated()) {
 					echo '<select id="seatmapSelect">';
 						$event = EventHandler::getCurrentEvent();
 
+						$currentMap = $event->getSeatmap();
+
 						foreach (SeatmapHandler::getSeatmaps() as $seatmap) {
-							if ($seatmap->equals($event->getSeatmap())) {
+							if ($seatmap->equals($currentMap)) {
 								echo '<option value="' . $seatmap->getId() . '" selected>' . $seatmap->getHumanName() . '</option>';
 							} else {
 								echo '<option value="' . $seatmap->getId() . '">' . $seatmap->getHumanName() . '</option>';

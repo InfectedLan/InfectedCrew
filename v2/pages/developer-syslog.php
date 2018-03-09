@@ -42,7 +42,8 @@ if (Session::isAuthenticated()) {
 		    echo '<td>' . $entry->getSource() . '</td>';
 		    echo '<td>' . SyslogHandler::getSeverityString($entry->getSeverity()) . '</td>';
 		    echo '<td>' . $entry->getMessage() . '</td>';
-		    if(count($entry->getMetadata())>0) {
+		    $metadata = $entry->getMetadata();
+		    if(!is_array($metadata) || count($metadata)>0) {
 			echo '<td><textarea rows="10" cols="50">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
 		    } else {
 			echo '<td><i>Ingen metadata</i></td>';

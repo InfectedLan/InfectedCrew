@@ -18,6 +18,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//Maintenance trap
+require_once 'SiteMaintenanceTrap.php';
+
 require_once 'session.php';
 require_once 'settings.php';
 require_once 'handlers/restrictedpagehandler.php';
@@ -192,7 +195,11 @@ class Site {
 											 $this->pageName == 'event-checklist' ||
 											 $this->pageName == 'edit-note' ||
 										   $this->pageName == 'event-seatmap' ||
-										   $this->pageName == 'event-screen' ||
+                                    		$this->pageName == 'event-screen' ||
+                                    $this->pageName == 'event-nfcoverview' ||
+                                    $this->pageName == 'event-bongtransactions' ||
+                                    $this->pageName == 'event-bongoverview' ||
+                                    $this->pageName == 'event-nfcassign' ||
 										   $this->pageName == 'event-agenda') {
 
 									if ($user->hasPermission('event.checkin')) {
@@ -218,6 +225,19 @@ class Site {
 									if ($user->hasPermission('event.table-labels')) {
 										echo '<li><a href="../api/pages/utils/printTableLabels.php">Print bordlapper</a></li>';
 									}
+
+                                    if ($user->hasPermission('nfc.management')) {
+                                        echo '<li><a' . ($this->pageName == 'event-nfcoverview' ? ' class="active"' : null) . ' href="index.php?page=event-nfcoverview">NFC-oversikt</a></li>';
+                                    }
+                                    if ($user->hasPermission('nfc.bong.management')) {
+                                        echo '<li><a' . ($this->pageName == 'event-bongtransactions' ? ' class="active"' : null) . ' href="index.php?page=event-bongtransactions">Bong-transaksjoner</a></li>';
+                                    }
+                                    if ($user->hasPermission('nfc.bong.management')) {
+                                        echo '<li><a' . ($this->pageName == 'event-bongoverview' ? ' class="active"' : null) . ' href="index.php?page=event-bongoverview">Bong-oversikt</a></li>';
+                                    }
+                                    if ($user->hasPermission('nfc.card.management')) {
+                                        echo '<li><a' . ($this->pageName == 'event-nfcassign' ? ' class="active"' : null) . ' href="index.php?page=event-nfcassign">Bind NFC-kort til bruker</a></li>';
+                                    }
 								} else if ($this->pageName == 'chief' ||
 									$this->pageName == 'chief-groups' ||
 									$this->pageName == 'chief-teams' ||
@@ -250,7 +270,12 @@ class Site {
 									if ($user->hasPermission('chief.email')) {
 										echo '<li><a' . ($this->pageName == 'chief-email' ? ' class="active"' : null) . ' href="index.php?page=chief-email">Send e-post</a></li>';
 									}
-								} else if ($this->pageName == 'admin' ||
+                                } else if ($this->pageName == 'network') {
+                                    echo '<li><a' . ($this->pageName == 'network' && !isset($_GET['platform']) ? ' class="active"' : null) . ' href="index.php?page=network">Informasjon</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'android' ? ' class="active"' : null) . ' href="index.php?page=network&platform=android">Android</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'ios' ? ' class="active"' : null) . ' href="index.php?page=network&platform=ios">IOS</a></li>';
+                                    echo '<li><a' . ($this->pageName == 'network' && $_GET['platform'] == 'windows' ? ' class="active"' : null) . ' href="index.php?page=network&platform=windows">Windows</a></li>';
+                                } else if ($this->pageName == 'admin' ||
 									$this->pageName == 'admin-events' ||
 									$this->pageName == 'admin-permissions' ||
 									$this->pageName == 'admin-seatmap' ||
@@ -328,12 +353,14 @@ class Site {
                     }
 	                }
 
-                  if($user->hasPermission('compo.casting')) {
+                  if ($user->hasPermission('compo.casting')) {
                     echo '<li><a ' . ($this->pageName == 'compo-casting' ? ' class="active"' : null) . ' href="index.php?page=compo-casting">Casting</a></li>';
                   }
 								} else if ($this->pageName == 'developer' ||
 									$this->pageName == 'developer-change-user' ||
-									$this->pageName == 'developer-syslog') {
+									$this->pageName == 'developer-syslog' ||
+                                    $this->pageName == 'developer-phpinfo' || 
+                                    $this->pageName == 'developer-maintenance') {
 
 									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.change-user')) {
@@ -341,8 +368,18 @@ class Site {
 									}
 
 									if ($user->hasPermission('*') ||
+										$user->hasPermission('developer.phpinfo')) {
+										echo '<li><a' . ($this->pageName == 'developer-phpinfo' ? ' class="active"' : null) . ' href="index.php?page=developer-phpinfo">Vis phpinfo</a></li>';
+									}
+
+									if ($user->hasPermission('*') ||
 										$user->hasPermission('developer.syslog')) {
 										echo '<li><a' . ($this->pageName == 'developer-syslog' ? ' class="active"' : null) . ' href="index.php?page=developer-syslog">Systemlogg</a></li>';
+                                    }
+                                    
+                                    if ($user->hasPermission('*') ||
+										$user->hasPermission('developer.maintenance')) {
+										echo '<li><a' . ($this->pageName == 'developer-maintenance' ? ' class="active"' : null) . ' href="index.php?page=developer-maintenance">Vedlikeholdsmodus</a></li>';
 									}
 
 								}
@@ -429,19 +466,14 @@ class Site {
 										$this->pageName == 'event-checklist' ||
 										$this->pageName == 'edit-note' ||
 										$this->pageName == 'event-seatmap' ||
-										$this->pageName == 'event-screen' ||
+                                        $this->pageName == 'event-screen' ||
+                                        $this->pageName == 'event-bongoverview' ||
+                                        $this->pageName == 'event-nfcoverview' ||
+                                        $this->pageName == 'event-bongtransactions' ||
 										$this->pageName == 'event-agenda') {
 										echo '<li class="active"><a href="index.php?page=event"><img src="images/event.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=event"><img src="images/event.png"></a></li>';
-									}
-								}
-								if ($user->hasPermission('stats')) {
-									if ($this->pageName == 'stats' ||
-										$this->pageName == 'stats-ticketsales' ) {
-										echo '<li class="active"><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
-									} else {
-										echo '<li><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
 									}
 								}
 
@@ -460,6 +492,14 @@ class Site {
 									}
 								}
 
+                                if ($user->isGroupMember()) {
+                                    if ($this->pageName == 'network') {
+                                        echo '<li class="active"><a href="index.php?page=network"><img src="images/wifi.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=network"><img src="images/wifi.png"></a></li>';
+                                    }
+                                }
+
 								if ($user->hasPermission('admin')) {
 									if ($this->pageName == 'admin' ||
 										$this->pageName == 'admin-events' ||
@@ -474,23 +514,33 @@ class Site {
 									}
 								}
 
-                                if ($user->hasPermission('compo.management')) {
-									if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
-										echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
-									} else {
-										echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
-									}
-								}
-
 								if ($user->hasPermission('developer')) {
 									if ($this->pageName == 'developer' ||
 										$this->pageName == 'developer-change-user' ||
-									        $this->pageName == 'developer-syslog') {
+                                        $this->pageName == 'developer-syslog' ||
+                                        $this->pageName == 'developer-maintenance') {
 										echo '<li class="active"><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									} else {
 										echo '<li><a href="index.php?page=developer"><img src="images/developer.png"></a></li>';
 									}
 								}
+
+                                if ($user->hasPermission('compo.management')) {
+                                    if ($this->pageName == 'compo-overview' || $this->pageName == 'compo-clans' || $this->pageName == 'compo-matches') {
+                                        echo '<li class="active"><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=compo-overview"><img src="images/compo.png"></a></li>';
+                                    }
+                                }
+
+                                if ($user->hasPermission('stats')) {
+                                    if ($this->pageName == 'stats' ||
+                                        $this->pageName == 'stats-ticketsales' ) {
+                                        echo '<li class="active"><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+                                    } else {
+                                        echo '<li><a href="index.php?page=stats"><img src="images/stats.png"></a></li>';
+                                    }
+                                }
 
 								if ($this->pageName == 'user-profile' ||
 									$this->pageName == 'user-history' ||
@@ -507,7 +557,7 @@ class Site {
 					echo '</nav>';
 				echo '</section>';
 			echo '</body>';
-			echo('<!-- Page generated in '.round((explode(' ', microtime())[0] + explode(' ', microtime())[1]) - $start, 4).' seconds.-->');
+			echo('<!-- Page generated in '.round((explode(' ', microtime())[0] + explode(' ', microtime())[1]) - $start, 4).' seconds with a peak memory consumption of ' . (memory_get_peak_usage(true)/1024/1024) . ' MiB-->');
 		echo '</html>';
 	}
 

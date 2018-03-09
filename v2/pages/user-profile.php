@@ -19,11 +19,15 @@
  */
 
 require_once 'session.php';
+require_once 'qr.php';
 require_once 'handlers/userhandler.php';
 require_once 'handlers/seatmaphandler.php';
 require_once 'handlers/eventhandler.php';
 require_once 'handlers/tickethandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/nfccardhandler.php';
+require_once 'handlers/bongtransactionhandler.php';
+require_once 'handlers/bongtypehandler.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : Session::getCurrentUser()->getId();
 
@@ -53,6 +57,12 @@ if (Session::isAuthenticated()) {
 					echo '<td>Brukernavn:</td>';
 					echo '<td>' . $editUser->getUsername() . '</td>';
 				echo '</tr>';
+				if($editUser->hasCustomTitle()) {
+                    echo '<tr>';
+                    	echo '<td>Egendefinert tittel:</td>';
+                    	echo '<td>' . $editUser->getCustomTitle() . '</td>';
+                    echo '</tr>';
+				}
 				echo '<tr>';
 					echo '<td>E-post:</td>';
 					echo '<td><a href="mailto:' . $editUser->getEmail() . '">' . $editUser->getEmail() . '</a></td>';
@@ -109,7 +119,7 @@ if (Session::isAuthenticated()) {
 					$user->equals($editUser)) {
 					echo '<tr>';
 						echo '<td>Dato registrert:</td>';
-						echo '<td>' . date('d.m.Y', $editUser->getRegisteredDate()) . '</td>';
+						echo '<td>' . date('d.m.Y', $editUser->getRegisterDate()) . '</td>';
 					echo '</tr>';
 				}
 
@@ -184,6 +194,63 @@ if (Session::isAuthenticated()) {
 				    }
 				}
 
+				if($user->hasPermission('nfc.card.management')) {
+					$cards = NfcCardHandler::getCardsByUser($editUser);
+					if(count($cards) != 0) {
+						$first = true;
+						foreach ($cards as $card) {
+							echo '<tr>';
+							echo '<td>' . ($first ? 'Tilknyttede NFC-kort' : '') . '</td>';
+							echo '<td><code>' . $card->getNfcId() . '</code></td>';
+							echo '</tr>';
+							$first = false;
+						}
+					}
+
+				}
+
+				if ($user->hasPermission('nfc.curfew') && $editUser->getAge() <= Settings::curfewLimit) {
+					echo '<tr>';
+						echo '<td>Portforbud</td>';
+						echo '<td>';
+							echo $editUser->getCurfew() ? 'Ja' : 'Nei';
+							echo '<input type="button" value="Endre" onClick="setUserCurfew(' . $editUser->getId() . ', ' . ($editUser->getCurfew() ? '0' : '1') . ')">';
+						echo '</td>';
+					echo '</tr>';
+				}
+
+				if($user->hasPermission('nfc.bong.transaction')) {
+                    $bongTypes = BongTypeHandler::getBongTypes();
+                    $bongList = [];
+                    foreach ($bongTypes as $bong) {
+                        $entitlement = BongEntitlementHandler::calculateBongEntitlementByUser($bong, $editUser);
+                        if($entitlement != 0) {
+                            $posession = BongTransactionHandler::getBongPosession($bong, $editUser);
+                            $bongList[] = ["bong" => [ "id" => $bong->getId(),
+                                "name" => $bong->getName()],
+                                "posession" => $posession];
+                        }
+                    }
+                    if(count($bongList)!= 0) {
+                        echo '<tr>';
+                        echo '<td>Gi bong</td>';
+                        echo '<td>';
+                        	echo '<form method="post" class="bong-submit">';
+                        	echo '<input type="hidden" name="userId" value="' . $editUser->getId() . '" >';
+                        	//echo '<input type="hidden" name="transactorUserId" value="' . $user->getId() . '" >';
+								echo '<select name="bongType"">';
+									foreach($bongList as $bong) {
+										echo '<option value="' . $bong["bong"]["id"] . '">' . $bong["bong"]["name"] . '(' . $bong["posession"] . ')</option>';
+									}
+								echo '</select>';
+								echo '<input type="number" min="1" max="1800" name="amount"><input type="submit" value="Gi bong" >';
+							echo '</form>';
+                        echo '</td>';
+                        echo '</tr>';
+					}
+
+				}
+
 				if ($user->hasPermission('user.history') ||
 					$user->equals($editUser)) {
 					echo '<tr>';
@@ -224,7 +291,14 @@ if (Session::isAuthenticated()) {
 					echo '</tr>';
 				}
 
-				if ($user->hasPermission('*')) {
+				if ($user->hasPermission('nfc.card.management')) {
+					echo '<tr>';
+						echo '<td></td>';
+						echo '<td><a href="../api/pages/utils/printSingleCrewCard.php?id=' . $editUser->getId() . '">Print crewkort</a></td>';
+					echo '</tr>';
+				}
+
+				if ($user->hasPermission('chief.group')) {
 					if (!$editUser->isGroupMember()) {
 						echo '<tr>';
 							echo '<td></td>';
@@ -273,7 +347,8 @@ if (Session::isAuthenticated()) {
 				$avatarFile = AvatarHandler::getDefaultAvatar($editUser);
 			}
 
-			echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
+            echo '<img src="../api/' . $avatarFile . '" width="50%" style="float: right;">';
+            echo '<img src="../api/content/qrcache/' . QR::getCode('infected-user:' . $editUser->getId())  . '" width="50%" style="float: center;">';
 		} else {
 			echo '<p>Du har ikke rettigehter til dette.</p>';
 		}
