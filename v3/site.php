@@ -66,7 +66,7 @@ class Site {
                     echo '<link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">';
 
                     // Theme style
-                    echo '<link rel="stylesheet" href="dist/css/AdminLTE.min.css">';
+                    echo '<link rel="stylesheet" href="dist/css/AdminLTE.css">';
 
                     // AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load.
                     echo '<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">';
@@ -104,6 +104,9 @@ class Site {
                     // Bootstrap 3.3.7
                     echo '<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>';
 
+                    // Searchbox
+                    echo '<script src="pages/scripts/searchbox.js"></script>';
+
                     // iCheck
                     echo '<script src="plugins/iCheck/icheck.min.js"></script>';
 
@@ -130,6 +133,9 @@ class Site {
                     $user = Session::getCurrentUser();
 
                     echo '<body class="hold-transition skin-blue sidebar-mini">';
+                    //The menu
+                    $menudata = $this->generateMenu($user);
+                    echo '<script type="text/javascript">menuData = ' . json_encode($menudata) . ';</script>';
                         echo '<div class="wrapper">';
                             echo '<header class="main-header">';
                                 // Logo
@@ -365,14 +371,14 @@ EOD;
                                                 }
 
                                                 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-                                                    echo '<img src="' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
+                                                    echo '<img src="../api/' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
                                                     echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
                                                 echo '</a>';
 
                                                 echo '<ul class="dropdown-menu">';
                                                     // User image
                                                     echo '<li class="user-header">';
-                                                        echo '<img src="' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
+                                                        echo '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
                                                         echo '<p>';
                                                             echo $user->getFullName();
                                                             echo '<small>' . $user->getRole() . '</small>';
@@ -437,7 +443,7 @@ EOD;
                                     <!-- search form -->
                                     <form action="#" method="get" class="sidebar-form">
                                         <div class="input-group">
-                                            <input type="text" name="q" class="form-control" placeholder="Search...">
+                                            <input autocomplete="off" id="sidebar-search" type="text" name="q" class="form-control" placeholder="Search...">
                                             <span class="input-group-btn">
                                                         <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                                                         </button>
@@ -448,7 +454,8 @@ EOD;
                                     <!-- sidebar menu: : style can be found in sidebar.less -->
 EOD;
 
-                                    echo $this->getMenu($user);
+                                    //echo $this->getMenu($user);
+echo '<ul class="sidebar-menu" data-widget="tree"></ul>';
 
                                 echo '</section>';
                             echo '</aside>';
@@ -478,7 +485,7 @@ EOD;
                             echo '</div>';
                             echo '<footer class="main-footer">';
                                 echo '<div class="pull-right hidden-xs">';
-                                    echo '<b>Version</b> 2.4.0';
+                                    echo '<b>Version</b> 3.0';
                                 echo '</div>';
                                 echo '<strong>Copyright &copy; 2017' . (date('Y') > 2017 ? '-' . date('Y') : null) . ' <a href="//' . Settings::domain . '/">' . Settings::name . '</a>.</strong> All rights reserved.';
                             echo '</footer>';
@@ -823,6 +830,194 @@ EOD;
 
 	}
 
+    private function generateMenu(User $user) : array {
+        $data = [];
+        //Build my crew list
+        if ($user->isGroupMember()) {
+                $group = $user->getGroup();
+
+                // If the user is member of a team, also fetch team only pages.
+                if ($user->isTeamMember()) {
+                    $pageList = RestrictedPageHandler::getPagesForGroupAndTeam($group, $user->getTeam());
+                } else {
+                    $pageList = RestrictedPageHandler::getPagesForGroup($group);
+                }
+
+                $pageNameList = [];
+
+                foreach ($pageList as $page) {
+                    array_push($pageNameList, strtolower($page->getName()));
+                }
+
+                $teamList = $group->getTeams();
+                $teamNameList = [];
+
+                foreach ($teamList as $team) {
+                    array_push($teamNameList, strtolower($team->getName()));
+                }
+
+                // Only show pages for that group.
+                if (true || (empty($pageList) && empty($teamList))) {
+                    $data[] = ["name" => "Mitt crew", "icon" => "fa-user", "url" => "?page=my-crew"];
+                } else {
+                    $entries = [];
+                    $entries[] = ["name" => $group->getTitle(), "icon" => "fa-circle-o", "url" => "?page=my-crew"];
+
+                    // Only create link for groups that actually contain teams.
+                    if (!empty($teamList)) {
+                        foreach ($teamList as $team) {
+                            $entries[] = ["name" => $team->getTitle(), "icon" => "fa-circle-o", "url" => '?page=my-crew&teamId=' . $team->getId(), "active" => (isset($_GET['teamId']) && $team->getId() == $_GET['teamId'] )];
+                        }
+                    }
+
+                    if (!empty($pageList)) {
+                        foreach ($pageList as $page) {
+                            if (strtolower($page->getName()) != strtolower($group->getName())) {
+                                if (!in_array(strtolower($page->getName()), $teamNameList)) {
+                                    $entries[] = ["name" => $page->getTitle(), "icon" => "fa-circle-o", "url" => '?page=' . $page->getName()];
+                                }
+                            }
+                        }
+                    }
+
+                    $data[] = ["name" => "Mitt crew", "icon" => "fa-user", "entries" => $entries];
+                }
+            }
+
+        //Build crew list
+        $crew = [];
+
+        $groupList = GroupHandler::getGroups();
+
+        if (!empty($groupList)) {
+            foreach ($groupList as $group) {
+                $content .= '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
+                $crew[] = ["name" => $group->getTitle(), "icon" => "fa-circle-o", "url" => '?page=crew&id=' . $group->getId()];
+            }
+        }
+
+
+        $data[] = ["name" => "Crew", "icon" => "fa-users", "entries" => $crew];
+        //Build chief menu
+        if ($user->hasPermission('chief')) {
+            $chief = [];
+            if ($user->hasPermission('chief.group')) {
+                $chief[] = ["name" => "Crew", "icon" => "fa-circle-o", "url" => "?page=chief-group", "active" => $this->pageName == 'chief-group'];
+            }
+
+            if ($user->hasPermission('chief.team')) {
+                $chief[] = ["name" => "Lag", "icon" => "fa-circle-o", "url" => "?page=chief-team", "active" => $this->pageName == 'chief-team'];
+            }
+
+            if ($user->hasPermission('chief.avatar')) {
+                $chief[] = ["name" => "Profilbilder", "icon" => "fa-circle-o", "url" => "?page=chief-avatar", "active" => $this->pageName == 'chief-avatar'];
+            }
+
+            if ($user->hasPermission('chief.application')) {
+                $chief[] = ["name" => "Søknader", "icon" => "fa-circle-o", "url" => "?page=chief-application", "active" => $this->pageName == 'chief-application'];
+            }
+
+            if ($user->hasPermission('chief.my-crew')) {
+                $chief[] = ["name" => "My crew", "icon" => "fa-circle-o", "url" => "?page=chief-my-crew", "active" => ($this->pageName == 'chief-my-crew' || $this->pageName == 'edit-restricted-page')];
+            }
+
+            if ($user->hasPermission('chief.email')) {
+                $chief[] = ["name" => "Send e-post", "icon" => "fa-send", "url" => "?page=chief-email", "active" => $this->pageName == 'chief-email'];
+            }
+            $data[] = ["name" => "Chief", "icon" => "fa-gavel", "entries" => $chief, "active" => StringUtils::startsWith($this->pageName, 'chief')];
+        }
+        //Build event menu
+        if ($user->hasPermission('event')) {
+            $event = [];
+            if ($user->hasPermission('event.checkin')) {
+                $event[] = ["name" => "Innsjekk", "icon" => "fa-check", "url" => "?page=event-checkin", "active" => $this->pageName == 'event-checkin'];
+            }
+
+            if ($user->hasPermission('event.checklist')) {
+                $event[] = ["name" => "Sjekkliste", "icon" => "fa-check", "url" => "?page=event-checklist", "active" => ($this->pageName == 'event-checklist' || $this->pageName == 'edit-note')];
+            }
+
+            if ($user->hasPermission('event.seatmap')) {
+                $event[] = ["name" => "Setekart", "icon" => "fa-map-marker", "url" => "?page=event-seatmap", "active" => $this->pageName == 'event-seatmap'];
+            }
+
+            if ($user->hasPermission('event.screen')) {
+                $event[] = ["name" => "Infoskjerm", "icon" => "fa-desktop", "url" => "?page=event-screen", "active" => $this->pageName == 'event-screen'];
+            }
+
+            if ($user->hasPermission('event.agenda')) {
+                $event[] = ["name" => "Agenda", "icon" => "fa-clock-o", "url" => "?page=event-agenda", "active" => $this->pageName == 'event-agenda'];
+            }
+
+            if ($user->hasPermission('event.table-labels')) {
+                $event[] = ["name" => "Print bordlapper", "icon" => "fa-external-link", "url" => "../api/pages/utils/printTableLabels.php"];
+            }
+            $data[] = ["name" => "Arrangement", "icon" => "fa-calendar", "entries" => $event, "active" => StringUtils::startsWith($this->pageName, 'event')];
+        }
+
+        if ($user->hasPermission('stats')) {
+            $stats = [];
+
+            if ($user->hasPermission('stats.age')) {
+                $stats[] = ["name" => "Alder", "icon" => "fa-birthday-cake", "url" => "?page=stats-age", "active" => $this->pageName == 'stats-age'];
+            }
+
+            if ($user->hasPermission('stats.gender')) {
+                $stats[] = ["name" => "Kjønn", "icon" => "fa-venus-mars", "url" => "?page=stats-gender", "active" => $this->pageName == 'stats-gender'];
+            }
+
+            if ($user->hasPermission('stats.ticketsale')) {
+                $stats[] = ["name" => "Billetsalg", "icon" => "fa-ticket", "url" => "?page=stats-ticketsale", "active" => $this->pageName == 'stats-ticketsale'];
+            }
+            $data[] = ["name" => "Statistikk", "icon" => "fa-line-chart", "entries" => $stats, "active" => StringUtils::startsWith($this->pageName, 'stats')];
+        }
+
+        if ($user->hasPermission('admin')) {
+            $admin = [];
+
+            if ($user->hasPermission('admin.event')) {
+                $admin[] = ["name" => "Arrangementer", "icon" => "fa-calendar", "url" => "?page=admin-event", "active" => $this->pageName == 'admin-event'];
+            }
+
+            if ($user->hasPermission('admin.permission')) {
+                $admin[] = ["name" => "Tilganger", "icon" => "fa-check-square-o", "url" => "?page=admin-permission", "active" => $this->pageName == 'admin-permission'];
+            }
+
+            if ($user->hasPermission('admin.memberlist')) {
+                $admin[] = ["name" => "Medlemsliste", "icon" => "fa-check-square-o", "url" => "?page=admin-memberlist", "active" => $this->pageName == 'admin-memberlist'];
+            }
+
+            if ($user->hasPermission('admin.seatmap')) {
+                $admin[] = ["name" => "Endre setekart", "icon" => "fa-map-marker", "url" => "?page=admin-seatmap", "active" => $this->pageName == 'admin-seatmap'];
+            }
+
+            if ($user->hasPermission('admin.websocket')) {
+                $admin[] = ["name" => "Websocket-konsoll", "icon" => "fa-terminal", "url" => "?page=admin-websocket-console", "active" => $this->pageName == 'admin-websocket-console'];
+            }
+
+            $data[] = ["name" => "Administrator", "icon" => "fa-wrench", "entries" => $admin, "active" => StringUtils::startsWith($this->pageName, 'admin')];
+        }
+
+        if ($user->hasPermission('developer')) {
+            $dev = [];
+
+            if ($user->hasPermission('developer.switch-user')) {
+                $dev[] = ["name" => "Bytt bruker", "icon" => "fa-users", "url" => "?page=developer-switch-user", "active" => $this->pageName == 'developer-switch-user'];
+            }
+
+            if ($user->hasPermission('developer.syslog')) {
+                $dev[] = ["name" => "Systemlogg", "icon" => "fa-tv", "url" => "?page=developer-syslog", "active" => $this->pageName == 'developer-syslog'];
+            }
+
+            $data[] = ["name" => "Utvikler", "icon" => "fa-rocket", "entries" => $dev, "active" => StringUtils::startsWith($this->pageName, 'developer')];
+        }
+
+        return $data;
+    }
+
+    /*
+        DISCONTINUED, DO NOT MODIFY
+     */
 	private function getMenu(User $user): string {
 		$content = null;
 
@@ -853,7 +1048,7 @@ EOD;
 				}
 
 				// Only show pages for that group.
-				if (empty($pageList) && empty($teamList)) {
+				if (true || (empty($pageList) && empty($teamList))) {
 					$content .= '<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
 				} else {
 					$content .= '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
