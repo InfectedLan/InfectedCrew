@@ -71,7 +71,7 @@ class DeveloperSyslogPage extends DeveloperPage {
                                 $content .= '<td>' . date('Y-m-d H:i:s', $entry->getTimestamp()) . '</td>';
                                 $content .= '<td>' . ($causingUser != null ? '<a href="index.php?page=user-profile&userId=' . $causingUser->getId() . '">' . $causingUser->getUsername() . '(' . $causingUser->getId() . ')</a>' : 'Ingen') . '</td>';
 
-                                if (count($entry->getMetadata()) > 0) {
+                                if (!is_array($entry->getMetadata()) || count($entry->getMetadata()) > 0) {
                                     $content .= '<td><textarea rows="2" cols="25">' . json_encode($entry->getMetadata(), JSON_PRETTY_PRINT) . '</textarea></td>';
                                 } else {
                                     $content .= '<td><i>Ingen metadata</i></td>';

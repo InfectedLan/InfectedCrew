@@ -526,6 +526,11 @@ a:focus {
   padding: 10px 25px 10px 15px;
   font-size: 12px;
 }
+
+.sidebar-menu div.li.header {
+  padding: 10px 25px 10px 15px;
+  font-size: 12px;
+}
 .sidebar-menu li > a > .fa-angle-left,
 .sidebar-menu li > a > .pull-right-container > .fa-angle-left {
   width: auto;

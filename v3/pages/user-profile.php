@@ -73,7 +73,7 @@ class UserProfilePage extends Page {
               //<!-- Profile Image -->
               $content .= '<div class="box box-primary">';
                 $content .= '<div class="box-body box-profile">';
-                  $content .= '<img class="profile-user-img img-responsive img-circle" src="../api/' . $avatarFile . '" alt="' . $this->profileUser->getFullName() . '\'s profilbilde">';
+                  $content .= '<img class="profile-user-img img-responsive img-circle" src="../dynamic/' . $avatarFile . '" alt="' . $this->profileUser->getFullName() . '\'s profilbilde">';
 									//$content .= '<img class="profile-user-img img-responsive img-circle" src="https://crew.test.infected.no/v3/demo/dist/img/user4-128x128.jpg" alt="' . $this->profileUser->getFullName() . '\'s profilbilde">';
 									$content .= '<h3 class="profile-username text-center">' . $this->profileUser->getFullName() . '</h3>';
 									$content .= '<p class="text-muted text-center">' . $this->profileUser->getRole() . '</p>';

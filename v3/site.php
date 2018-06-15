@@ -34,9 +34,9 @@ class Site {
 	        $user = Session::getCurrentUser();
 
             $this->pageName = $_GET['page'] ?? ($user->isGroupMember() ? 'my-crew' : 'crew');
+        } else {
+            $this->pageName = $_GET['page'] ?? 'login';
         }
-
-        $this->pageName = $_GET['page'] ?? 'login';
 	}
 
 	// Execute the site.
@@ -127,6 +127,7 @@ class Site {
                         echo 'ga(\'create\', \'UA-54254513-3\', \'auto\');';
                         echo 'ga(\'send\', \'pageview\');';
                     echo '</script>';
+                    echo '<link rel="stylesheet" href="pages/style/customstyle.css">';
                 echo '</head>';
 
                 if (Session::isAuthenticated()) {
@@ -371,14 +372,14 @@ EOD;
                                                 }
 
                                                 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-                                                    echo '<img src="../api/' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
+                                                    echo '<img src="../dynamic/' . $avatarFile . '" class="user-image" alt="' . $user->getFullName() . '\'s profilbilde">';
                                                     echo '<span class="hidden-xs">' . $user->getFullName() . '</span>';
                                                 echo '</a>';
 
                                                 echo '<ul class="dropdown-menu">';
                                                     // User image
                                                     echo '<li class="user-header">';
-                                                        echo '<img src="../api/' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
+                                                        echo '<img src="../dynamic/' . $avatarFile . '" class="img-circle" alt="' . $user->getFullName() . '\'s profilbilde">';
                                                         echo '<p>';
                                                             echo $user->getFullName();
                                                             echo '<small>' . $user->getRole() . '</small>';
@@ -431,23 +432,14 @@ EOD;
                                 <!-- sidebar: style can be found in sidebar.less -->
                                 <section class="sidebar">
                                     <!-- Sidebar user panel -->
-                                    <div class="user-panel">
-                                        <div class="pull-left image">
-                                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                        </div>
-                                        <div class="pull-left info">
-                                            <p>Alexander Pierce</p>
-                                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                                        </div>
-                                    </div>
                                     <!-- search form -->
                                     <form action="#" method="get" class="sidebar-form">
                                         <div class="input-group">
-                                            <input autocomplete="off" id="sidebar-search" type="text" name="q" class="form-control" placeholder="Search...">
-                                            <span class="input-group-btn">
-                                                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                                                        </button>
-                                                    </span>
+                                            <input autocomplete="off" id="sidebar-search" type="text" name="q" class="form-control" placeholder="Søk i menyen">
+                                            <!-- <span class="input-group-btn">
+                                                         <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                                                        </button> 
+                                                    </span>-->
                                         </div>
                                     </form>
                                     <!-- /.search form -->
@@ -459,6 +451,7 @@ echo '<ul class="sidebar-menu" data-widget="tree"></ul>';
 
                                 echo '</section>';
                             echo '</aside>';
+                            echo '<script>var hasUserSearchPermission = ' . ($user->hasPermission('user.search') ? 'true' : 'false') . ';updateSearch("");</script>';
 
                             // Content Wrapper. Contains page content
                             echo '<div class="content-wrapper">';
@@ -468,9 +461,10 @@ echo '<ul class="sidebar-menu" data-widget="tree"></ul>';
                                     // View the page specified by "pageName" variable.
                                     echo $this->getPage($this->pageName);
                                 } else {
-                                    $publicPages = ['apply',
+                                    $publicPages = ['new-application',
+                                                    'edit-avatar',
                                                     'crew',
-                                                    'my-profile',
+                                                    'user-profile',
                                                     'edit-profile',
                                                     'edit-password',
                                                     'edit-avatar'];
@@ -732,7 +726,10 @@ EOD;
 				echo '<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>';
 
 				// Slimscroll
-				echo '<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>';
+                echo '<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>';
+
+                // User searching
+                echo '<script src="pages/scripts/user-search.js"></script>';
 
 				// FastClick
 				echo '<script src="bower_components/fastclick/lib/fastclick.js"></script>';
@@ -742,6 +739,8 @@ EOD;
 
                 // ChartJS
                 echo '<script src="bower_components/chart.js/Chart.js"></script>';
+                // JQuery form
+                echo '<script src="../api/scripts/jquery.form.min.js"></script>';
 
                 // DataTables
                 echo '<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>';
@@ -767,19 +766,22 @@ EOD;
 		$applications = null;
 		$avatars = null;
 
+        $notificationsCount = 0;
+
 		// Check for group applications.
 		if ($user->hasPermission('*')) {
 			$applications = ApplicationHandler::getPendingApplications();
+            $notificationsCount += count($applications);
 		} else if ($user->isGroupMember() && $user->hasPermission('chief.application')) {
 			$applications = ApplicationHandler::getPendingApplicationsByGroup($user->getGroup());
+            $notificationsCount += count($applications);
 		}
 
 		// Check for avatars.
 		if ($user->hasPermission('*') || $user->hasPermission('chief.application') && $user->isGroupMember()) {
 			$avatars = AvatarHandler::getPendingAvatars();
+            $notificationsCount += count($avatars);
 		}
-
-		$notificationsCount = count($applications) . count($avatars);
 
 		// Notifications: style can be found in dropdown.less
 		$content .= '<li class="dropdown notifications-menu">';
@@ -807,7 +809,7 @@ EOD;
 
 							if (!empty($avatars)) {
 								foreach ($avatars as $avatar) {
-									$content .= '<li><a href="?page=chief-avatars"><i class="fa fa-image-fila text-aqua"></i>Profilbilde til ' . $avatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
+									$content .= '<li><a href="?page=chief-avatar"><i class="fa fa-image-fila text-aqua"></i>Profilbilde til ' . $avatar->getUser()->getFullName() . ' venter på godkjenning.</a></li>';
 								}
 							}
 
@@ -857,7 +859,7 @@ EOD;
                 }
 
                 // Only show pages for that group.
-                if (true || (empty($pageList) && empty($teamList))) {
+                if ((empty($pageList) && empty($teamList))) {
                     $data[] = ["name" => "Mitt crew", "icon" => "fa-user", "url" => "?page=my-crew"];
                 } else {
                     $entries = [];
@@ -883,21 +885,35 @@ EOD;
                     $data[] = ["name" => "Mitt crew", "icon" => "fa-user", "entries" => $entries];
                 }
             }
+        //Apply for crew module
+        if(!$user->isGroupMember()) {
+            $apply = [];
 
-        //Build crew list
-        $crew = [];
+            $apply[] = ["name" => "Ny søknad", "icon" => "fa-pencil", "url"=> "?page=new-application", "active" => $this->pageName == 'new-application'];
+            $apply[] = ["name" => "Mine søknader", "icon" => "fa-th-list", "url"=> "?page=my-applications", "active" => $this->pageName == 'my-applications'];
+            $apply[] = ["name" => "Les om crewene", "icon" => "fa-users", "url"=> "?page=crew", "active" => $this->pageName == 'crew'];
 
-        $groupList = GroupHandler::getGroups();
 
-        if (!empty($groupList)) {
-            foreach ($groupList as $group) {
-                $content .= '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
-                $crew[] = ["name" => $group->getTitle(), "icon" => "fa-circle-o", "url" => '?page=crew&id=' . $group->getId()];
+            $data[] = ["name" => "Søk crew", "icon" => "fa-pencil", "entries" => $apply];
+        } else {
+            //Build crew list
+            $crew = [];
+
+            $groupList = GroupHandler::getGroups();
+
+            if (!empty($groupList)) {
+                foreach ($groupList as $group) {
+                    $content .= '<li' . (isset($_GET['id']) && $group->getId() == $_GET['id'] ? ' class="active"' : null) .'><a href="?page=crew&id=' . $group->getId() . '"><i class="fa fa-circle-o"></i> ' . $group->getTitle() . '</a></li>';
+                    $crew[] = ["name" => $group->getTitle(), "icon" => "fa-circle-o", "url" => '?page=crew&id=' . $group->getId()];
+                }
             }
+            $data[] = ["name" => "Crew", "icon" => "fa-users", "entries" => $crew];
         }
 
+        
 
-        $data[] = ["name" => "Crew", "icon" => "fa-users", "entries" => $crew];
+
+        
         //Build chief menu
         if ($user->hasPermission('chief')) {
             $chief = [];
@@ -958,6 +974,10 @@ EOD;
         if ($user->hasPermission('stats')) {
             $stats = [];
 
+            if ($user->hasPermission('stats.dash')) {
+                $stats[] = ["name" => "Dette arrangementet", "icon" => "fa-tachometer", "url" => "?page=stats-current-event", "active" => $this->pageName == 'stats-current-event'];
+            }
+
             if ($user->hasPermission('stats.age')) {
                 $stats[] = ["name" => "Alder", "icon" => "fa-birthday-cake", "url" => "?page=stats-age", "active" => $this->pageName == 'stats-age'];
             }
@@ -998,6 +1018,16 @@ EOD;
             $data[] = ["name" => "Administrator", "icon" => "fa-wrench", "entries" => $admin, "active" => StringUtils::startsWith($this->pageName, 'admin')];
         }
 
+        if($user->hasPermission('compo')) {
+            $compo = [];
+
+            if ($user->hasPermission('compo.management')) {
+                $compo[] = ["name" => "Oversikt", "icon" => "fa-list", "url" => "?page=compo-overview", "active" => $this->pageName == 'compo-overview'];
+            }
+
+            $data[] = ["name" => "Compo", "icon" => "fa-trophy", "entries" => $compo, "active" => StringUtils::startsWith($this->pageName, 'compo')];
+        }
+
         if ($user->hasPermission('developer')) {
             $dev = [];
 
@@ -1011,6 +1041,7 @@ EOD;
 
             $data[] = ["name" => "Utvikler", "icon" => "fa-rocket", "entries" => $dev, "active" => StringUtils::startsWith($this->pageName, 'developer')];
         }
+
 
         return $data;
     }
@@ -1048,7 +1079,7 @@ EOD;
 				}
 
 				// Only show pages for that group.
-				if (true || (empty($pageList) && empty($teamList))) {
+				if ((empty($pageList) && empty($teamList))) {
 					$content .= '<li><a href="?page=my-crew"><i class="fa fa-user"></i><span>Mitt crew</span></a></li>';
 				} else {
 					$content .= '<li class="treeview' . ($this->pageName == 'my-crew' ? ' active' : null) . '">';
@@ -1271,7 +1302,6 @@ EOD;
 
 	private function getPage(string $pageName): string {
 		$content = null;
-
 		// Fetch the page object from the database and display it.
 		$page = RestrictedPageHandler::getPageByName($pageName);
 
@@ -1312,7 +1342,6 @@ EOD;
 					// Get the last declared class.
 					$declaredClass = get_declared_classes();
 					$class = end($declaredClass);
-
 					if (class_exists($class)) {
 						// Create a new instance of this class.
 						$page = new $class();

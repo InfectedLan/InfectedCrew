@@ -75,11 +75,13 @@ class ChiefAvatarPage extends ChiefPage {
                         $content .= '</div>';
                         $content .= '<div class="box-body">';
                             $content .= '<div class="thumbnail">';
-                                $content .= '<img src="../api/' . $avatarUser->getAvatar()->getSd() . '" class="img-circle" alt="' . $user->getDisplayName() . '\'s profilbilde">';
-                                $content .= '<div class="btn-group" role="group" aria-label="...">';
-                                    $content .= '<button type="button" class="btn btn-primary" onClick="acceptAvatar(' . $avatar->getId() . ')">Godta</button>';
-                                    $content .= '<button type="button" class="btn btn-primary" onClick="rejectAvatar(' . $avatar->getId() . ')">Avslå</button>';
-                                $content .= '</div>';
+                                $content .= '<img src="../dynamic/' . $avatarUser->getAvatar()->getSd() . '" class="img-roundedRectangle" alt="' . $user->getDisplayName() . '\'s profilbilde">';
+                            $content .= '</div>';
+                        $content .= '</div>';
+                        $content .= '<div class="box-footer">';
+                            $content .= '<div class="btn-group" role="group" aria-label="...">';
+                                $content .= '<button type="button" class="btn btn-success" onClick="acceptAvatar(' . $avatar->getId() . ')">Godta</button>';
+                                $content .= '<button type="button" class="btn btn-danger" onClick="rejectAvatar(' . $avatar->getId() . ')">Avslå</button>';
                             $content .= '</div>';
                         $content .= '</div>';
                     $content .= '</div>';

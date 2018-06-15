@@ -162,7 +162,7 @@ class AdminPermissionPage extends AdminPage {
 
                                 $content .= '<div class="box box-primary">';
                                     $content .= '<div class="box-header with-border">';
-                                        $content .= '<h3 class="box-title"><a href="?page=user-profile&id=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
+                                        $content .= '<h3 class="box-title"><a href="?page=user-profile&userId=' . $permissionUser->getId() . '">' . $permissionUser->getDisplayName() . '</a></h3>';
                                     $content .= '</div>';
                                     $content .= '<div class="box-body">';
                                         $content .= '<p class="pull-left">Denne brukeren har ' . $permissionCount . ' ' . ($permissionCount > 1 ? 'tilganger' : 'tilgang') . '.</p>';

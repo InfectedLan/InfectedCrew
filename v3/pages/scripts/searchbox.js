@@ -27,13 +27,25 @@ function updateSearch(query) {
 			resultsFound = true;
 		}
 	}
-	console.log(menuHtml);
+	if(query.length >= 3 && hasUserSearchPermission) {
+		userSearch(query, function(list) {
+			console.log("Got search results: ");
+			console.log(list);
+			userResultsList = '<li class="header">Brukere</li>';
+			for(var i = 0; i < (list.length > 15 ? 15 : list.length); i++) {
+				icon = "fa-user";
+				userResultsList += '<li><a href="?page=user-profile&userId=' + list[i].id + '"><i class="fa ' + icon + '"></i><span>' + list[i].firstname + ' "' + list[i].username + '" ' + list[i].lastname + '</span></a></li>';
+			}
+			$(".sidebar-menu").append(userResultsList);
+		});
+	}
+	//console.log(menuHtml);
 	
 	$(".sidebar-menu").html('<li class="header">Hovedmeny</li>' + menuHtml);
 }
 
 function getHtml(entryData, query, topOfTree) {
-	console.log("Fetching for ");
+	//console.log("Fetching for ");
 	if(entryData.entries === undefined) {
 		if(entryData.length == 0 || !entryData.name.toLowerCase().includes(query.toLowerCase()))
 			return null;
@@ -44,12 +56,14 @@ function getHtml(entryData, query, topOfTree) {
 			return '<li' + (entryData.active ? ' class="active"' : '') + '><a href="' + entryData.url + '"><i class="fa ' + entryData.icon + '"></i> ' + entryData.name + '</a></li>';
 		}
 	} else {
-		header = '<li class="treeview' + (entryData.active ? " active" : "") + '">';
+		header = '<li class="treeview' + (entryData.active || query.length != 0 ? " active" : "") + '">';
 		header += '<a href=""><i class="fa ' + entryData.icon + '"></i><span>' + entryData.name + '</span><i class="fa fa-angle-left pull-right"></i></a>';
 		header += '<ul class="treeview-menu">';
+		var categoryMatch = entryData.name.toLowerCase().includes(query.toLowerCase());
+		
 		var notnull = false;
 		for(index in entryData.entries) {
-			result = getHtml(entryData.entries[index], query, false);
+			result = getHtml(entryData.entries[index], categoryMatch?"":query, false);
 			//Search check for children
 			if(result !== null) {
 				notnull = true;
@@ -57,18 +71,21 @@ function getHtml(entryData, query, topOfTree) {
 			}
 		}
 		//Dont care if no children followed the search terms
-		if(!notnull) {
+		if(!notnull && !categoryMatch) {
 			return null;
 		}
 		return header + '</ul></li>';
 	}
-	console.log(entryData);
+	//console.log(entryData);
 } 
 
 $(document).ready(function(){
-	updateSearch("");
+	//updateSearch("");
 	$('#sidebar-search').on('input',function(e){
-	    console.log(e.target.value);
+	    //console.log(e.target.value);
 	    updateSearch(e.target.value);
 	});
+	if(hasUserSearchPermission) {
+		$("#sidebar-search").attr("placeholder", "Søk i menyen og brukere");
+	}
 });
