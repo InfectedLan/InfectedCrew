@@ -39,7 +39,7 @@ class ApplyPage extends Page {
         $content = null;
 
         if($user->hasAvatar()) {
-            $lanName = Settings::name;
+            $lanName = Settings::getValue("name");
             $groupList = GroupHandler::getGroups();
             $crewCount = count($groupList);
             $applications = ApplicationHandler::getUserApplications($user);

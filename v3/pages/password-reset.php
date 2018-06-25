@@ -33,7 +33,7 @@ class PasswordResetPage extends Page {
         $content .= '<body class="register-page">';
             $content .= '<div class="register-box">';
                 $content .= '<div class="register-logo">';
-                    $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+                    $content .= '<a href="."><b>' . Settings::getValue("name") . '</b> Crew</a>';
                 $content .= '</div>';
                 $content .= '<div class="register-box-body">';
 

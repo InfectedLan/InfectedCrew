@@ -21,7 +21,7 @@
 require_once 'settings.php';
 require_once 'site.php';
 
-if (version_compare(PHP_VERSION, Settings::php_version) >= 0) {
+if (version_compare(PHP_VERSION, Settings::getValue("php_version")) >= 0) {
 	// Execute the site.
 	$site = new Site();
 	$site->execute();

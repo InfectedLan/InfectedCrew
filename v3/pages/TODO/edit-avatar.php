@@ -79,15 +79,15 @@ class EditAvatarPage implements IPage {
 									$image = 0;
 
 									if ($extension == 'png') {
-										$image = imagecreatefrompng(Settings::api_path . $avatar->getTemp());
+										$image = imagecreatefrompng(Settings::getValue("api_path") . $avatar->getTemp());
 									} else if ($extension == 'jpeg' ||
 											   $extension == 'jpg') {
-										$image = imagecreatefromjpeg(Settings::api_path . $avatar->getTemp());
+										$image = imagecreatefromjpeg(Settings::getValue("api_path") . $avatar->getTemp());
 									}
 
 									$scaleFactor = 800 / imagesx($image);
 									$content .= 'aspectRatio: 400/300,';
-									$content .= 'minSize: [' . (Settings::avatar_minimum_width * $scaleFactor) . ', ' . (Settings::avatar_minimum_height * $scaleFactor) . '],';
+									$content .= 'minSize: [' . (Settings::getValue("avatar_minimum_width") * $scaleFactor) . ', ' . (Settings::getValue("avatar_minimum_height") * $scaleFactor) . '],';
 									$content .= 'onSelect: updateCoords';
 								$content .= '});';
 							$content .= '});';

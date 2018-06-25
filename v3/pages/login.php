@@ -32,10 +32,10 @@ class LoginPage extends Page {
         $content .= '<body class="hold-transition login-page">';
             $content .= '<div class="login-box">';
                 $content .= '<div class="login-logo">';
-                    $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+                    $content .= '<a href="."><b>' . Settings::getValue("name") . '</b> Crew</a>';
                 $content .= '</div>';
                 $content .= '<div class="login-box-body">';
-                    $content .= '<p class="login-box-msg">Du kan bruke samme bruker overalt hos <b>' . Settings::name . '</b>.</p>';
+                    $content .= '<p class="login-box-msg">Du kan bruke samme bruker overalt hos <b>' . Settings::getValue("name") . '</b>.</p>';
                     $content .= '<form class="login" method="post">';
                         $content .= '<div class="form-group has-feedback">';
                             $content .= '<input type="text" name="identifier" class="form-control" placeholder="Brukernavn eller e-post">';

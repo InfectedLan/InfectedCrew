@@ -61,7 +61,7 @@ class RegisterPage extends Page {
             $content .= '</div>';
             $content .= '<div class="register-box">';
                 $content .= '<div class="register-logo">';
-                    $content .= '<a href="."><b>' . Settings::name . '</b> Crew</a>';
+                    $content .= '<a href="."><b>' . Settings::getValue("name") . '</b> Crew</a>';
                 $content .= '</div>';
                 $content .= '<div class="register-box-body">';
                     $content .= '<p class="login-box-msg">Fyll ut skjemaet for å registrere deg.</p>';

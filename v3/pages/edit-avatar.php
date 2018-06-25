@@ -49,11 +49,11 @@ class EditAvatarPage extends Page {
     public function getContent(User $user = null): string {
         $content = null;
         //Add an extra footer to each page
-        $width = Settings::avatar_minimum_width;
-        $height = Settings::avatar_minimum_height;
+        $width = Settings::getValue("avatar_minimum_width");
+        $height = Settings::getValue("avatar_minimum_height");
 
-        $recommendedWidth = Settings::avatar_hd_w;
-        $recommendedHeight = Settings::avatar_hd_h;
+        $recommendedWidth = Settings::getValue("avatar_hd_w");
+        $recommendedHeight = Settings::getValue("avatar_hd_h");
 
         //Fetch max upload size
         $max_size = -1;
@@ -137,10 +137,10 @@ EOD;
                     $image = 0;
 
                     if ($extension == 'png') {
-                        $image = imagecreatefrompng(Settings::dynamic_path . $avatar->getTemp());
+                        $image = imagecreatefrompng(Settings::getValue("dynamic_path") . $avatar->getTemp());
                     } else if ($extension == 'jpeg' ||
                         $extension == 'jpg') {
-                        $image = imagecreatefromjpeg(Settings::dynamic_path . $avatar->getTemp());
+                        $image = imagecreatefromjpeg(Settings::getValue("dynamic_path") . $avatar->getTemp());
                     } else {
                         // TODO: Handle if the format is not supported here...
                     }
@@ -148,8 +148,8 @@ EOD;
                     $scaleFactor = 800 / imagesx($image);
                     $cropHeight = ($scaleFactor * imagesy($image));
 
-                    $minWidth = (Settings::avatar_minimum_width * $scaleFactor);
-                    $minHeight = (Settings::avatar_minimum_height * $scaleFactor);
+                    $minWidth = (Settings::getValue("avatar_minimum_width") * $scaleFactor);
+                    $minHeight = (Settings::getValue("avatar_minimum_height") * $scaleFactor);
                     $tmpUrl = $avatar->getTemp();
 
                     $content = <<<EOD

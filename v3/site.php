@@ -45,8 +45,8 @@ class Site {
 			echo '<html>';
 		  		echo '<head>';
 		  			echo '<title>' . $this->getTitle() . '</title>';
-                    echo '<meta name="description" content="' . Settings::description . '">';
-                    echo '<meta name="keywords" content="' . Settings::keywords . '">';
+                    echo '<meta name="description" content="' . Settings::getValue("description") . '">';
+                    echo '<meta name="keywords" content="' . Settings::getValue("keywords") . '">';
                     echo '<meta name="author" content="halvors and petterroea">';
                     echo '<meta charset="utf-8">';
                     echo '<link rel="shortcut icon" href="images/favicon.ico">';
@@ -141,8 +141,8 @@ class Site {
                             echo '<header class="main-header">';
                                 // Logo
                                 echo '<a href="." class="logo">';
-                                    echo '<span class="logo-mini"><b>' . substr(Settings::name, 0, 1) . '</b>C</span>'; // mini logo for sidebar mini 50x50 pixels
-                                    echo '<span class="logo-lg"><b>' . Settings::name . '</b> Crew</span>'; // logo for regular state and mobile devices
+                                    echo '<span class="logo-mini"><b>' . substr(Settings::getValue("name"), 0, 1) . '</b>C</span>'; // mini logo for sidebar mini 50x50 pixels
+                                    echo '<span class="logo-lg"><b>' . Settings::getValue("name") . '</b> Crew</span>'; // logo for regular state and mobile devices
                                 echo '</a>';
 
                                 echo <<< EOD
@@ -481,7 +481,7 @@ echo '<ul class="sidebar-menu" data-widget="tree"></ul>';
                                 echo '<div class="pull-right hidden-xs">';
                                     echo '<b>Version</b> 3.0';
                                 echo '</div>';
-                                echo '<strong>Copyright &copy; 2017' . (date('Y') > 2017 ? '-' . date('Y') : null) . ' <a href="//' . Settings::domain . '/">' . Settings::name . '</a>.</strong> All rights reserved.';
+                                echo '<strong>Copyright &copy; 2017' . (date('Y') > 2017 ? '-' . date('Y') : null) . ' <a href="//' . Settings::getValue("domain") . '/">' . Settings::getValue("name") . '</a>.</strong> All rights reserved.';
                             echo '</footer>';
 
     echo <<< EOD
@@ -754,7 +754,7 @@ EOD;
 
 	// Generates title based on current page / article.
 	private function getTitle(): string {
-		return Settings::name . ' Crew';
+		return Settings::getValue("name") . ' Crew';
 	}
 
 	private function getMessages() {
@@ -1328,7 +1328,7 @@ EOD;
 			}
 		} else {
 			$directoryList = ['pages',
-                              Settings::api_path . 'pages'];
+                              Settings::getValue("api_path") . 'pages'];
 			$found = false;
 
 			foreach ($directoryList as $directory) {

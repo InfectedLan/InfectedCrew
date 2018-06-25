@@ -55,7 +55,7 @@ class ApplicationPage extends Page {
                             $content .= '</div>';
                             $content .= '<div class="box-body">';
                                 $content .= '<p>Velkommen! Som crew vil du oppleve ting du aldri ville som deltaker, få erfaringer du kan bruke på din CV, <br>';
-                                $content .= 'og møte nye spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::name . ', <br>';
+                                $content .= 'og møte nye spennende mennesker. Dersom det er første gang du skal søke til crew på ' . Settings::getValue("name") . ', <br>';
                                 $content .= 'anbefaler vi at du leser igjennom beskrivelsene av våre ' . count($groups) . ' forksjellige crew <a href="?page=crew">her</a>.</p>';
 
                                 $content .= '<p>Klar til å søke? Fyll ut skjemaet under!</p>';
