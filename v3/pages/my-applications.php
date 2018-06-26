@@ -21,6 +21,7 @@
 require_once 'session.php';
 require_once 'handlers/restrictedpagehandler.php';
 require_once 'handlers/grouphandler.php';
+require_once 'handlers/applicationhandler.php';
 require_once 'utils/crewutils.php';
 require_once 'page.php';
 
@@ -41,18 +42,53 @@ class ApplicationListPage extends Page {
         $applications = ApplicationHandler::getUserApplications($user);
 
             if(!empty($applications)) {
-                $content = <<<EOD
-<div class="box box-primary">
-<div class="box-header with-border">
-  <h3 class="box-title">Søknader</h3>
-</div>
-<!-- /.box-header -->
-<!-- form start -->
-    <div class="box-body">
-        
+                $content = "";
+                foreach ($applications as $application) {
+                    $applicationCrew = $application->getGroup()->getTitle();
+                    $applicationColor = "";
+                    switch ($application->getState()) {
+                        case ApplicationHandler::STATE_NEW:
+                            $applicationColor = "box-primary";
+                            break;
+                        case ApplicationHandler::STATE_ACCEPTED:
+                            $applicationColor = "box-success";
+                            break;
+                        case ApplicationHandler::STATE_REJECTED:
+                            $applicationColor = "box-danger";
+                            break;
+                        case ApplicationHandler::STATE_CLOSED:
+                            $applicationColor = "box-info";
+                            break;
+                        default:
+                            $applicationColor = "box-warning";
+                            break;
+                    }
+                    $applicationString = $application->getStateAsString();
+                    $applicationContents = $application->getContent();
+                    $content .= <<<EOD
+<div class="col-md-6">
+    <div class="box $applicationColor">
+        <div class="box-header with-border">
+          <h3 class="box-title">$applicationCrew</h3>
+          <i> $applicationString </i>
+        </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+        <div class="box-body">
+            <p>$applicationContents</p>
+EOD;
+                    if($application->getComment() != null) {
+                        $content .= "<label>Du har fått en kommentar fra saksbehandler</label><p><i>" . $application->getComment() . "</i></p>";
+                    }
+                    $content .= <<<EOD
+        </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-danger" onClick="deleteAvatar()">Slett søknad</button>
+        </div>
     </div>
 </div>
 EOD;
+                }
             } else {
                 $content = <<<EOD
 <div class="box box-warning">
