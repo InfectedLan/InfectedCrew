@@ -42,9 +42,10 @@ class ApplicationListPage extends Page {
         $applications = ApplicationHandler::getUserApplications($user);
 
             if(!empty($applications)) {
-                $content = "";
+                $content = '<script src="pages/scripts/application.js"></script>';
                 foreach ($applications as $application) {
                     $applicationCrew = $application->getGroup()->getTitle();
+                    $applicationId = $application->getId();
                     $applicationColor = "";
                     switch ($application->getState()) {
                         case ApplicationHandler::STATE_NEW:
@@ -82,9 +83,15 @@ EOD;
                     }
                     $content .= <<<EOD
         </div>
+EOD;
+                    if($application->getState() == ApplicationHandler::STATE_NEW) {
+                        $content .= <<<EOD
         <div class="box-footer">
-            <button type="submit" class="btn btn-danger" onClick="deleteAvatar()">Slett søknad</button>
+            <button type="submit" class="btn btn-danger" onClick="removeApplication($applicationId)">Slett søknad</button>
         </div>
+EOD;
+                    }
+                    $content .= <<<EOD
     </div>
 </div>
 EOD;

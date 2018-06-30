@@ -39,6 +39,16 @@ function createApplication(form) {
     });
 }
 
+function removeApplication(id) {
+    $.getJSON('../api/json/application/removeApplication.php?id=' + id, function(data) {
+        if (data.result) {
+            location.reload();
+        } else {
+            error(data.message);
+        }
+    });
+}
+
 function acceptApplication(applicationId) {
 	$.post('../api/rest/group/application/accept.php', { applicationId: applicationId }, function(data) {
 		if (data.result) {
